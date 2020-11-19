@@ -1,0 +1,6 @@
+This section contains tools for finding objects and 
+making charts of them.
+It also contains 'minisky' which is useful for flattening images.
+'surfdens' is used to generate a fits image consisting of 'points
+of light' from a catalogue.
+

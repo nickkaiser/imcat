@@ -1,0 +1,36 @@
+#!/usr/bin/perl
+
+# create links to .geomview and fits3Dviewer
+
+$imcatdir = $ENV{"IMCATDIR"};
+$arch = $ENV{"ARCH"};
+
+$usage = "\
+NAME\
+        geomviewsetup - create links for geomview fits3Dviewer\
+\
+SYNOPSIS\
+        geomviewsetup\
+\
+DESCRIPTION\n\
+        geomviewsetup creates symbolic links to\
+	$imcatdir/src/imcattools/geomview/.geomview\
+	and $imcatdir/bin/$arch/fits3Dviewer.\
+\
+SEE ALSO\
+        fits3Dviewer\
+\
+AUTHOR\
+        Nick Kaiser --- kaiser\@hawaii.edu\n";
+
+die $usage if ($arg = shift(@ARGV));
+
+echosys("ln -s $imcatdir/src/imcattools/geomview/.geomview");
+echosys("ln -s $imcatdir/bin/$arch/fits3Dviewer");
+
+exit;
+
+sub echosys {
+	warn "$_[0]\n";
+	system($_[0]) && die "system($_[0]) failed!\n";
+}

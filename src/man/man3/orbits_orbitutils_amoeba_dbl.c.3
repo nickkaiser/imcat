@@ -1,0 +1,68 @@
+.TH "amoeba_dbl.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+amoeba_dbl.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include 'nrutil.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBNRANSI\fP"
+.br
+.ti -1c
+.RI "#define \fBNMAX\fP   500000"
+.br
+.ti -1c
+.RI "#define \fBGET_PSUM\fP"
+.br
+.ti -1c
+.RI "#define \fBSWAP\fP(\fBa\fP, \fBb\fP)   {swap=(\fBa\fP);(\fBa\fP)=(\fBb\fP);(\fBb\fP)=swap;}"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBamoeba\fP (double **p, double y[], int \fBndim\fP, double ftol, double(*funk)(double[]), int *nfunk)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define GET_PSUM"
+.PP
+\fBValue:\fP.nf
+for (j=0;j<ndim;j++) {\
+          for (sum=0.0,i=0;i<mpts;i++) sum += p[i][j];\
+          psum[j]=sum;}
+.fi
+.PP
+Definition at line 12 of file orbits/orbitutils/amoeba_dbl.c.
+.PP
+Referenced by amoeba().
+.SS "#define NMAX   500000"
+.PP
+Definition at line 11 of file orbits/orbitutils/amoeba_dbl.c.
+.PP
+Referenced by amoeba(), and main().
+.SS "#define NRANSI"
+.PP
+Definition at line 9 of file orbits/orbitutils/amoeba_dbl.c.
+.SS "#define SWAP(\fBa\fP, \fBb\fP)   {swap=(\fBa\fP);(\fBa\fP)=(\fBb\fP);(\fBb\fP)=swap;}"
+.PP
+Definition at line 16 of file orbits/orbitutils/amoeba_dbl.c.
+.SH "Function Documentation"
+.PP 
+.SS "void amoeba (double ** p, double y[], int ndim, double ftol, double(* funk)(double[]), int * nfunk)"
+.PP
+Definition at line 18 of file orbits/orbitutils/amoeba_dbl.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

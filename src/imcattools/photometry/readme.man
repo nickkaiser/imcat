@@ -1,0 +1,3 @@
+The tools in this section are provided to add detailed shape, size
+magnitude information to catalogues of objects detected with
+the object detection tools 'findpeaks' and 'hfindpeaks'.

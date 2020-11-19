@@ -1,0 +1,14 @@
+#!/bin/sh
+case $#
+in
+2)
+   if [ \( \( -f $1 \) -a \( -f $2 \) \) -o \( \( -d $1 \) -a \( -d $2 \) \) ]
+   then
+      mv $1 $1.swap.
+      mv $2 $1
+      mv $1.swap. $2
+   else
+      echo 'usage: swap <file1> <file2>'
+   fi                                      ;;
+*) echo 'usage: swap <file1> <file2>'      ;;
+esac

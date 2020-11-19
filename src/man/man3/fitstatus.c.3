@@ -1,0 +1,77 @@
+.TH "fitstatus.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitstatus.c \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBDET_NEG\fP   1"
+.br
+.ti -1c
+.RI "#define \fBTRACE_NEG\fP   2"
+.br
+.ti -1c
+.RI "#define \fBTOO_MANY_ITERATIONS\fP   4"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBgetfitstatus\fP (void)"
+.br
+.ti -1c
+.RI "void \fBsetfitstatus\fP (int thestatus)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBfitstatus\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define DET_NEG   1"
+.PP
+Definition at line 8 of file fitstatus.c.
+.SS "#define TOO_MANY_ITERATIONS   4"
+.PP
+Definition at line 10 of file fitstatus.c.
+.PP
+Referenced by brent(), and frprmn().
+.SS "#define TRACE_NEG   2"
+.PP
+Definition at line 9 of file fitstatus.c.
+.SH "Function Documentation"
+.PP 
+.SS "int getfitstatus (void)"
+.PP
+Definition at line 14 of file fitstatus.c.
+.PP
+References fitstatus.
+.PP
+Referenced by brent(), and frprmn().
+.SS "void setfitstatus (int thestatus)"
+.PP
+Definition at line 19 of file fitstatus.c.
+.PP
+References fitstatus.
+.PP
+Referenced by brent(), and frprmn().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBfitstatus\fP\fC [static]\fP"
+.PP
+Definition at line 12 of file fitstatus.c.
+.PP
+Referenced by getfitstatus(), and setfitstatus().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,571 @@
+.TH "fits.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fits.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBfitscomment\fP"
+.br
+.ti -1c
+.RI "struct \fBfitsheader\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX_FITS_DIM\fP   7"
+.br
+.ti -1c
+.RI "#define \fBCOM_LENGTH\fP   80"
+.br
+.ti -1c
+.RI "#define \fBCOM_LENGTH1\fP   81"
+.br
+.ti -1c
+.RI "#define \fBNAME_LENGTH\fP   8"
+.br
+.ti -1c
+.RI "#define \fBNAME_LENGTH1\fP   9"
+.br
+.ti -1c
+.RI "#define \fBVALUE_LENGTH\fP   70"
+.br
+.ti -1c
+.RI "#define \fBVALUE_LENGTH1\fP   71"
+.br
+.ti -1c
+.RI "#define \fBFITS_REC_SIZE\fP   2880"
+.br
+.ti -1c
+.RI "#define \fBUCHAR_PIXTYPE\fP   8"
+.br
+.ti -1c
+.RI "#define \fBSHORT_PIXTYPE\fP   16"
+.br
+.ti -1c
+.RI "#define \fBINT_PIXTYPE\fP   32"
+.br
+.ti -1c
+.RI "#define \fBFLOAT_PIXTYPE\fP   -32"
+.br
+.ti -1c
+.RI "#define \fBDBL_PIXTYPE\fP   -64"
+.br
+.ti -1c
+.RI "#define \fBUCHAR_MAGIC\fP   UCHAR_MAX"
+.br
+.ti -1c
+.RI "#define \fBSHORT_MAGIC\fP   SHRT_MIN"
+.br
+.ti -1c
+.RI "#define \fBINT_MAGIC\fP   INT_MIN"
+.br
+.ti -1c
+.RI "#define \fBFLOAT_MAGIC\fP   (-((float)  0x80000000) * ((float)  0x80000000))"
+.br
+.ti -1c
+.RI "#define \fBDBL_MAGIC\fP   (-((double) 0x80000000) * ((double) 0x80000000))"
+.br
+.ti -1c
+.RI "#define \fBBIG_ENDIAN_BYTE_ORDER\fP   0"
+.br
+.ti -1c
+.RI "#define \fBLITTLE_ENDIAN_BYTE_ORDER\fP   1"
+.br
+.ti -1c
+.RI "#define \fBNATIVE_BYTE_ORDER\fP   BIG_ENDIAN_BYTE_ORDER"
+.br
+.ti -1c
+.RI "#define \fBNON_NATIVE_BYTE_ORDER\fP   LITTLE_ENDIAN_BYTE_ORDER"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBfitscomment\fP \fBfitscomment\fP"
+.br
+.ti -1c
+.RI "typedef \fBfitsheader\fP \fBfitsheader\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBfitsheader\fP * \fBreadfitsheader\fP (FILE *stream)"
+.br
+.ti -1c
+.RI "\fBfitsheader\fP * \fBcopyfitsheader\fP (\fBfitsheader\fP *theheader)"
+.br
+.ti -1c
+.RI "int \fBwritefitsheader\fP (\fBfitsheader\fP *theheader)"
+.br
+.ti -1c
+.RI "int \fBwritefitstail\fP (\fBfitsheader\fP *theheader)"
+.br
+.ti -1c
+.RI "int \fBcopycommenttostring\fP (\fBfitscomment\fP *thecomment, char *string)"
+.br
+.ti -1c
+.RI "\fBfitscomment\fP * \fBnewtextcomment\fP (char *name, char *\fBval\fP, char *\fBcomment\fP)"
+.br
+.ti -1c
+.RI "\fBfitscomment\fP * \fBnewnumericcomment\fP (char *name, double value, char *\fBcomment\fP)"
+.br
+.ti -1c
+.RI "\fBfitscomment\fP * \fBgetcommentbyname\fP (char *name, \fBfitsheader\fP *theheader)"
+.br
+.ti -1c
+.RI "double \fBgetnumericvalue\fP (\fBfitscomment\fP *thecomment)"
+.br
+.ti -1c
+.RI "char * \fBgettextvalue\fP (\fBfitscomment\fP *thecomment)"
+.br
+.ti -1c
+.RI "void \fBreadfitsline\fP (void *f, \fBfitsheader\fP *theheader)"
+.br
+.ti -1c
+.RI "void \fBwritefitsline\fP (void *f, \fBfitsheader\fP *theheader)"
+.br
+.ti -1c
+.RI "void \fBreadfitsplane\fP (void **f, \fBfitsheader\fP *theheader)"
+.br
+.ti -1c
+.RI "void \fBwritefitsplane\fP (void **f, \fBfitsheader\fP *theheader)"
+.br
+.ti -1c
+.RI "void \fBreadfitscube\fP (void ***f, \fBfitsheader\fP *theheader)"
+.br
+.ti -1c
+.RI "void \fBwritefitscube\fP (void ***f, \fBfitsheader\fP *theheader)"
+.br
+.ti -1c
+.RI "void \fBremovecomment\fP (\fBfitscomment\fP *thecomment, \fBfitsheader\fP *fitshead)"
+.br
+.ti -1c
+.RI "void \fBremovenamedcomments\fP (char *name, \fBfitsheader\fP *fitshead)"
+.br
+.ti -1c
+.RI "int \fBpixsize\fP (int pixtype)"
+.br
+.ti -1c
+.RI "int \fBread2Dfloatimage\fP (float ***f, int *\fBN1\fP, int *\fBN2\fP, \fBfitsheader\fP **\fBfits\fP, FILE *stream)"
+.br
+.ti -1c
+.RI "int \fBread2Dfloatimage_shm\fP (float ***f, int *\fBN1\fP, int *\fBN2\fP, \fBfitsheader\fP **\fBfits\fP, FILE *stream)"
+.br
+.ti -1c
+.RI "int \fBwrite2Dfloatimage\fP (float **f, \fBfitsheader\fP *\fBfits\fP)"
+.br
+.ti -1c
+.RI "\fBfitsheader\fP * \fBnewfitsheader\fP (int \fBndim\fP, int *\fBdim\fP, int extpixtype)"
+.br
+.ti -1c
+.RI "\fBfitsheader\fP * \fBnew2Dfitsheader\fP (int \fBN1\fP, int \fBN2\fP, int extpixtype)"
+.br
+.ti -1c
+.RI "void \fBargsToString\fP (int argc, char **argv, char *string)"
+.br
+.ti -1c
+.RI "void \fBadd_comment\fP (int argc, char **argv, \fBfitsheader\fP *fitshead)"
+.br
+.ti -1c
+.RI "void \fBappendcomment\fP (\fBfitscomment\fP *newcomment, \fBfitsheader\fP *fitshead)"
+.br
+.ti -1c
+.RI "void \fBprependcomment\fP (\fBfitscomment\fP *newcomment, \fBfitsheader\fP *fitshead)"
+.br
+.ti -1c
+.RI "void \fBsetextpixtype\fP (\fBfitsheader\fP *\fBfits\fP, int pixtype)"
+.br
+.ti -1c
+.RI "void \fBset2Dimagesize\fP (\fBfitsheader\fP *\fBfits\fP, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "int \fBskiplines\fP (\fBfitsheader\fP *\fBfits\fP, int \fBnlines\fP)"
+.br
+.ti -1c
+.RI "int \fBupdatelinebuffer\fP (\fBfitsheader\fP *theheader)"
+.br
+.ti -1c
+.RI "int \fBbyteswapline\fP (void *\fBdata\fP, int nel, int pixsize)"
+.br
+.ti -1c
+.RI "int \fBconvertmagictonans\fP (void *\fBdata\fP, int nel, int pixsize)"
+.br
+.ti -1c
+.RI "int \fBconvertnanstomagic\fP (void *\fBdata\fP, int nel, int pixsize)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define BIG_ENDIAN_BYTE_ORDER   0"
+.PP
+Definition at line 30 of file fits.h.
+.PP
+Referenced by main(), readfitsheader(), and writefitsheader().
+.SS "#define COM_LENGTH   80"
+.PP
+Definition at line 9 of file fits.h.
+.PP
+Referenced by add_1comment(), add_comment(), addheadervalue(), argsToString(), copycommenttostring(), main(), read_fits_head(), read_fits_head_ND(), readfitsheader(), write_fits_head(), write_fits_head_ND(), and writefitsheader().
+.SS "#define COM_LENGTH1   81"
+.PP
+Definition at line 10 of file fits.h.
+.PP
+Referenced by add_comment(), copycommenttostring(), main(), and writefitsheader().
+.SS "#define DBL_MAGIC   (-((double) 0x80000000) * ((double) 0x80000000))"
+.PP
+Definition at line 28 of file fits.h.
+.PP
+Referenced by convertarray(), convertmagictonans(), and convertnanstomagic().
+.SS "#define DBL_PIXTYPE   -64"
+.PP
+Definition at line 22 of file fits.h.
+.PP
+Referenced by addtofitsarray(), convertarray(), fread_fits_line(), main(), pixsize(), read_fits_head(), read_fits_head_ND(), readfitsheader(), readfitsline(), set_input_pixtype(), set_output_pixtype(), writefitsheader(), writefitsline(), and writefitstail().
+.SS "#define FITS_REC_SIZE   2880"
+.PP
+Definition at line 16 of file fits.h.
+.PP
+Referenced by readfitsheader(), and writefitsheader().
+.SS "#define FLOAT_MAGIC   (-((float)  0x80000000) * ((float)  0x80000000))"
+.PP
+Definition at line 27 of file fits.h.
+.PP
+Referenced by accumulate(), addarea(), avgpixstack(), avsigclip(), avsigclip2(), block_filter(), convertarray(), convertmagictonans(), convertnanstomagic(), fixedges(), fixholes(), fixpix(), getpixcoords(), getsigma(), iis_display(), iisdisplay(), invdeflection(), magicinit(), main(), makecarray(), project(), scrunch_stream(), setv(), smprofile(), and substitute().
+.SS "#define FLOAT_PIXTYPE   -32"
+.PP
+Definition at line 21 of file fits.h.
+.PP
+Referenced by addtofitsarray(), convertarray(), display(), fread_fits_line(), fwrite_fits(), fwrite_fits_line(), main(), newfitsheader(), pixsize(), read_fits_head(), read_fits_head_ND(), readfitsheader(), readfitsline(), set_input_pixtype(), set_output_pixtype(), smcontour(), write_fits_tail(), write_fits_tail_ND(), writefitsheader(), writefitsline(), and writefitstail().
+.SS "#define INT_MAGIC   INT_MIN"
+.PP
+Definition at line 26 of file fits.h.
+.PP
+Referenced by convertarray().
+.SS "#define INT_PIXTYPE   32"
+.PP
+Definition at line 20 of file fits.h.
+.PP
+Referenced by addtofitsarray(), convertarray(), fread_fits_line(), fwrite_fits(), fwrite_fits_line(), main(), pixsize(), read_fits_head(), read_fits_head_ND(), readfitsheader(), set_input_pixtype(), set_output_pixtype(), write_fits_tail(), write_fits_tail_ND(), and writefitstail().
+.SS "#define LITTLE_ENDIAN_BYTE_ORDER   1"
+.PP
+Definition at line 31 of file fits.h.
+.PP
+Referenced by readfitsheader().
+.SS "#define MAX_FITS_DIM   7"
+.PP
+Definition at line 8 of file fits.h.
+.PP
+Referenced by main(), and readfitsheader().
+.SS "#define NAME_LENGTH   8"
+.PP
+Definition at line 11 of file fits.h.
+.PP
+Referenced by getcommentbyname(), newnumericcomment(), newtextcomment(), readdataheader(), and readfitsheader().
+.SS "#define NAME_LENGTH1   9"
+.PP
+Definition at line 12 of file fits.h.
+.PP
+Referenced by getcommentbyname().
+.SS "#define NATIVE_BYTE_ORDER   BIG_ENDIAN_BYTE_ORDER"
+.PP
+Definition at line 36 of file fits.h.
+.PP
+Referenced by main(), newfitsheader(), readfitsheader(), readfitsline(), and writefitsline().
+.SS "#define NON_NATIVE_BYTE_ORDER   LITTLE_ENDIAN_BYTE_ORDER"
+.PP
+Definition at line 37 of file fits.h.
+.PP
+Referenced by newfitsheader(), readfitsheader(), readfitsline(), and writefitsline().
+.SS "#define SHORT_MAGIC   SHRT_MIN"
+.PP
+Definition at line 25 of file fits.h.
+.PP
+Referenced by block_filter(), convertarray(), kernel_filter(), and main().
+.SS "#define SHORT_PIXTYPE   16"
+.PP
+Definition at line 19 of file fits.h.
+.PP
+Referenced by addtofitsarray(), convertarray(), doplot(), fread_fits_line(), fwrite_fits(), fwrite_fits_line(), main(), pixsize(), read_fits_head(), read_fits_head_ND(), readdataheader(), readfitsheader(), set_input_pixtype(), set_output_pixtype(), write_fits_tail(), write_fits_tail_ND(), and writefitstail().
+.SS "#define UCHAR_MAGIC   UCHAR_MAX"
+.PP
+Definition at line 24 of file fits.h.
+.PP
+Referenced by convertarray().
+.SS "#define UCHAR_PIXTYPE   8"
+.PP
+Definition at line 18 of file fits.h.
+.PP
+Referenced by addtofitsarray(), convertarray(), main(), pixsize(), readfitsheader(), and writefitstail().
+.SS "#define VALUE_LENGTH   70"
+.PP
+Definition at line 13 of file fits.h.
+.PP
+Referenced by gettextvalue(), readdataheader(), and readfitsheader().
+.SS "#define VALUE_LENGTH1   71"
+.PP
+Definition at line 14 of file fits.h.
+.PP
+Referenced by gettextvalue().
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBfitscomment\fP  \fBfitscomment\fP"
+.PP
+.SS "typedef struct \fBfitsheader\fP  \fBfitsheader\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "void add_comment (int argc, char ** argv, \fBfitsheader\fP * fitshead)"
+.PP
+Definition at line 772 of file fits.c.
+.PP
+References appendcomment(), argsToString(), COM_LENGTH1, and newtextcomment().
+.SS "void appendcomment (\fBfitscomment\fP * newcomment, \fBfitsheader\fP * fitshead)"
+.PP
+Definition at line 783 of file fits.c.
+.PP
+References fitsheader::basecomment, and fitscomment::next.
+.PP
+Referenced by add_comment(), doplot(), and main().
+.SS "void argsToString (int argc, char ** argv, char * string)"
+.PP
+Definition at line 750 of file fits.c.
+.PP
+References COM_LENGTH, i, j, len, and pos.
+.PP
+Referenced by add_comment(), and main().
+.SS "int byteswapline (void * data, int nel, int pixsize)"
+.PP
+Definition at line 858 of file fits.c.
+.PP
+References b, i, and pixsize().
+.PP
+Referenced by main(), readfitsline(), and writefitsline().
+.SS "int convertmagictonans (void * data, int nel, int pixsize)"
+.PP
+Definition at line 878 of file fits.c.
+.PP
+References _Dconst, _DNAN, DBL_MAGIC, error_exit, FLOAT_MAGIC, i, INIT, and pixsize().
+.PP
+Referenced by writefitsline().
+.SS "int convertnanstomagic (void * data, int nel, int pixsize)"
+.PP
+Definition at line 905 of file fits.c.
+.PP
+References _Dconst, _DNAN, DBL_MAGIC, error_exit, FLOAT_MAGIC, i, INIT, and pixsize().
+.PP
+Referenced by readfitsline().
+.SS "int copycommenttostring (\fBfitscomment\fP * thecomment, char * string)"
+.PP
+Definition at line 421 of file fits.c.
+.PP
+References COM_LENGTH, COM_LENGTH1, fitscomment::name, and fitscomment::value.
+.PP
+Referenced by writefitsheader().
+.SS "\fBfitsheader\fP* copyfitsheader (\fBfitsheader\fP * theheader)"
+.PP
+Definition at line 261 of file fits.c.
+.PP
+References fitsheader::basecomment, fitscomment::next, and fitscomment::prev.
+.PP
+Referenced by main().
+.SS "\fBfitscomment\fP* getcommentbyname (char * name, \fBfitsheader\fP * theheader)"
+.PP
+Definition at line 474 of file fits.c.
+.PP
+References fitsheader::basecomment, error_exit, fitscomment::name, NAME_LENGTH, NAME_LENGTH1, and fitscomment::next.
+.PP
+Referenced by main(), readfitsheader(), readimheader(), and removenamedcomments().
+.SS "double getnumericvalue (\fBfitscomment\fP * thecomment)"
+.PP
+Definition at line 494 of file fits.c.
+.PP
+References error_exit, val, and fitscomment::value.
+.PP
+Referenced by main(), readfitsheader(), and readimheader().
+.SS "char* gettextvalue (\fBfitscomment\fP * thecomment)"
+.PP
+Definition at line 505 of file fits.c.
+.PP
+References pos, val, fitscomment::value, VALUE_LENGTH, and VALUE_LENGTH1.
+.PP
+Referenced by main(), and readfitsheader().
+.SS "\fBfitsheader\fP* new2Dfitsheader (int N1, int N2, int extpixtype)"
+.PP
+Definition at line 740 of file fits.c.
+.PP
+References N1, N2, and newfitsheader().
+.PP
+Referenced by display(), doplot(), main(), and smcontour().
+.SS "\fBfitsheader\fP* newfitsheader (int ndim, int * dim, int extpixtype)"
+.PP
+Definition at line 713 of file fits.c.
+.PP
+References fitsheader::bscaling, fitsheader::convertnans, fitsheader::extpixtype, fits, FLOAT_PIXTYPE, fitsheader::intpixtype, fitsheader::ipstream, fitsheader::n, NATIVE_BYTE_ORDER, fitsheader::ndim, NON_NATIVE_BYTE_ORDER, fitsheader::opbyteorder, and fitsheader::opstream.
+.PP
+Referenced by main(), and new2Dfitsheader().
+.SS "\fBfitscomment\fP* newnumericcomment (char * name, double value, char * comment)"
+.PP
+Definition at line 452 of file fits.c.
+.PP
+References comment, error_exit, fitscomment::name, NAME_LENGTH, and fitscomment::value.
+.PP
+Referenced by main(), and writefitsheader().
+.SS "\fBfitscomment\fP* newtextcomment (char * name, char * val, char * comment)"
+.PP
+Definition at line 431 of file fits.c.
+.PP
+References comment, error_exit, fitscomment::name, NAME_LENGTH, and fitscomment::value.
+.PP
+Referenced by add_comment(), doplot(), main(), and writefitsheader().
+.SS "int pixsize (int pixtype)"
+.PP
+Definition at line 651 of file fits.c.
+.PP
+References DBL_PIXTYPE, error_exit, FLOAT_PIXTYPE, INT_PIXTYPE, SHORT_PIXTYPE, and UCHAR_PIXTYPE.
+.PP
+Referenced by allocfitsarray(), byteswapline(), convertmagictonans(), convertnanstomagic(), main(), readfitsline(), skiplines(), updatelinebuffer(), and writefitsline().
+.SS "void prependcomment (\fBfitscomment\fP * newcomment, \fBfitsheader\fP * fitshead)"
+.PP
+Definition at line 799 of file fits.c.
+.PP
+References fitsheader::basecomment, fitscomment::next, and fitscomment::prev.
+.PP
+Referenced by main().
+.SS "int read2Dfloatimage (float *** f, int * N1, int * N2, \fBfitsheader\fP ** fits, FILE * stream)"
+.PP
+Definition at line 677 of file fits.c.
+.PP
+References allocFloatArray(), error_exit, f, fits, N1, N2, readfitsheader(), readfitsline(), and y.
+.PP
+Referenced by main().
+.SS "int read2Dfloatimage_shm (float *** f, int * N1, int * N2, \fBfitsheader\fP ** fits, FILE * stream)"
+.PP
+Definition at line 693 of file fits.c.
+.PP
+References error_exit.
+.PP
+Referenced by main().
+.SS "void readfitscube (void *** f, \fBfitsheader\fP * theheader)"
+.PP
+Definition at line 598 of file fits.c.
+.PP
+References f, i, fitsheader::n, and readfitsplane().
+.SS "\fBfitsheader\fP* readfitsheader (FILE * stream)"
+.PP
+Definition at line 26 of file fits.c.
+.PP
+References fitsheader::basecomment, BIG_ENDIAN_BYTE_ORDER, fitsheader::bscale, fitsheader::bscaling, fitsheader::bzero, COM_LENGTH, fitsheader::convertnans, DBL_PIXTYPE, error_exit, fitsheader::extpixtype, FITS_REC_SIZE, FLOAT_PIXTYPE, fitsheader::gcount, getcommentbyname(), getnumericvalue(), gettextvalue(), fitsheader::hasextensions, INT_PIXTYPE, fitsheader::intpixtype, fitsheader::ipbyteorder, fitsheader::ipstream, fitsheader::isextension, line, LITTLE_ENDIAN_BYTE_ORDER, MAX_FITS_DIM, fitsheader::n, fitscomment::name, NAME_LENGTH, NATIVE_BYTE_ORDER, fitsheader::ndim, line::next, fitscomment::next, fitsheader::nextensions, NON_NATIVE_BYTE_ORDER, fitsheader::opbyteorder, fitsheader::opstream, fitsheader::pcount, fitscomment::prev, removecomment(), SHORT_PIXTYPE, UCHAR_PIXTYPE, fitscomment::value, and VALUE_LENGTH.
+.PP
+Referenced by main(), openfits(), read2Dfloatimage(), readdataheader(), readimheader(), and start_command().
+.SS "void readfitsline (void * f, \fBfitsheader\fP * theheader)"
+.PP
+Definition at line 524 of file fits.c.
+.PP
+References fitsheader::bscale, fitsheader::bscaling, byteswapline(), fitsheader::bzero, convertarray(), fitsheader::convertnans, convertnanstomagic(), DBL_PIXTYPE, fitsheader::extpixtype, f, FLOAT_PIXTYPE, fitsheader::intpixtype, fitsheader::ipbyteorder, fitsheader::ipstream, fitsheader::linebuffer, fitsheader::n, N1, NATIVE_BYTE_ORDER, NON_NATIVE_BYTE_ORDER, pixsize(), and updatelinebuffer().
+.PP
+Referenced by contourplot(), main(), makecarray(), read2Dfloatimage(), readdata(), readfitsplane(), scrunch_stream(), and writeimage().
+.SS "void readfitsplane (void ** f, \fBfitsheader\fP * theheader)"
+.PP
+Definition at line 580 of file fits.c.
+.PP
+References f, i, fitsheader::n, and readfitsline().
+.PP
+Referenced by fill_pixmap(), main(), readfitscube(), ReadNewFrame(), and surfaceplot().
+.SS "void removecomment (\fBfitscomment\fP * thecomment, \fBfitsheader\fP * fitshead)"
+.PP
+Definition at line 616 of file fits.c.
+.PP
+References fitsheader::basecomment, fitscomment::next, and fitscomment::prev.
+.PP
+Referenced by readfitsheader(), and removenamedcomments().
+.SS "void removenamedcomments (char * name, \fBfitsheader\fP * fitshead)"
+.PP
+Definition at line 641 of file fits.c.
+.PP
+References getcommentbyname(), and removecomment().
+.PP
+Referenced by main().
+.SS "void set2Dimagesize (\fBfitsheader\fP * fits, int N1, int N2)"
+.PP
+Definition at line 816 of file fits.c.
+.PP
+References fits, fitsheader::linebuffer, fitsheader::n, N1, N2, and fitsheader::ndim.
+.PP
+Referenced by main().
+.SS "void setextpixtype (\fBfitsheader\fP * fits, int pixtype)"
+.PP
+Definition at line 809 of file fits.c.
+.PP
+References fitsheader::extpixtype, fits, and fitsheader::linebuffer.
+.PP
+Referenced by main().
+.SS "int skiplines (\fBfitsheader\fP * fits, int nlines)"
+.PP
+Definition at line 825 of file fits.c.
+.PP
+References fitsheader::extpixtype, fits, fstat, fitsheader::ipstream, fitsheader::linebuffer, fitsheader::n, pixsize(), st, and updatelinebuffer().
+.PP
+Referenced by main().
+.SS "int updatelinebuffer (\fBfitsheader\fP * theheader)"
+.PP
+Definition at line 843 of file fits.c.
+.PP
+References fitsheader::extpixtype, free(), fitsheader::linebuffer, fitsheader::linebuffersize, fitsheader::n, N1, and pixsize().
+.PP
+Referenced by readfitsline(), skiplines(), and writefitsline().
+.SS "int write2Dfloatimage (float ** f, \fBfitsheader\fP * fits)"
+.PP
+Definition at line 698 of file fits.c.
+.PP
+References error_exit, f, fits, fitsheader::n, fitsheader::ndim, writefitsheader(), writefitsline(), writefitstail(), and y.
+.PP
+Referenced by display(), main(), and smcontour().
+.SS "void writefitscube (void *** f, \fBfitsheader\fP * theheader)"
+.PP
+Definition at line 607 of file fits.c.
+.PP
+References f, i, fitsheader::n, and writefitsplane().
+.PP
+Referenced by main().
+.SS "int writefitsheader (\fBfitsheader\fP * theheader)"
+.PP
+Definition at line 290 of file fits.c.
+.PP
+References fitsheader::basecomment, BIG_ENDIAN_BYTE_ORDER, fitsheader::bscale, fitsheader::bscaling, fitsheader::bzero, COM_LENGTH, COM_LENGTH1, copycommenttostring(), DBL_PIXTYPE, error_exit, fitsheader::extpixtype, FITS_REC_SIZE, FLOAT_PIXTYPE, fitsheader::hasextensions, fitsheader::isextension, line, fitsheader::n, fitsheader::ndim, newnumericcomment(), newtextcomment(), fitscomment::next, fitsheader::nextensions, fitsheader::opbyteorder, and fitsheader::opstream.
+.PP
+Referenced by doplot(), main(), and write2Dfloatimage().
+.SS "void writefitsline (void * f, \fBfitsheader\fP * theheader)"
+.PP
+Definition at line 550 of file fits.c.
+.PP
+References fitsheader::bscale, fitsheader::bscaling, byteswapline(), fitsheader::bzero, convertarray(), convertmagictonans(), fitsheader::convertnans, DBL_PIXTYPE, fitsheader::extpixtype, f, FLOAT_PIXTYPE, fitsheader::intpixtype, fitsheader::linebuffer, fitsheader::n, N1, NATIVE_BYTE_ORDER, NON_NATIVE_BYTE_ORDER, fitsheader::opbyteorder, fitsheader::opstream, pixsize(), and updatelinebuffer().
+.PP
+Referenced by doplot(), main(), scrunch_stream(), write2Dfloatimage(), writefitsarray(), and writefitsplane().
+.SS "void writefitsplane (void ** f, \fBfitsheader\fP * theheader)"
+.PP
+Definition at line 589 of file fits.c.
+.PP
+References f, i, fitsheader::n, and writefitsline().
+.PP
+Referenced by main(), outputframe(), and writefitscube().
+.SS "int writefitstail (\fBfitsheader\fP * theheader)"
+.PP
+Definition at line 381 of file fits.c.
+.PP
+References DBL_PIXTYPE, error_exit, fitsheader::extpixtype, FLOAT_PIXTYPE, i, INT_PIXTYPE, length(), fitsheader::n, fitsheader::ndim, fitsheader::opstream, SHORT_PIXTYPE, and UCHAR_PIXTYPE.
+.PP
+Referenced by doplot(), main(), and write2Dfloatimage().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

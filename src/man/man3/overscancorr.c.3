@@ -1,0 +1,58 @@
+.TH "overscancorr.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+overscancorr.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	overscancorr - dark subtraction using overscan region\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	overscancorr [\fBoptions\fP....] \\\fBn\fP\\		-x \fBxmin\fP \fBxmax\fP	# overscan region in x (2052,2086)\\\fBn\fP\\		-y \fBymin\fP \fBymax\fP	# overscan region in y (0,2047)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'overscancorr\\' corrects for the bias dc \fBlevel\fP. Reads the\\\fBn\fP\\	overscan region and \fBfits\fP \fBa\fP linear ramp model along the\\\fBn\fP\\	long (y) axis. The dc and gradient is subtracted from the\\\fBn\fP\\	image.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Gordon Squires\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 33 of file overscancorr.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	overscancorr - dark subtraction using overscan region\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	overscancorr [\fBoptions\fP....] \\\fBn\fP\\		-x \fBxmin\fP \fBxmax\fP	# overscan region in x (2052,2086)\\\fBn\fP\\		-y \fBymin\fP \fBymax\fP	# overscan region in y (0,2047)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'overscancorr\\' corrects for the bias dc \fBlevel\fP. Reads the\\\fBn\fP\\	overscan region and \fBfits\fP \fBa\fP linear ramp model along the\\\fBn\fP\\	long (y) axis. The dc and gradient is subtracted from the\\\fBn\fP\\	image.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Gordon Squires\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file overscancorr.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 35 of file overscancorr.c.
+.PP
+References add_comment(), b, b1, b2, error_exit, exit(), f, fits, i, IMAX, IMIN, j, m, MAGIC, N1, N2, read2Dfloatimage(), usage, and write2Dfloatimage().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,76 @@
+.TH "object" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+object \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <cat.h>\fP
+.PP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBcathead\fP * \fBcathead\fP"
+.br
+.ti -1c
+.RI "int \fBnitems\fP"
+.br
+.ti -1c
+.RI "void ** \fBaddrlist\fP"
+.br
+.ti -1c
+.RI "\fBobject\fP * \fBnext\fP"
+.br
+.ti -1c
+.RI "double \fBi\fP"
+.br
+.ti -1c
+.RI "double \fBj\fP"
+.br
+.ti -1c
+.RI "double \fBe\fP [1]"
+.br
+.in -1c
+.SH "Field Documentation"
+.PP 
+.SS "void** \fBobject::addrlist\fP"
+.PP
+Definition at line 74 of file cat.h.
+.PP
+Referenced by allocobjectcontents(), connectcatheadtoobject(), connectobjecttocathead(), dispose(), freeobject(), getaddress(), inheritcontents(), main(), newobject(), readlmodel(), readobject(), sep2(), setaddress(), and writeobject().
+.SS "\fBcathead\fP* \fBobject::cathead\fP"
+.PP
+Definition at line 72 of file cat.h.
+.PP
+Referenced by allocobjectcontents(), connectcatheadtoobject(), connectobjecttocathead(), dispose(), freeobject(), getnumericaddresses(), getobjectitemindex(), inheritcontents(), newobject(), readobject(), and writeobject().
+.SS "double \fBobject::e\fP[1]"
+.PP
+Definition at line 41 of file massmap_mp.c.
+.PP
+Referenced by do_object_stats(), and main().
+.SS "double \fBobject::i\fP"
+.PP
+Definition at line 41 of file massmap_mp.c.
+.PP
+Referenced by accumulate(), do_object_stats(), main(), and zap().
+.SS "double \fBobject::j\fP"
+.PP
+Definition at line 41 of file massmap_mp.c.
+.PP
+Referenced by accumulate(), do_object_stats(), main(), and zap().
+.SS "struct \fBobject\fP* \fBobject::next\fP"
+.PP
+Definition at line 75 of file cat.h.
+.PP
+Referenced by getobjects(), main(), and readlmodel().
+.SS "int \fBobject::nitems\fP"
+.PP
+Definition at line 73 of file cat.h.
+.PP
+Referenced by allocobjectcontents(), connectcatheadtoobject(), connectobjecttocathead(), dispose(), freeobject(), getaddress(), getobjectitemindex(), inheritcontents(), main(), newobject(), readobject(), setaddress(), and writeobject().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

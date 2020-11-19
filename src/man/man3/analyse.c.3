@@ -1,0 +1,216 @@
+.TH "analyse.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+analyse.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'fits.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+\fC#include 'arrays.h'\fP
+.br
+\fC#include 'stats_stuff.h'\fP
+.br
+\fC#include 'object_stuff.h'\fP
+.br
+\fC#include 'analyse.h'\fP
+.br
+\fC#include 'magic.h'\fP
+.br
+\fC#include 'catio.h'\fP
+.br
+\fC#include 'gaussfit/gaussfit.h'\fP
+.br
+\fC#include 'status.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		analyse	[option...] < input.cat > output.cat\\\fBn\fP\\			-\fBn\fP nu		# threshold nu (default -10.0)\\\fBn\fP\\			-\fBa\fP \fBa1\fP \fBa2\fP	# annulus for sky: \fBa1\fP < \fBr\fP <= \fBa2\fP, (default 16 32)\\\fBn\fP\\			-f		# \fBfit\fP objects to Gaussian ellipsoids\\\fBn\fP\\			-R r0		# gaussian window scale (3.0)\\\fBn\fP\\			-x \fBmul\fP		# gaussian window scale  = \fBmul\fP * \fBobj\fP->rg (1.0)\\\fBn\fP\\			-\fBe\fP \fBn\fP \fBrc\fP		# use W(\fBr\fP) = (\fBr\fP^2 + \fBrc\fP^2)^\fBn\fP/2 window (-2, 2)\\\fBn\fP\\			-s		# force recalculation of local sky params\\\fBn\fP\\			-\fBz\fP		# switch off local sky determination\\\fBn\fP\\			-\fBr\fP \fBalpha\fP	# aperture = \fBalpha\fP * r_petrosian (3.0)\\\fBn\fP\\			-\fBm\fP x \fBa\fP		# zap neighbouring images\\\fBn\fP\\			-S		# force recalculation of image \fBsigma\fP, \fBmode\fP\\\fBn\fP\\			-Q		# sky annulus matched to aperture\\\fBn\fP\\			-F deltam	# filter output to reject bad \fBrh\fP, \fBmag\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		\\'analyse\\' analyses images around \fBa\fP catalogue of objects\\\fBn\fP\\		created by (\fBh\fP)findpeaks. It determines \fBa\fP constant plus gradient model\\\fBn\fP\\		for the local sky parameters using NE, NW, SW, SE quadrants of\\\fBn\fP\\		an annulus (unless you tell it not to).\\\fBn\fP\\		Only uses objects with nu (determined by findpeaks) above threshold.\\\fBn\fP\\		-f to do gaussian ellipsoid \fBfit\fP.\\\fBn\fP\\		By default, moments etc are determined with gaussian window scale 3.0 pixels.\\\fBn\fP\\		-\fBe\fP to specify \fBa\fP softened power law window.\\\fBn\fP\\		-R option to change scale length.\\\fBn\fP\\		-x option to override this and set window scale for moments\\\fBn\fP\\		to be \fBmul\fP * \fBobj\fP.rg (rg as determined by hcat2cat)\\\fBn\fP\\		Use -ve \fBalpha\fP to use aperture = (-\fBalpha\fP) * \fBobj\fP->rg for photometry.\\\fBn\fP\\		Luminosities incorporate 1 / normfactor from \fBfits\fP header\\\fBn\fP\\		-\fBm\fP x \fBa\fP to zap disks \fBradius\fP \fBr\fP * r_x, where x = \\'g\\' or \\'n\\'\\n\\		(for r_numax), around neighbours\\\fBn\fP\\		-Q with -ve \fBalpha\fP to make reference annlus run from r_ap to 2 * r_ap\\\fBn\fP\\		With -F option, if total \fBmag\fP differs from hfindpeaks \fBmag\fP estimate by > deltam\\\fBn\fP\\		we ignore \fBrh\fP, total \fBmag\fP in favor of hfindpeaks values.\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBRMAX_MIN\fP   6"
+.br
+.ti -1c
+.RI "#define \fBG_RADIUS\fP   0"
+.br
+.ti -1c
+.RI "#define \fBN_RADIUS\fP   1"
+.br
+.ti -1c
+.RI "#define \fBZAP\fP   0"
+.br
+.ti -1c
+.RI "#define \fBRESTORE\fP   1"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "void \fBdosky\fP (float **f, int \fBN1\fP, int \fBN2\fP, int ip, int jp, int \fBa1\fP, int \fBa2\fP, skyquad *sky, float \fBfmode\fP, float \fBsigma\fP)"
+.br
+.ti -1c
+.RI "void \fBdo_object_stats\fP (\fBobject\fP *pk, float **f, int \fBN1\fP, int \fBN2\fP, float(*fsky)(int \fBi\fP, int \fBj\fP), float \fBsigma\fP, float ne, float \fBrc\fP, float \fBalpha\fP)"
+.br
+.ti -1c
+.RI "void \fBsetskyparameters\fP (skyquad *sky)"
+.br
+.ti -1c
+.RI "float \fBfsky\fP (int \fBdi\fP, int \fBdj\fP)"
+.br
+.ti -1c
+.RI "void \fBzap\fP (int zapmode, \fBobject\fP *\fBobj\fP, int radiustype, float \fBa\fP, float **f, float **fzap, short **nzap, int \fBN1\fP, int \fBN2\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float \fBff\fP"
+.br
+.ti -1c
+.RI "float \fBffi\fP"
+.br
+.ti -1c
+.RI "float \fBffj\fP"
+.br
+.ti -1c
+.RI "float \fBffmode\fP"
+.br
+.ti -1c
+.RI "int \fBfit\fP = 0"
+.br
+.ti -1c
+.RI "int \fBpowerlawwindow\fP"
+.br
+.ti -1c
+.RI "int \fBnosky\fP = 0"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define G_RADIUS   0"
+.PP
+Definition at line 106 of file analyse.c.
+.PP
+Referenced by main(), and zap().
+.SS "#define N_RADIUS   1"
+.PP
+Definition at line 107 of file analyse.c.
+.PP
+Referenced by main(), and zap().
+.SS "#define RESTORE   1"
+.PP
+Definition at line 110 of file analyse.c.
+.PP
+Referenced by main(), and zap().
+.SS "#define RMAX_MIN   6"
+.PP
+Definition at line 99 of file analyse.c.
+.PP
+Referenced by do_object_stats().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		analyse	[option...] < input.cat > output.cat\\\fBn\fP\\			-\fBn\fP nu		# threshold nu (default -10.0)\\\fBn\fP\\			-\fBa\fP \fBa1\fP \fBa2\fP	# annulus for sky: \fBa1\fP < \fBr\fP <= \fBa2\fP, (default 16 32)\\\fBn\fP\\			-f		# \fBfit\fP objects to Gaussian ellipsoids\\\fBn\fP\\			-R r0		# gaussian window scale (3.0)\\\fBn\fP\\			-x \fBmul\fP		# gaussian window scale  = \fBmul\fP * \fBobj\fP->rg (1.0)\\\fBn\fP\\			-\fBe\fP \fBn\fP \fBrc\fP		# use W(\fBr\fP) = (\fBr\fP^2 + \fBrc\fP^2)^\fBn\fP/2 window (-2, 2)\\\fBn\fP\\			-s		# force recalculation of local sky params\\\fBn\fP\\			-\fBz\fP		# switch off local sky determination\\\fBn\fP\\			-\fBr\fP \fBalpha\fP	# aperture = \fBalpha\fP * r_petrosian (3.0)\\\fBn\fP\\			-\fBm\fP x \fBa\fP		# zap neighbouring images\\\fBn\fP\\			-S		# force recalculation of image \fBsigma\fP, \fBmode\fP\\\fBn\fP\\			-Q		# sky annulus matched to aperture\\\fBn\fP\\			-F deltam	# filter output to reject bad \fBrh\fP, \fBmag\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		\\'analyse\\' analyses images around \fBa\fP catalogue of objects\\\fBn\fP\\		created by (\fBh\fP)findpeaks. It determines \fBa\fP constant plus gradient model\\\fBn\fP\\		for the local sky parameters using NE, NW, SW, SE quadrants of\\\fBn\fP\\		an annulus (unless you tell it not to).\\\fBn\fP\\		Only uses objects with nu (determined by findpeaks) above threshold.\\\fBn\fP\\		-f to do gaussian ellipsoid \fBfit\fP.\\\fBn\fP\\		By default, moments etc are determined with gaussian window scale 3.0 pixels.\\\fBn\fP\\		-\fBe\fP to specify \fBa\fP softened power law window.\\\fBn\fP\\		-R option to change scale length.\\\fBn\fP\\		-x option to override this and set window scale for moments\\\fBn\fP\\		to be \fBmul\fP * \fBobj\fP.rg (rg as determined by hcat2cat)\\\fBn\fP\\		Use -ve \fBalpha\fP to use aperture = (-\fBalpha\fP) * \fBobj\fP->rg for photometry.\\\fBn\fP\\		Luminosities incorporate 1 / normfactor from \fBfits\fP header\\\fBn\fP\\		-\fBm\fP x \fBa\fP to zap disks \fBradius\fP \fBr\fP * r_x, where x = \\'g\\' or \\'n\\'\\n\\		(for r_numax), around neighbours\\\fBn\fP\\		-Q with -ve \fBalpha\fP to make reference annlus run from r_ap to 2 * r_ap\\\fBn\fP\\		With -F option, if total \fBmag\fP differs from hfindpeaks \fBmag\fP estimate by > deltam\\\fBn\fP\\		we ignore \fBrh\fP, total \fBmag\fP in favor of hfindpeaks values.\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file analyse.c.
+.SS "#define ZAP   0"
+.PP
+Definition at line 109 of file analyse.c.
+.PP
+Referenced by main(), and zap().
+.SH "Function Documentation"
+.PP 
+.SS "void do_object_stats (\fBobject\fP * pk, float ** f, int N1, int N2, float(* fsky)(int \fBi\fP, int \fBj\fP), float sigma, float ne, float rc, float alpha)"
+.PP
+Definition at line 424 of file analyse.c.
+.PP
+References a, alpha, b, d, di, dj, dx, dy, object::e, f, fit, fsky(), gaussfit(), GC_MAX, i, object::i, j, object::j, MAGIC, N1, N2, ne, phi, PI, powerlawwindow, r, RMAX_MIN, sigma, and W.
+.PP
+Referenced by main().
+.SS "void dosky (float ** f, int N1, int N2, int ip, int jp, int a1, int a2, skyquad * sky, float fmode, float sigma)"
+.PP
+calculates occupation and mode for NSEW sectors; Definition at line 324 of file analyse.c.
+.PP
+References a1, a2, error_exit, f, free(), i, j, liststats(), m, MAGIC, median(), N1, N2, and PI.
+.PP
+Referenced by main().
+.SS "float fsky (int di, int dj)"
+.PP
+Definition at line 629 of file analyse.c.
+.PP
+References di, dj, ff, ffi, ffj, ffmode, and nosky.
+.PP
+Referenced by do_object_stats(), and main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 112 of file analyse.c.
+.PP
+References a1, a2, allocFloatArray(), allocShortArray(), alpha, deltam(), do_object_stats(), dosky(), error_exit, exit(), f, fdo_stats(), ffmode, fit, fstatsrec::fmode, fread_fits(), fsky(), G_RADIUS, object::i, i, object::j, j, N1, N2, N_RADIUS, ne, nosky, powerlawwindow, RESTORE, RFACTOR, set_fits_ipf(), setskyparameters(), fstatsrec::sigma, usage, write_object(), ZAP, and zap().
+.SS "void setskyparameters (skyquad * sky)"
+.PP
+Definition at line 622 of file analyse.c.
+.PP
+References ff, ffi, and ffj.
+.PP
+Referenced by main().
+.SS "void zap (int zapmode, \fBobject\fP * obj, int radiustype, float a, float ** f, float ** fzap, short ** nzap, int N1, int N2)"
+.PP
+Definition at line 640 of file analyse.c.
+.SH "Variable Documentation"
+.PP 
+.SS "float \fBff\fP"
+.PP
+Definition at line 101 of file analyse.c.
+.PP
+Referenced by apphot(), contourplot(), doplot(), findpeak(), fsky(), gaussfit(), gaussfitn(), getsky(), iisdisplay(), main(), makemodel(), project(), rpetrosian(), and setskyparameters().
+.SS "float \fBffi\fP"
+.PP
+Definition at line 101 of file analyse.c.
+.PP
+Referenced by fsky(), and setskyparameters().
+.SS "float \fBffj\fP"
+.PP
+Definition at line 101 of file analyse.c.
+.PP
+Referenced by fsky(), and setskyparameters().
+.SS "float \fBffmode\fP"
+.PP
+Definition at line 101 of file analyse.c.
+.PP
+Referenced by fsky(), and main().
+.SS "int \fBfit\fP = 0"
+.PP
+Definition at line 102 of file analyse.c.
+.PP
+Referenced by do_object_stats(), and main().
+.SS "int \fBnosky\fP = 0"
+.PP
+Definition at line 104 of file analyse.c.
+.PP
+Referenced by fsky(), and main().
+.SS "int \fBpowerlawwindow\fP"
+.PP
+Definition at line 103 of file analyse.c.
+.PP
+Referenced by do_object_stats(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

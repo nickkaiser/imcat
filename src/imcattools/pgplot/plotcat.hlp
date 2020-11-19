@@ -1,0 +1,171 @@
+
+NAME
+		plotcat --- make 2-d scatter plot from a catalogue
+
+SYNOPSIS
+		plotcat [coords] [other options....]
+			-t		# read table of numbers
+			-s sym		# set symbol from object value 'sym'
+		        -c shade	# set fill shade from object value 'shade'
+			-r rname	# use scalar 'rname' for radius
+			-e ename	# use 2-vector 'ename' for ellipticity
+			-V vname	# use 2-vector 'vname' for a line-vector
+			-d device	# pgplot style device ('/xserve')
+			-T title	# text for title
+			-l xlab ylab	# labels for axes
+			-w lwidth	# line width (1)
+			-H charheight	# character height (1)
+			-x x1 x2 y1 y2	# left, right, bottom and top coords
+			-X X1 X2 Y1 Y2	# limits for tickmarks if different from above
+			-j just		# pgenv 'justification' value (1)
+			-A aspectratio	# aspect ratio for plot
+			-a axis		# pgenv 'axis' value (0)
+			-o		# draw filled circles, ellipses with outline
+			-f fillshade	# fill circles, ellipses with fillshade
+			-v rfrac	# set default radius = rfrac * |x2 - x1| (0.01)
+			-y defsym	# set default symbol
+			-R		# edit cat: reject mode
+			-S		# edit cat: select mode
+			-M		# edit cat: generate mask file
+			-F fitsf cmap	# background image
+			-m maskfile	# plot boxes from a mask file
+			-C nc		# plot contours over background image
+			-L x y text	# add a label
+			-K x y text col	# add a coloured label
+			-W		# draw wedge (with -F option)
+			-h		# plot histogram
+			-E		# plot vertical error bars
+			-Q linestyle	# connect the points
+
+DESCRIPTION
+		"plotcat" reads a catalogue (or table of numbers with
+		-t option) from stdin and produces a scatter plot of markers,
+		circles, ellipses etc using pgplot routines.
+		By default, 'plotcat' expects to find a 2-vector 'x'
+		in the catalogue which it uses as the spatial coords, but
+		you can supply alternatives with the 'coords' option.
+		The range of spatial coords can be specified with -x option,
+		otherwise they are calculated from input data.
+		By default, it produces output in an X-window on
+		the screen, but use -d option to specify alternative.
+
+		The variables to be used for the spatial position, symbol,
+		colour, circle size, ellipse parameters etc, are specified
+		as the 'coords' argument(s) and following the -r, -s... options.
+		Each of these must be a legal 'lc' variable name which
+		will cause 'lc' to generate an appropriate number of
+		numeric variables. So, to plot radius 'rh' vs magnitude 'mag'
+		from catalogue 'my.cat' say, do
+
+			plotcat rh mag < my.cat
+
+		or to use the ellipticity values 'e[0]', 'e[1]' do
+
+			plotcat e < my.cat
+
+		or something more fancy like
+
+			plotcat 'x = %x 100 200 2 vector vsub' < my.cat
+
+		to shift the coords by (dy,dy) = (100,200).
+
+		Use the -c option to set the greyness of the symbol.
+		If the shade value is negative we plot the point in
+		the color with index =  - (int) shade. 
+
+		Warning: each variable must have a distinct name.  Thus, if
+		you have a catalogue containing a single position vector x[],
+		and you want say to plot an ellipse with e = x at each
+		point then you cannot do
+
+			plotcat -e x < my.cat
+
+		instead, you should generate a new variable explicitly, as e.g.
+
+			plotcat -e 'e = %x'
+
+		For ellipses, the position angle of the ellipse is
+
+			phi = atan2(e1, e0) / 2
+
+		and the major and minor axes are
+
+			a = r (1 + e)
+
+			b = r (1 - e)
+
+		where e = sqrt(e0^2 + e1^2), so the 'ellipticity' is
+		really the 'distortion' since e = (1 - b/a) / (1 + b/a).
+
+		The -V option allows you to draw a line vector and
+		the default symbol at each point.  This cannot be used with -e option.
+
+		The default symbol is a small circle (symbol # 22) if
+		npts < 1000, otherwise the default is the smallest dot.
+		Some other useful symbols are
+
+			48 + i		# the integer i
+			65 - 90		# A-Z
+			97 - 122	# a-z   
+
+		The -R and -S options allow you to select a subset of
+		points from a catalogue (which will be sent to stdout)
+		using the mouse to create a set of rectangles.
+		Click left button to start a 'rubber band' rectangle and
+		click it again to enter it into rectangle list (use
+		either centre or right button to ignore this rectangle).
+		Clicking right button within a rectangle will remove it
+		from the list and click right button outside of all
+		rectangles to perform the edit and exit. 
+		The -R and -S options do not function properly if
+		you construct the plotted variables as rpn expressions
+		on the command line.  Instead, you should use "lc" to
+		generate the variables and then pipe the result to plotcat.
+		With -M option a mask file containing coordinates
+		of lower left (x1,y1) and upper right (x2,y2) corners
+		of the rectangles is sent to stdout.
+
+		Use -F option to supply a fits file for a background
+		image.  Use cmap = -1 for a gray scale or 0, 1, or 2 for
+		a variety of pretty color maps. Use -C to plot nc contours on top.
+
+		Use the -a option to control the drawing of axes and
+		tickmarks etc.  Generally speaking this is passed to
+		pgbox as the AXIS variable.  Some options are.
+			-a -2	# no box or tickmarks
+			-a -1	# box with no ticks or numbers
+			-a 0	# draw box with annotated ticks
+			-a 1	# as 0, but draw x=0, y=0 axes too
+			-a 2	# as 1, but draw drid too
+			-a 10	# x-axis is logarithmic
+			-a 20	# y-axis is logarithic
+			-a 30	# both axes are logarithmic
+			-a 40	# annotate with h/d:m:s with x,y in seconds
+			-a 42	# as 40, but with grid
+			-a 43	# x in h/d:m:s, y normal
+			-a 44	# y in h/d:m:s, x normal
+
+		Use -h option to plot a histogram.  Cannot be used with e.g.
+		symbol, errobars, ellipses etc.
+
+		Use -E erry to plot vertical errorbars.  The two-vector erry
+		must contain the y-coordinates of the top and bottom of the
+		error bar (in no particular order).
+
+		Use '-Q linestyle' to connect the points with line:
+			1	# solid
+			2	# dash
+			3	# dot-dash
+			4	# dotted
+			5 	# dot-dot-dot-dash   
+
+		Plotcat creates some temporary files, which it will remove
+		on graceful termination.  By default these go in the
+		directory "P_tmpdir" defined in stdio.h, but you can
+		override this by defining an environment variable TMPDIR.
+
+AUTHOR
+	Nick Kaiser --- kaiser@hawaii.edu
+
+
+		

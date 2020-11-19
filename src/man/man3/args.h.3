@@ -1,0 +1,163 @@
+.TH "args.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+args.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCURRENT_ARG\fP   0"
+.br
+.ti -1c
+.RI "#define \fBPREVIOUS_ARG\fP   -1"
+.br
+.ti -1c
+.RI "#define \fBNO_ARG\fP   0"
+.br
+.ti -1c
+.RI "#define \fBFLAG_ARG\fP   1"
+.br
+.ti -1c
+.RI "#define \fBINUM_ARG\fP   2"
+.br
+.ti -1c
+.RI "#define \fBFNUM_ARG\fP   3"
+.br
+.ti -1c
+.RI "#define \fBTEXT_ARG\fP   4"
+.br
+.ti -1c
+.RI "#define \fBSTDSTREAM_ARG\fP   5"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBargsinit\fP (int argc, char *argv[], char *theusage)"
+.br
+.ti -1c
+.RI "char * \fBgetflag\fP (void)"
+.br
+.ti -1c
+.RI "void \fBargserror\fP (char *errorstring, int argshift)"
+.br
+.ti -1c
+.RI "char * \fBgetargs\fP (void)"
+.br
+.ti -1c
+.RI "int \fBgetargi\fP (void)"
+.br
+.ti -1c
+.RI "float \fBgetargf\fP (void)"
+.br
+.ti -1c
+.RI "double \fBgetargd\fP (void)"
+.br
+.ti -1c
+.RI "int \fBnextargtype\fP (void)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CURRENT_ARG   0"
+.PP
+Definition at line 7 of file args.h.
+.SS "#define FLAG_ARG   1"
+.PP
+Definition at line 11 of file args.h.
+.PP
+Referenced by main(), and nextargtype().
+.SS "#define FNUM_ARG   3"
+.PP
+Definition at line 13 of file args.h.
+.PP
+Referenced by nextargtype().
+.SS "#define INUM_ARG   2"
+.PP
+Definition at line 12 of file args.h.
+.PP
+Referenced by nextargtype().
+.SS "#define NO_ARG   0"
+.PP
+Definition at line 10 of file args.h.
+.PP
+Referenced by main(), and nextargtype().
+.SS "#define PREVIOUS_ARG   -1"
+.PP
+Definition at line 8 of file args.h.
+.SS "#define STDSTREAM_ARG   5"
+.PP
+Definition at line 15 of file args.h.
+.PP
+Referenced by nextargtype().
+.SS "#define TEXT_ARG   4"
+.PP
+Definition at line 14 of file args.h.
+.PP
+Referenced by main(), and nextargtype().
+.SH "Function Documentation"
+.PP 
+.SS "void argserror (char * errorstring, int argshift)"
+.PP
+Definition at line 45 of file args.c.
+.PP
+References exit(), garg, gargv, and gusage.
+.PP
+Referenced by getargd(), getargf(), getargi(), getflag(), and main().
+.SS "int argsinit (int argc, char * argv[], char * theusage)"
+.PP
+Definition at line 16 of file args.c.
+.PP
+References garg, gargc, gargv, and gusage.
+.PP
+Referenced by main().
+.SS "double getargd (void)"
+.PP
+Definition at line 113 of file args.c.
+.PP
+References argserror(), f, garg, gargc, gargv, and pos.
+.PP
+Referenced by main().
+.SS "float getargf (void)"
+.PP
+Definition at line 94 of file args.c.
+.PP
+References argserror(), f, garg, gargc, gargv, and pos.
+.PP
+Referenced by main().
+.SS "int getargi (void)"
+.PP
+Definition at line 73 of file args.c.
+.PP
+References argserror(), garg, gargc, gargv, i, and pos.
+.PP
+Referenced by main().
+.SS "char* getargs (void)"
+.PP
+Definition at line 59 of file args.c.
+.PP
+References exit(), garg, gargc, gargv, and gusage.
+.PP
+Referenced by main().
+.SS "char* getflag (void)"
+.PP
+Definition at line 25 of file args.c.
+.PP
+References argserror(), garg, gargc, and gargv.
+.PP
+Referenced by main().
+.SS "int nextargtype (void)"
+.PP
+Definition at line 131 of file args.c.
+.PP
+References f, FLAG_ARG, FNUM_ARG, garg, gargc, gargv, i, INUM_ARG, NO_ARG, pos, STDSTREAM_ARG, and TEXT_ARG.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

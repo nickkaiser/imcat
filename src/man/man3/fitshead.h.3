@@ -1,0 +1,354 @@
+.TH "fitshead.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitshead.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBKeyword\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBFITSBLOCK\fP   2880"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBhgeti4\fP ()"
+.br
+.ti -1c
+.RI "int \fBhgeti2\fP ()"
+.br
+.ti -1c
+.RI "int \fBhgetr4\fP ()"
+.br
+.ti -1c
+.RI "int \fBhgetr8\fP ()"
+.br
+.ti -1c
+.RI "int \fBhgetra\fP ()"
+.br
+.ti -1c
+.RI "int \fBhgetdec\fP ()"
+.br
+.ti -1c
+.RI "int \fBhgetdate\fP ()"
+.br
+.ti -1c
+.RI "int \fBhgetl\fP ()"
+.br
+.ti -1c
+.RI "int \fBhgets\fP ()"
+.br
+.ti -1c
+.RI "void \fBhputi4\fP ()"
+.br
+.ti -1c
+.RI "void \fBhputi2\fP ()"
+.br
+.ti -1c
+.RI "void \fBhputr4\fP ()"
+.br
+.ti -1c
+.RI "void \fBhputr8\fP ()"
+.br
+.ti -1c
+.RI "void \fBhputnr8\fP ()"
+.br
+.ti -1c
+.RI "void \fBhputra\fP ()"
+.br
+.ti -1c
+.RI "void \fBhputdec\fP ()"
+.br
+.ti -1c
+.RI "void \fBhputl\fP ()"
+.br
+.ti -1c
+.RI "void \fBhputs\fP ()"
+.br
+.ti -1c
+.RI "void \fBhputc\fP ()"
+.br
+.ti -1c
+.RI "int \fBhdel\fP ()"
+.br
+.ti -1c
+.RI "int \fBhchange\fP ()"
+.br
+.ti -1c
+.RI "void \fBra2str\fP ()"
+.br
+.ti -1c
+.RI "void \fBdec2str\fP ()"
+.br
+.ti -1c
+.RI "void \fBdeg2str\fP ()"
+.br
+.ti -1c
+.RI "double \fBstr2ra\fP ()"
+.br
+.ti -1c
+.RI "double \fBstr2dec\fP ()"
+.br
+.ti -1c
+.RI "char * \fBksearch\fP ()"
+.br
+.ti -1c
+.RI "int \fBisnum\fP ()"
+.br
+.ti -1c
+.RI "char * \fBstrsrch\fP ()"
+.br
+.ti -1c
+.RI "char * \fBstrnsrch\fP ()"
+.br
+.ti -1c
+.RI "int \fBhlength\fP ()"
+.br
+.ti -1c
+.RI "FILE * \fBfitsropen\fP ()"
+.br
+.ti -1c
+.RI "char * \fBfitsrhead\fP ()"
+.br
+.ti -1c
+.RI "char * \fBfitsrimage\fP ()"
+.br
+.ti -1c
+.RI "int \fBfitswimage\fP ()"
+.br
+.ti -1c
+.RI "FILE * \fBfitsrtopen\fP ()"
+.br
+.ti -1c
+.RI "int \fBfitsrthead\fP ()"
+.br
+.ti -1c
+.RI "void \fBfitsrtlset\fP ()"
+.br
+.ti -1c
+.RI "int \fBfitsrtline\fP ()"
+.br
+.ti -1c
+.RI "short \fBftgeti2\fP ()"
+.br
+.ti -1c
+.RI "int \fBftgeti4\fP ()"
+.br
+.ti -1c
+.RI "float \fBftgetr4\fP ()"
+.br
+.ti -1c
+.RI "double \fBftgetr8\fP ()"
+.br
+.ti -1c
+.RI "int \fBftgetc\fP ()"
+.br
+.ti -1c
+.RI "int * \fBirafrhead\fP ()"
+.br
+.ti -1c
+.RI "char * \fBirafrimage\fP ()"
+.br
+.ti -1c
+.RI "int \fBirafwhead\fP ()"
+.br
+.ti -1c
+.RI "int \fBirafwimage\fP ()"
+.br
+.ti -1c
+.RI "char * \fBiraf2fits\fP ()"
+.br
+.ti -1c
+.RI "int \fBfits2iraf\fP ()"
+.br
+.ti -1c
+.RI "double \fBgetpix\fP ()"
+.br
+.ti -1c
+.RI "void \fBputpix\fP ()"
+.br
+.ti -1c
+.RI "void \fBmovepix\fP ()"
+.br
+.ti -1c
+.RI "void \fBgetvec\fP ()"
+.br
+.ti -1c
+.RI "void \fBputvec\fP ()"
+.br
+.ti -1c
+.RI "void \fBimswap\fP ()"
+.br
+.ti -1c
+.RI "void \fBimswap2\fP ()"
+.br
+.ti -1c
+.RI "void \fBimswap4\fP ()"
+.br
+.ti -1c
+.RI "void \fBimswap8\fP ()"
+.br
+.ti -1c
+.RI "int \fBimswapped\fP ()"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define FITSBLOCK   2880"
+.PP
+Definition at line 60 of file fitshead.h.
+.SH "Function Documentation"
+.PP 
+.SS "void dec2str ()"
+.PP
+Referenced by hputdec(), and pix2wcst().
+.SS "void deg2str ()"
+.PP
+Referenced by pix2wcst().
+.SS "int fits2iraf ()"
+.PP
+.SS "char* fitsrhead ()"
+.PP
+.SS "char* fitsrimage ()"
+.PP
+.SS "FILE* fitsropen ()"
+.PP
+.SS "int fitsrthead ()"
+.PP
+.SS "int fitsrtline ()"
+.PP
+.SS "void fitsrtlset ()"
+.PP
+.SS "FILE* fitsrtopen ()"
+.PP
+.SS "int fitswimage ()"
+.PP
+.SS "int ftgetc ()"
+.PP
+.SS "short ftgeti2 ()"
+.PP
+.SS "int ftgeti4 ()"
+.PP
+.SS "float ftgetr4 ()"
+.PP
+.SS "double ftgetr8 ()"
+.PP
+.SS "double getpix ()"
+.PP
+Referenced by getpix(), and main().
+.SS "void getvec ()"
+.PP
+.SS "int hchange ()"
+.PP
+.SS "int hdel ()"
+.PP
+.SS "int hgetdate ()"
+.PP
+Referenced by wcseq(), and wcsinit().
+.SS "int hgetdec ()"
+.PP
+Referenced by wcsinit().
+.SS "int hgeti2 ()"
+.PP
+.SS "int hgeti4 ()"
+.PP
+Referenced by wcseq(), and wcsinit().
+.SS "int hgetl ()"
+.PP
+.SS "int hgetr4 ()"
+.PP
+.SS "int hgetr8 ()"
+.PP
+Referenced by wcseq(), and wcsinit().
+.SS "int hgetra ()"
+.PP
+Referenced by wcsinit().
+.SS "int hgets ()"
+.PP
+Referenced by wcseq(), and wcsinit().
+.SS "int hlength ()"
+.PP
+Referenced by wcsninit().
+.SS "void hputc ()"
+.PP
+Referenced by hputi2(), hputi4(), hputl(), hputnr8(), hputr4(), hputr8(), and hputs().
+.SS "void hputdec ()"
+.PP
+.SS "void hputi2 ()"
+.PP
+.SS "void hputi4 ()"
+.PP
+.SS "void hputl ()"
+.PP
+.SS "void hputnr8 ()"
+.PP
+.SS "void hputr4 ()"
+.PP
+.SS "void hputr8 ()"
+.PP
+.SS "void hputra ()"
+.PP
+.SS "void hputs ()"
+.PP
+Referenced by hputdec(), and hputra().
+.SS "void imswap ()"
+.PP
+.SS "void imswap2 ()"
+.PP
+.SS "void imswap4 ()"
+.PP
+.SS "void imswap8 ()"
+.PP
+.SS "int imswapped ()"
+.PP
+.SS "char* iraf2fits ()"
+.PP
+.SS "int* irafrhead ()"
+.PP
+.SS "char* irafrimage ()"
+.PP
+.SS "int irafwhead ()"
+.PP
+.SS "int irafwimage ()"
+.PP
+.SS "int isnum ()"
+.PP
+.SS "char* ksearch ()"
+.PP
+Referenced by hchange(), hdel(), hgetc(), hlength(), hputc(), hputcom(), and wcsinit().
+.SS "void movepix ()"
+.PP
+.SS "void putpix ()"
+.PP
+.SS "void putvec ()"
+.PP
+.SS "void ra2str ()"
+.PP
+Referenced by hputra(), and pix2wcst().
+.SS "double str2dec ()"
+.PP
+Referenced by hgetdec(), and str2ra().
+.SS "double str2ra ()"
+.PP
+Referenced by hgetra().
+.SS "char* strnsrch ()"
+.PP
+Referenced by ksearch(), and strsrch().
+.SS "char* strsrch ()"
+.PP
+Referenced by hgetc(), str2dec(), str2ra(), and wcscom().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

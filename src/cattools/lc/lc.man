@@ -1,0 +1,305 @@
+NAME
+	lc -- list and process catalogues of objects
+
+SYNOPSIS
+	lc [options...] [name1 [name2 ...]]
+
+DESCRIPTION
+	Lc lists and processes catalogues of objects.  A catalogue
+	consists of a header, containing various numerical or textual
+	header 'items' (along with their names and type information); a
+	history of operations which have been applied to the catalogue,
+	and other comments; and then a list of contents (the names and
+	types of object items) followed by the objects themselves.
+
+	Catalogues can exist on disk as text files, for ease of transportation
+	and reading by other applications such as plotting packages,
+	or in binary form (but with a text format header) for
+	efficiency; lc automatically recognizes the input catalogue
+	format and by default outputs a text-format catalogue. Override
+	this with the -o or -O options.  As of 3/9/99 the catalogue I/O library
+	function writes catalogues with a header item 'byteorder'
+	which can be BIG_ENDIAN or LITTLE_ENDIAN according to the
+	byte order of the machine, and will automatically convert
+	such catalogues on input (catalogues are always output in the
+	native byte order).  There is an option -z which will swap bytes
+	in a non-native byte order binary catalogue generated with
+	earlier versions the the cat I/O routines.
+
+	The basic items that may appear in a catalogue (either in the header
+	or in the objects) are arrays of numbers and text strings
+	of arbitrary dimensionality.  Numbers are all stored internally
+	in double precision floating point format (but are printed
+	by lc in '%g' format so integers retain their appearance).
+
+	Lc can be used to generate an output catalogue of objects containing
+	a subset of the input catalogue object items by supplying
+	the names of the items on the command line.  It can also create
+	new items which are fairly general functions of the input
+	items by supplying an name argument in the form 'newvalname = rpnexpr' 
+	where the rhs is a reverse polish notation expression for the new 
+	value 'newvalname' in terms of input object values, header values
+	or constants. So, to create a new variable c = a + b from existing
+	scalar variables a, b for example, supply the argument 'c = %a %b +'.
+	
+	Other facilities include: selecting only header
+	or object data for output; output conditional on truth of
+	an (rpn) expression; sorting of output; addition, deletion and
+	editing of header values; trimming the comments list; adding
+	a date stamp to the header; adding a 'count' value, and converting
+	a table of numbers to lc's catalogue format.
+
+	Lc's table filtering facilities are similar in some ways to
+	those of 'awk'.  One major difference is the use of meaningful
+	names rather than numbers for column entries; this should
+	make shell or perl scripts which invoke 'lc' somewhat clearer,
+	and protect against errors if one makes changes in the format
+	of catalogues by adding or changing the order of entries (which
+	will have no effect if lc is used) or if a needed object item
+	is missing (in which case lc will bail out with an error message).
+	Other differences are the support for vectors, matrices and
+	the ability to use header values in mathematical operations.
+
+	Lc reads from stdin and writes to stdout.
+
+	The following options apply to lc:
+
+	-u		# Print this 'man page'. Must be first option if used.
+
+	-b		# Output object data in binary form.
+
+	-B		# Output object data in same form (binary or text) as the input catalogue.
+
+	-h		# Output only the input catalogue header.
+
+	-x		# Do not include history string in comments.
+
+	-c		# Return number of objects which would otherwise have been output.
+
+	-o		# Output only table of object values, no header at all.
+
+	-O		# Output only table of object values, with a single header line showing names of the entities.
+
+	-p name		# Print the value of header item 'name' and exit.
+
+	-P name		# Print the value of header item 'name' and carry on.
+
+	-i rpnexpr	# Print output object conditional on 'rpnexpr', which is a function of variables in the input catalogue.
+
+	-s val		# Sort the output in ascending order of val, which may be the name of an input object item or a rpnexpr derived from input object or header item values or constants.
+
+	-S val		# Sort in descending order.
+
+	-H 'sym = expr'	# Create a new header item named 'sym' from the rpn-expression 'expr' which can refer to input catalogue header values.
+
+	-r name		# Remove output object value 'name' (see +add below).
+
+	-R name		# Remove header value 'name'.
+
+	-a string       # Add 'string' as a comment.
+
+	-d		# Add a date stamp to header.
+
+	-L n		# Retain only last n comments.
+
+	-F n		# Retain only first n comments.
+
+	-q seed		# Seed for random number generator.
+
+	-z		# swap bytes on input
+
+	-C		# Convert a table of numbers into lc's format.  Must be first option if used.   
+
+	With -C option, the following options may be used.  Options -n -t -N
+	and -T should be supplied in appropriate order to define the format of
+	the input line.  Corresponding items are created in the output catalogue.
+			
+
+	-n name		# Create a single number object item 'name'.
+
+	-t name		# Create a single text string object item.
+
+	-N string	# Create an n-dimensional numeric array object value num[i][j]... where i = 0..d0-1, j = 0..d1-1 etc. The string contains the size and name info in the format 'n d0 d1... name'.
+
+	-T string	# Same as -N but creates a text string array object item.
+
+	-Q c		# Treat lines starting with character 'c' (pound sign by default) as comments and copy to comments list of the output catalogue header.
+
+	-I 		# Ignore lines beginning with pound sign (or character set with -C).   
+
+	There are some special names for (collections of) variables:
+
+	+all		# Copy all of input object values over to output.
+
+	+cname		# An output object value containing the count of output objects with specified name.
+
+	+Cname		# Counter of input values.
+
+NOTES
+	Lc first reads the input catalog header (or with -C creates one according to
+	the information provided with -n -t -N -T options).  It then creates
+	a copy (the output catalogue header) containing all the header info,
+	but with no object values. It then reads the command line arguments
+	in turn, modifying the header values and creating the output object
+	values accordingly. If, after parsing all the arguments, the output
+	object is empty then output object items will be created for each
+	input object item (i.e. it is assumed that if you don't explicitly
+	specify which object items you want then you want everything rather
+	than empty lines).
+
+	Objects are then read from the input stream one at a time, all the
+	rpn expressions (including a conditional expression if
+	specified with the -i option of present) are calculated and the
+	resulting output object is sent to the output function either to
+	be printed directly to stdout, counted (with -c option) or (with -s 
+	or -S) sorted and then printed.
+
+	Rpn expressions and assignments thereof are given as quoted strings
+	of tokens separated by white space.  Header and object values
+	refer to values in the input catalogue.  Object values are referred
+	to using prefix '%' and header values with prefix '^'.  Vectors and
+	multi-dimensional arrays can be dereferenced with the c-like f[a][b]
+	notation (though see 'deref' below). Dereferencing is not allowed on 
+	the the lhs of an assignment.
+
+	The rpn expression parser understands a lot of functions.  These include
+	most of the standard C math library functions, along with '+', '-', '*', '/';
+	(and 'mult' is provided as a synonym for '*' to avoid problems with
+	the shell expanding '*' if you invoke 'lc' from a script). There are
+	the logical comparison functions '>', '>=', '<', '<=', '==', '!='
+	and the negation operator '!' as well as 'and' and 'or'.  
+	There is a function 'if' (a.k.a. '?') which mimics the C
+	language '(c ? t : f)' which returns 't' or 'f' respectively
+	depending on the truth or falseness of the condition 'c'.  The
+	rpn syntax for this expression is 't f c ?' in which '?' pops the
+	condition 'c' followed by 'f' and then 't' and pushes 't' or 'f'
+	as appropriate. The condition 'c' will of course most likely be
+	a compound logical expression.  There is also a function 'enter'
+	which duplicates the top value of the stack.
+	There is a dereferencing operator 'deref' (e.g. 'f 2 deref' to
+	get f[2]), but you will most likely use the 'f[2]' notation described above.
+	Bessel functions j0, j1, y0, y1 are provided.
+	Numerical constants are recognized as such automatically, string
+	constants must be enclosed in curly braces: '{...}'.  Strings should
+	not enclose spaces. 
+
+	There is a 'vector' function for constructing a vector of
+	objects (as in 'menu = {spam} {eggs} 2 vector' to make a
+	2-vector with elements menu[0] = spam; menu[1] = eggs. 
+	Matrices can be constructed as vectors of vectors.
+	There is a dot product operator 'dot' which can multiply
+	two vectors, a vector by a matrix or multiply two matrices.  
+	There is a 'lintrans' function whose syntax is 
+	'%x phi_00 phi_01 phi_10 phi_11 lintrans' which
+	pushes the 2-vector xp_i = phi_ij x_j.  There are vector
+	subtraction and addition functions 'vsub' and 'vadd' to
+	subtract or add two vectors of the same size, and 'vscale' and
+	'vshift' which take a vector as first argument, a scalar as
+	second.  'vscale' multiplies each component of the vector by the
+	scalar and 'vshift' adds the scalar to each component.
+	There are analogous functions msub, madd, mscale which
+	subtract, add or scale matrices.
+	The function 'inverse' computes the inverse of its single argument
+	which must be a square matrix of dimension 2 or 3.
+
+	There is a random number generator rand which calls drand48()
+	and generates a number between 0.0 and 1.0, and a unit
+	variance, zero mean gaussian random number 'grand'.
+
+	There is a string comparison operator 'eq', thanks to
+	David Donovan.
+
+	There are two functions 'min' and 'max' that push 2 numerical
+	values and pop the lower or greater of the two.
+
+EXAMPLES
+	Let's assume you have a non-lc format data file with contents:
+
+	# 	my unformatted data file	
+	#	X       Y       temp    index   file	
+        0.123	0.345   451.2   27      spam	
+        0.754	0.923   451.7   15      eggs	
+        0.034	0.252   451.0   12      fish	
+        0.967	0.204   452.9   30      spam	
+
+	then feeding this to the stdin of the command
+
+	lc -C -N '1 2 r' -n temp -n index -t file -H 'title = {foo}' -H 'e = 2.1718'
+
+	would generate the lc-format catalogue:
+
+# text format catalogue file --- do not edit manually, use 'lc'	
+# header:	
+# text     1 1         title                          foo	
+# number   1 1         e                           2.1718	
+# comment: # my unformatted data file	
+# comment: #    X       Y       temp    index   file	
+# comment: history: lc -C -N '1 2 r' -n temp -n index -t file -H 'title = {foo}' -H 'e = 2.1718'	
+# contents: 4	
+# number   1 2         r	
+# number   1 1         temp	
+# number   1 1         index	
+# text     1 1         file	
+#          r[0]          r[1]          temp         index          file	
+          0.123         0.345         451.2            27          spam	
+          0.754         0.923         451.7            15          eggs	
+          0.034         0.252           451            12          fish	
+          0.967         0.204         452.9            30          spam	
+
+	where we have specified that we want to read a 2-vector, 2 numbers and a text string
+	into each object (with the -N, -n and -t options) and we have added a header string
+	and numerical header value for good measure. Note that the comment lines and also
+	the lc-invocation have been installed as comments (use -I and -x options
+	to switch off these features. In what follows it is assumed that this formatted
+	catalogue is the input to lc.
+
+	To generate a new catalogue containing only the 'r', 'temp' and 'file' object
+	values, you could use
+
+		lc r temp file
+
+	or
+
+		lc +all -r index
+
+	which first adds all of the input fields to the output catalogue and then
+	removes 'index'.
+
+	To print the subset of entries with 'index' > 20 say, do
+
+		lc -i '%index 20 >'
+
+	which illustrates how we refer to object values in rpn-expressions.
+	Similarly, to select only items with |r| > 0.3 say, you could do
+
+		lc -i '%r %r dot sqrt 0.3 >'
+
+	To select objects with 'file' equal to 'spam':
+
+		lc -i '%file {spam} eq'
+
+	To append an additional column 'Z' containing 1st component of the r[] vector
+	times the numerical header value 'e', prepend a column with a counter 'ID', and
+	sort the output values according to |r| do
+
+		lc +cID +all 'Z = %r[0] ^e *' -s '%r %r dot'
+
+	Which illustrates how to refer to a header value in an rpn expression.
+	Note that object values in the sort-expression refer to objects in the
+	output catalogue rather than the input catalogue as is the case for all
+	other rpn-expressions.
+
+BUGS
+	Indices in rpn expressions such as '%F[<index>]' should really be constants
+	or header values.  If you try to use an object value or function derived
+	therefrom as an index then the index will evaluate to zero when the rpn-string
+	is parsed (as no input object data has been read at that time), and you will
+	subsequently just get the zeroth component of the vector regardless of the
+	current value of the index.
+
+	The rpn-expression format is somewhat clumsy.  Someone should write a front
+	end to lc which converts C-like expressions to rpn-expressions....
+
+AUTHOR
+	Nick Kaiser --- kaiser@hawaii.edu
+

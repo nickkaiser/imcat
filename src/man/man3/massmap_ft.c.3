@@ -1,0 +1,106 @@
+.TH "massmap_ft.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+massmap_ft.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../fftlib/myfft.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	massmap_ft --- ks93 reconstruction using FFT\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	massmap_ft [\fBoptions\fP...]\\\fBn\fP\\		-\fBm\fP \fBmode\fP	 	# \fBmode\fP (0)\\\fBn\fP\\		-\fBr\fP R	 	# pad by factor R (2)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'massmap_ft' reads \fBa\fP shear image in the format produced by 'makeshearimage'\\\fBn\fP\\	from stdin and reconstructs density field by fourier-space\\\fBn\fP\\	version of KS93.\\\fBn\fP\\	The input \fBdata\fP are zero-padded onto an internal image which is\\\fBn\fP\\	by default twice the size of the original.\\\fBn\fP\\	You can use \fBa\fP slightly different estimator with -\fBm\fP option:\\\fBn\fP\\		\fBmode\fP = 0 for KS93 chi estimator\\\fBn\fP\\		\fBmode\fP = 1 for zeta estimator.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBEPS\fP   1.\fBe\fP-10"
+.br
+.ti -1c
+.RI "#define \fBCHI_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBZETA_MODE\fP   1"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "float \fBchi1\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "float \fBchi2\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "float \fBzeta1\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "float \fBzeta2\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CHI_MODE   0"
+.PP
+Definition at line 42 of file massmap_ft.c.
+.PP
+Referenced by main().
+.SS "#define EPS   1.\fBe\fP-10"
+.PP
+Definition at line 35 of file massmap_ft.c.
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	massmap_ft --- ks93 reconstruction using FFT\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	massmap_ft [\fBoptions\fP...]\\\fBn\fP\\		-\fBm\fP \fBmode\fP	 	# \fBmode\fP (0)\\\fBn\fP\\		-\fBr\fP R	 	# pad by factor R (2)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'massmap_ft' reads \fBa\fP shear image in the format produced by 'makeshearimage'\\\fBn\fP\\	from stdin and reconstructs density field by fourier-space\\\fBn\fP\\	version of KS93.\\\fBn\fP\\	The input \fBdata\fP are zero-padded onto an internal image which is\\\fBn\fP\\	by default twice the size of the original.\\\fBn\fP\\	You can use \fBa\fP slightly different estimator with -\fBm\fP option:\\\fBn\fP\\		\fBmode\fP = 0 for KS93 chi estimator\\\fBn\fP\\		\fBmode\fP = 1 for zeta estimator.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file massmap_ft.c.
+.SS "#define ZETA_MODE   1"
+.PP
+Definition at line 43 of file massmap_ft.c.
+.PP
+Referenced by main().
+.SH "Function Documentation"
+.PP 
+.SS "float chi1 (float ki, float kj)"
+.PP
+Definition at line 145 of file massmap_ft.c.
+.PP
+References EPS, and kk.
+.PP
+Referenced by main().
+.SS "float chi2 (float ki, float kj)"
+.PP
+Definition at line 154 of file massmap_ft.c.
+.PP
+References EPS, and kk.
+.PP
+Referenced by chisquared(), func(), and main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 46 of file massmap_ft.c.
+.PP
+References add_comment(), alloc_fft(), allocFloatArray(), chi1(), chi2(), CHI_MODE, exit(), fft_type, filter(), fits, forward_fft(), gamma1(), gamma2(), i, inverse_fft(), j, M, fitsheader::n, N, fitsheader::ndim, readfitsheader(), readfitsline(), usage, write2Dfloatimage(), zeta1(), zeta2(), and ZETA_MODE.
+.SS "float zeta1 (float ki, float kj)"
+.PP
+Definition at line 163 of file massmap_ft.c.
+.PP
+Referenced by main().
+.SS "float zeta2 (float ki, float kj)"
+.PP
+Definition at line 177 of file massmap_ft.c.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

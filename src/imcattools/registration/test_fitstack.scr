@@ -1,0 +1,9 @@
+#! /bin/sh
+
+echoeval "fitstack 9 -l 2 5 -i 20 -c test.merge1 -o 1024 1024 -d test.distpar -t test.transpar < test.merge0"
+for n in 1 2
+do
+	echoeval "fitstack 5 -l 2 5 -i 20 -c test$n.merge1 -o 1024 1024 -d test$n.distpar -t test$n.transpar < test$n.merge0"
+done
+
+	

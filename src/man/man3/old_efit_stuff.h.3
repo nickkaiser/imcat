@@ -1,0 +1,103 @@
+.TH "efit_stuff.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+efit_stuff.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBGRAD1\fP   0"
+.br
+.ti -1c
+.RI "#define \fBGRAD2\fP   1"
+.br
+.ti -1c
+.RI "#define \fBGRADGRAD11\fP   2"
+.br
+.ti -1c
+.RI "#define \fBGRADGRAD12\fP   3"
+.br
+.ti -1c
+.RI "#define \fBGRADGRAD22\fP   4"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBg\fP (int \fBmode\fP, int \fBframe\fP, double \fBxx\fP, double \fByy\fP)"
+.br
+.ti -1c
+.RI "void \fBreadamplitudes\fP (int *\fBnmodes\fP, int *\fBnframes\fP, int *\fBframesize\fP, int *\fBorder\fP, double ***amp, FILE *stream)"
+.br
+.ti -1c
+.RI "void \fBsetnframes\fP (int \fBnframes\fP)"
+.br
+.ti -1c
+.RI "void \fBsetframesize\fP (int \fBN\fP)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define GRAD1   0"
+.PP
+Definition at line 16 of file old/efit_stuff.h.
+.PP
+Referenced by g().
+.SS "#define GRAD2   1"
+.PP
+Definition at line 17 of file old/efit_stuff.h.
+.PP
+Referenced by g().
+.SS "#define GRADGRAD11   2"
+.PP
+Definition at line 18 of file old/efit_stuff.h.
+.PP
+Referenced by g().
+.SS "#define GRADGRAD12   3"
+.PP
+Definition at line 19 of file old/efit_stuff.h.
+.PP
+Referenced by g().
+.SS "#define GRADGRAD22   4"
+.PP
+Definition at line 20 of file old/efit_stuff.h.
+.PP
+Referenced by g().
+.SH "Function Documentation"
+.PP 
+.SS "double g (int mode, int frame, double xx, double yy)"
+.PP
+Definition at line 15 of file old/efit_stuff.c.
+.PP
+References error_exit, frame, framesize, GRAD1, GRAD2, GRADGRAD11, GRADGRAD12, GRADGRAD22, nframes, x, xx, and yy.
+.PP
+Referenced by fillarrays(), main(), makeresiduals(), and modelrms().
+.SS "void readamplitudes (int * nmodes, int * nframes, int * framesize, int * order, double *** amp, FILE * stream)"
+.PP
+Definition at line 50 of file old/efit_stuff.c.
+.PP
+References error_exit, framesize, line, nframes, nmodes, and order.
+.PP
+Referenced by main().
+.SS "void setframesize (int N)"
+.PP
+Definition at line 164 of file efit_stuff.c.
+.PP
+References framesize, and N.
+.PP
+Referenced by main().
+.SS "void setnframes (int nframes)"
+.PP
+Definition at line 90 of file old/efit_stuff.c.
+.PP
+References nframes.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,46 @@
+.TH "int2Dpolymodel.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+int2Dpolymodel.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../utils/modefunc.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	int2Dpolymodel --- integrate \fBa\fP 2-dimensional spatial polynomial model\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	int2Dpolymodel\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'int2Dpolymodel' reads from stdin \fBa\fP 2D polynomial model file with\\\fBn\fP\\	parameters for \fBa\fP 2-vector variable (which is supposed to represent\\\fBn\fP\\	the spatial derivative of some scalar function 'f' [thought the\\\fBn\fP\\	actual name is arbitrary]) and sends to stdout \fBa\fP 2D \fBpoly\fP model\\\fBn\fP\\	file for the \fBmode\fP coefficients of f. More explicitly, given \fBa\fP\\\fBn\fP\\	set of pairs of \fBmode\fP amplitudes \fBa\fP^0_{\fBl\fP,\fBm\fP} \fBa\fP^1_{\fBl\fP,\fBm\fP}  then we output\\\fBn\fP\\	\fBa\fP single set of \fBmode\fP amplitudes:\\\fBn\fP\\		a_{\fBl\fP,\fBm\fP}  = ((\fBl\fP-\fBm\fP) \fBa\fP^0_{\fBl\fP-1,\fBm\fP} + \fBm\fP \fBa\fP^1_{\fBl\fP-1,\fBm\fP-1}) / (\fBm\fP^2 + (\fBl\fP-\fBm\fP)^2)\\\fBn\fP\\	which is the optimal combination assuming statistically independent,\\\fBn\fP\\	but equally noisy, coefficients for \fBa\fP^0, \fBa\fP^1.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	int2Dpolymodel --- integrate \fBa\fP 2-dimensional spatial polynomial model\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	int2Dpolymodel\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'int2Dpolymodel' reads from stdin \fBa\fP 2D polynomial model file with\\\fBn\fP\\	parameters for \fBa\fP 2-vector variable (which is supposed to represent\\\fBn\fP\\	the spatial derivative of some scalar function 'f' [thought the\\\fBn\fP\\	actual name is arbitrary]) and sends to stdout \fBa\fP 2D \fBpoly\fP model\\\fBn\fP\\	file for the \fBmode\fP coefficients of f. More explicitly, given \fBa\fP\\\fBn\fP\\	set of pairs of \fBmode\fP amplitudes \fBa\fP^0_{\fBl\fP,\fBm\fP} \fBa\fP^1_{\fBl\fP,\fBm\fP}  then we output\\\fBn\fP\\	\fBa\fP single set of \fBmode\fP amplitudes:\\\fBn\fP\\		a_{\fBl\fP,\fBm\fP}  = ((\fBl\fP-\fBm\fP) \fBa\fP^0_{\fBl\fP-1,\fBm\fP} + \fBm\fP \fBa\fP^1_{\fBl\fP-1,\fBm\fP-1}) / (\fBm\fP^2 + (\fBl\fP-\fBm\fP)^2)\\\fBn\fP\\	which is the optimal combination assuming statistically independent,\\\fBn\fP\\	but equally noisy, coefficients for \fBa\fP^0, \fBa\fP^1.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 6 of file int2Dpolymodel.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 34 of file int2Dpolymodel.c.
+.PP
+References error_exit, get2Dpolymodel(), l, m, MODEFUNC_MAX_VARS, usage, and write2Dpolymodel().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

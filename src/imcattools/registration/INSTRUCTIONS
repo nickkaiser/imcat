@@ -1,0 +1,23 @@
+There are two ways to register cats using tools in this directory.
+
+The old way does not cope with differences in scale, and requires
+perl format file 'exp.db' to supply names etc., but does least squares
+fitting.  It works as follows:
+To get accurate transformation parameters for a stack of images
+	1) run findpeaks to get brightish objects
+	2) extract catalogues of stars
+	3) run 'mergestacks1'
+	4) run 'fitstack' with mergestack1.out as output to create 'fitstack.par'
+	5) run 'mergestack2' to reject outliers
+	6) run 'fitstack' again, but with mergestack2.out as input
+
+
+The new way can cope with (small) scale differences, does not need the
+database file, but at present does not fit for all transformations, rather
+it registers each image relative to the first.  It works as follows
+	1) make catalogues of stars as before
+	2) run "getstacktrans <star_cat_files>" to generate an 'lc' format
+	file containing the transformations (generated with 'registercats2').
+	) run "makestack_lt"
+
+	

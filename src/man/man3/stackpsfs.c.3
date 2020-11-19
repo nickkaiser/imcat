@@ -1,0 +1,62 @@
+.TH "stackpsfs.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stackpsfs.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/arrays.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	stackpsfs --- read \fBa\fP \fBfits\fP stream of PSFs and average after recentering\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	stackpsfs [-\fBn\fP nplanes]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\\\\fBn\fP\\	stackpsfs reads \fBa\fP \fBfits\fP stream of PSFs and averages after recentering.\\\fBn\fP\\	It generates \fBa\fP 4 x \fBN2\fP x \fBN1\fP image consiting of 4 image planes:\\\fBn\fP\\		0	# straight average\\\fBn\fP\\		1	# center on centroid\\\fBn\fP\\		2	# center on g^2 wighted centoid\\\fBn\fP\\		3	# center on \fBpeak\fP\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBshiftandadd\fP (int \fBdx\fP, int \fBdy\fP, float **fsrc, int \fBN\fP, float **fdst)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	stackpsfs --- read \fBa\fP \fBfits\fP stream of PSFs and average after recentering\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	stackpsfs [-\fBn\fP nplanes]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\\\\fBn\fP\\	stackpsfs reads \fBa\fP \fBfits\fP stream of PSFs and averages after recentering.\\\fBn\fP\\	It generates \fBa\fP 4 x \fBN2\fP x \fBN1\fP image consiting of 4 image planes:\\\fBn\fP\\		0	# straight average\\\fBn\fP\\		1	# center on centroid\\\fBn\fP\\		2	# center on g^2 wighted centoid\\\fBn\fP\\		3	# center on \fBpeak\fP\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 14 of file stackpsfs.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 37 of file stackpsfs.c.
+.PP
+References add_comment(), allocFloatArray(), argsinit(), error_exit, exit(), fits, flag, g(), getargi(), getflag(), ix, fitsheader::n, N, fitsheader::ndim, readfitsheader(), readfitsplane(), shiftandadd(), usage, writefitsheader(), writefitsplane(), and writefitstail().
+.SS "int shiftandadd (int dx, int dy, float ** fsrc, int N, float ** fdst)"
+.PP
+Definition at line 142 of file stackpsfs.c.
+.PP
+References dx, dy, N, x, xp(), y, and yp().
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

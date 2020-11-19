@@ -1,0 +1,138 @@
+#!/usr/bin/perl
+
+$| = 1;			# force flushing
+
+$usage = "\
+NAME\
+	makehtmlmanpage --- perl script to generate a html man page\
+\
+SYNOPSIS\
+	makehtmlmanpage\
+\
+DESCRIPTION\
+	'makehtmlmanpage' reads a groff-style man page from stdin and wraps this in\
+	html code to generate a web-page.\
+\
+";
+
+die $usage if ($#ARGV >= 0);
+
+open(IP, "-");
+
+$indented = 0;
+
+printf "<html>\n<head>\n<title> Imcat man pages </title>\n</head>\n";
+printf "<body bgcolor=\"#FFFFFF\">\n";
+while ($line = <IP>) {
+	$line =~ s/\\'/'/g; 			# unescape single quotes
+	if ($line =~ /^\.\\\"/) {		# a comment
+	} elsif ($line =~ /^\.TH/) {		# title
+		@words = split(" ", $line);
+		shift(@words);			# toss the .TH string
+		$command = shift(@words);
+		$mansection = shift(@words);
+		$date = shift(@words);
+		while ($word = shift(@words)) {
+			$date = $date." ".$word;
+			last if ($word =~ /\"$/);
+		}
+		$date =~ s/\"//g;
+		$imcatsection = shift(@words);
+		print "<p> $command($mansection) --- Imcat Users Guide --- \n";
+		print "section: <a href=\"$imcatsection.html\">$imcatsection</a> --- last changed: $date</p>\n";
+		print "<hr>";
+		print "<tt>\n";
+	} elsif ($line =~ /^\.SH/) {		# section heading
+		$pagesection = "GENERIC";
+		$line =~ s/\.SH //;
+		chop($line);
+		print "<big> <b> $line </b> </big>\n<p>\n";
+		if ($line =~ /^NAME/) {
+			$pagesection = "NAME";
+			chop($line = <IP>);
+			$line =~ s/\\//;
+			print "<blockquote> $line </blockquote>\n";
+		}
+		if ($line =~ /^SYNOPSIS/) {
+			$pagesection = "SYNOPSIS";
+			chop($line = <IP>);
+			$line =~ s/\.B//;
+			print "<blockquote> <b> $line </b> </blockquote>\n";
+		}
+		if ($line =~ /^AUTHOR/) {
+			$pagesection = "AUTHOR";
+			chop($line = <IP>);
+			if ($line =~ /Kaiser/) {
+				@words = split(" ", $line);
+				$email = pop(@words);
+				print "<blockquote>\n";
+				foreach $word (@words) {
+					print $word, " ";
+				}
+				print "<a href=\"mailto:kaiser\@hawaii.edu\">kaiser\@hawaii.edu</a>\n";
+			} else {
+				print "<blockquote>", $line;
+			}
+			print "</blockquote>\n";
+		}
+		if ($line =~ /^COMMANDS/) {
+			$pagesection = "COMMANDS";
+		}
+		if ($line =~ /^SECTIONS/) {
+			$pagesection = "SECTIONS";
+		}
+		if ($line =~ /^SEE ALSO/) {
+			$pagesection = "SEE ALSO";
+			$first = 1;
+			while ($line = <IP>) {
+				last if ($line =~ /^$/);
+				$line =~ s/,//g;
+				$line =~ s/\.//g;
+				@words = split(" ", $line);
+				foreach $word (@words) {
+					if (!$first) {
+						print ", ";
+					}
+					$first = 0;
+					$word =~ s/\(1\)//;
+					print "<a href=\"$word.html\">", $word, "(1)</a>";
+				}
+			}
+			print ".\n<p>\n";
+		}
+	} else {
+		if ($line =~ /^\.IP /) {		# start indented paragraph
+			$line =~ s/\.IP //;
+			if ($indented) {
+				print "</blockquote>\n"
+			}
+			print "<blockquote>\n";
+			if ($pagesection eq "COMMANDS" || $pagesection eq "SECTIONS") {
+				@words = split(" ", $line);
+				$com = shift(@words);
+				$com =~ s/\"//;
+				print "<a href=\"$com.html\">$com</a> - \n";
+			} else {
+				print $line;
+			}
+			$indented = 1;
+		} elsif ($line =~ /^$/ || $line=~ /^\.PP/) {		# empty line
+			if ($indented) {
+				print "</blockquote>\n";
+				$indented = 0;
+			} else {
+				print "</p>\n";
+			}
+		} else {
+			print $line;
+		}
+	}
+}
+print "</tt>\n";
+print "<hr>";
+print "back to <a href=\"$imcatsection.html\">$imcatsection</a>\n";
+print "back to <a href=\"imcat.html\">imcat</a>\n";
+printf "</body>\n</html>\n";
+
+close(IP);
+exit;

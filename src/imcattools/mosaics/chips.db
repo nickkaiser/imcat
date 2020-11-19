@@ -1,0 +1,7 @@
+# database for chip names, positions and orientations
+
+$nchips = 4;
+@chipname 	= ( 1,  2,  3,  4);
+@ix		= (-1,  0, -1,  0);
+@iy		= ( 0,  0, -1, -1);
+1;

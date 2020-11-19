@@ -1,0 +1,95 @@
+.TH "fitpolymodelmagshift.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitpolymodelmagshift.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../utils/lu.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/args.h'\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include '../../utils/lmodel.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitpolymodelmagshift --- \fBfit\fP for extinction/gain coefficients for \fBa\fP set of exposures\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitpolymodelmagshift ne \fBfitorder\fP opname [-outputarray] [-noextinction]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fitpolymodelmagshift' reads \fBa\fP catalogue containing (at least) pairs\\\fBn\fP\\	of magnitudes \fBmag\fP[2]; detector coords xdet[2][2] and exposure numbers \fBe\fP[2]\\\fBn\fP\\	for \fBa\fP set of reference stars observed in ne exposures.\\\fBn\fP\\\\\fBn\fP\\	It solves for differential extinction between exposures and for \fBa\fP\\\fBn\fP\\	spatial polynomial magnitude shift.\\\fBn\fP\\\\\fBn\fP\\	More explicitly, we model the magnitude of the \fBi\fP'th star as measured\\\fBn\fP\\	at position xdet and \fBe\fP'th exposure as:\\\fBn\fP\\		m_ei = \fBm\fP + m_e + sum_j m_j f_j(xdet)\\\fBn\fP\\	where \fBm\fP is the true magnitude and the functions f_j are\\\fBn\fP\\	polynomials (no DC term).\\\fBn\fP\\\\\fBn\fP\\	We solve for the coefficients by least squares.\\\fBn\fP\\	minimisation (these being measured relative to the 0th\\\fBn\fP\\	chip and 0th exposure respectively).\\\fBn\fP\\\\\fBn\fP\\	We output the m_e coefficients as \fBa\fP lc-format catalogue opname.cat.\\\fBn\fP\\	The coefficents m_j are output as \fBa\fP \fBl\fP-model par file opname.par.\\\fBn\fP\\\\\fBn\fP\\	With -outputarray option we output the \fBA\fP-matrix etc to stdout.\\\fBn\fP\\\\\fBn\fP\\	With -noextinction option we don'\fBt\fP solve for the extinction terms.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBf\fP (int \fBm\fP, int *\fBe\fP, double **xdet)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBne\fP"
+.br
+.ti -1c
+.RI "int \fBfitorder\fP"
+.br
+.ti -1c
+.RI "int \fBfitextinction\fP"
+.br
+.ti -1c
+.RI "\fBlmodel\fP * \fBthelmodel\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitpolymodelmagshift --- \fBfit\fP for extinction/gain coefficients for \fBa\fP set of exposures\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitpolymodelmagshift ne \fBfitorder\fP opname [-outputarray] [-noextinction]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fitpolymodelmagshift' reads \fBa\fP catalogue containing (at least) pairs\\\fBn\fP\\	of magnitudes \fBmag\fP[2]; detector coords xdet[2][2] and exposure numbers \fBe\fP[2]\\\fBn\fP\\	for \fBa\fP set of reference stars observed in ne exposures.\\\fBn\fP\\\\\fBn\fP\\	It solves for differential extinction between exposures and for \fBa\fP\\\fBn\fP\\	spatial polynomial magnitude shift.\\\fBn\fP\\\\\fBn\fP\\	More explicitly, we model the magnitude of the \fBi\fP'th star as measured\\\fBn\fP\\	at position xdet and \fBe\fP'th exposure as:\\\fBn\fP\\		m_ei = \fBm\fP + m_e + sum_j m_j f_j(xdet)\\\fBn\fP\\	where \fBm\fP is the true magnitude and the functions f_j are\\\fBn\fP\\	polynomials (no DC term).\\\fBn\fP\\\\\fBn\fP\\	We solve for the coefficients by least squares.\\\fBn\fP\\	minimisation (these being measured relative to the 0th\\\fBn\fP\\	chip and 0th exposure respectively).\\\fBn\fP\\\\\fBn\fP\\	We output the m_e coefficients as \fBa\fP lc-format catalogue opname.cat.\\\fBn\fP\\	The coefficents m_j are output as \fBa\fP \fBl\fP-model par file opname.par.\\\fBn\fP\\\\\fBn\fP\\	With -outputarray option we output the \fBA\fP-matrix etc to stdout.\\\fBn\fP\\\\\fBn\fP\\	With -noextinction option we don'\fBt\fP solve for the extinction terms.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 6 of file fitpolymodelmagshift.c.
+.SH "Function Documentation"
+.PP 
+.SS "double f (int m, int * e, double ** xdet)"
+.PP
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 55 of file fitpolymodelmagshift.c.
+.PP
+References lmodel::a, A, argsinit(), B, det(), e, error_exit, exit(), f(), fitextinction, fitorder, flag, FLAG_ARG, getargi(), getargs(), getflag(), indx, lcpipe, m, mag, modefunc(), mylubksb(), myludcmp(), n, ne, newitem(), newpolylmodel(), nextargtype(), lmodel::nmodes, NUM_TYPE, thelmodel, usage, and writelmodel().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBfitextinction\fP"
+.PP
+Definition at line 52 of file fitpolymodelmagshift.c.
+.PP
+Referenced by main().
+.SS "int \fBfitorder\fP"
+.PP
+Definition at line 52 of file fitpolymodelmagshift.c.
+.PP
+Referenced by main().
+.SS "int ne"
+.PP
+Definition at line 52 of file fitpolymodelmagshift.c.
+.PP
+Referenced by cpgellipses(), do_object_stats(), fittranslations(), main(), and num2funcarray().
+.SS "\fBlmodel\fP* \fBthelmodel\fP"
+.PP
+Definition at line 53 of file fitpolymodelmagshift.c.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

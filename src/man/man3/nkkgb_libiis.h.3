@@ -1,0 +1,567 @@
+.TH "libiis.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+libiis.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBTRANSFER_ID\fP   0"
+.br
+.ti -1c
+.RI "#define \fBTHING_COUNT\fP   1"
+.br
+.ti -1c
+.RI "#define \fBSUB_UNIT\fP   2"
+.br
+.ti -1c
+.RI "#define \fBCHECK_SUM\fP   3"
+.br
+.ti -1c
+.RI "#define \fBX_REGISTER\fP   4"
+.br
+.ti -1c
+.RI "#define \fBY_REGISTER\fP   5"
+.br
+.ti -1c
+.RI "#define \fBZ_REGISTER\fP   6"
+.br
+.ti -1c
+.RI "#define \fBT_REGISTER\fP   7"
+.br
+.ti -1c
+.RI "#define \fBIREAD\fP   0100000"
+.br
+.ti -1c
+.RI "#define \fBIWRITE\fP   00"
+.br
+.ti -1c
+.RI "#define \fBPACKED\fP   040000"
+.br
+.ti -1c
+.RI "#define \fBBYPASSIFM\fP   020000"
+.br
+.ti -1c
+.RI "#define \fBBYTE\fP   010000"
+.br
+.ti -1c
+.RI "#define \fBADDWRITE\fP   04000"
+.br
+.ti -1c
+.RI "#define \fBACCUM\fP   02000"
+.br
+.ti -1c
+.RI "#define \fBBLOCKXFER\fP   01000"
+.br
+.ti -1c
+.RI "#define \fBVRETRACE\fP   0400"
+.br
+.ti -1c
+.RI "#define \fBMUX32\fP   0200"
+.br
+.ti -1c
+.RI "#define \fBIMT800\fP   0100"
+.br
+.ti -1c
+.RI "#define \fBREFRESH\fP   01"
+.br
+.ti -1c
+.RI "#define \fBLUT\fP   02"
+.br
+.ti -1c
+.RI "#define \fBOFM\fP   03"
+.br
+.ti -1c
+.RI "#define \fBIFM\fP   04"
+.br
+.ti -1c
+.RI "#define \fBFEEDBACK\fP   05"
+.br
+.ti -1c
+.RI "#define \fBSCROLL\fP   06"
+.br
+.ti -1c
+.RI "#define \fBVIDEOM\fP   07"
+.br
+.ti -1c
+.RI "#define \fBSUMPROC\fP   010"
+.br
+.ti -1c
+.RI "#define \fBGRAPHICS\fP   011"
+.br
+.ti -1c
+.RI "#define \fBCURSOR\fP   012"
+.br
+.ti -1c
+.RI "#define \fBALU\fP   013"
+.br
+.ti -1c
+.RI "#define \fBZOOM\fP   014"
+.br
+.ti -1c
+.RI "#define \fBIPB\fP   017"
+.br
+.ti -1c
+.RI "#define \fBIMCURSOR\fP   020"
+.br
+.ti -1c
+.RI "#define \fBWCS\fP   021"
+.br
+.ti -1c
+.RI "#define \fBCHECKSUMVAL\fP   0177777"
+.br
+.ti -1c
+.RI "#define \fBCOMMAND\fP   100000\fBB\fP"
+.br
+.ti -1c
+.RI "#define \fBADVXONTC\fP   0100000"
+.br
+.ti -1c
+.RI "#define \fBADVXONYOV\fP   040000"
+.br
+.ti -1c
+.RI "#define \fBADVYONXOV\fP   0100000"
+.br
+.ti -1c
+.RI "#define \fBADVYONTC\fP   040000"
+.br
+.ti -1c
+.RI "#define \fBCHAN1\fP   01"
+.br
+.ti -1c
+.RI "#define \fBCHAN2\fP   02"
+.br
+.ti -1c
+.RI "#define \fBCHAN3\fP   04"
+.br
+.ti -1c
+.RI "#define \fBCHAN4\fP   010"
+.br
+.ti -1c
+.RI "#define \fBGRCHAN\fP   0100000"
+.br
+.ti -1c
+.RI "#define \fBBITPL0\fP   01"
+.br
+.ti -1c
+.RI "#define \fBBITPL1\fP   02"
+.br
+.ti -1c
+.RI "#define \fBBITPL2\fP   04"
+.br
+.ti -1c
+.RI "#define \fBBITPL3\fP   010"
+.br
+.ti -1c
+.RI "#define \fBBITPL4\fP   020"
+.br
+.ti -1c
+.RI "#define \fBBITPL5\fP   040"
+.br
+.ti -1c
+.RI "#define \fBBITPL6\fP   0100"
+.br
+.ti -1c
+.RI "#define \fBBITPL7\fP   0200"
+.br
+.ti -1c
+.RI "#define \fBALLBITPL\fP   0377"
+.br
+.ti -1c
+.RI "#define \fBFMIN\fP   1"
+.br
+.ti -1c
+.RI "#define \fBFMAX\fP   200"
+.br
+.ti -1c
+.RI "#define \fBIIS_GREEN\fP   201"
+.br
+.ti -1c
+.RI "#define \fBIIS_BLACK\fP   202"
+.br
+.ti -1c
+.RI "#define \fBIIS_WHITE\fP   203"
+.br
+.ti -1c
+.RI "#define \fBIIS_RED\fP   204"
+.br
+.ti -1c
+.RI "#define \fBIIS_BLUE\fP   206"
+.br
+.ti -1c
+.RI "#define \fBIIS_YELLOW\fP   207"
+.br
+.ti -1c
+.RI "#define \fBBUFFSZ\fP   16384"
+.br
+.ti -1c
+.RI "#define \fBRBUFFSZ\fP   2048"
+.br
+.ti -1c
+.RI "#define \fBSTRSIZE\fP   1024"
+.br
+.ti -1c
+.RI "#define \fBSZ_WCSTEXT\fP   320"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBiis_display\fP (float **f, int \fBN1\fP, int \fBN2\fP, float \fBfmin\fP, float \fBfmax\fP, int \fBframe\fP)"
+.br
+.ti -1c
+.RI "void \fBiis_cur\fP (float *x, float *y, char *ch)"
+.br
+.ti -1c
+.RI "void \fBiis_drawcirc\fP (float xcen, float ycen, float \fBradius\fP, int colour, int \fBframe\fP)"
+.br
+.ti -1c
+.RI "void \fBiis_open\fP (char *inpipe, char *outpipe, int \fBfb\fP, int fbx, int fby)"
+.br
+.ti -1c
+.RI "void \fBiis_close\fP ()"
+.br
+.ti -1c
+.RI "void \fBiis_write\fP (char *\fBbuf\fP, int size)"
+.br
+.ti -1c
+.RI "void \fBiis_read\fP (char *\fBbuf\fP, int size)"
+.br
+.ti -1c
+.RI "void \fBiis_checksum\fP (short *hdr)"
+.br
+.ti -1c
+.RI "void \fBiis_error\fP (char *error1, char *error2)"
+.br
+.ti -1c
+.RI "int \fBiis_chan\fP (int \fBframe\fP)"
+.br
+.ti -1c
+.RI "int \fBiis_round\fP (float \fBi\fP)"
+.br
+.ti -1c
+.RI "float \fBiis_abs\fP (float x)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBiispipe_i\fP"
+.br
+.ti -1c
+.RI "int \fBiispipe_o\fP"
+.br
+.ti -1c
+.RI "int \fBfbconfig\fP"
+.br
+.ti -1c
+.RI "int \fBframeX\fP"
+.br
+.ti -1c
+.RI "int \fBframeY\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define ACCUM   02000"
+.PP
+Definition at line 30 of file nkkgb/libiis.h.
+.SS "#define ADDWRITE   04000"
+.PP
+Definition at line 29 of file nkkgb/libiis.h.
+.SS "#define ADVXONTC   0100000"
+.PP
+Definition at line 65 of file nkkgb/libiis.h.
+.SS "#define ADVXONYOV   040000"
+.PP
+Definition at line 66 of file nkkgb/libiis.h.
+.SS "#define ADVYONTC   040000"
+.PP
+Definition at line 71 of file nkkgb/libiis.h.
+.SS "#define ADVYONXOV   0100000"
+.PP
+Definition at line 70 of file nkkgb/libiis.h.
+.SS "#define ALLBITPL   0377"
+.PP
+Definition at line 91 of file nkkgb/libiis.h.
+.SS "#define ALU   013"
+.PP
+Definition at line 48 of file nkkgb/libiis.h.
+.SS "#define BITPL0   01"
+.PP
+Definition at line 83 of file nkkgb/libiis.h.
+.SS "#define BITPL1   02"
+.PP
+Definition at line 84 of file nkkgb/libiis.h.
+.SS "#define BITPL2   04"
+.PP
+Definition at line 85 of file nkkgb/libiis.h.
+.SS "#define BITPL3   010"
+.PP
+Definition at line 86 of file nkkgb/libiis.h.
+.SS "#define BITPL4   020"
+.PP
+Definition at line 87 of file nkkgb/libiis.h.
+.SS "#define BITPL5   040"
+.PP
+Definition at line 88 of file nkkgb/libiis.h.
+.SS "#define BITPL6   0100"
+.PP
+Definition at line 89 of file nkkgb/libiis.h.
+.SS "#define BITPL7   0200"
+.PP
+Definition at line 90 of file nkkgb/libiis.h.
+.SS "#define BLOCKXFER   01000"
+.PP
+Definition at line 31 of file nkkgb/libiis.h.
+.SS "#define BUFFSZ   16384"
+.PP
+Definition at line 109 of file nkkgb/libiis.h.
+.SS "#define BYPASSIFM   020000"
+.PP
+Definition at line 27 of file nkkgb/libiis.h.
+.SS "#define BYTE   010000"
+.PP
+Definition at line 28 of file nkkgb/libiis.h.
+.SS "#define CHAN1   01"
+.PP
+Definition at line 75 of file nkkgb/libiis.h.
+.SS "#define CHAN2   02"
+.PP
+Definition at line 76 of file nkkgb/libiis.h.
+.SS "#define CHAN3   04"
+.PP
+Definition at line 77 of file nkkgb/libiis.h.
+.SS "#define CHAN4   010"
+.PP
+Definition at line 78 of file nkkgb/libiis.h.
+.SS "#define CHECK_SUM   3"
+.PP
+Definition at line 16 of file nkkgb/libiis.h.
+.SS "#define CHECKSUMVAL   0177777"
+.PP
+Definition at line 57 of file nkkgb/libiis.h.
+.SS "#define COMMAND   100000\fBB\fP"
+.PP
+Definition at line 61 of file nkkgb/libiis.h.
+.SS "#define CURSOR   012"
+.PP
+Definition at line 47 of file nkkgb/libiis.h.
+.SS "#define FEEDBACK   05"
+.PP
+Definition at line 42 of file nkkgb/libiis.h.
+.SS "#define FMAX   200"
+.PP
+Definition at line 99 of file nkkgb/libiis.h.
+.SS "#define FMIN   1"
+.PP
+Definition at line 98 of file nkkgb/libiis.h.
+.SS "#define GRAPHICS   011"
+.PP
+Definition at line 46 of file nkkgb/libiis.h.
+.SS "#define GRCHAN   0100000"
+.PP
+Definition at line 79 of file nkkgb/libiis.h.
+.SS "#define IFM   04"
+.PP
+Definition at line 41 of file nkkgb/libiis.h.
+.SS "#define IIS_BLACK   202"
+.PP
+Definition at line 101 of file nkkgb/libiis.h.
+.SS "#define IIS_BLUE   206"
+.PP
+Definition at line 104 of file nkkgb/libiis.h.
+.SS "#define IIS_GREEN   201"
+.PP
+Definition at line 100 of file nkkgb/libiis.h.
+.SS "#define IIS_RED   204"
+.PP
+Definition at line 103 of file nkkgb/libiis.h.
+.SS "#define IIS_WHITE   203"
+.PP
+Definition at line 102 of file nkkgb/libiis.h.
+.SS "#define IIS_YELLOW   207"
+.PP
+Definition at line 105 of file nkkgb/libiis.h.
+.SS "#define IMCURSOR   020"
+.PP
+Definition at line 53 of file nkkgb/libiis.h.
+.SS "#define IMT800   0100"
+.PP
+Definition at line 34 of file nkkgb/libiis.h.
+.SS "#define IPB   017"
+.PP
+Definition at line 50 of file nkkgb/libiis.h.
+.SS "#define IREAD   0100000"
+.PP
+Definition at line 24 of file nkkgb/libiis.h.
+.SS "#define IWRITE   00"
+.PP
+Definition at line 25 of file nkkgb/libiis.h.
+.SS "#define LUT   02"
+.PP
+Definition at line 39 of file nkkgb/libiis.h.
+.SS "#define MUX32   0200"
+.PP
+Definition at line 33 of file nkkgb/libiis.h.
+.SS "#define OFM   03"
+.PP
+Definition at line 40 of file nkkgb/libiis.h.
+.SS "#define PACKED   040000"
+.PP
+Definition at line 26 of file nkkgb/libiis.h.
+.SS "#define RBUFFSZ   2048"
+.PP
+Definition at line 110 of file nkkgb/libiis.h.
+.SS "#define REFRESH   01"
+.PP
+Definition at line 38 of file nkkgb/libiis.h.
+.SS "#define SCROLL   06"
+.PP
+Definition at line 43 of file nkkgb/libiis.h.
+.SS "#define STRSIZE   1024"
+.PP
+Definition at line 111 of file nkkgb/libiis.h.
+.SS "#define SUB_UNIT   2"
+.PP
+Definition at line 15 of file nkkgb/libiis.h.
+.SS "#define SUMPROC   010"
+.PP
+Definition at line 45 of file nkkgb/libiis.h.
+.SS "#define SZ_WCSTEXT   320"
+.PP
+Definition at line 112 of file nkkgb/libiis.h.
+.SS "#define T_REGISTER   7"
+.PP
+Definition at line 20 of file nkkgb/libiis.h.
+.SS "#define THING_COUNT   1"
+.PP
+Definition at line 14 of file nkkgb/libiis.h.
+.SS "#define TRANSFER_ID   0"
+.PP
+Definition at line 13 of file nkkgb/libiis.h.
+.SS "#define VIDEOM   07"
+.PP
+Definition at line 44 of file nkkgb/libiis.h.
+.SS "#define VRETRACE   0400"
+.PP
+Definition at line 32 of file nkkgb/libiis.h.
+.SS "#define WCS   021"
+.PP
+Definition at line 54 of file nkkgb/libiis.h.
+.SS "#define X_REGISTER   4"
+.PP
+Definition at line 17 of file nkkgb/libiis.h.
+.SS "#define Y_REGISTER   5"
+.PP
+Definition at line 18 of file nkkgb/libiis.h.
+.SS "#define Z_REGISTER   6"
+.PP
+Definition at line 19 of file nkkgb/libiis.h.
+.SS "#define ZOOM   014"
+.PP
+Definition at line 49 of file nkkgb/libiis.h.
+.SH "Function Documentation"
+.PP 
+.SS "float iis_abs (float x)"
+.PP
+Definition at line 620 of file libiis.c.
+.PP
+References x.
+.PP
+Referenced by iis_drawcirc().
+.SS "int iis_chan (int frame)"
+.PP
+Definition at line 601 of file libiis.c.
+.PP
+References CHAN1, CHAN2, CHAN3, CHAN4, frame, and iis_error().
+.PP
+Referenced by iis_display(), and iis_drawcirc().
+.SS "void iis_checksum (short * hdr)"
+.PP
+Definition at line 585 of file libiis.c.
+.PP
+References CHECK_SUM, CHECKSUMVAL, and indx.
+.PP
+Referenced by iis_cur(), iis_display(), and iis_drawcirc().
+.SS "void iis_close ()"
+.PP
+Definition at line 550 of file libiis.c.
+.SS "void iis_cur (float * x, float * y, char * ch)"
+.PP
+Definition at line 255 of file libiis.c.
+.PP
+References buf, CHECK_SUM, iis_checksum(), iis_error(), iis_write(), IMCURSOR, IREAD, SUB_UNIT, SZ_WCSTEXT, T_REGISTER, THING_COUNT, TRANSFER_ID, wcs, x, X_REGISTER, y, Y_REGISTER, and Z_REGISTER.
+.SS "int iis_display (float ** f, int N1, int N2, float fmin, float fmax, int frame)"
+.PP
+Definition at line 137 of file libiis.c.
+.PP
+References ADVXONTC, ADVYONXOV, ALLBITPL, BLOCKXFER, BUFFSZ, CHECK_SUM, f, fbconfig, FEEDBACK, FLOAT_MAGIC, FMAX, FMIN, fmin, frame, free(), iis_chan(), iis_checksum(), iis_error(), iis_write(), IIS_YELLOW, IWRITE, j, nx, ny, PACKED, REFRESH, SUB_UNIT, SZ_WCSTEXT, T_REGISTER, THING_COUNT, TRANSFER_ID, val, WCS, x, X_REGISTER, xo, xx, y, Y_REGISTER, yo, yy, and Z_REGISTER.
+.PP
+Referenced by main().
+.SS "void iis_drawcirc (float xcen, float ycen, float radius, int colour, int frame)"
+.PP
+Definition at line 288 of file libiis.c.
+.PP
+References ADVXONTC, ADVYONXOV, ALLBITPL, BLOCKXFER, CHECK_SUM, frame, free(), i, iis_abs(), iis_chan(), iis_checksum(), iis_error(), iis_read(), iis_round(), iis_write(), IREAD, IWRITE, j, label, PACKED, radius, RBUFFSZ, REFRESH, SUB_UNIT, SZ_WCSTEXT, T_REGISTER, THING_COUNT, TRANSFER_ID, WCS, X_REGISTER, xo, xx, y, Y_REGISTER, ymax, ymin, yo, yy, and Z_REGISTER.
+.SS "void iis_error (char * error1, char * error2)"
+.PP
+Definition at line 594 of file libiis.c.
+.PP
+References exit().
+.PP
+Referenced by iis_chan(), iis_cur(), iis_display(), iis_drawcirc(), iis_open(), iis_read(), and iis_write().
+.SS "void iis_open (char * inpipe, char * outpipe, int fb, int fbx, int fby)"
+.PP
+Definition at line 441 of file libiis.c.
+.PP
+References fb, fbconfig, i, iis_error(), imtdev, j, and STRSIZE.
+.PP
+Referenced by main().
+.SS "void iis_read (char * buf, int size)"
+.PP
+Definition at line 573 of file libiis.c.
+.PP
+References buf, iis_error(), n, and size.
+.PP
+Referenced by iis_drawcirc().
+.SS "int iis_round (float i)"
+.PP
+Definition at line 613 of file libiis.c.
+.PP
+References i.
+.PP
+Referenced by iis_drawcirc().
+.SS "void iis_write (char * buf, int size)"
+.PP
+Definition at line 559 of file libiis.c.
+.PP
+References buf, iis_error(), n, and size.
+.PP
+Referenced by iis_cur(), iis_display(), and iis_drawcirc().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBfbconfig\fP\fC [static]\fP"
+.PP
+Definition at line 118 of file nkkgb/libiis.h.
+.SS "int \fBframeX\fP\fC [static]\fP"
+.PP
+Definition at line 119 of file nkkgb/libiis.h.
+.SS "int \fBframeY\fP\fC [static]\fP"
+.PP
+Definition at line 120 of file nkkgb/libiis.h.
+.SS "int \fBiispipe_i\fP\fC [static]\fP"
+.PP
+Definition at line 116 of file nkkgb/libiis.h.
+.SS "int \fBiispipe_o\fP\fC [static]\fP"
+.PP
+Definition at line 117 of file nkkgb/libiis.h.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

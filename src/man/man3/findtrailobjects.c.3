@@ -1,0 +1,64 @@
+.TH "findtrailobjects.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+findtrailobjects.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <float.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/args.h'\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include 'grid.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	findtrailobjects - find objects in very narrow satellite trails etc\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	findtrailobjects [\fBoptions\fP....] dmax\\\fBn\fP\\		-u		# print this man page\\\fBn\fP\\		-x \fBxname\fP 	# specify name for coords (x)\\\fBn\fP\\		-\fBn\fP nphi		# \fBnumber\fP of bins for histogram (512)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\        'findtrailobjects' reads \fBa\fP catalogue from stdin which must contain\\\fBn\fP\\	\fBa\fP 2 vector 'x' (substitute some other name with -x option).\\\fBn\fP\\	For each \fBobject\fP it computes \fBa\fP histogram of angles to neighbours\\\fBn\fP\\	within distance dmax, where \fBangle\fP lies in domain 0 - PI.\\\fBn\fP\\	It outputs \fBa\fP lc binary format catalogue containing\\\fBn\fP\\		x		# the position\\\fBn\fP\\		nmax		# the count in the highest histogram bin\\\fBn\fP\\		\fBphi\fP		# the \fBangle\fP of the highest histogram bin\\\fBn\fP\\	With judicious choice of parameters and filtering, this will\\\fBn\fP\\	detect satellite trails, diffraction spikes around stars etc.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBNOPBUFF\fP   4"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define NOPBUFF   4"
+.PP
+Definition at line 42 of file findtrailobjects.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	findtrailobjects - find objects in very narrow satellite trails etc\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	findtrailobjects [\fBoptions\fP....] dmax\\\fBn\fP\\		-u		# print this man page\\\fBn\fP\\		-x \fBxname\fP 	# specify name for coords (x)\\\fBn\fP\\		-\fBn\fP nphi		# \fBnumber\fP of bins for histogram (512)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\        'findtrailobjects' reads \fBa\fP catalogue from stdin which must contain\\\fBn\fP\\	\fBa\fP 2 vector 'x' (substitute some other name with -x option).\\\fBn\fP\\	For each \fBobject\fP it computes \fBa\fP histogram of angles to neighbours\\\fBn\fP\\	within distance dmax, where \fBangle\fP lies in domain 0 - PI.\\\fBn\fP\\	It outputs \fBa\fP lc binary format catalogue containing\\\fBn\fP\\		x		# the position\\\fBn\fP\\		nmax		# the count in the highest histogram bin\\\fBn\fP\\		\fBphi\fP		# the \fBangle\fP of the highest histogram bin\\\fBn\fP\\	With judicious choice of parameters and filtering, this will\\\fBn\fP\\	detect satellite trails, diffraction spikes around stars etc.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file findtrailobjects.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 44 of file findtrailobjects.c.
+.PP
+References object::addrlist, allocgrid(), allocobjectcontents(), argsinit(), argsToString(), d, item::dim, dmax, dx, dy, error_exit, exit(), flag, FLAG_ARG, getargd(), getargi(), getargs(), getflag(), getgridcoords(), getneighbours(), getobjectitem(), getobjectitemindex(), getobjects(), i, item::itype, ix, j, MAX_NEIGHBOURS, n, item::ndim, newobject(), object::next, nextargtype(), NOPBUFF, NUM_TYPE, phi, readcathead(), readobject(), setgridsize(), usage, x, xmax, and xmin.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

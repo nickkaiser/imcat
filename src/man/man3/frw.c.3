@@ -1,0 +1,44 @@
+.TH "frw.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+frw.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	frw - compute physical quantities in FRW cosmology\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	frw [\fBoptions\fP....]\\\fBn\fP\\	where \fBoptions\fP are:\\\fBn\fP\\		-\fBm\fP Omega_matter	# present Omega in matter (0.99)\\\fBn\fP\\		-\fBl\fP Omega_lambda	# present Omega in lambda (0.0)\\\fBn\fP\\		-Z Z0		# starting redshift (1.e5)\\\fBn\fP\\		-s Zs		# max source redshift (9.0)\\\fBn\fP\\		-\fBd\fP dlna		# logarithmic step size (0.01)\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'frw' numerically integrates Freidmann equation\\\fBn\fP\\	to obtain physical quantities:\\\fBn\fP\\		\fBz\fP 	= redshift\\\fBn\fP\\		y 	= \fBa\fP / a0 = 1 / (1 + \fBz\fP)\\\fBn\fP\\		\fBh\fP 	= H / H0 = sqrt(Omegam / y^3 + Omegal + (1 - Omega0) / y^2)\\\fBn\fP\\		eta	= conformal time\\\fBn\fP\\		zeta 	= eta0 - eta = conformal lookback time\\\fBn\fP\\		\fBd\fP 	= solution of ddotdot + 2 \fBh\fP ddot - (3/2) Omegam \fBd\fP / y^3 = 0\\\fBn\fP\\		dphi 	= \fBd\fP / y = potential growth factor;\\\fBn\fP\\		\fBr\fP	= radial comoving distance\\\fBn\fP\\		D	= comoving angular diameter distance\\\fBn\fP\\		\fBa\fP	= scale factor\\\fBn\fP\\	where\\\fBn\fP\\		Omega0 = Omega_matter + Omega_lambda and\\\fBn\fP\\	We start integrating at very high Z0 in \fBorder\fP to get into pure\\\fBn\fP\\	growing \fBmode\fP, but only output for Z < Zs.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoroto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	frw - compute physical quantities in FRW cosmology\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	frw [\fBoptions\fP....]\\\fBn\fP\\	where \fBoptions\fP are:\\\fBn\fP\\		-\fBm\fP Omega_matter	# present Omega in matter (0.99)\\\fBn\fP\\		-\fBl\fP Omega_lambda	# present Omega in lambda (0.0)\\\fBn\fP\\		-Z Z0		# starting redshift (1.e5)\\\fBn\fP\\		-s Zs		# max source redshift (9.0)\\\fBn\fP\\		-\fBd\fP dlna		# logarithmic step size (0.01)\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'frw' numerically integrates Freidmann equation\\\fBn\fP\\	to obtain physical quantities:\\\fBn\fP\\		\fBz\fP 	= redshift\\\fBn\fP\\		y 	= \fBa\fP / a0 = 1 / (1 + \fBz\fP)\\\fBn\fP\\		\fBh\fP 	= H / H0 = sqrt(Omegam / y^3 + Omegal + (1 - Omega0) / y^2)\\\fBn\fP\\		eta	= conformal time\\\fBn\fP\\		zeta 	= eta0 - eta = conformal lookback time\\\fBn\fP\\		\fBd\fP 	= solution of ddotdot + 2 \fBh\fP ddot - (3/2) Omegam \fBd\fP / y^3 = 0\\\fBn\fP\\		dphi 	= \fBd\fP / y = potential growth factor;\\\fBn\fP\\		\fBr\fP	= radial comoving distance\\\fBn\fP\\		D	= comoving angular diameter distance\\\fBn\fP\\		\fBa\fP	= scale factor\\\fBn\fP\\	where\\\fBn\fP\\		Omega0 = Omega_matter + Omega_lambda and\\\fBn\fP\\	We start integrating at very high Z0 in \fBorder\fP to get into pure\\\fBn\fP\\	growing \fBmode\fP, but only output for Z < Zs.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoroto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 9 of file frw.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 46 of file frw.c.
+.PP
+References d, dr, exit(), h, i, r, t, usage, Y, y, and z.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

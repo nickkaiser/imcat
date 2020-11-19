@@ -1,0 +1,88 @@
+.TH "tableop.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+tableop.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	tableop --- apply operation to table of numbers\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	tableop	col \fBop\fP\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		tableop read lines of \fBa\fP table containing lines\\\fBn\fP\\			X_1 X_2 X_3 .....\\\fBn\fP\\		from stdin\\\fBn\fP\\		lines beginning with \\'#\\' and empty lines are ignored\\\fBn\fP\\		changes the col'th column entry\\\fBn\fP\\		\fBop\fP can be one of	exp, ln, dex, log\\\fBn\fP\\		\fBe\fP.g. tableop 2 ln will replace 2nd column its natural log\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAX_LINE_LENGTH\fP   4096"
+.br
+.ti -1c
+.RI "#define \fBMAX_COLS\fP   32"
+.br
+.ti -1c
+.RI "#define \fBMAX_WORD_LENGTH\fP   128"
+.br
+.ti -1c
+.RI "#define \fBEXP\fP   0"
+.br
+.ti -1c
+.RI "#define \fBLN\fP   1"
+.br
+.ti -1c
+.RI "#define \fBDEX\fP   3"
+.br
+.ti -1c
+.RI "#define \fBLOG\fP   4"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define DEX   3"
+.PP
+Definition at line 27 of file tableop.c.
+.PP
+Referenced by main().
+.SS "#define EXP   0"
+.PP
+Definition at line 25 of file tableop.c.
+.SS "#define LN   1"
+.PP
+Definition at line 26 of file tableop.c.
+.PP
+Referenced by main().
+.SS "#define LOG   4"
+.PP
+Definition at line 28 of file tableop.c.
+.SS "#define MAX_COLS   32"
+.PP
+Definition at line 23 of file tableop.c.
+.SS "#define MAX_LINE_LENGTH   4096"
+.PP
+Definition at line 22 of file tableop.c.
+.SS "#define MAX_WORD_LENGTH   128"
+.PP
+Definition at line 24 of file tableop.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	tableop --- apply operation to table of numbers\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	tableop	col \fBop\fP\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		tableop read lines of \fBa\fP table containing lines\\\fBn\fP\\			X_1 X_2 X_3 .....\\\fBn\fP\\		from stdin\\\fBn\fP\\		lines beginning with \\'#\\' and empty lines are ignored\\\fBn\fP\\		changes the col'th column entry\\\fBn\fP\\		\fBop\fP can be one of	exp, ln, dex, log\\\fBn\fP\\		\fBe\fP.g. tableop 2 ln will replace 2nd column its natural log\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file tableop.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 30 of file tableop.c.
+.PP
+References DEX, exit(), EXP, line, LN, LOG, MAX_COLS, MAX_LINE_LENGTH, MAX_WORD_LENGTH, op, usage, and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,74 @@
+.TH "colorbox.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+colorbox.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/arrays.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	colorbox - generate example \fBcolor\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	colourbox \fBN\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'colourbox\\' generates \fBa\fP \fBN\fP x \fBN\fP 2-colour image  which spans the spectrum\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "short * \fBf\fP"
+.br
+.ti -1c
+.RI "int \fBncolours\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	colorbox - generate example \fBcolor\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	colourbox \fBN\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'colourbox\\' generates \fBa\fP \fBN\fP x \fBN\fP 2-colour image  which spans the spectrum\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file colorbox.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 29 of file colorbox.c.
+.PP
+References add_comment(), appendcomment(), fitsheader::bscaling, color, COM_LENGTH, error_exit, exit(), fitsheader::extpixtype, f, fits, i, fitsheader::intpixtype, j, fitsheader::linebuffer, fitsheader::n, N, ncolours, fitsheader::ndim, newtextcomment(), fitsheader::opstream, SHORT_PIXTYPE, usage, writefitsheader(), writefitsline(), and writefitstail().
+.SH "Variable Documentation"
+.PP 
+.SS "short* f\fC [static]\fP"
+.PP
+Definition at line 26 of file colorbox.c.
+.SS "int \fBncolours\fP\fC [static]\fP"
+.PP
+Definition at line 27 of file colorbox.c.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

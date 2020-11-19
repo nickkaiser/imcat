@@ -1,0 +1,191 @@
+.TH "myfft.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+myfft.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSHORT_IMAGE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBFLOAT_IMAGE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBDOUBLE_IMAGE\fP   2"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBforward_fft\fP (float **f, int \fBNx\fP, int \fBNy\fP, \fBfft_type\fP fk)"
+.br
+.ti -1c
+.RI "void \fBinverse_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **f)"
+.br
+.ti -1c
+.RI "void \fBfilter\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float(*filterfunc)(float ki, float kj))"
+.br
+.ti -1c
+.RI "void \fBcfilter\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float(*rfunc)(float ki, float kj), float(*ifunc)(float ki, float kj))"
+.br
+.ti -1c
+.RI "void \fBccf\fP (\fBfft_type\fP fk1, \fBfft_type\fP fk2, int \fBNx\fP, int \fBNy\fP, float **ff12, int \fBx0\fP, int y0)"
+.br
+.ti -1c
+.RI "void \fBpower\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **p, int \fBx0\fP, int y0)"
+.br
+.ti -1c
+.RI "void \fBcycleimage\fP (float **f, int \fBNx\fP, int \fBNy\fP, int \fBx0\fP, int y0)"
+.br
+.ti -1c
+.RI "void \fBalloc_fft\fP (\fBfft_type\fP *fk, int \fBNx\fP, int \fBNy\fP)"
+.br
+.ti -1c
+.RI "void \fBfree_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP)"
+.br
+.ti -1c
+.RI "void \fBsubstitute\fP (float **f, int \fBNx\fP, int \fBNy\fP, float magicsubstitute)"
+.br
+.ti -1c
+.RI "void \fBcopy_fft\fP (\fBfft_type\fP fksrc, int \fBNx\fP, int \fBNy\fP, \fBfft_type\fP fkdest)"
+.br
+.ti -1c
+.RI "void \fBget_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **fdest)"
+.br
+.ti -1c
+.RI "void \fBset_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **fsrc)"
+.br
+.ti -1c
+.RI "void \fBforward_cfft\fP (float **fsrc, int \fBnx\fP, int \fBny\fP, float **fdst)"
+.br
+.ti -1c
+.RI "void \fBinverse_cfft\fP (float **fsrc, int \fBnx\fP, int \fBny\fP, float **fdst)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define DOUBLE_IMAGE   2"
+.PP
+Definition at line 139 of file myfft.h.
+.SS "#define FLOAT_IMAGE   1"
+.PP
+Definition at line 138 of file myfft.h.
+.SS "#define SHORT_IMAGE   0"
+.PP
+Definition at line 137 of file myfft.h.
+.SH "Function Documentation"
+.PP 
+.SS "void alloc_fft (\fBfft_type\fP * fk, int Nx, int Ny)"
+.PP
+Definition at line 250 of file fft_FFTPACK.c.
+.PP
+References error_exit, fft_type, n, Nx, Ny, and y.
+.PP
+Referenced by exponentialfilter(), gaussfilter(), kolmogorovfilter(), main(), mexicanfilter(), powerlawfilter(), and schecterfilter().
+.SS "void ccf (\fBfft_type\fP fk1, \fBfft_type\fP fk2, int Nx, int Ny, float ** ff12, int x0, int y0)"
+.PP
+Definition at line 193 of file fft_FFTPACK.c.
+.PP
+References a1, a2, b1, b2, cycleimage(), fft_type, inverse_fft(), ix, n, Nx, and Ny.
+.PP
+Referenced by main().
+.SS "void cfilter (\fBfft_type\fP fk, int Nx, int Ny, float(* rfunc)(float ki, float kj), float(* ifunc)(float ki, float kj))"
+.PP
+Definition at line 167 of file fft_FFTPACK.c.
+.PP
+References fft_type, ifunc(), ix, n, Nx, Ny, PI, and rfunc().
+.PP
+Referenced by main().
+.SS "void copy_fft (\fBfft_type\fP fksrc, int Nx, int Ny, \fBfft_type\fP fkdest)"
+.PP
+Definition at line 333 of file fft_FFTPACK.c.
+.PP
+References fft_type, n, Nx, Ny, x, and y.
+.PP
+Referenced by main().
+.SS "void cycleimage (float ** f, int Nx, int Ny, int x0, int y0)"
+.PP
+Definition at line 18 of file myfft.c.
+.PP
+References f, F(), free(), Nx, Ny, x, xp(), y, and yp().
+.PP
+Referenced by ccf(), forward_cfft(), inverse_cfft(), main(), myfftwcfft(), and power().
+.SS "void filter (\fBfft_type\fP fk, int Nx, int Ny, float(* filterfunc)(float ki, float kj))"
+.PP
+Definition at line 147 of file fft_FFTPACK.c.
+.PP
+References fft_type, ix, n, Nx, Ny, and PI.
+.PP
+Referenced by exponentialfilter(), gaussfilter(), kolmogorovfilter(), main(), mexicanfilter(), powerlawfilter(), and schecterfilter().
+.SS "void forward_cfft (float ** fsrc, int nx, int ny, float ** fdst)"
+.PP
+Definition at line 393 of file fft_FFTPACK.c.
+.PP
+References c, cfftf_(), cffti_(), cycleimage(), free(), myfftwcfft(), nx, ny, x, and y.
+.PP
+Referenced by main().
+.SS "void forward_fft (float ** f, int Nx, int Ny, \fBfft_type\fP fk)"
+.PP
+Definition at line 32 of file fft_FFTPACK.c.
+.PP
+References cfftf_(), cffti_(), exit(), f, fft_type, FORWARD_X, FORWARD_Y, free(), n, Nx, nx, Ny, ny, r, rfftf_(), rffti_(), shmfree(), x, and y.
+.PP
+Referenced by exponentialfilter(), gaussfilter(), kolmogorovfilter(), main(), mexicanfilter(), powerlawfilter(), and schecterfilter().
+.SS "void free_fft (\fBfft_type\fP fk, int Nx, int Ny)"
+.PP
+Definition at line 270 of file fft_FFTPACK.c.
+.PP
+References fft_type, and free().
+.PP
+Referenced by exponentialfilter(), gaussfilter(), kolmogorovfilter(), mexicanfilter(), powerlawfilter(), and schecterfilter().
+.SS "void get_fft (\fBfft_type\fP fk, int Nx, int Ny, float ** fdest)"
+.PP
+Definition at line 346 of file fft_FFTPACK.c.
+.PP
+References fft_type, ix, n, Nx, and Ny.
+.PP
+Referenced by main().
+.SS "void inverse_cfft (float ** fsrc, int nx, int ny, float ** fdst)"
+.PP
+Definition at line 444 of file fft_FFTPACK.c.
+.PP
+References c, cfftb_(), cffti_(), cycleimage(), free(), myfftwcfft(), nx, ny, x, and y.
+.PP
+Referenced by main().
+.SS "void inverse_fft (\fBfft_type\fP fk, int Nx, int Ny, float ** f)"
+.PP
+Definition at line 90 of file fft_FFTPACK.c.
+.PP
+References cfftb_(), cffti_(), exit(), f, fft_type, free(), INVERSE_X, INVERSE_Y, n, Nx, nx, Ny, ny, r, rfftb_(), rffti_(), shmfree(), x, and y.
+.PP
+Referenced by ccf(), exponentialfilter(), gaussfilter(), kolmogorovfilter(), main(), mexicanfilter(), powerlawfilter(), and schecterfilter().
+.SS "void power (\fBfft_type\fP fk, int Nx, int Ny, float ** p, int x0, int y0)"
+.PP
+Definition at line 218 of file fft_FFTPACK.c.
+.PP
+References a, b, cycleimage(), fft_type, ix, n, Nx, Ny, x, and y.
+.PP
+Referenced by main().
+.SS "void set_fft (\fBfft_type\fP fk, int Nx, int Ny, float ** fsrc)"
+.PP
+Definition at line 372 of file fft_FFTPACK.c.
+.PP
+References fft_type, ix, n, Nx, and Ny.
+.PP
+Referenced by main().
+.SS "void substitute (float ** f, int Nx, int Ny, float magicsubstitute)"
+.PP
+Definition at line 90 of file myfft.c.
+.PP
+References f, FLOAT_MAGIC, Nx, Ny, x, and y.
+.PP
+Referenced by exponentialfilter(), gaussfilter(), kolmogorovfilter(), main(), mexicanfilter(), powerlawfilter(), and schecterfilter().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,34 @@
+.TH "shmalloc.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+shmalloc.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBshmalloc\fP (void **addrptr, int size)"
+.br
+.ti -1c
+.RI "int \fBshmfree\fP (int shmid)"
+.br
+.ti -1c
+.RI "int \fBallocFloatArray_shm\fP (float ***\fBfout\fP, int \fBN1\fP, int \fBN2\fP)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int allocFloatArray_shm (float *** fout, int N1, int N2)"
+.PP
+Referenced by main().
+.SS "int shmalloc (void ** addrptr, int size)"
+.PP
+.SS "int shmfree (int shmid)"
+.PP
+Referenced by forward_fft(), inverse_fft(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

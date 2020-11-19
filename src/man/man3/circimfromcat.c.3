@@ -1,0 +1,77 @@
+.TH "circimfromcat.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+circimfromcat.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/arrays.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "char * \fBusage\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 39 of file circimfromcat.c.
+.PP
+References add_comment(), allocFloatArray(), dr, error_exit, exit(), f, F(), fits, FLOAT_PIXTYPE, ix, lcpipe, N, new2Dfitsheader(), r, usage, write2Dfloatimage(), x, and y.
+.SH "Variable Documentation"
+.PP 
+.SS "char* \fBusage\fP"
+.PP
+\fBInitial value:\fP.nf
+ '\n\
+NAME\n\
+  circimfromcat --- generate a circularly symmetric image\n\
+\n\
+SYNOPSIS\n\
+  circimfromcat [options]\n\
+\n\
+DESCRIPTION\n\
+  'circimfromcat' reads an lc-format catalogue from standard\n\
+  input containing at least a single scalar (default name F)\n\
+  which is interpreted as a set uf uniformly spaced samples\n\
+  of a function F(r), and generates a square circularly\n\
+  symmetric 2-D image f(x,y) = F(r = sqrt(x^2 + y^2)).\n\
+  Options are:\n\
+    -d dr   # spacing of input samples in pixels (1.0)\n\
+    -n N    # size of output image (512)\n\
+    -N nrmax  # input array size (10000)\n\
+    -F Fname  # name for the input value\n\
+\n\
+AUTHOR\n\
+  Nick Kaiser --- kaiser@ifa.hawaii.edu\n\
+\n'
+.fi
+.PP
+Definition at line 15 of file circimfromcat.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

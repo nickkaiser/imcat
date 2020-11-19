@@ -1,0 +1,112 @@
+.TH "lcfilter.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+lcfilter.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include 'lcfilter.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBLCFILTERSTRINGLENGTH\fP   4096"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBstartfilter\fP (int coordsargcount, char *coordsarg[], int editmode)"
+.br
+.ti -1c
+.RI "int \fBaddfiltercondition\fP (float \fBx1\fP, float \fBx2\fP, float y1, float y2)"
+.br
+.ti -1c
+.RI "void \fBdofilter\fP (char *tempfilename)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "char \fBlcfilter\fP [LCFILTERSTRINGLENGTH]"
+.br
+.ti -1c
+.RI "char \fBxname\fP [64]"
+.br
+.ti -1c
+.RI "char \fByname\fP [64]"
+.br
+.ti -1c
+.RI "int \fBfirstclause\fP"
+.br
+.ti -1c
+.RI "int \fBmode\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define LCFILTERSTRINGLENGTH   4096"
+.PP
+Definition at line 8 of file lcfilter.c.
+.PP
+Referenced by addfiltercondition().
+.SH "Function Documentation"
+.PP 
+.SS "int addfiltercondition (float x1, float x2, float y1, float y2)"
+.PP
+Definition at line 35 of file lcfilter.c.
+.PP
+References exit(), firstclause, lcfilter, LCFILTERSTRINGLENGTH, xname, and yname.
+.PP
+Referenced by main().
+.SS "void dofilter (char * tempfilename)"
+.PP
+Definition at line 52 of file lcfilter.c.
+.PP
+References exit(), lcfilter, mode, and REJECT_MODE.
+.PP
+Referenced by main().
+.SS "void startfilter (int coordsargcount, char * coordsarg[], int editmode)"
+.PP
+Definition at line 13 of file lcfilter.c.
+.PP
+References exit(), firstclause, lcfilter, mode, xname, and yname.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBfirstclause\fP\fC [static]\fP"
+.PP
+Definition at line 11 of file lcfilter.c.
+.PP
+Referenced by addfiltercondition(), and startfilter().
+.SS "char \fBlcfilter\fP[LCFILTERSTRINGLENGTH]\fC [static]\fP"
+.PP
+Definition at line 10 of file lcfilter.c.
+.PP
+Referenced by addfiltercondition(), dofilter(), and startfilter().
+.SS "int \fBmode\fP\fC [static]\fP"
+.PP
+Definition at line 11 of file lcfilter.c.
+.PP
+Referenced by dofilter(), and startfilter().
+.SS "char \fBxname\fP[64]\fC [static]\fP"
+.PP
+Definition at line 10 of file lcfilter.c.
+.PP
+Referenced by addfiltercondition(), and startfilter().
+.SS "char \fByname\fP[64]\fC [static]\fP"
+.PP
+Definition at line 10 of file lcfilter.c.
+.PP
+Referenced by addfiltercondition(), and startfilter().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

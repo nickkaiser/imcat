@@ -1,0 +1,56 @@
+.TH "makegausskernel.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makegausskernel.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../fftlib/myfft.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	makegausskernel --- calculate the kernel for gaussian psf\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makegausskernel \fBalpha\fP beta \fBsigma\fP rf [\fBN1\fP \fBN2\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'makegausskernel' computes kernel K_alpha beta for the polarisation\\\fBn\fP\\	for gaussian psf.\\\fBn\fP\\	rf is the scale length for the gaussian weight function.\\\fBn\fP\\	\fBsigma\fP is the scale length for the psf.\\\fBn\fP\\	By default \fBN1\fP - \fBN2\fP = 256.\\\fBn\fP\\\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "int \fBgoodindex\fP (int x)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	makegausskernel --- calculate the kernel for gaussian psf\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makegausskernel \fBalpha\fP beta \fBsigma\fP rf [\fBN1\fP \fBN2\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'makegausskernel' computes kernel K_alpha beta for the polarisation\\\fBn\fP\\	for gaussian psf.\\\fBn\fP\\	rf is the scale length for the gaussian weight function.\\\fBn\fP\\	\fBsigma\fP is the scale length for the psf.\\\fBn\fP\\	By default \fBN1\fP - \fBN2\fP = 256.\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 5 of file makegausskernel.c.
+.SH "Function Documentation"
+.PP 
+.SS "int goodindex (int x)"
+.PP
+Definition at line 98 of file makegausskernel.c.
+.PP
+References x.
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 28 of file makegausskernel.c.
+.PP
+References add_comment(), allocFloatArray(), alpha, exit(), fits, FLOAT_PIXTYPE, goodindex(), i, ix, j, K, l, M, m, N1, N2, new2Dfitsheader(), r, sigma, usage, w, and write2Dfloatimage().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

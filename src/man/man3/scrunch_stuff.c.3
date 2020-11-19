@@ -1,0 +1,62 @@
+.TH "scrunch_stuff.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+scrunch_stuff.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'fits.h'\fP
+.br
+\fC#include 'scrunch_stuff.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBxfloatcmp\fP ()"
+.br
+.ti -1c
+.RI "void \fBscrunch_stream\fP (\fBfitsheader\fP *\fBfitsin\fP, \fBfitsheader\fP *\fBfitsout\fP, int \fBmode\fP)"
+.br
+.ti -1c
+.RI "int \fBxfloatcmp\fP (float *s1, float *s2)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void scrunch_stream (\fBfitsheader\fP * fitsin, \fBfitsheader\fP * fitsout, int mode)"
+.PP
+Definition at line 20 of file scrunch_stuff.c.
+.PP
+References CMEAN, error_exit, f, FLOAT_MAGIC, free(), i, j, k, MEAN, MEDIAN, fitsheader::n, readfitsline(), writefitsline(), and xfloatcmp().
+.PP
+Referenced by main().
+.SS "int xfloatcmp (float * s1, float * s2)"
+.PP
+Definition at line 101 of file scrunch_stuff.c.
+.SS "int xfloatcmp ()"
+.PP
+scrunch_stream
+.IP "\(bu" 2
+works in stream mode
+.IP "\(bu" 2
+tries to patch bad pixels 
+.PP
+Referenced by scrunch_stream().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

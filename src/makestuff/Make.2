@@ -1,0 +1,178 @@
+# you should not need to change anything below
+
+# directory for html format man pages (mine is actually a symbolic link to my
+# www space)
+DOCDIR = ../doc
+
+SHELL = /bin/sh
+
+all : libs tools
+
+# libs : fftpacklib_ utils_ fftlib_ imlib_ catlib_ cdllib_
+libs : utils_ fftlib_ fftpacklib_ imlib_ catlib_
+
+TOOLS = cattools_ cattools_lc cattools_mergecats cattools_lmodel\
+	dev_ nk_ nk_tablestuff \
+	imtools_ imtools_xim imtools_iis imtools_ic imtools_fitstops imtools_xfv \
+	imcattools_objectfinding imcattools_mosaics \
+	imcattools_psfcorrection imcattools_registration \
+	imcattools_shearanal imcattools_pgplot \
+	imcattools_photometry imcattools_photometry_fitting \
+	imcattools_astrometry imcattools_simulation imcattools_cosmicrays \
+	imcattools_optics imcattools_tesselation imcattools_rshloop \
+	imcattools_geomview imcattools_cosmology imcattools_waves \
+	imcattools_orbits
+
+tools : $(TOOLS)
+
+empty :
+	rm -rf ../bin/$(ARCH)/*
+	rm -rf ../lib/$(ARCH)/*
+
+empty_all :
+	rm -rf ../bin/*
+	rm -rf ../lib/*
+
+docs :
+	@if test ! -d $(DOCDIR) ; then mkdir $(DOCDIR) ; fi
+	cp doc/imcat_search.html $(DOCDIR)/imcat_search.html
+	cp doc/byteorder.html $(DOCDIR)/byteorder.html
+	make tools MODE=docs
+	make libs MODE=docs
+	makeimcatman $(DOCDIR) $(TOOLS)
+	mv imcat.1 $(MANDIR)/man1
+	makehtmlmanpage < $(MANDIR)/man1/imcat.1 > $(MANDIR)/html1/imcat.html
+	@echo do not forget to install imcat_search.pl!
+
+imcatref :
+	makeimcatman -t $(DOCDIR) $(TOOLS)
+	mkdir -p ../doc/imcatref
+	mv imcatref.tex ../doc/imcatref
+	rm imcat.1
+
+execdist :
+	cd ../bin ; tar chf $(ARCH)_`date +%D | sed 's:/:_:'g`.tar $(ARCH) ; gzip $(ARCH)_`date +%D | sed 's:/:_:'g`.tar
+	cd ../bin ; tar chf scripts_`date +%D | sed 's:/:_:'g`.tar scripts ; gzip scripts_`date +%D | sed 's:/:_:'g`.tar
+
+srcdist :
+	cd .. ; cp -R src src_tmp ; rm -rf `find src_tmp -name "CVS" -print` ; mv src_tmp src_`date +%D | sed 's:/:_:'g`
+	cd .. ; tar cf src_`date +%D | sed 's:/:_:'g`.tar src_`date +%D | sed 's:/:_:'g` ; gzip src_`date +%D | sed 's:/:_:'g`.tar
+	rm -rf ../src_`date +%D | sed 's:/:_:'g`
+	cd ; tar cf man_`date +%D | sed 's:/:_:'g`.tar man/man1 man/cat[13] ; gzip man_`date +%D | sed 's:/:_:'g`.tar
+	mv ~/man_`date +%D | sed 's:/:_:'g`.tar.gz ..
+
+# the libraries:
+utils_ :
+	cd utils ; make $(MODE) RANLIB=$(RANLIB) CFLAGS=$(CFLAGS)
+
+fftlib_ :
+	cd fftlib ; make $(MODE) RANLIB=$(RANLIB) FFT=$(IMCATFFT) CFLAGS=$(CFLAGS) F77=$(FCOMP)
+
+catlib_ :
+	cd catlib ; make $(MODE) RANLIB=$(RANLIB) CFLAGS=$(CFLAGS)
+
+imlib_ :
+	cd imlib ; make $(MODE) RANLIB=$(RANLIB) CFLAGS=$(CFLAGS)
+
+fftpacklib_ :
+	cd $(FFTLIBDIR) ; make $(MODE) RANLIB=$(RANLIB) FC=$(FCOMP) FFT=$(IMCATFFT) CFLAGS=$(CFLAGS) FFLAGS=$(FFLAGS)
+
+cdllib_ :
+	cd cdllib ; make $(MODE) CFLAGS=$(CFLAGS)
+
+
+
+# the tools:
+cattools_ :
+	cd cattools ; make $(MODE) CFLAGS=$(CFLAGS)
+
+cattools_lc :
+	cd cattools/lc ; make $(MODE) CFLAGS=$(CFLAGS)
+
+cattools_tk :
+	cd cattools/tk ; make $(MODE) CFLAGS=$(CFLAGS)
+
+cattools_mergecats :
+	cd cattools/mergecats ; make $(MODE) CFLAGS=$(CFLAGS)
+
+cattools_lmodel :
+	cd cattools/lmodel ; make $(MODE) CFLAGS=$(CFLAGS) FLIBS=$(FLIBS)
+
+
+dev_ :
+	cd dev ; make $(MODE) CFLAGS=$(CFLAGS)
+
+nk_ :
+	cd nk ; make $(MODE) CFLAGS=$(CFLAGS)
+
+nk_tablestuff :
+	cd nk/tablestuff ; make $(MODE) CFLAGS=$(CFLAGS)
+
+
+
+imtools_ :
+	cd imtools ; make $(MODE) FFTLIB=$(IMCATFFTLIB) CFLAGS=$(CFLAGS) FLIBS=$(FLIBS)
+
+imtools_xim :
+	cd imtools/xim ; make $(MODE) XAWLIBS=$(XAWLIBS) CFLAGS=$(CFLAGS)
+
+imtools_iis :
+	cd imtools/iis ; make $(MODE) CFLAGS=$(CFLAGS) SOCKET=$(SOCKET)
+
+imtools_imview :
+	cd imtools/imview ; make $(MODE) XMLIBS=$(XMLIBS) CFLAGS=$(CFLAGS)
+
+imtools_ic :
+	cd imtools/ic ; make $(MODE) CFLAGS=$(CFLAGS)
+
+imtools_fitstops :
+	cd imtools/fitstops ; make $(MODE) CFLAGS=$(CFLAGS)
+
+imtools_xfv :
+	cd imtools/xfv ; make $(MODE) XAWLIBS=$(XAWLIBS) CFLAGS=$(CFLAGS) FFTLIB=$(IMCATFFTLIB) FLIBS=$(FLIBS)
+
+imcattools_objectfinding :
+	cd imcattools/objectfinding ; make $(MODE) FFTLIB=$(IMCATFFTLIB) CFLAGS=$(CFLAGS) FLIBS=$(FLIBS)
+
+imcattools_photometry :
+	cd imcattools/photometry ; make $(MODE) FFTLIB=$(IMCATFFTLIB) CFLAGS=$(CFLAGS) FLIBS=$(FLIBS)
+
+imcattools_photometry_fitting :
+	cd imcattools/photometry/fitting ; make $(MODE) FFTLIB=$(IMCATFFTLIB) CFLAGS=$(CFLAGS)
+
+imcattools_mosaics :
+	cd imcattools/mosaics ; make $(MODE) CFLAGS=$(CFLAGS)
+
+imcattools_psfcorrection :
+	cd imcattools/psfcorrection ; make $(MODE) CFLAGS=$(CFLAGS)
+
+imcattools_registration :
+	cd imcattools/registration ; make $(MODE) FFTLIB=$(IMCATFFTLIB) CFLAGS=$(CFLAGS) FLIBS=$(FLIBS)
+
+imcattools_shearanal :
+	cd imcattools/shearanal ; make $(MODE) FFTLIB=$(IMCATFFTLIB) CFLAGS=$(CFLAGS) FLIBS=$(FLIBS)
+
+imcattools_astrometry :
+	cd imcattools/astrometry ; make $(MODE) FFTLIB=$(IMCATFFTLIB) CFLAGS=$(CFLAGS) FLIBS=$(FLIBS)
+
+imcattools_simulation :
+	cd imcattools/simulation ; make $(MODE) CFLAGS=$(CFLAGS)
+
+imcattools_cosmicrays :
+	cd imcattools/cosmicrays ; make $(MODE) CFLAGS=$(CFLAGS)
+
+imcattools_optics :
+	cd imcattools/optics ; make $(MODE) FFTLIB=$(IMCATFFTLIB) CFLAGS=$(CFLAGS) FLIBS=$(FLIBS)
+
+imcattools_tesselation :
+	cd imcattools/tesselation ; make $(MODE) CFLAGS=$(CFLAGS)
+
+imcattools_rshloop :
+	cd imcattools/rshloop ; make $(MODE) CFLAGS=$(CFLAGS)
+
+imcattools_cosmology :
+	cd imcattools/cosmology ; make $(MODE) CFLAGS=$(CFLAGS)
+
+imcattools_waves :
+	cd imcattools/waves ; make $(MODE)  FFTLIB=$(IMCATFFTLIB) CFLAGS=$(CFLAGS) FLIBS=$(FLIBS)
+

@@ -1,0 +1,135 @@
+#! /usr/bin/perl
+
+# extract the RA, DEC, ROTANGLE fields from fits headers and
+# compute transformations from detector plane to rectilinear sky coords
+# result is a set of catalogues fieldgeomdir/c?e?.cat which contain the
+# pixel, detector and sky coords xp, xd, xs for a set of points
+# around the boundary of the chip
+
+$usage = "\
+NAME\
+	getfieldgeomfromheaders --- determine field layout from RA, DEC in headers\
+\
+SYNOPSIS\
+	getfieldgeomfromheaders [options]\
+		-s srcdir	# source image directory (images/chip0)\
+		-S imsuff	# suffix for images (.fits)\
+		-d dstdir	# destination directory (fieldgeomdir)\
+		-r dtheta	# add dtheta (deg) to rotangle (0.0)\
+\
+DESCRIPTION\
+	getfieldgeomfromheaders extracts the RA, DEC, ROTANGLE fields from fits\
+	headers for a set of ne images in and srcdir/chip0.imsuff and\
+	then for each chip and each exposure computes for a set of points\
+	around the chip boundary the pixel coordinates xp, the\
+	idealised detector plane coords xd (according to to the\
+	nominal chip geometry layout) and approximate sky coordinates xs.\
+	The result is a set of catalogues dstdir/c?e?.cat which\
+	can be used e.g. to find the region of a digital sky survey\
+	image underlying a given chip in a given exposure for initial\
+	registration.\
+\
+	The ROTANGLE measures the angle of N relative to the slow axis\
+	of the lower bank of chips in the CFH mosaic (increasing in\
+	a clockwise sense.\
+\
+	Requires chips.db; fields.db and nominal.db.\
+\
+WARNING\
+	There are known problems with the encoders on CFH causing these\
+	header values to occasionally be in error.\
+\
+AUTHOR\
+        Nick Kaiser --- kaiser\@ifa.hawaii.edu\
+";
+
+
+# defaults
+$imdir = "images/chip0/";
+$imsuffix = ".fits";
+$dstdir = "fieldgeomdir/";
+$dtheta = 0.0;
+
+# parse args
+while ($_ = shift(@ARGV)) {
+	if (/^-s/) {
+		$imdir = shift(@ARGV) || die $usage;
+	} elsif (/^-S/) {
+		$imsuffix = shift(@ARGV) || die $usage;
+	} elsif (/^-d/) {
+		$dstdir = shift(@ARGV) || die $usage;
+	} elsif (/^-r/) {
+		$dtheta = shift(@ARGV) || die $usage;
+	} else {
+		die $usage;
+	}
+}
+
+require "fields.db";
+require "chips.db";
+require "nominal.db";
+
+# we use this many points along each edge
+$nedge = 16;
+$npoints = 4 * $nedge;
+$dx = $xsize / $nedge;
+$dy = $ysize / $nedge;
+$p = 0;
+for ($m = 0; $m < $nedge; $m++) {
+	$xp[$m + 0 * $nedge] = $m * $dx;
+	$yp[$m + 0 * $nedge] = 0;
+	$xp[$m + 1 * $nedge] = $xsize;
+	$yp[$m + 1 * $nedge] = $m * $dy;
+	$xp[$m + 2 * $nedge] = ($nedge - $m) * $dx;
+	$yp[$m + 2 * $nedge] = $ysize;
+	$xp[$m + 3 * $nedge] = 0;
+	$yp[$m + 3 * $nedge] = ($nedge - $m) * $dy;	
+}
+
+$RA0 = $DEC0 = 0.0;
+print "# input header values\n";
+for ($e = 0; $e < $nfields; $e++) {
+	$srcim = $imdir.$fieldname[$e].$imsuffix;
+	die "getfieldgeomfromheaders: $srcim does not exist\n" if (! -f $srcim);
+	($junk, $RAHMS) = split("'", `imhead -t RA < $srcim`);
+	chop($RA[$e] = `hmstodecimal $RAHMS`);
+	$RA0 += $RA[$e] / $nfields;
+	($junk, $DECHMS) = split("'", `imhead -t DEC < $srcim`);
+	chop($DEC[$e] = `dmstodecimal $DECHMS`);
+	$DEC0 += $DEC[$e] / $nfields;
+	chop($ROTANGLE[$e] = `imhead -v ROTANGLE < $srcim`);
+	$ROTANGLE[$e] += $dtheta;
+	print "field $e; RA = $RA[$e]; DEC = $DEC[$e]; ROTANGLE = $ROTANGLE[$e]\n";
+}
+print "# centre:\nRA0 = $RA0; DEC0 = $DEC0\n";
+
+
+print "# field centres in cartesion coords, rotangle in radians\n";
+for ($e = 0; $e < $nfields; $e++) {
+	($x0[$e], $y0[$e]) = split(' ', `echo $RA[$e] $DEC[$e] | lc -C -n RA -n DEC | getxsfromradec $RA0 $DEC0 | lc xs -o`);
+	$x0[$e] *= 3600 / 0.206;
+	$y0[$e] *= 3600 / 0.206;
+	$phi[$e] = 3.14159 * $ROTANGLE[$e] / 180.0;
+	print "field $e; x = $x0[$e]; y = $y0[$e]; phi = $phi[$e]\n";
+	for ($c = 0; $c < $nchips; $c++) {
+		$catfile = $dstdir."c".$c."e".$e.".cat";
+		open(CATFILE, "| lc -C -n e -n c -N '1 2 xp' -N '1 2 xd' -N '1 2 xs' > $catfile");
+		for ($p = 0; $p < $npoints; $p++) {
+			# compute nominal detector coords
+			$xd = $xp[$p] + $xmargin + $ix[$c] * $Xsize;
+			$yd = $yp[$p] + $ymargin + $iy[$c] * $Ysize;
+			# and sky coords
+			$xs = $xd * cos($phi[$e]) - $yd * sin($phi[$e]) + $x0[$e];
+			$ys = $xd * sin($phi[$e]) + $yd * cos($phi[$e]) + $y0[$e];
+			printf CATFILE "%d %d %13.8g %13.8g %13.8g %13.8g %13.8g %13.8g\n", 
+				$e, $c, $xp[$p], $yp[$p], $xd, $yd,,$xs, $ys;
+		}
+		close CATFILE;
+	}
+}
+
+
+sub echosys {
+        print @_, "\n";
+        system(@_);
+}

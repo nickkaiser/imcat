@@ -1,0 +1,42 @@
+.TH "op_lintrans.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+op_lintrans.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include 'stack.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBlintransinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBlintransdoit\fP (\fBitem\fP *operator)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void lintransdoit (\fBitem\fP * operator)"
+.PP
+Definition at line 42 of file op_lintrans.c.
+.PP
+References op::addr, item::addr, i, m, n, item::next, op, phi, and pop().
+.SS "void lintransinit (\fBitem\fP * operator)"
+.PP
+Definition at line 10 of file op_lintrans.c.
+.PP
+References op::addr, item::addr, item::dim, error_exit, i, item::itype, m, n, item::ndim, NUM_TYPE, op, phi, and pop().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

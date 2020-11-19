@@ -1,0 +1,41 @@
+.TH "linmodel.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+linmodel.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBlinmodelinit\fP (int \fBnp\fP)"
+.br
+.ti -1c
+.RI "void \fBlinmodelincrement\fP (double f, double *p)"
+.br
+.ti -1c
+.RI "void \fBlinmodelsolve\fP (double *F)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void linmodelincrement (double f, double * p)"
+.PP
+Definition at line 31 of file linmodel.c.
+.PP
+References A, B, f, and np.
+.SS "void linmodelinit (int np)"
+.PP
+Definition at line 16 of file linmodel.c.
+.PP
+References A, B, indx, and np.
+.SS "void linmodelsolve (double * F)"
+.PP
+Definition at line 45 of file linmodel.c.
+.PP
+References A, B, det(), F(), free(), indx, mylubksb(), myludcmp(), and np.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

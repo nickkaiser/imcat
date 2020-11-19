@@ -1,0 +1,50 @@
+.TH "smtest.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+smtest.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include '../utils/smpopup.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP ()"
+.br
+.ti -1c
+.RI "void \fBdrawfn\fP (void)"
+.br
+.ti -1c
+.RI "void \fBcursorfn\fP (float x, float y, int \fBkey\fP)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void cursorfn (float x, float y, int key)"
+.PP
+Definition at line 24 of file smtest.c.
+.PP
+References drawfn(), drawselectionbox(), key, smx1, smx2, smy1, smy2, x, and y.
+.PP
+Referenced by smpopup().
+.SS "void drawfn (void)"
+.PP
+Definition at line 14 of file smtest.c.
+.PP
+References smN, smx, smxlim1, smxlim2, smxname, smy, smylim1, smylim2, and smyname.
+.SS "main ()"
+.PP
+Definition at line 9 of file smtest.c.
+.PP
+References cursorfn(), drawfn(), and smpopup().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,250 @@
+.TH "lmodel.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+lmodel.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBlmodel\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBPOLYNOMIAL_LMODEL\fP   0"
+.br
+.ti -1c
+.RI "#define \fBZERNIKE_LMODEL\fP   1"
+.br
+.ti -1c
+.RI "#define \fBFOURIER_LMODEL\fP   2"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBlmodel\fP \fBlmodel\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBlmodel\fP * \fBnewlmodel\fP (\fBitem\fP *xitem, \fBitem\fP *aitem)"
+.br
+.ti -1c
+.RI "\fBlmodel\fP * \fBnewpolylmodel\fP (\fBitem\fP *xitem, \fBitem\fP *aitem, int \fBlmin\fP, int \fBlmax\fP)"
+.br
+.ti -1c
+.RI "int \fBpolyloop\fP (\fBlmodel\fP *themodel, int \fBl\fP, int \fBi\fP)"
+.br
+.ti -1c
+.RI "\fBlmodel\fP * \fBnewzernikelmodel\fP (\fBitem\fP *xitem, \fBitem\fP *aitem, int nmin, int nmax)"
+.br
+.ti -1c
+.RI "int \fBzernikeloop\fP (\fBlmodel\fP *themodel, int \fBn\fP, int \fBi\fP)"
+.br
+.ti -1c
+.RI "int \fBmakezernikeR\fP (\fBlmodel\fP *themodel)"
+.br
+.ti -1c
+.RI "\fBlmodel\fP * \fBnewfourierlmodel\fP (\fBitem\fP *xitem, \fBitem\fP *aitem, int kmin, int kmax, int boxlimits, double lbox)"
+.br
+.ti -1c
+.RI "int \fBfourierloop\fP (\fBlmodel\fP *themodel, int \fBi\fP)"
+.br
+.ti -1c
+.RI "double \fBlmodelfunc\fP (\fBlmodel\fP *themodel, int \fBm\fP, double *x)"
+.br
+.ti -1c
+.RI "int \fBflatten_a\fP (\fBlmodel\fP *themodel)"
+.br
+.ti -1c
+.RI "int \fBrflatten_a\fP (\fBlmodel\fP *themodel, void *\fBa\fP, int \fBm\fP, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "int \fBunflatten_a\fP (\fBlmodel\fP *themodel)"
+.br
+.ti -1c
+.RI "int \fBrunflatten_a\fP (\fBlmodel\fP *themodel, void *\fBa\fP, int \fBm\fP, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "int \fBaddtomatrix\fP (void *adst, void *asrc, double fac, int \fBndim\fP, int *\fBdim\fP, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "int \fBzeromatrix\fP (void *\fBa\fP, int \fBndim\fP, int *\fBdim\fP, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "int \fBbang\fP (int \fBn\fP)"
+.br
+.ti -1c
+.RI "int \fBwritelmodel\fP (\fBlmodel\fP *themodel, FILE *opstream)"
+.br
+.ti -1c
+.RI "\fBlmodel\fP * \fBreadlmodel\fP (FILE *ipstream)"
+.br
+.ti -1c
+.RI "\fBlmodel\fP * \fBdifflmodel\fP (\fBlmodel\fP *iplmodel, int integratemode)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define FOURIER_LMODEL   2"
+.PP
+Definition at line 34 of file lmodel.h.
+.PP
+Referenced by difflmodel(), lmodelfunc(), main(), newfourierlmodel(), readlmodel(), and writelmodel().
+.SS "#define POLYNOMIAL_LMODEL   0"
+.PP
+Definition at line 32 of file lmodel.h.
+.PP
+Referenced by difflmodel(), lmodelfunc(), main(), newpolylmodel(), readlmodel(), and writelmodel().
+.SS "#define ZERNIKE_LMODEL   1"
+.PP
+Definition at line 33 of file lmodel.h.
+.PP
+Referenced by difflmodel(), lmodelfunc(), main(), newzernikelmodel(), readlmodel(), and writelmodel().
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBlmodel\fP  \fBlmodel\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "int addtomatrix (void * adst, void * asrc, double fac, int ndim, int * dim, int level)"
+.PP
+Definition at line 413 of file lmodel.c.
+.PP
+References i.
+.PP
+Referenced by main().
+.SS "int bang (int n)"
+.PP
+Definition at line 447 of file lmodel.c.
+.PP
+References n.
+.PP
+Referenced by makezernikeR().
+.SS "\fBlmodel\fP* difflmodel (\fBlmodel\fP * iplmodel, int integratemode)"
+.PP
+Definition at line 15 of file lmodelcalculus.c.
+.PP
+References lmodel::aflat, lmodel::aitem, lmodel::asize, lmodel::boxlimits, item::dim, error_exit, flatten_a(), FOURIER_LMODEL, i, lmodel::i, j, lmodel::k, kk, lmodel::kmax, lmodel::kmin, lmodel::lbox, lmodel::lmax, lmodel::lmin, lmodel::modeltype, item::ndim, newfourierlmodel(), newpolylmodel(), lmodel::nmodes, lmodel::p, POLYNOMIAL_LMODEL, lmodel::pp, unflatten_a(), lmodel::xdim, lmodel::xitem, and ZERNIKE_LMODEL.
+.PP
+Referenced by main().
+.SS "int flatten_a (\fBlmodel\fP * themodel)"
+.PP
+Definition at line 353 of file lmodel.c.
+.PP
+References lmodel::a, lmodel::aflat, lmodel::asize, lmodel::j, j, m, lmodel::nmodes, and rflatten_a().
+.PP
+Referenced by difflmodel(), and main().
+.SS "int fourierloop (\fBlmodel\fP * themodel, int i)"
+.PP
+Definition at line 253 of file lmodel.c.
+.PP
+References lmodel::boxlimits, lmodel::i, i, j, lmodel::k, lmodel::kk, kk, lmodel::kmax, lmodel::kmin, lmodel::nmodes, and lmodel::xdim.
+.PP
+Referenced by newfourierlmodel().
+.SS "double lmodelfunc (\fBlmodel\fP * themodel, int m, double * x)"
+.PP
+Definition at line 299 of file lmodel.c.
+.PP
+References abs, d, error_exit, FOURIER_LMODEL, lmodel::i, lmodel::k, lmodel::lbox, lmodel::m, m, lmodel::modeltype, lmodel::n, lmodel::p, phi, POLYNOMIAL_LMODEL, lmodel::R, r, x, lmodel::xdim, and ZERNIKE_LMODEL.
+.PP
+Referenced by generatefm(), and main().
+.SS "int makezernikeR (\fBlmodel\fP * themodel)"
+.PP
+Definition at line 187 of file lmodel.c.
+.PP
+References abs, bang(), lmodel::m, m, lmodel::n, n, lmodel::nmodes, and lmodel::R.
+.PP
+Referenced by newzernikelmodel(), and readlmodel().
+.SS "\fBlmodel\fP* newfourierlmodel (\fBitem\fP * xitem, \fBitem\fP * aitem, int kmin, int kmax, int boxlimits, double lbox)"
+.PP
+Definition at line 208 of file lmodel.c.
+.PP
+References lmodel::a, lmodel::aitem, allocitemcontents(), lmodel::boxlimits, FOURIER_LMODEL, fourierloop(), lmodel::i, lmodel::k, lmodel::kk, lmodel::kmax, lmodel::kmin, lmodel::lbox, m, lmodel::modeltype, newlmodel(), lmodel::nmodes, and lmodel::xdim.
+.PP
+Referenced by difflmodel(), and main().
+.SS "\fBlmodel\fP* newlmodel (\fBitem\fP * xitem, \fBitem\fP * aitem)"
+.PP
+Definition at line 13 of file lmodel.c.
+.PP
+References lmodel::aitem, lmodel::aname, lmodel::asize, lmodel::cat, d, item::dim, error_exit, item::itype, item::name, item::ndim, NUM_TYPE, lmodel::xdim, lmodel::xitem, lmodel::xname, and lmodel::xorigin.
+.PP
+Referenced by newfourierlmodel(), newpolylmodel(), newzernikelmodel(), and readlmodel().
+.SS "\fBlmodel\fP* newpolylmodel (\fBitem\fP * xitem, \fBitem\fP * aitem, int lmin, int lmax)"
+.PP
+Definition at line 56 of file lmodel.c.
+.PP
+References lmodel::a, lmodel::aitem, allocitemcontents(), d, lmodel::l, l, lmodel::lmax, lmodel::lmin, m, lmodel::modeltype, newlmodel(), lmodel::nmodes, lmodel::p, polyloop(), POLYNOMIAL_LMODEL, lmodel::pp, and lmodel::xdim.
+.PP
+Referenced by difflmodel(), and main().
+.SS "\fBlmodel\fP* newzernikelmodel (\fBitem\fP * xitem, \fBitem\fP * aitem, int nmin, int nmax)"
+.PP
+Definition at line 135 of file lmodel.c.
+.PP
+References lmodel::a, lmodel::aitem, allocitemcontents(), item::dim, error_exit, lmodel::m, m, makezernikeR(), lmodel::modeltype, lmodel::n, n, item::ndim, newlmodel(), lmodel::nmax, lmodel::nmin, lmodel::nmodes, and ZERNIKE_LMODEL.
+.PP
+Referenced by main().
+.SS "int polyloop (\fBlmodel\fP * themodel, int l, int i)"
+.PP
+Definition at line 105 of file lmodel.c.
+.PP
+References i, j, lmodel::l, l, lmodel::nmodes, lmodel::p, lmodel::pp, and lmodel::xdim.
+.PP
+Referenced by newpolylmodel().
+.SS "\fBlmodel\fP* readlmodel (FILE * ipstream)"
+.PP
+Definition at line 141 of file lmodelio.c.
+.PP
+References lmodel::a, abs, item::addr, object::addrlist, allocobjectcontents(), lmodel::boxlimits, lmodel::cat, copyheaderinfo(), lmodel::covar, d, item::dim, error_exit, FOURIER_LMODEL, getheaderitem(), getheaderitemaddress(), getobjectitem(), getobjectitemindex(), lmodel::hascovar, lmodel::hasxorigin, lmodel::i, cathead::itemlist, item::itype, lmodel::k, lmodel::kmax, lmodel::kmin, lmodel::l, lmodel::lbox, ll, lmodel::lmax, lmodel::lmin, m, lmodel::m, makezernikeR(), lmodel::modeltype, lmodel::n, item::name, item::ndim, newitem(), newlmodel(), newobject(), object::next, lmodel::nmax, lmodel::nmin, nmodes, lmodel::nmodes, NUM_TYPE, lmodel::p, POLYNOMIAL_LMODEL, readcathead(), readobject(), setcatipf(), lmodel::xorigin, and ZERNIKE_LMODEL.
+.PP
+Referenced by main().
+.SS "int rflatten_a (\fBlmodel\fP * themodel, void * a, int m, int level)"
+.PP
+Definition at line 370 of file lmodel.c.
+.PP
+References a, lmodel::aflat, lmodel::aitem, i, lmodel::j, and m.
+.PP
+Referenced by flatten_a().
+.SS "int runflatten_a (\fBlmodel\fP * themodel, void * a, int m, int level)"
+.PP
+Definition at line 396 of file lmodel.c.
+.PP
+References a, lmodel::aflat, lmodel::aitem, i, lmodel::j, and m.
+.PP
+Referenced by unflatten_a().
+.SS "int unflatten_a (\fBlmodel\fP * themodel)"
+.PP
+Definition at line 385 of file lmodel.c.
+.PP
+References lmodel::a, lmodel::j, m, lmodel::nmodes, and runflatten_a().
+.PP
+Referenced by difflmodel(), and main().
+.SS "int writelmodel (\fBlmodel\fP * themodel, FILE * opstream)"
+.PP
+Definition at line 15 of file lmodelio.c.
+.PP
+References lmodel::a, addobjectitem(), item::addr, lmodel::aitem, allocitemcontents(), lmodel::aname, lmodel::boxlimits, lmodel::cat, lmodel::covar, d, error_exit, FOURIER_LMODEL, lmodel::hascovar, lmodel::hasxorigin, lmodel::i, install1numericheaderitem(), install1textheaderitem(), installitem(), lmodel::k, lmodel::kmax, lmodel::kmin, lmodel::l, lmodel::lbox, lmodel::lmax, lmodel::lmin, m, lmodel::m, lmodel::modeltype, lmodel::n, newitem(), lmodel::nmax, lmodel::nmin, lmodel::nmodes, NUM_TYPE, lmodel::p, POLYNOMIAL_LMODEL, setcatopf(), TEXT_TYPE, writecathead(), writeitem(), lmodel::xdim, lmodel::xname, lmodel::xorigin, and ZERNIKE_LMODEL.
+.PP
+Referenced by main().
+.SS "int zernikeloop (\fBlmodel\fP * themodel, int n, int i)"
+.PP
+.SS "int zeromatrix (void * a, int ndim, int * dim, int level)"
+.PP
+Definition at line 430 of file lmodel.c.
+.PP
+References a, and i.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

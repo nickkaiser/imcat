@@ -1,0 +1,67 @@
+#!/usr/bin/perl
+$| = 1;
+
+$usage = "\
+NAME\
+	clickstocat - convert contour -C output to scaled cat\
+\
+SYNOPSIS\
+	clickstocat x1 y1 x2 y2\
+\
+DESCRIPTION\
+	clickstocat reads output generated with contour -C\
+	and scales the coordinates.\
+\
+	You can use this to generate fairly accurate data from\
+	e.g. postscript files using the mouse. It assumes that\
+	the first 2 clicks correspond to (x1, y1), (x2, y2)\
+	and then scales the rest appropriately.\
+\
+EXAMPLE\
+	To rip data points from a postscript file my.ps:\
+\
+	cat my.ps | gs -q -sDEVICE=pbmraw -sOutputFile=- -r50x50 - |\
+	pnmflip -tb < tmp.pbm | pnmtofits | contour -g -n 0 -C > tmp.out\
+\
+	Then click on points in the PGPLOT window.  First two points\
+	should correspond to (x1, y1), (x2, y2) and subsequent points\
+	should be the data points.\
+\
+	Then run\
+\
+	clickstocat x1 y1 x2 y2 < tmp.out\
+\
+	to generate the scaled cat.\
+\
+AUTHOR\
+	Nick Kaiser - kaiser\@hawaii.edu\
+\n";
+
+$x1 = shift(@ARGV) || die $usage;
+$y1 = shift(@ARGV) || die $usage;
+$x2 = shift(@ARGV) || die $usage;
+$y2 = shift(@ARGV) || die $usage;
+
+$needX1 = $needX2 = 1;
+
+open(OP, "| lc -C -x -a 'history: clickstocat $x1 $y1 $x2 $y2' -N '1 2 x'");
+open(IP, "lc -o x |");	
+while ($line = <IP>) {
+	@x = split(" ", $line);
+	if ($needX1) {
+		($X1, $Y1) = @x;
+		$needX1 = 0;
+	} elsif ($needX2) {
+		($X2, $Y2) = @x;
+		$xscale = ($x2 - $x1) / ($X2 - $X1);
+		$yscale = ($y2 - $y1) / ($Y2 - $Y1);
+		$needX2 = 0;
+	} else {
+		$x = $x1 + $xscale * ($x[0] - $X1);
+		$y = $y1 + $yscale * ($x[1] - $Y1);
+		printf OP "%14.8g %14.8g\n", $x, $y;
+	}
+}
+close(OP);
+close(IP);
+exit;

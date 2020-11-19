@@ -1,0 +1,135 @@
+.TH "getop.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getop.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'getop.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBset_getop_N1\fP (int \fBn1\fP)"
+.br
+.ti -1c
+.RI "\fBop\fP * \fBgetop\fP (char **sptr)"
+.br
+.ti -1c
+.RI "char * \fBgetword\fP (char **sptr)"
+.br
+.ti -1c
+.RI "\fBop\fP * \fBnewop\fP (char *thename)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBnim\fP"
+.br
+.ti -1c
+.RI "int \fBN1\fP"
+.br
+.ti -1c
+.RI "char * \fBnum0funcname\fP [N_NUM0_OPS]"
+.br
+.ti -1c
+.RI "char * \fBnum1funcname\fP [N_NUM1_OPS]"
+.br
+.ti -1c
+.RI "char * \fBnum2funcname\fP [N_NUM2_OPS]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 12 of file imtools/ic/getop.c.
+.SH "Function Documentation"
+.PP 
+.SS "\fBop\fP* getop (char ** sptr)"
+.PP
+Definition at line 37 of file imtools/ic/getop.c.
+.PP
+References CONSTANT_TYPE, op::data, error_exit, exit(), getword(), IM_VALUE_TYPE, ix, MAGIC, N1, newop(), nim, number, op::opno, and op::type.
+.SS "char* getword (char ** sptr)"
+.PP
+Definition at line 108 of file imtools/ic/getop.c.
+.PP
+References c, and len.
+.SS "\fBop\fP* newop (char * thename)"
+.PP
+Definition at line 168 of file imtools/ic/getop.c.
+.SS "void set_getop_N1 (int n1)"
+.PP
+Definition at line 31 of file imtools/ic/getop.c.
+.PP
+References N1.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBN1\fP\fC [static]\fP"
+.PP
+Definition at line 14 of file imtools/ic/getop.c.
+.SS "int \fBnim\fP"
+.PP
+Definition at line 13 of file imtools/ic/getop.c.
+.PP
+Referenced by getop(), and main().
+.SS "char* \fBnum0funcname\fP[N_NUM0_OPS]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+'rand', 'x', 'y', 'xp', 'yp', 'if', '?', 'enter', 'grand'}
+.fi
+.PP
+Definition at line 17 of file imtools/ic/getop.c.
+.PP
+Referenced by newop().
+.SS "char* \fBnum1funcname\fP[N_NUM1_OPS]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+'acos', 'asin', 'atan', 'ceil', 'cos', 'cosh', 'exp', 'fabs', 'floor',
+'log', 'log10', 'sin', 'sinh', 'sqrt', 'tan', 'tanh', '!', 'j0', 'j1', 'y0', 'y1', 'swap'
+}
+.fi
+.PP
+Definition at line 20 of file imtools/ic/getop.c.
+.PP
+Referenced by newop().
+.SS "char* \fBnum2funcname\fP[N_NUM2_OPS]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+'mult', '*',    '+',  '/',   '-', 'atan2', 'pow', 'fmod',
+'>', '>=', '<', '<=', '!=', '==', 'jn', 'yn', 'max', 'min'
+}
+.fi
+.PP
+Definition at line 25 of file imtools/ic/getop.c.
+.PP
+Referenced by newop().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

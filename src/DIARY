@@ -1,0 +1,294 @@
+./imtools/xim/ximbuttons.cDIARY OF BUG FIXES ETC
+
+3/6/98
+	flip - new tool for rotating, flipping images
+3/10/98
+	acfregister - fixed bug causing bad solution for rotations > 90 degrees
+3/12/98
+	flatten - new tool for converting N-D to 2-D images
+3/14/98
+	getbadpix - new tool for finding discrepant pixels
+3/14/98
+	growmagic - new tool for expanding MAGIC regions
+3/15/98
+	fastmap.c - fixed a bug in untrafastmap() causing small offset
+3/15/98
+	iis.c - make MAGIC pixel yellow
+3/16/98
+	plotcat - added colormap background image
+3/16/98
+	imlib - fixed fits.c skiplines() command
+3/17/98
+	surfdens - modified to sake source image, paint MAGIC vals
+3/18/98
+	warpimage - added option for recircularising psf
+3/18/98
+	getshapes - fixed up the factor 2 bug in psm[][]
+3/19/98
+	plotcat - fixed problem with drawing logarithmic axes
+3/20/98
+	iis - installed cdl version
+3/23/98
+	combine_stuff.c - adapted avsigclip2() to do straight average
+4/20/98
+	switched back to my version of iis
+	made makestamps output 3-D image
+4/22/98
+	getplane - new tool to extract a plane from a multidimensional image
+	stackplanes - new tool to make multidimensional images
+4/23/98
+	getfitsval - modified to output MAGIC values for non-mapped pixels
+5/20/98
+	lc - overloaded dot product to allow v.v m.v m.m 
+	and added matrix addition, subtraction and scaling
+5/23/98
+	installed circimfromcat (from research/lensing/theory/mbr/q_statistic)
+	broke fft - must fix - installed old version
+6/5/98
+	fixed integerization problem in make_image
+6/9/98
+	fixed fft and changed to 3-D FITS format for fft's
+	changed grad to produce N1 * N2 * 2 dimensional image
+	changed invgrad to read N1 * N2 * 2 dimensional image
+	changed makeshearimage, maketestshear, sheartogradkappa
+	and massmap_ft to work with N1 * N2 * 2 dimensional images
+	made changesex work on N-dimensional images
+6/10/98
+	fixed bug in xim (was problem with images with big headers)
+	print_image allows arbitrary page size
+6/19/98
+	fixed contour to handle magic numbers
+6/21/98
+	fixed return value for gridavg
+6/22/98
+	fixed various things in print_image
+6/24/98
+	pixdist changed to output lc-cat
+	contour changed to allow text labels via args
+6/26/98
+	contour - added -W option for wedge
+6/29/98
+	plotcat - allowed for HMS, DMS labelling
+	contour - fixed up the box labelling
+7/1/98
+	rebin - for rebinning filter T(lambda), SED(lambda) etc files
+	plotcat - added colored symbols
+8/5/98
+	ic - added -b BSCALE BZERO option
+8/6/98
+	imlib/convertarray.c - changed to clamp overflow when converting floats to shorts.
+8/7/98
+	overscancorr - fixed exit value
+	makechart - fixed bug with small cirles etc outside of image
+8/10/98
+	print_image - reduced memory requirement
+8/11/98
+	getsky - removed spurious reference to 'nu'
+	scrunch - fixed bug in averaging
+	gen2Dpolymodelimage - makes a fits file of a (scalar) 2D polymodel
+8/12/98
+	print_image - added -g switch to pipe output through gs
+8/17/98
+	plotcat - ignore MAGIC pixels with -F option
+	print_image - allow non-equal x,y margins
+8/18/98
+	apphot - fixed bug with totally magic objects returning previous object values
+8/20/98
+	profile - changed to output lc format catalogue only (no sm support)
+8/21/98
+	deproject - deproject an assumed spherical projection
+	plotcat - variable character height option
+	contour - variable character height option
+8/25/98
+	plotcat - added histogram and vertical errorbar support.
+8/25/98
+	fixed EOF == sscanf bug everywhere it appeared
+9/18/98
+	transposebits - new tool to experiment with compression
+11/3/98
+	getshapes2 - various modifications
+	makekernel - now computes F = sum w f, q[3], P[3][2]
+11/7/98
+	libim added support for IMCATSWAPFITSBYTES env variable
+	libim added support for BITPIX = 8 unsigned char
+11/16/98
+	makeconvert.pl - added clipping for integer types
+12/20/98
+	added -N flag to makestamps for flux normalisation
+12/28/98
+	getshapes3 - new tool - also modified makekernel
+12/31/98
+	colorize - mono to color conversion with colormap
+1/4/99
+	mapbynumericdef - use 3-D deflection image
+	warpimage - generate 3-D deflection image
+1/5/99
+	getplanes - new tool to extract parts of multidimesional images
+	modelpsf - -s options allows it to read ready made stamps
+1/6/99
+	mapbynumericdef - recognize MAGIC deflection value
+1/9/99
+	getfitsval - generalised to arbitrary dimensions (but scaling and
+	offset flags broken).
+	makegridcat, makerandcat  - added -b option for binary format - generalised to
+	arbitrary dimensions
+1/18/99
+	makedensity - arbitrary dimension generalisation of surfdens
+	fitstocat - make lc format list of fits image values for arbitrary dimensions
+	boxavg	- arbitrary dimension boxcar FITS smoother
+1/21/99
+	projectfits - average along rows, columns etc.
+1/24/99
+	imhead - fixed problem extracting special header values SIMPLE, BITPIX etc.
+1/25/99
+	modelpsf - weighting changed
+1/26/99
+	acf - can read from stdin with '-' argument in -c mode
+1/28/99
+	hfindpeaks - can do non-square images
+1/29/99
+	acf - fixed problem with output pixtype
+	hfindpeaks - allow for correlated noise - incorporated hcat2cat stuff
+1/30/99
+	fits.c - fixed problem with argsToString
+2/8/99
+	retired print_image in favour of fitstops
+2/13/99
+	profile - now computes fmin, fmax too
+2/23/99
+	fits.c	- added BYTEORDR fitsheader entry machinery
+2/24/99
+	combineimages 	- made sigma image BITPIX 8
+	ic		- fixed -h option so it removes previous entries unless name=COMMENT
+2/26/98
+	findtrailobjects - new tool to find satellite trails
+	nuketrailobjects - new tool to remove satellite trails
+2/28/98
+	fixed various progs which popen(...., "w"), but never pclose()
+		./imcattools/photometry/profile.c
+		./imcattools/registration/applytrans.c
+		./imcattools/registration/fitstack.c
+		./imcattools/test/fitstack.c
+		./imcattools/test/fitstack_amoeba.c
+		./imcattools/astrometry/readusnoacat.c
+		./imtools/fitstops/fitstops.c
+		./imtools/print_image.c
+		./imtools/simulate.c
+4/20/99
+	installed lmodel libraries and tools
+4/23/99
+	scrunch - added -c option for conservative mean
+5/2/99
+	hfindpeaks - added -N option
+8/26/99
+	fitstops - incorporated Tonry's 3D hidden line surface plot function
+9/8/99
+	fft - added -C flag to allow complex forward/reverse transforms
+	complex - do simple math on complex images
+10/5/99
+	arrays.c --- added 3D float arrays
+10/11/99
+	lu.c - fixed invertmatrix()
+10/15/99
+	fixed minor typos in
+	./cattools/lc/makegridcat.c
+	./imcattools/photometry/modelpsf.c
+	./imcattools/astrometry/readusnoacat.c
+	./imtools/album.c
+	./imtools/flatten.c
+10/18/99
+	unpackextensions - to deal with CFHT archived data format
+10/21/99
+	xfv - streaming xfitsviewer
+	colorize - can now handle 3-D input images
+2/26/00
+	fixed problem with getheaderitem() failing when header item
+	requested doesn't exist.  Changed to make getheaderitem() non
+	fatal but getheaderitemaddress() fatal for compatibility with
+	earlier progs which want to fail if a necessary item doesn't
+	exist.  Had to change cattools/lc/getop.c cattools/lc/lc.c to
+	test return status of getheaderitem.
+5/15/00
+	catlib/cat.c - fixed reading of text items in non-native binary format
+6/20/00
+	major reorganisation of documentation.  Groff style man pages for everything
+6/22/00
+	added -v option to catstats
+6/22/00
+	stats can handle multi-plane images and output in lc-format
+7/18/00
+	fixed bug with median in liststats	
+8/16/00
+        modified setwcsinfo, getworldcoords to handle CD matrix, PC matrix
+        formats
+11/27/00
+        Fixed bug in stackplanes --- forgot to close files!
+2/1/01
+        added exponential filter library and to smooth
+2/15/01
+	added statstocat tool to imtools
+	fixed the descending sort problem in lc
+3/19/01
+	created fitpolymodelmagshift
+8/31/01
+	makestamps - added -c option to generate lc cat format output
+09/07/01
+	fixed bug in combineimages: -f flag was disabled
+09/11/01
+	added negative smoothing radius (for no smoothing) option to findpeaks
+10/13/01
+	build for Darwin
+		fft_FFTW.c - conditional inclusion of malloc.h
+		ln -s /usr/include/limits.h /usr/local/include/values.h
+		modified imtools/xim/ximcolor.c (fmin, fmax global clash)
+		changed imtools/iis/iis.c to use float.h
+		modified imtools/xfv/back.c (fmin, fmax global clash)
+01/29/03
+	fixed argument parsing in epsfcompose to allow negative x, y, rot
+03/23/03
+	phasetopsf : added -p pupilimage option and flipped output
+03/23/03
+	ic_stream : new tool to do arithmetic on a stream of image planes
+04/05/03
+	added -c (cloud in cell charge assignment option) to makedensity
+04/12/03
+	imported rshloop into imcattools_rshloop from ~/computing
+	imported geomview fits3Dviewer into imcattools_geomview
+	imported frw and nfw into imcattools_cosmology
+	imported stuff from ~/research/dispersivewaves/ and ~/research/scalarfield/2d/
+		into imcattools_waves
+	imported stuff from ~/pan-starrs/science/orbits/src to imcattools/orbits
+	created pre-CVS archive src_04_13_03_pre-cvs.tar.gz
+	IMPORTED imcat into CVS
+	cd ~/research/imcat/src
+	cvs import -m "Importing source for imcat" imcat/src kaiser start
+	created imcat_src module
+04/13/03
+	missed a lot of DIARY entries here....
+04/21/03
+	sliceimage - added 3D fits capability
+	getplanes - added capability to read from files, not just stdin and
+	used fseek for efficiency
+05/11/03
+	added min and max functions to lc
+06/07/03
+	fixed bug in calling Heasley's subroutines (and testing value?)
+06/14/03
+	switched to orbfit kepler <=> cartesions
+06/15/03
+	added inverse operation capability to getxsfromradec
+06/25/03
+	added planetephem
+07/16/03
+	added %Jn.m format string to rshloop
+08/10/03
+	added -C option to transformimage to allow rotation around center of N1/2, N2/2 pixel
+08/13/03
+	added -s option to switch on local sky modelling in apphot
+	modified combineimages to work with 3D fits
+
+8/15/03
+	fixed nasty bug in apphot - it was outputting the magnitude
+	from previous good object whenever all the pixels were magic
+2020/02/25
+	major modifications to makemake to install under Mac OSX

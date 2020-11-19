@@ -1,0 +1,83 @@
+.TH "fft_FFTPACK.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fft_FFTPACK.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBcomplex\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBcomplex\fP ** \fBfft_type\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBcffti_\fP (int *\fBn\fP, float *work)"
+.br
+.ti -1c
+.RI "int \fBcfftf_\fP (int *\fBn\fP, \fBcomplex\fP *\fBc\fP, float *work)"
+.br
+.ti -1c
+.RI "int \fBcfftb_\fP (int *\fBn\fP, \fBcomplex\fP *\fBc\fP, float *work)"
+.br
+.ti -1c
+.RI "int \fBrffti_\fP (int *\fBn\fP, float *work)"
+.br
+.ti -1c
+.RI "int \fBrfftf_\fP (int *\fBn\fP, float *\fBr\fP, float *work)"
+.br
+.ti -1c
+.RI "int \fBrfftb_\fP (int *\fBn\fP, float *\fBr\fP, float *work)"
+.br
+.ti -1c
+.RI "int \fBezffti_\fP (int *\fBn\fP, float *work)"
+.br
+.ti -1c
+.RI "int \fBezfftf_\fP (int *\fBn\fP, float *\fBr\fP, float *a0, float *\fBa\fP, float *\fBb\fP, float *work)"
+.br
+.ti -1c
+.RI "int \fBezfftb_\fP (int *\fBn\fP, float *\fBr\fP, float *a0, float *\fBa\fP, float *\fBb\fP, float *work)"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef \fBcomplex\fP** \fBfft_type\fP"
+.PP
+Definition at line 19 of file fft_FFTPACK.h.
+.PP
+Referenced by alloc_fft(), ccf(), cfilter(), copy_fft(), exponentialfilter(), filter(), forward_fft(), free_fft(), gaussfilter(), get_fft(), inverse_fft(), kolmogorovfilter(), main(), mexicanfilter(), power(), powerlawfilter(), schecterfilter(), and set_fft().
+.SH "Function Documentation"
+.PP 
+.SS "int cfftb_ (int * n, \fBcomplex\fP * c, float * work)"
+.PP
+.SS "int cfftf_ (int * n, \fBcomplex\fP * c, float * work)"
+.PP
+.SS "int cffti_ (int * n, float * work)"
+.PP
+.SS "int ezfftb_ (int * n, float * r, float * a0, float * a, float * b, float * work)"
+.PP
+.SS "int ezfftf_ (int * n, float * r, float * a0, float * a, float * b, float * work)"
+.PP
+.SS "int ezffti_ (int * n, float * work)"
+.PP
+.SS "int rfftb_ (int * n, float * r, float * work)"
+.PP
+.SS "int rfftf_ (int * n, float * r, float * work)"
+.PP
+.SS "int rffti_ (int * n, float * work)"
+.PP
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

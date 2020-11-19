@@ -1,0 +1,16 @@
+#! /bin/sh
+
+# usage: register listb lista imsize tolerance
+
+# script to do accurate registration:
+#	first we run register to get crude transformation coefficients
+#	then we approximately transform one list, merge the lists, 
+#	transform back, and run lintransform fit to get accurate cooefts.
+
+transparams=`register $1 $2 -i $3 | tproc 'print \$0'`
+echo "$transparams" > temp.params
+tproc 'print $1, $2' < $1 > temp1.xy
+scalerottrans $transparams < $2 | tproc 'print $1, $2' > temp2.xy
+mergelists temp2.xy temp1.xy -d $4  > temp.xyxy
+doto temp.xyxy scalerottrans $transparams -i
+lintransformfit < temp.xyxy | tproc 'print $1, $2, 1.0, atan2($5, $6)'

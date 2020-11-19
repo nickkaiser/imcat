@@ -1,0 +1,3227 @@
+.TH "triangle.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+triangle.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <sys/time.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBbadface\fP"
+.br
+.ti -1c
+.RI "struct \fBbadsegment\fP"
+.br
+.ti -1c
+.RI "struct \fBedge\fP"
+.br
+.ti -1c
+.RI "struct \fBevent\fP"
+.br
+.ti -1c
+.RI "struct \fBmemorypool\fP"
+.br
+.ti -1c
+.RI "struct \fBsplaynode\fP"
+.br
+.ti -1c
+.RI "struct \fBtriedge\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBREAL\fP   double"
+.br
+.ti -1c
+.RI "#define \fBINEXACT\fP"
+.br
+.ti -1c
+.RI "#define \fBFILENAMESIZE\fP   512"
+.br
+.ti -1c
+.RI "#define \fBINPUTLINESIZE\fP   512"
+.br
+.ti -1c
+.RI "#define \fBTRIPERBLOCK\fP   4092"
+.br
+.ti -1c
+.RI "#define \fBSHELLEPERBLOCK\fP   508"
+.br
+.ti -1c
+.RI "#define \fBPOINTPERBLOCK\fP   4092"
+.br
+.ti -1c
+.RI "#define \fBVIRUSPERBLOCK\fP   1020"
+.br
+.ti -1c
+.RI "#define \fBBADSEGMENTPERBLOCK\fP   252"
+.br
+.ti -1c
+.RI "#define \fBBADTRIPERBLOCK\fP   4092"
+.br
+.ti -1c
+.RI "#define \fBSPLAYNODEPERBLOCK\fP   508"
+.br
+.ti -1c
+.RI "#define \fBDEADPOINT\fP   -1073741824"
+.br
+.ti -1c
+.RI "#define \fBVOID\fP   int"
+.br
+.ti -1c
+.RI "#define \fBSAMPLEFACTOR\fP   11"
+.br
+.ti -1c
+.RI "#define \fBSAMPLERATE\fP   10"
+.br
+.ti -1c
+.RI "#define \fBPI\fP   3.141592653589793238462643383279502884197169399375105820974944592308"
+.br
+.ti -1c
+.RI "#define \fBSQUAREROOTTWO\fP   1.4142135623730950488016887242096980785696718753769480732"
+.br
+.ti -1c
+.RI "#define \fBONETHIRD\fP   0.333333333333333333333333333333333333333333333333333333333333"
+.br
+.ti -1c
+.RI "#define \fBdecode\fP(ptr, \fBtriedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBencode\fP(\fBtriedge\fP)   (\fBtriangle\fP) ((unsigned long) (\fBtriedge\fP).tri | (unsigned long) (\fBtriedge\fP).orient)"
+.br
+.ti -1c
+.RI "#define \fBsym\fP(triedge1, triedge2)"
+.br
+.ti -1c
+.RI "#define \fBsymself\fP(\fBtriedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBlnext\fP(triedge1, triedge2)"
+.br
+.ti -1c
+.RI "#define \fBlnextself\fP(\fBtriedge\fP)   (\fBtriedge\fP).orient = \fBplus1mod3\fP[(\fBtriedge\fP).orient]"
+.br
+.ti -1c
+.RI "#define \fBlprev\fP(triedge1, triedge2)"
+.br
+.ti -1c
+.RI "#define \fBlprevself\fP(\fBtriedge\fP)   (\fBtriedge\fP).orient = \fBminus1mod3\fP[(\fBtriedge\fP).orient]"
+.br
+.ti -1c
+.RI "#define \fBonext\fP(triedge1, triedge2)"
+.br
+.ti -1c
+.RI "#define \fBonextself\fP(\fBtriedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBoprev\fP(triedge1, triedge2)"
+.br
+.ti -1c
+.RI "#define \fBoprevself\fP(\fBtriedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBdnext\fP(triedge1, triedge2)"
+.br
+.ti -1c
+.RI "#define \fBdnextself\fP(\fBtriedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBdprev\fP(triedge1, triedge2)"
+.br
+.ti -1c
+.RI "#define \fBdprevself\fP(\fBtriedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBrnext\fP(triedge1, triedge2)"
+.br
+.ti -1c
+.RI "#define \fBrnextself\fP(\fBtriedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBrprev\fP(triedge1, triedge2)"
+.br
+.ti -1c
+.RI "#define \fBrprevself\fP(\fBtriedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBorg\fP(\fBtriedge\fP, pointptr)   pointptr = (\fBpoint\fP) (\fBtriedge\fP).tri[\fBplus1mod3\fP[(\fBtriedge\fP).orient] + 3]"
+.br
+.ti -1c
+.RI "#define \fBdest\fP(\fBtriedge\fP, pointptr)   pointptr = (\fBpoint\fP) (\fBtriedge\fP).tri[\fBminus1mod3\fP[(\fBtriedge\fP).orient] + 3]"
+.br
+.ti -1c
+.RI "#define \fBapex\fP(\fBtriedge\fP, pointptr)   pointptr = (\fBpoint\fP) (\fBtriedge\fP).tri[(\fBtriedge\fP).orient + 3]"
+.br
+.ti -1c
+.RI "#define \fBsetorg\fP(\fBtriedge\fP, pointptr)   (\fBtriedge\fP).tri[\fBplus1mod3\fP[(\fBtriedge\fP).orient] + 3] = (\fBtriangle\fP) pointptr"
+.br
+.ti -1c
+.RI "#define \fBsetdest\fP(\fBtriedge\fP, pointptr)   (\fBtriedge\fP).tri[\fBminus1mod3\fP[(\fBtriedge\fP).orient] + 3] = (\fBtriangle\fP) pointptr"
+.br
+.ti -1c
+.RI "#define \fBsetapex\fP(\fBtriedge\fP, pointptr)   (\fBtriedge\fP).tri[(\fBtriedge\fP).orient + 3] = (\fBtriangle\fP) pointptr"
+.br
+.ti -1c
+.RI "#define \fBsetvertices2null\fP(\fBtriedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBbond\fP(triedge1, triedge2)"
+.br
+.ti -1c
+.RI "#define \fBdissolve\fP(\fBtriedge\fP)   (\fBtriedge\fP).tri[(\fBtriedge\fP).orient] = (\fBtriangle\fP) \fBdummytri\fP"
+.br
+.ti -1c
+.RI "#define \fBtriedgecopy\fP(triedge1, triedge2)"
+.br
+.ti -1c
+.RI "#define \fBtriedgeequal\fP(triedge1, triedge2)"
+.br
+.ti -1c
+.RI "#define \fBinfect\fP(\fBtriedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBuninfect\fP(\fBtriedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBinfected\fP(\fBtriedge\fP)   (((unsigned long) (\fBtriedge\fP).tri[6] & (unsigned long) 2\fBl\fP) != 0)"
+.br
+.ti -1c
+.RI "#define \fBelemattribute\fP(\fBtriedge\fP, attnum)   ((REAL *) (\fBtriedge\fP).tri)[\fBelemattribindex\fP + (attnum)]"
+.br
+.ti -1c
+.RI "#define \fBsetelemattribute\fP(\fBtriedge\fP, attnum, value)   ((REAL *) (\fBtriedge\fP).tri)[\fBelemattribindex\fP + (attnum)] = value"
+.br
+.ti -1c
+.RI "#define \fBareabound\fP(\fBtriedge\fP)   ((REAL *) (\fBtriedge\fP).tri)[\fBareaboundindex\fP]"
+.br
+.ti -1c
+.RI "#define \fBsetareabound\fP(\fBtriedge\fP, value)   ((REAL *) (\fBtriedge\fP).tri)[\fBareaboundindex\fP] = value"
+.br
+.ti -1c
+.RI "#define \fBsdecode\fP(sptr, \fBedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBsencode\fP(\fBedge\fP)   (\fBshelle\fP) ((unsigned long) (\fBedge\fP).sh | (unsigned long) (\fBedge\fP).shorient)"
+.br
+.ti -1c
+.RI "#define \fBssym\fP(edge1, edge2)"
+.br
+.ti -1c
+.RI "#define \fBssymself\fP(\fBedge\fP)   (\fBedge\fP).shorient = 1 - (\fBedge\fP).shorient"
+.br
+.ti -1c
+.RI "#define \fBspivot\fP(edge1, edge2)"
+.br
+.ti -1c
+.RI "#define \fBspivotself\fP(\fBedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBsnext\fP(edge1, edge2)"
+.br
+.ti -1c
+.RI "#define \fBsnextself\fP(\fBedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBsorg\fP(\fBedge\fP, pointptr)   pointptr = (\fBpoint\fP) (\fBedge\fP).sh[2 + (\fBedge\fP).shorient]"
+.br
+.ti -1c
+.RI "#define \fBsdest\fP(\fBedge\fP, pointptr)   pointptr = (\fBpoint\fP) (\fBedge\fP).sh[3 - (\fBedge\fP).shorient]"
+.br
+.ti -1c
+.RI "#define \fBsetsorg\fP(\fBedge\fP, pointptr)   (\fBedge\fP).sh[2 + (\fBedge\fP).shorient] = (\fBshelle\fP) pointptr"
+.br
+.ti -1c
+.RI "#define \fBsetsdest\fP(\fBedge\fP, pointptr)   (\fBedge\fP).sh[3 - (\fBedge\fP).shorient] = (\fBshelle\fP) pointptr"
+.br
+.ti -1c
+.RI "#define \fBmark\fP(\fBedge\fP)   (* (int *) ((\fBedge\fP).sh + 6))"
+.br
+.ti -1c
+.RI "#define \fBsetmark\fP(\fBedge\fP, value)   * (int *) ((\fBedge\fP).sh + 6) = value"
+.br
+.ti -1c
+.RI "#define \fBsbond\fP(edge1, edge2)"
+.br
+.ti -1c
+.RI "#define \fBsdissolve\fP(\fBedge\fP)   (\fBedge\fP).sh[(\fBedge\fP).shorient] = (\fBshelle\fP) \fBdummysh\fP"
+.br
+.ti -1c
+.RI "#define \fBshellecopy\fP(edge1, edge2)"
+.br
+.ti -1c
+.RI "#define \fBshelleequal\fP(edge1, edge2)"
+.br
+.ti -1c
+.RI "#define \fBtspivot\fP(\fBtriedge\fP, \fBedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBstpivot\fP(\fBedge\fP, \fBtriedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBtsbond\fP(\fBtriedge\fP, \fBedge\fP)"
+.br
+.ti -1c
+.RI "#define \fBtsdissolve\fP(\fBtriedge\fP)   (\fBtriedge\fP).tri[6 + (\fBtriedge\fP).orient] = (\fBtriangle\fP) \fBdummysh\fP"
+.br
+.ti -1c
+.RI "#define \fBstdissolve\fP(\fBedge\fP)   (\fBedge\fP).sh[4 + (\fBedge\fP).shorient] = (\fBshelle\fP) \fBdummytri\fP"
+.br
+.ti -1c
+.RI "#define \fBpointmark\fP(pt)   ((int *) (pt))[\fBpointmarkindex\fP]"
+.br
+.ti -1c
+.RI "#define \fBsetpointmark\fP(pt, value)   ((int *) (pt))[\fBpointmarkindex\fP] = value"
+.br
+.ti -1c
+.RI "#define \fBpoint2tri\fP(pt)   ((\fBtriangle\fP *) (pt))[\fBpoint2triindex\fP]"
+.br
+.ti -1c
+.RI "#define \fBsetpoint2tri\fP(pt, value)   ((\fBtriangle\fP *) (pt))[\fBpoint2triindex\fP] = value"
+.br
+.ti -1c
+.RI "#define \fBSTARTINDEX\fP   1"
+.br
+.ti -1c
+.RI "#define \fBAbsolute\fP(\fBa\fP)   ((\fBa\fP) >= 0.0 ? (\fBa\fP) : -(\fBa\fP))"
+.br
+.ti -1c
+.RI "#define \fBFast_Two_Sum_Tail\fP(\fBa\fP, \fBb\fP, x, y)"
+.br
+.ti -1c
+.RI "#define \fBFast_Two_Sum\fP(\fBa\fP, \fBb\fP, x, y)"
+.br
+.ti -1c
+.RI "#define \fBTwo_Sum_Tail\fP(\fBa\fP, \fBb\fP, x, y)"
+.br
+.ti -1c
+.RI "#define \fBTwo_Sum\fP(\fBa\fP, \fBb\fP, x, y)"
+.br
+.ti -1c
+.RI "#define \fBTwo_Diff_Tail\fP(\fBa\fP, \fBb\fP, x, y)"
+.br
+.ti -1c
+.RI "#define \fBTwo_Diff\fP(\fBa\fP, \fBb\fP, x, y)"
+.br
+.ti -1c
+.RI "#define \fBSplit\fP(\fBa\fP, ahi, alo)"
+.br
+.ti -1c
+.RI "#define \fBTwo_Product_Tail\fP(\fBa\fP, \fBb\fP, x, y)"
+.br
+.ti -1c
+.RI "#define \fBTwo_Product\fP(\fBa\fP, \fBb\fP, x, y)"
+.br
+.ti -1c
+.RI "#define \fBTwo_Product_Presplit\fP(\fBa\fP, \fBb\fP, bhi, blo, x, y)"
+.br
+.ti -1c
+.RI "#define \fBSquare_Tail\fP(\fBa\fP, x, y)"
+.br
+.ti -1c
+.RI "#define \fBSquare\fP(\fBa\fP, x, y)"
+.br
+.ti -1c
+.RI "#define \fBTwo_One_Sum\fP(\fBa1\fP, a0, \fBb\fP, \fBx2\fP, \fBx1\fP, \fBx0\fP)"
+.br
+.ti -1c
+.RI "#define \fBTwo_One_Diff\fP(\fBa1\fP, a0, \fBb\fP, \fBx2\fP, \fBx1\fP, \fBx0\fP)"
+.br
+.ti -1c
+.RI "#define \fBTwo_Two_Sum\fP(\fBa1\fP, a0, \fBb1\fP, b0, x3, \fBx2\fP, \fBx1\fP, \fBx0\fP)"
+.br
+.ti -1c
+.RI "#define \fBTwo_Two_Diff\fP(\fBa1\fP, a0, \fBb1\fP, b0, x3, \fBx2\fP, \fBx1\fP, \fBx0\fP)"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef REAL ** \fBtriangle\fP"
+.br
+.ti -1c
+.RI "typedef REAL ** \fBshelle\fP"
+.br
+.ti -1c
+.RI "typedef REAL * \fBpoint\fP"
+.br
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBwordtype\fP { \fBPOINTER\fP, \fBFLOATINGPOINT\fP }"
+.br
+.ti -1c
+.RI "enum \fBlocateresult\fP { \fBINTRIANGLE\fP, \fBONEDGE\fP, \fBONVERTEX\fP, \fBOUTSIDE\fP }"
+.br
+.ti -1c
+.RI "enum \fBinsertsiteresult\fP { \fBSUCCESSFULPOINT\fP, \fBENCROACHINGPOINT\fP, \fBVIOLATINGPOINT\fP, \fBDUPLICATEPOINT\fP }"
+.br
+.ti -1c
+.RI "enum \fBfinddirectionresult\fP { \fBWITHIN\fP, \fBLEFTCOLLINEAR\fP, \fBRIGHTCOLLINEAR\fP }"
+.br
+.ti -1c
+.RI "enum \fBcircumcenterresult\fP { \fBOPPOSITEORG\fP, \fBOPPOSITEDEST\fP, \fBOPPOSITEAPEX\fP }"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void * \fBmalloc\fP ()"
+.br
+.ti -1c
+.RI "void \fBfree\fP ()"
+.br
+.ti -1c
+.RI "void \fBexit\fP ()"
+.br
+.ti -1c
+.RI "double \fBstrtod\fP ()"
+.br
+.ti -1c
+.RI "long \fBstrtol\fP ()"
+.br
+.ti -1c
+.RI "void \fBpoolrestart\fP ()"
+.br
+.ti -1c
+.RI "char * \fBreadline\fP ()"
+.br
+.ti -1c
+.RI "char * \fBfindfield\fP ()"
+.br
+.ti -1c
+.RI "void \fBsyntax\fP ()"
+.br
+.ti -1c
+.RI "void \fBinfo\fP ()"
+.br
+.ti -1c
+.RI "void \fBinternalerror\fP ()"
+.br
+.ti -1c
+.RI "void \fBparsecommandline\fP (int argc, char **argv)"
+.br
+.ti -1c
+.RI "void \fBprinttriangle\fP (struct \fBtriedge\fP *\fBt\fP)"
+.br
+.ti -1c
+.RI "void \fBprintshelle\fP (struct \fBedge\fP *s)"
+.br
+.ti -1c
+.RI "void \fBpoolinit\fP (struct \fBmemorypool\fP *pool, int bytecount, int itemcount, enum \fBwordtype\fP wtype, int alignment)"
+.br
+.ti -1c
+.RI "void \fBpoolrestart\fP (struct \fBmemorypool\fP *pool)"
+.br
+.ti -1c
+.RI "void \fBpooldeinit\fP (struct \fBmemorypool\fP *pool)"
+.br
+.ti -1c
+.RI "VOID * \fBpoolalloc\fP (struct \fBmemorypool\fP *pool)"
+.br
+.ti -1c
+.RI "void \fBpooldealloc\fP (struct \fBmemorypool\fP *pool, VOID *dyingitem)"
+.br
+.ti -1c
+.RI "void \fBtraversalinit\fP (struct \fBmemorypool\fP *pool)"
+.br
+.ti -1c
+.RI "VOID * \fBtraverse\fP (struct \fBmemorypool\fP *pool)"
+.br
+.ti -1c
+.RI "void \fBdummyinit\fP (int trianglewords, int shellewords)"
+.br
+.ti -1c
+.RI "void \fBinitializepointpool\fP ()"
+.br
+.ti -1c
+.RI "void \fBinitializetrisegpools\fP ()"
+.br
+.ti -1c
+.RI "void \fBtriangledealloc\fP (\fBtriangle\fP *dyingtriangle)"
+.br
+.ti -1c
+.RI "\fBtriangle\fP * \fBtriangletraverse\fP ()"
+.br
+.ti -1c
+.RI "void \fBshelledealloc\fP (\fBshelle\fP *dyingshelle)"
+.br
+.ti -1c
+.RI "\fBshelle\fP * \fBshelletraverse\fP ()"
+.br
+.ti -1c
+.RI "void \fBpointdealloc\fP (\fBpoint\fP dyingpoint)"
+.br
+.ti -1c
+.RI "\fBpoint\fP \fBpointtraverse\fP ()"
+.br
+.ti -1c
+.RI "void \fBbadsegmentdealloc\fP (struct \fBedge\fP *dyingseg)"
+.br
+.ti -1c
+.RI "\fBedge\fP * \fBbadsegmenttraverse\fP ()"
+.br
+.ti -1c
+.RI "\fBpoint\fP \fBgetpoint\fP (int \fBnumber\fP)"
+.br
+.ti -1c
+.RI "void \fBtriangledeinit\fP ()"
+.br
+.ti -1c
+.RI "void \fBmaketriangle\fP (struct \fBtriedge\fP *newtriedge)"
+.br
+.ti -1c
+.RI "void \fBmakeshelle\fP (struct \fBedge\fP *newedge)"
+.br
+.ti -1c
+.RI "void \fBexactinit\fP ()"
+.br
+.ti -1c
+.RI "int \fBfast_expansion_sum_zeroelim\fP (int elen, REAL *\fBe\fP, int flen, REAL *f, REAL *\fBh\fP)"
+.br
+.ti -1c
+.RI "int \fBscale_expansion_zeroelim\fP (int elen, REAL *\fBe\fP, REAL \fBb\fP, REAL *\fBh\fP)"
+.br
+.ti -1c
+.RI "REAL \fBestimate\fP (int elen, REAL *\fBe\fP)"
+.br
+.ti -1c
+.RI "REAL \fBcounterclockwiseadapt\fP (\fBpoint\fP pa, \fBpoint\fP pb, \fBpoint\fP pc, REAL detsum)"
+.br
+.ti -1c
+.RI "REAL \fBcounterclockwise\fP (\fBpoint\fP pa, \fBpoint\fP pb, \fBpoint\fP pc)"
+.br
+.ti -1c
+.RI "REAL \fBincircleadapt\fP (\fBpoint\fP pa, \fBpoint\fP pb, \fBpoint\fP pc, \fBpoint\fP pd, REAL permanent)"
+.br
+.ti -1c
+.RI "REAL \fBincircle\fP (\fBpoint\fP pa, \fBpoint\fP pb, \fBpoint\fP pc, \fBpoint\fP pd)"
+.br
+.ti -1c
+.RI "void \fBtriangleinit\fP ()"
+.br
+.ti -1c
+.RI "unsigned long \fBrandomnation\fP (unsigned int choices)"
+.br
+.ti -1c
+.RI "void \fBcheckmesh\fP ()"
+.br
+.ti -1c
+.RI "void \fBcheckdelaunay\fP ()"
+.br
+.ti -1c
+.RI "void \fBenqueuebadtri\fP (struct \fBtriedge\fP *instri, REAL \fBangle\fP, \fBpoint\fP insapex, \fBpoint\fP insorg, \fBpoint\fP insdest)"
+.br
+.ti -1c
+.RI "\fBbadface\fP * \fBdequeuebadtri\fP ()"
+.br
+.ti -1c
+.RI "int \fBcheckedge4encroach\fP (struct \fBedge\fP *testedge)"
+.br
+.ti -1c
+.RI "void \fBtesttriangle\fP (struct \fBtriedge\fP *testtri)"
+.br
+.ti -1c
+.RI "void \fBmakepointmap\fP ()"
+.br
+.ti -1c
+.RI "enum \fBlocateresult\fP \fBpreciselocate\fP (\fBpoint\fP searchpoint, struct \fBtriedge\fP *searchtri)"
+.br
+.ti -1c
+.RI "enum \fBlocateresult\fP \fBlocate\fP (\fBpoint\fP searchpoint, struct \fBtriedge\fP *searchtri)"
+.br
+.ti -1c
+.RI "void \fBinsertshelle\fP (struct \fBtriedge\fP *tri, int shellemark)"
+.br
+.ti -1c
+.RI "void \fBflip\fP (struct \fBtriedge\fP *flipedge)"
+.br
+.ti -1c
+.RI "enum \fBinsertsiteresult\fP \fBinsertsite\fP (\fBpoint\fP insertpoint, struct \fBtriedge\fP *searchtri, struct \fBedge\fP *splitedge, int segmentflaws, int triflaws)"
+.br
+.ti -1c
+.RI "void \fBtriangulatepolygon\fP (struct \fBtriedge\fP *firstedge, struct \fBtriedge\fP *lastedge, int edgecount, int doflip, int triflaws)"
+.br
+.ti -1c
+.RI "void \fBdeletesite\fP (struct \fBtriedge\fP *deltri)"
+.br
+.ti -1c
+.RI "void \fBpointsort\fP (\fBpoint\fP *sortarray, int arraysize)"
+.br
+.ti -1c
+.RI "void \fBpointmedian\fP (\fBpoint\fP *sortarray, int arraysize, int median, int axis)"
+.br
+.ti -1c
+.RI "void \fBalternateaxes\fP (\fBpoint\fP *sortarray, int arraysize, int axis)"
+.br
+.ti -1c
+.RI "void \fBmergehulls\fP (struct \fBtriedge\fP *farleft, struct \fBtriedge\fP *innerleft, struct \fBtriedge\fP *innerright, struct \fBtriedge\fP *farright, int axis)"
+.br
+.ti -1c
+.RI "void \fBdivconqrecurse\fP (\fBpoint\fP *sortarray, int vertices, int axis, struct \fBtriedge\fP *farleft, struct \fBtriedge\fP *farright)"
+.br
+.ti -1c
+.RI "long \fBremoveghosts\fP (struct \fBtriedge\fP *startghost)"
+.br
+.ti -1c
+.RI "long \fBdivconqdelaunay\fP ()"
+.br
+.ti -1c
+.RI "void \fBboundingbox\fP ()"
+.br
+.ti -1c
+.RI "long \fBremovebox\fP ()"
+.br
+.ti -1c
+.RI "long \fBincrementaldelaunay\fP ()"
+.br
+.ti -1c
+.RI "void \fBeventheapinsert\fP (struct \fBevent\fP **heap, int heapsize, struct \fBevent\fP *newevent)"
+.br
+.ti -1c
+.RI "void \fBeventheapify\fP (struct \fBevent\fP **heap, int heapsize, int eventnum)"
+.br
+.ti -1c
+.RI "void \fBeventheapdelete\fP (struct \fBevent\fP **heap, int heapsize, int eventnum)"
+.br
+.ti -1c
+.RI "void \fBcreateeventheap\fP (struct \fBevent\fP ***eventheap, struct \fBevent\fP **events, struct \fBevent\fP **freeevents)"
+.br
+.ti -1c
+.RI "int \fBrightofhyperbola\fP (struct \fBtriedge\fP *fronttri, \fBpoint\fP newsite)"
+.br
+.ti -1c
+.RI "REAL \fBcircletop\fP (\fBpoint\fP pa, \fBpoint\fP pb, \fBpoint\fP pc, REAL ccwabc)"
+.br
+.ti -1c
+.RI "void \fBcheck4deadevent\fP (struct \fBtriedge\fP *checktri, struct \fBevent\fP **freeevents, struct \fBevent\fP **eventheap, int *heapsize)"
+.br
+.ti -1c
+.RI "\fBsplaynode\fP * \fBsplay\fP (struct \fBsplaynode\fP *splaytree, \fBpoint\fP searchpoint, struct \fBtriedge\fP *searchtri)"
+.br
+.ti -1c
+.RI "\fBsplaynode\fP * \fBsplayinsert\fP (struct \fBsplaynode\fP *splayroot, struct \fBtriedge\fP *newkey, \fBpoint\fP searchpoint)"
+.br
+.ti -1c
+.RI "\fBsplaynode\fP * \fBcircletopinsert\fP (struct \fBsplaynode\fP *splayroot, struct \fBtriedge\fP *newkey, \fBpoint\fP pa, \fBpoint\fP pb, \fBpoint\fP pc, REAL topy)"
+.br
+.ti -1c
+.RI "\fBsplaynode\fP * \fBfrontlocate\fP (struct \fBsplaynode\fP *splayroot, struct \fBtriedge\fP *bottommost, \fBpoint\fP searchpoint, struct \fBtriedge\fP *searchtri, int *farright)"
+.br
+.ti -1c
+.RI "long \fBsweeplinedelaunay\fP ()"
+.br
+.ti -1c
+.RI "long \fBdelaunay\fP ()"
+.br
+.ti -1c
+.RI "long \fBreconstruct\fP (char *elefilename, char *\fBareafilename\fP, char *polyfilename, FILE *polyfile)"
+.br
+.ti -1c
+.RI "enum \fBfinddirectionresult\fP \fBfinddirection\fP (struct \fBtriedge\fP *searchtri, \fBpoint\fP endpoint)"
+.br
+.ti -1c
+.RI "void \fBsegmentintersection\fP (struct \fBtriedge\fP *splittri, struct \fBedge\fP *splitshelle, \fBpoint\fP endpoint2)"
+.br
+.ti -1c
+.RI "int \fBscoutsegment\fP (struct \fBtriedge\fP *searchtri, \fBpoint\fP endpoint2, int newmark)"
+.br
+.ti -1c
+.RI "void \fBconformingedge\fP (\fBpoint\fP endpoint1, \fBpoint\fP endpoint2, int newmark)"
+.br
+.ti -1c
+.RI "void \fBdelaunayfixup\fP (struct \fBtriedge\fP *fixuptri, int leftside)"
+.br
+.ti -1c
+.RI "void \fBconstrainededge\fP (struct \fBtriedge\fP *starttri, \fBpoint\fP endpoint2, int newmark)"
+.br
+.ti -1c
+.RI "void \fBinsertsegment\fP (\fBpoint\fP endpoint1, \fBpoint\fP endpoint2, int newmark)"
+.br
+.ti -1c
+.RI "void \fBmarkhull\fP ()"
+.br
+.ti -1c
+.RI "int \fBformskeleton\fP (FILE *polyfile, char *polyfilename)"
+.br
+.ti -1c
+.RI "void \fBinfecthull\fP ()"
+.br
+.ti -1c
+.RI "void \fBplague\fP ()"
+.br
+.ti -1c
+.RI "void \fBregionplague\fP (REAL attribute, REAL area)"
+.br
+.ti -1c
+.RI "void \fBcarveholes\fP (REAL *holelist, int \fBholes\fP, REAL *regionlist, int \fBregions\fP)"
+.br
+.ti -1c
+.RI "void \fBtallyencs\fP ()"
+.br
+.ti -1c
+.RI "void \fBprecisionerror\fP ()"
+.br
+.ti -1c
+.RI "void \fBrepairencs\fP (int flaws)"
+.br
+.ti -1c
+.RI "void \fBtallyfaces\fP ()"
+.br
+.ti -1c
+.RI "enum \fBcircumcenterresult\fP \fBfindcircumcenter\fP (\fBpoint\fP torg, \fBpoint\fP tdest, \fBpoint\fP tapex, \fBpoint\fP circumcenter, REAL *xi, REAL *eta)"
+.br
+.ti -1c
+.RI "void \fBsplittriangle\fP (struct \fBbadface\fP *badtri)"
+.br
+.ti -1c
+.RI "void \fBenforcequality\fP ()"
+.br
+.ti -1c
+.RI "void \fBhighorder\fP ()"
+.br
+.ti -1c
+.RI "char * \fBreadline\fP (char *string, FILE *infile, char *infilename)"
+.br
+.ti -1c
+.RI "char * \fBfindfield\fP (char *string)"
+.br
+.ti -1c
+.RI "void \fBreadnodes\fP (char *nodefilename, char *polyfilename, FILE **polyfile)"
+.br
+.ti -1c
+.RI "void \fBreadholes\fP (FILE *polyfile, char *polyfilename, REAL **hlist, int *\fBholes\fP, REAL **rlist, int *\fBregions\fP)"
+.br
+.ti -1c
+.RI "void \fBfinishfile\fP (FILE *outfile, int argc, char **argv)"
+.br
+.ti -1c
+.RI "void \fBwritenodes\fP (char *nodefilename, int argc, char **argv)"
+.br
+.ti -1c
+.RI "void \fBnumbernodes\fP ()"
+.br
+.ti -1c
+.RI "void \fBwriteelements\fP (char *elefilename, int argc, char **argv)"
+.br
+.ti -1c
+.RI "void \fBwritepoly\fP (char *polyfilename, REAL *holelist, int \fBholes\fP, REAL *regionlist, int \fBregions\fP, int argc, char **argv)"
+.br
+.ti -1c
+.RI "void \fBwriteedges\fP (char *\fBedgefilename\fP, int argc, char **argv)"
+.br
+.ti -1c
+.RI "void \fBwritevoronoi\fP (char *\fBvnodefilename\fP, char *\fBvedgefilename\fP, int argc, char **argv)"
+.br
+.ti -1c
+.RI "void \fBwriteneighbors\fP (char *\fBneighborfilename\fP, int argc, char **argv)"
+.br
+.ti -1c
+.RI "void \fBwriteoff\fP (char *\fBofffilename\fP, int argc, char **argv)"
+.br
+.ti -1c
+.RI "void \fBquality_statistics\fP ()"
+.br
+.ti -1c
+.RI "void \fBstatistics\fP ()"
+.br
+.ti -1c
+.RI "int \fBmain\fP (int argc, char **argv)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBmemorypool\fP \fBtriangles\fP"
+.br
+.ti -1c
+.RI "\fBmemorypool\fP \fBshelles\fP"
+.br
+.ti -1c
+.RI "\fBmemorypool\fP \fBpoints\fP"
+.br
+.ti -1c
+.RI "\fBmemorypool\fP \fBviri\fP"
+.br
+.ti -1c
+.RI "\fBmemorypool\fP \fBbadsegments\fP"
+.br
+.ti -1c
+.RI "\fBmemorypool\fP \fBbadtriangles\fP"
+.br
+.ti -1c
+.RI "\fBmemorypool\fP \fBsplaynodes\fP"
+.br
+.ti -1c
+.RI "\fBbadface\fP * \fBqueuefront\fP [64]"
+.br
+.ti -1c
+.RI "\fBbadface\fP ** \fBqueuetail\fP [64]"
+.br
+.ti -1c
+.RI "REAL \fBxmin\fP"
+.br
+.ti -1c
+.RI "REAL \fBxmax\fP"
+.br
+.ti -1c
+.RI "REAL \fBymin\fP"
+.br
+.ti -1c
+.RI "REAL \fBymax\fP"
+.br
+.ti -1c
+.RI "REAL \fBxminextreme\fP"
+.br
+.ti -1c
+.RI "int \fBinpoints\fP"
+.br
+.ti -1c
+.RI "int \fBinelements\fP"
+.br
+.ti -1c
+.RI "int \fBinsegments\fP"
+.br
+.ti -1c
+.RI "int \fBholes\fP"
+.br
+.ti -1c
+.RI "int \fBregions\fP"
+.br
+.ti -1c
+.RI "long \fBedges\fP"
+.br
+.ti -1c
+.RI "int \fBmesh_dim\fP"
+.br
+.ti -1c
+.RI "int \fBnextras\fP"
+.br
+.ti -1c
+.RI "int \fBeextras\fP"
+.br
+.ti -1c
+.RI "long \fBhullsize\fP"
+.br
+.ti -1c
+.RI "int \fBtriwords\fP"
+.br
+.ti -1c
+.RI "int \fBshwords\fP"
+.br
+.ti -1c
+.RI "int \fBpointmarkindex\fP"
+.br
+.ti -1c
+.RI "int \fBpoint2triindex\fP"
+.br
+.ti -1c
+.RI "int \fBhighorderindex\fP"
+.br
+.ti -1c
+.RI "int \fBelemattribindex\fP"
+.br
+.ti -1c
+.RI "int \fBareaboundindex\fP"
+.br
+.ti -1c
+.RI "int \fBchecksegments\fP"
+.br
+.ti -1c
+.RI "int \fBreadnodefile\fP"
+.br
+.ti -1c
+.RI "long \fBsamples\fP"
+.br
+.ti -1c
+.RI "unsigned long \fBrandomseed\fP"
+.br
+.ti -1c
+.RI "REAL \fBsplitter\fP"
+.br
+.ti -1c
+.RI "REAL \fBepsilon\fP"
+.br
+.ti -1c
+.RI "REAL \fBresulterrbound\fP"
+.br
+.ti -1c
+.RI "REAL \fBccwerrboundA\fP"
+.br
+.ti -1c
+.RI "REAL \fBccwerrboundB\fP"
+.br
+.ti -1c
+.RI "REAL \fBccwerrboundC\fP"
+.br
+.ti -1c
+.RI "REAL \fBiccerrboundA\fP"
+.br
+.ti -1c
+.RI "REAL \fBiccerrboundB\fP"
+.br
+.ti -1c
+.RI "REAL \fBiccerrboundC\fP"
+.br
+.ti -1c
+.RI "long \fBincirclecount\fP"
+.br
+.ti -1c
+.RI "long \fBcounterclockcount\fP"
+.br
+.ti -1c
+.RI "long \fBhyperbolacount\fP"
+.br
+.ti -1c
+.RI "long \fBcircumcentercount\fP"
+.br
+.ti -1c
+.RI "long \fBcircletopcount\fP"
+.br
+.ti -1c
+.RI "int \fBpoly\fP"
+.br
+.ti -1c
+.RI "int \fBrefine\fP"
+.br
+.ti -1c
+.RI "int \fBquality\fP"
+.br
+.ti -1c
+.RI "int \fBvararea\fP"
+.br
+.ti -1c
+.RI "int \fBfixedarea\fP"
+.br
+.ti -1c
+.RI "int \fBregionattrib\fP"
+.br
+.ti -1c
+.RI "int \fBconvex\fP"
+.br
+.ti -1c
+.RI "int \fBfirstnumber\fP"
+.br
+.ti -1c
+.RI "int \fBedgesout\fP"
+.br
+.ti -1c
+.RI "int \fBvoronoi\fP"
+.br
+.ti -1c
+.RI "int \fBneighbors\fP"
+.br
+.ti -1c
+.RI "int \fBgeomview\fP"
+.br
+.ti -1c
+.RI "int \fBnobound\fP"
+.br
+.ti -1c
+.RI "int \fBnopolywritten\fP"
+.br
+.ti -1c
+.RI "int \fBnonodewritten\fP"
+.br
+.ti -1c
+.RI "int \fBnoelewritten\fP"
+.br
+.ti -1c
+.RI "int \fBnoiterationnum\fP"
+.br
+.ti -1c
+.RI "int \fBnoholes\fP"
+.br
+.ti -1c
+.RI "int \fBnoexact\fP"
+.br
+.ti -1c
+.RI "int \fBincremental\fP"
+.br
+.ti -1c
+.RI "int \fBsweepline\fP"
+.br
+.ti -1c
+.RI "int \fBdwyer\fP"
+.br
+.ti -1c
+.RI "int \fBsplitseg\fP"
+.br
+.ti -1c
+.RI "int \fBdocheck\fP"
+.br
+.ti -1c
+.RI "int \fBquiet\fP"
+.br
+.ti -1c
+.RI "int \fBverbose\fP"
+.br
+.ti -1c
+.RI "int \fBuseshelles\fP"
+.br
+.ti -1c
+.RI "int \fBorder\fP"
+.br
+.ti -1c
+.RI "int \fBnobisect\fP"
+.br
+.ti -1c
+.RI "int \fBsteiner\fP"
+.br
+.ti -1c
+.RI "int \fBsteinerleft\fP"
+.br
+.ti -1c
+.RI "REAL \fBminangle\fP"
+.br
+.ti -1c
+.RI "REAL \fBgoodangle\fP"
+.br
+.ti -1c
+.RI "REAL \fBmaxarea\fP"
+.br
+.ti -1c
+.RI "char \fBinnodefilename\fP [FILENAMESIZE]"
+.br
+.ti -1c
+.RI "char \fBinelefilename\fP [FILENAMESIZE]"
+.br
+.ti -1c
+.RI "char \fBinpolyfilename\fP [FILENAMESIZE]"
+.br
+.ti -1c
+.RI "char \fBareafilename\fP [FILENAMESIZE]"
+.br
+.ti -1c
+.RI "char \fBoutnodefilename\fP [FILENAMESIZE]"
+.br
+.ti -1c
+.RI "char \fBoutelefilename\fP [FILENAMESIZE]"
+.br
+.ti -1c
+.RI "char \fBoutpolyfilename\fP [FILENAMESIZE]"
+.br
+.ti -1c
+.RI "char \fBedgefilename\fP [FILENAMESIZE]"
+.br
+.ti -1c
+.RI "char \fBvnodefilename\fP [FILENAMESIZE]"
+.br
+.ti -1c
+.RI "char \fBvedgefilename\fP [FILENAMESIZE]"
+.br
+.ti -1c
+.RI "char \fBneighborfilename\fP [FILENAMESIZE]"
+.br
+.ti -1c
+.RI "char \fBofffilename\fP [FILENAMESIZE]"
+.br
+.ti -1c
+.RI "\fBpoint\fP \fBinfpoint1\fP"
+.br
+.ti -1c
+.RI "\fBpoint\fP \fBinfpoint2\fP"
+.br
+.ti -1c
+.RI "\fBpoint\fP \fBinfpoint3\fP"
+.br
+.ti -1c
+.RI "\fBtriangle\fP * \fBdummytri\fP"
+.br
+.ti -1c
+.RI "\fBtriangle\fP * \fBdummytribase\fP"
+.br
+.ti -1c
+.RI "\fBshelle\fP * \fBdummysh\fP"
+.br
+.ti -1c
+.RI "\fBshelle\fP * \fBdummyshbase\fP"
+.br
+.ti -1c
+.RI "\fBtriedge\fP \fBrecenttri\fP"
+.br
+.ti -1c
+.RI "int \fBplus1mod3\fP [3] = {1, 2, 0}"
+.br
+.ti -1c
+.RI "int \fBminus1mod3\fP [3] = {2, 0, 1}"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define Absolute(\fBa\fP)   ((\fBa\fP) >= 0.0 ? (\fBa\fP) : -(\fBa\fP))"
+.PP
+* Definition at line 3899 of file triangle.c.
+.PP
+Referenced by counterclockwiseadapt(), incircle(), and incircleadapt().
+.SS "#define apex(\fBtriedge\fP, pointptr)   pointptr = (\fBpoint\fP) (\fBtriedge\fP).tri[(\fBtriedge\fP).orient + 3]"
+.PP
+Definition at line 919 of file triangle.c.
+.PP
+Referenced by checkdelaunay(), checkedge4encroach(), checkmesh(), delaunayfixup(), finddirection(), flip(), insertsite(), mergehulls(), plague(), preciselocate(), printtriangle(), quality_statistics(), reconstruct(), regionplague(), rightofhyperbola(), scoutsegment(), segmentintersection(), splittriangle(), sweeplinedelaunay(), testtriangle(), triangulatepolygon(), writeelements(), writeoff(), and writevoronoi().
+.SS "#define areabound(\fBtriedge\fP)   ((REAL *) (\fBtriedge\fP).tri)[\fBareaboundindex\fP]"
+.PP
+Definition at line 988 of file triangle.c.
+.PP
+Referenced by insertsite(), printtriangle(), and testtriangle().
+.SS "#define BADSEGMENTPERBLOCK   252"
+.PP
+Definition at line 264 of file triangle.c.
+.PP
+Referenced by enforcequality().
+.SS "#define BADTRIPERBLOCK   4092"
+.PP
+Definition at line 266 of file triangle.c.
+.PP
+Referenced by enforcequality().
+.SS "#define bond(triedge1, triedge2)"
+.PP
+\fBValue:\fP.nf
+(triedge1).tri[(triedge1).orient] = encode(triedge2);                       \
+  (triedge2).tri[(triedge2).orient] = encode(triedge1)
+.fi
+.PP
+Definition at line 938 of file triangle.c.
+.PP
+Referenced by deletesite(), divconqrecurse(), flip(), insertsite(), mergehulls(), reconstruct(), and sweeplinedelaunay().
+.SS "#define DEADPOINT   -1073741824"
+.PP
+Definition at line 274 of file triangle.c.
+.PP
+Referenced by pointdealloc(), pointtraverse(), and reconstruct().
+.SS "#define decode(ptr, \fBtriedge\fP)"
+.PP
+\fBValue:\fP.nf
+(triedge).orient = (int) ((unsigned long) (ptr) & (unsigned long) 3l);      \
+  (triedge).tri = (triangle *)                                                \
+                  ((unsigned long) (ptr) ^ (unsigned long) (triedge).orient)
+.fi
+.PP
+Definition at line 788 of file triangle.c.
+.PP
+Referenced by insertsegment(), printshelle(), printtriangle(), reconstruct(), and sweeplinedelaunay().
+.SS "#define dest(\fBtriedge\fP, pointptr)   pointptr = (\fBpoint\fP) (\fBtriedge\fP).tri[\fBminus1mod3\fP[(\fBtriedge\fP).orient] + 3]"
+.PP
+Definition at line 916 of file triangle.c.
+.PP
+Referenced by carveholes(), checkdelaunay(), checkmesh(), delaunayfixup(), finddirection(), flip(), highorder(), infecthull(), insertshelle(), insertsite(), jpl_state(), locate(), mergehulls(), plague(), preciselocate(), printtriangle(), quality_statistics(), reconstruct(), regionplague(), rightofhyperbola(), scoutsegment(), segmentintersection(), splay(), splayinsert(), splittriangle(), sweeplinedelaunay(), testtriangle(), triangulatepolygon(), writeedges(), writeelements(), writeoff(), and writevoronoi().
+.SS "#define dissolve(\fBtriedge\fP)   (\fBtriedge\fP).tri[(\fBtriedge\fP).orient] = (\fBtriangle\fP) \fBdummytri\fP"
+.PP
+Definition at line 947 of file triangle.c.
+.PP
+Referenced by plague(), removebox(), and removeghosts().
+.SS "#define dnext(triedge1, triedge2)"
+.PP
+\fBValue:\fP.nf
+sym(triedge1, triedge2);                                                    \
+  lprevself(triedge2);
+.fi
+.PP
+Definition at line 862 of file triangle.c.
+.PP
+Referenced by deletesite().
+.SS "#define dnextself(\fBtriedge\fP)"
+.PP
+\fBValue:\fP.nf
+symself(triedge);                                                           \
+  lprevself(triedge);
+.fi
+.PP
+Definition at line 866 of file triangle.c.
+.SS "#define dprev(triedge1, triedge2)"
+.PP
+\fBValue:\fP.nf
+lnext(triedge1, triedge2);                                                  \
+  symself(triedge2);
+.fi
+.PP
+Definition at line 874 of file triangle.c.
+.SS "#define dprevself(\fBtriedge\fP)"
+.PP
+\fBValue:\fP.nf
+lnextself(triedge);                                                         \
+  symself(triedge);
+.fi
+.PP
+Definition at line 878 of file triangle.c.
+.SS "#define elemattribute(\fBtriedge\fP, attnum)   ((REAL *) (\fBtriedge\fP).tri)[\fBelemattribindex\fP + (attnum)]"
+.PP
+Definition at line 980 of file triangle.c.
+.PP
+Referenced by insertsite(), and writeelements().
+.SS "#define encode(\fBtriedge\fP)   (\fBtriangle\fP) ((unsigned long) (\fBtriedge\fP).tri | (unsigned long) (\fBtriedge\fP).orient)"
+.PP
+Definition at line 797 of file triangle.c.
+.PP
+Referenced by makepointmap(), reconstruct(), removebox(), removeghosts(), and sweeplinedelaunay().
+.SS "#define Fast_Two_Sum(\fBa\fP, \fBb\fP, x, y)"
+.PP
+\fBValue:\fP.nf
+x = (REAL) (a + b); \
+  Fast_Two_Sum_Tail(a, b, x, y)
+.fi
+.PP
+Definition at line 3919 of file triangle.c.
+.PP
+Referenced by fast_expansion_sum_zeroelim(), and scale_expansion_zeroelim().
+.SS "#define Fast_Two_Sum_Tail(\fBa\fP, \fBb\fP, x, y)"
+.PP
+\fBValue:\fP.nf
+bvirt = x - a; \
+  y = b - bvirt
+.fi
+.PP
+Definition at line 3915 of file triangle.c.
+.SS "#define FILENAMESIZE   512"
+.PP
+Definition at line 248 of file triangle.c.
+.PP
+Referenced by parsecommandline().
+.SS "#define INEXACT"
+.PP
+Definition at line 243 of file triangle.c.
+.PP
+Referenced by counterclockwiseadapt(), fast_expansion_sum_zeroelim(), incircleadapt(), and scale_expansion_zeroelim().
+.SS "#define infect(\fBtriedge\fP)"
+.PP
+\fBValue:\fP.nf
+(triedge).tri[6] = (triangle)                                               \
+                     ((unsigned long) (triedge).tri[6] | (unsigned long) 2l)
+.fi
+.PP
+Definition at line 965 of file triangle.c.
+.PP
+Referenced by carveholes(), infecthull(), plague(), and regionplague().
+.SS "#define infected(\fBtriedge\fP)   (((unsigned long) (\fBtriedge\fP).tri[6] & (unsigned long) 2\fBl\fP) != 0)"
+.PP
+Definition at line 975 of file triangle.c.
+.PP
+Referenced by carveholes(), infecthull(), plague(), and regionplague().
+.SS "#define INPUTLINESIZE   512"
+.PP
+Definition at line 253 of file triangle.c.
+.PP
+Referenced by formskeleton(), readholes(), readline(), readnodes(), and reconstruct().
+.SS "#define lnext(triedge1, triedge2)"
+.PP
+\fBValue:\fP.nf
+(triedge2).tri = (triedge1).tri;                                            \
+  (triedge2).orient = plus1mod3[(triedge1).orient]
+.fi
+.PP
+Definition at line 818 of file triangle.c.
+.PP
+Referenced by constrainededge(), delaunayfixup(), divconqrecurse(), flip(), insertsite(), mergehulls(), preciselocate(), removebox(), removeghosts(), repairencs(), scoutsegment(), sweeplinedelaunay(), and testtriangle().
+.SS "#define lnextself(\fBtriedge\fP)   (\fBtriedge\fP).orient = \fBplus1mod3\fP[(\fBtriedge\fP).orient]"
+.PP
+Definition at line 822 of file triangle.c.
+.PP
+Referenced by divconqrecurse(), flip(), infecthull(), insertsite(), locate(), markhull(), mergehulls(), preciselocate(), removebox(), repairencs(), scoutsegment(), splittriangle(), sweeplinedelaunay(), and testtriangle().
+.SS "#define lprev(triedge1, triedge2)"
+.PP
+\fBValue:\fP.nf
+(triedge2).tri = (triedge1).tri;                                            \
+  (triedge2).orient = minus1mod3[(triedge1).orient]
+.fi
+.PP
+Definition at line 827 of file triangle.c.
+.PP
+Referenced by deletesite(), divconqrecurse(), flip(), insertsite(), mergehulls(), preciselocate(), reconstruct(), removebox(), removeghosts(), sweeplinedelaunay(), and testtriangle().
+.SS "#define lprevself(\fBtriedge\fP)   (\fBtriedge\fP).orient = \fBminus1mod3\fP[(\fBtriedge\fP).orient]"
+.PP
+Definition at line 831 of file triangle.c.
+.PP
+Referenced by constrainededge(), delaunayfixup(), divconqrecurse(), insertsite(), mergehulls(), preciselocate(), removebox(), removeghosts(), scoutsegment(), splittriangle(), and sweeplinedelaunay().
+.SS "#define mark(\fBedge\fP)   (* (int *) ((\fBedge\fP).sh + 6))"
+.PP
+Definition at line 1063 of file triangle.c.
+.PP
+Referenced by highorder(), infecthull(), insertshelle(), insertsite(), plague(), printshelle(), repairencs(), segmentintersection(), writeedges(), and writepoly().
+.SS "#define ONETHIRD   0.333333333333333333333333333333333333333333333333333333333333"
+.PP
+Definition at line 303 of file triangle.c.
+.SS "#define onext(triedge1, triedge2)"
+.PP
+\fBValue:\fP.nf
+lprev(triedge1, triedge2);                                                  \
+  symself(triedge2);
+.fi
+.PP
+Definition at line 838 of file triangle.c.
+.PP
+Referenced by deletesite(), finddirection(), plague(), sweeplinedelaunay(), and triangulatepolygon().
+.SS "#define onextself(\fBtriedge\fP)"
+.PP
+\fBValue:\fP.nf
+lprevself(triedge);                                                         \
+  symself(triedge);
+.fi
+.PP
+Definition at line 842 of file triangle.c.
+.PP
+Referenced by deletesite(), finddirection(), frontlocate(), plague(), segmentintersection(), and triangulatepolygon().
+.SS "#define oprev(triedge1, triedge2)"
+.PP
+\fBValue:\fP.nf
+sym(triedge1, triedge2);                                                    \
+  lnextself(triedge2);
+.fi
+.PP
+Definition at line 850 of file triangle.c.
+.PP
+Referenced by constrainededge(), deletesite(), infecthull(), markhull(), plague(), sweeplinedelaunay(), and triangulatepolygon().
+.SS "#define oprevself(\fBtriedge\fP)"
+.PP
+\fBValue:\fP.nf
+symself(triedge);                                                           \
+  lnextself(triedge);
+.fi
+.PP
+Definition at line 854 of file triangle.c.
+.PP
+Referenced by constrainededge(), finddirection(), and plague().
+.SS "#define org(\fBtriedge\fP, pointptr)   pointptr = (\fBpoint\fP) (\fBtriedge\fP).tri[\fBplus1mod3\fP[(\fBtriedge\fP).orient] + 3]"
+.PP
+Definition at line 913 of file triangle.c.
+.PP
+Referenced by carveholes(), check4deadevent(), checkdelaunay(), checkmesh(), conformingedge(), constrainededge(), delaunayfixup(), deletesite(), finddirection(), flip(), highorder(), infecthull(), insertsegment(), insertshelle(), insertsite(), locate(), makepointmap(), mergehulls(), plague(), preciselocate(), printtriangle(), quality_statistics(), regionplague(), removebox(), removeghosts(), scoutsegment(), segmentintersection(), splittriangle(), sweeplinedelaunay(), testtriangle(), writeedges(), writeelements(), writeoff(), and writevoronoi().
+.SS "#define PI   3.141592653589793238462643383279502884197169399375105820974944592308"
+.PP
+Definition at line 295 of file triangle.c.
+.SS "#define point2tri(pt)   ((\fBtriangle\fP *) (pt))[\fBpoint2triindex\fP]"
+.PP
+Definition at line 1134 of file triangle.c.
+.PP
+Referenced by insertsegment().
+.SS "#define pointmark(pt)   ((int *) (pt))[\fBpointmarkindex\fP]"
+.PP
+Definition at line 1129 of file triangle.c.
+.PP
+Referenced by infecthull(), insertshelle(), plague(), pointtraverse(), reconstruct(), removebox(), removeghosts(), writeedges(), writeelements(), writenodes(), writeoff(), and writepoly().
+.SS "#define POINTPERBLOCK   4092"
+.PP
+Definition at line 261 of file triangle.c.
+.PP
+Referenced by initializepointpool().
+.SS "#define REAL   double"
+.PP
+Definition at line 200 of file triangle.c.
+.PP
+Referenced by boundingbox(), carveholes(), circletop(), circletopinsert(), constrainededge(), counterclockwise(), counterclockwiseadapt(), divconqrecurse(), enqueuebadtri(), estimate(), eventheapdelete(), eventheapify(), eventheapinsert(), exactinit(), fast_expansion_sum_zeroelim(), findcircumcenter(), finddirection(), incircle(), incircleadapt(), initializepointpool(), initializetrisegpools(), insertsite(), locate(), main(), parsecommandline(), pointmedian(), pointsort(), poolalloc(), poolinit(), preciselocate(), quality_statistics(), readholes(), readnodes(), reconstruct(), regionplague(), repairencs(), rightofhyperbola(), scale_expansion_zeroelim(), segmentintersection(), splittriangle(), sweeplinedelaunay(), testtriangle(), traverse(), writeelements(), writenodes(), writepoly(), and writevoronoi().
+.SS "#define rnext(triedge1, triedge2)"
+.PP
+\fBValue:\fP.nf
+sym(triedge1, triedge2);                                                    \
+  lnextself(triedge2);                                                        \
+  symself(triedge2);
+.fi
+.PP
+Definition at line 886 of file triangle.c.
+.SS "#define rnextself(\fBtriedge\fP)"
+.PP
+\fBValue:\fP.nf
+symself(triedge);                                                           \
+  lnextself(triedge);                                                         \
+  symself(triedge);
+.fi
+.PP
+Definition at line 891 of file triangle.c.
+.SS "#define rprev(triedge1, triedge2)"
+.PP
+\fBValue:\fP.nf
+sym(triedge1, triedge2);                                                    \
+  lprevself(triedge2);                                                        \
+  symself(triedge2);
+.fi
+.PP
+Definition at line 900 of file triangle.c.
+.SS "#define rprevself(\fBtriedge\fP)"
+.PP
+\fBValue:\fP.nf
+symself(triedge);                                                           \
+  lprevself(triedge);                                                         \
+  symself(triedge);
+.fi
+.PP
+Definition at line 905 of file triangle.c.
+.SS "#define SAMPLEFACTOR   11"
+.PP
+Definition at line 287 of file triangle.c.
+.PP
+Referenced by locate().
+.SS "#define SAMPLERATE   10"
+.PP
+Definition at line 291 of file triangle.c.
+.PP
+Referenced by sweeplinedelaunay().
+.SS "#define sbond(edge1, edge2)"
+.PP
+\fBValue:\fP.nf
+(edge1).sh[(edge1).shorient] = sencode(edge2);                              \
+  (edge2).sh[(edge2).shorient] = sencode(edge1)
+.fi
+.PP
+Definition at line 1070 of file triangle.c.
+.PP
+Referenced by insertsite().
+.SS "#define sdecode(sptr, \fBedge\fP)"
+.PP
+\fBValue:\fP.nf
+(edge).shorient = (int) ((unsigned long) (sptr) & (unsigned long) 1l);      \
+  (edge).sh = (shelle *)                                                      \
+              ((unsigned long) (sptr) & ~ (unsigned long) 3l)
+.fi
+.PP
+Definition at line 1002 of file triangle.c.
+.PP
+Referenced by printshelle(), and printtriangle().
+.SS "#define sdest(\fBedge\fP, pointptr)   pointptr = (\fBpoint\fP) (\fBedge\fP).sh[3 - (\fBedge\fP).shorient]"
+.PP
+Definition at line 1051 of file triangle.c.
+.PP
+Referenced by checkedge4encroach(), printshelle(), repairencs(), and writepoly().
+.SS "#define sdissolve(\fBedge\fP)   (\fBedge\fP).sh[(\fBedge\fP).shorient] = (\fBshelle\fP) \fBdummysh\fP"
+.PP
+Definition at line 1077 of file triangle.c.
+.SS "#define sencode(\fBedge\fP)   (\fBshelle\fP) ((unsigned long) (\fBedge\fP).sh | (unsigned long) (\fBedge\fP).shorient)"
+.PP
+Definition at line 1011 of file triangle.c.
+.SS "#define setapex(\fBtriedge\fP, pointptr)   (\fBtriedge\fP).tri[(\fBtriedge\fP).orient + 3] = (\fBtriangle\fP) pointptr"
+.PP
+Definition at line 928 of file triangle.c.
+.PP
+Referenced by boundingbox(), divconqrecurse(), flip(), insertsite(), mergehulls(), reconstruct(), and sweeplinedelaunay().
+.SS "#define setareabound(\fBtriedge\fP, value)   ((REAL *) (\fBtriedge\fP).tri)[\fBareaboundindex\fP] = value"
+.PP
+Definition at line 990 of file triangle.c.
+.PP
+Referenced by insertsite(), maketriangle(), reconstruct(), and regionplague().
+.SS "#define setdest(\fBtriedge\fP, pointptr)   (\fBtriedge\fP).tri[\fBminus1mod3\fP[(\fBtriedge\fP).orient] + 3] = (\fBtriangle\fP) pointptr"
+.PP
+Definition at line 925 of file triangle.c.
+.PP
+Referenced by boundingbox(), divconqrecurse(), flip(), insertsite(), mergehulls(), reconstruct(), and sweeplinedelaunay().
+.SS "#define setelemattribute(\fBtriedge\fP, attnum, value)   ((REAL *) (\fBtriedge\fP).tri)[\fBelemattribindex\fP + (attnum)] = value"
+.PP
+Definition at line 983 of file triangle.c.
+.PP
+Referenced by carveholes(), insertsite(), maketriangle(), reconstruct(), and regionplague().
+.SS "#define setmark(\fBedge\fP, value)   * (int *) ((\fBedge\fP).sh + 6) = value"
+.PP
+Definition at line 1065 of file triangle.c.
+.PP
+Referenced by infecthull(), insertshelle(), makeshelle(), plague(), and reconstruct().
+.SS "#define setorg(\fBtriedge\fP, pointptr)   (\fBtriedge\fP).tri[\fBplus1mod3\fP[(\fBtriedge\fP).orient] + 3] = (\fBtriangle\fP) pointptr"
+.PP
+Definition at line 922 of file triangle.c.
+.PP
+Referenced by boundingbox(), check4deadevent(), deletesite(), divconqrecurse(), flip(), insertsite(), mergehulls(), plague(), reconstruct(), and sweeplinedelaunay().
+.SS "#define setpoint2tri(pt, value)   ((\fBtriangle\fP *) (pt))[\fBpoint2triindex\fP] = value"
+.PP
+Definition at line 1136 of file triangle.c.
+.PP
+Referenced by makepointmap().
+.SS "#define setpointmark(pt, value)   ((int *) (pt))[\fBpointmarkindex\fP] = value"
+.PP
+Definition at line 1131 of file triangle.c.
+.PP
+Referenced by conformingedge(), highorder(), infecthull(), insertshelle(), numbernodes(), plague(), pointdealloc(), readnodes(), removebox(), removeghosts(), repairencs(), segmentintersection(), splittriangle(), and writenodes().
+.SS "#define setsdest(\fBedge\fP, pointptr)   (\fBedge\fP).sh[3 - (\fBedge\fP).shorient] = (\fBshelle\fP) pointptr"
+.PP
+Definition at line 1057 of file triangle.c.
+.PP
+Referenced by insertshelle(), insertsite(), and reconstruct().
+.SS "#define setsorg(\fBedge\fP, pointptr)   (\fBedge\fP).sh[2 + (\fBedge\fP).shorient] = (\fBshelle\fP) pointptr"
+.PP
+Definition at line 1054 of file triangle.c.
+.PP
+Referenced by insertshelle(), and reconstruct().
+.SS "#define setvertices2null(\fBtriedge\fP)"
+.PP
+\fBValue:\fP.nf
+(triedge).tri[3] = (triangle) NULL;                                         \
+  (triedge).tri[4] = (triangle) NULL;                                         \
+  (triedge).tri[5] = (triangle) NULL;
+.fi
+.PP
+Definition at line 931 of file triangle.c.
+.SS "#define shellecopy(edge1, edge2)"
+.PP
+\fBValue:\fP.nf
+(edge2).sh = (edge1).sh;                                                    \
+  (edge2).shorient = (edge1).shorient
+.fi
+.PP
+Definition at line 1082 of file triangle.c.
+.PP
+Referenced by checkedge4encroach(), and insertsite().
+.SS "#define shelleequal(edge1, edge2)"
+.PP
+\fBValue:\fP.nf
+(((edge1).sh == (edge2).sh) &&                                              \
+   ((edge1).shorient == (edge2).shorient))
+.fi
+.PP
+Definition at line 1088 of file triangle.c.
+.SS "#define SHELLEPERBLOCK   508"
+.PP
+Definition at line 260 of file triangle.c.
+.PP
+Referenced by initializetrisegpools().
+.SS "#define snext(edge1, edge2)"
+.PP
+\fBValue:\fP.nf
+sptr = (edge1).sh[1 - (edge1).shorient];                                    \
+  sdecode(sptr, edge2)
+.fi
+.PP
+Definition at line 1037 of file triangle.c.
+.SS "#define snextself(\fBedge\fP)"
+.PP
+\fBValue:\fP.nf
+sptr = (edge).sh[1 - (edge).shorient];                                      \
+  sdecode(sptr, edge)
+.fi
+.PP
+Definition at line 1041 of file triangle.c.
+.PP
+Referenced by repairencs().
+.SS "#define sorg(\fBedge\fP, pointptr)   pointptr = (\fBpoint\fP) (\fBedge\fP).sh[2 + (\fBedge\fP).shorient]"
+.PP
+Definition at line 1048 of file triangle.c.
+.PP
+Referenced by checkedge4encroach(), printshelle(), reconstruct(), repairencs(), and writepoly().
+.SS "#define spivot(edge1, edge2)"
+.PP
+\fBValue:\fP.nf
+sptr = (edge1).sh[(edge1).shorient];                                        \
+  sdecode(sptr, edge2)
+.fi
+.PP
+Definition at line 1026 of file triangle.c.
+.PP
+Referenced by insertsite().
+.SS "#define spivotself(\fBedge\fP)"
+.PP
+\fBValue:\fP.nf
+sptr = (edge).sh[(edge).shorient];                                          \
+  sdecode(sptr, edge)
+.fi
+.PP
+Definition at line 1030 of file triangle.c.
+.SS "#define SPLAYNODEPERBLOCK   508"
+.PP
+Definition at line 268 of file triangle.c.
+.PP
+Referenced by sweeplinedelaunay().
+.SS "#define Split(\fBa\fP, ahi, alo)"
+.PP
+\fBValue:\fP.nf
+c = (REAL) (splitter * a); \
+  abig = (REAL) (c - a); \
+  ahi = c - abig; \
+  alo = a - ahi
+.fi
+.PP
+Definition at line 3945 of file triangle.c.
+.PP
+Referenced by scale_expansion_zeroelim().
+.SS "#define Square(\fBa\fP, x, y)"
+.PP
+\fBValue:\fP.nf
+x = (REAL) (a * a); \
+  Square_Tail(a, x, y)
+.fi
+.PP
+Definition at line 3982 of file triangle.c.
+.PP
+Referenced by incircleadapt().
+.SS "#define Square_Tail(\fBa\fP, x, y)"
+.PP
+\fBValue:\fP.nf
+Split(a, ahi, alo); \
+  err1 = x - (ahi * ahi); \
+  err3 = err1 - ((ahi + ahi) * alo); \
+  y = (alo * alo) - err3
+.fi
+.PP
+Definition at line 3976 of file triangle.c.
+.SS "#define SQUAREROOTTWO   1.4142135623730950488016887242096980785696718753769480732"
+.PP
+Definition at line 299 of file triangle.c.
+.PP
+Referenced by repairencs().
+.SS "#define ssym(edge1, edge2)"
+.PP
+\fBValue:\fP.nf
+(edge2).sh = (edge1).sh;                                                    \
+  (edge2).shorient = 1 - (edge1).shorient
+.fi
+.PP
+Definition at line 1016 of file triangle.c.
+.PP
+Referenced by checkedge4encroach().
+.SS "#define ssymself(\fBedge\fP)   (\fBedge\fP).shorient = 1 - (\fBedge\fP).shorient"
+.PP
+Definition at line 1020 of file triangle.c.
+.PP
+Referenced by insertshelle(), and insertsite().
+.SS "#define STARTINDEX   1"
+.PP
+Referenced by parsecommandline().
+.SS "#define stdissolve(\fBedge\fP)   (\fBedge\fP).sh[4 + (\fBedge\fP).shorient] = (\fBshelle\fP) \fBdummytri\fP"
+.PP
+Definition at line 1122 of file triangle.c.
+.PP
+Referenced by plague().
+.SS "#define stpivot(\fBedge\fP, \fBtriedge\fP)"
+.PP
+\fBValue:\fP.nf
+ptr = (triangle) (edge).sh[4 + (edge).shorient];                            \
+  decode(ptr, triedge)
+.fi
+.PP
+Definition at line 1105 of file triangle.c.
+.PP
+Referenced by checkedge4encroach(), and repairencs().
+.SS "#define sym(triedge1, triedge2)"
+.PP
+\fBValue:\fP.nf
+ptr = (triedge1).tri[(triedge1).orient];                                    \
+  decode(ptr, triedge2);
+.fi
+.PP
+Definition at line 808 of file triangle.c.
+.PP
+Referenced by checkdelaunay(), checkmesh(), delaunayfixup(), deletesite(), flip(), highorder(), insertshelle(), insertsite(), mergehulls(), plague(), preciselocate(), reconstruct(), regionplague(), removebox(), removeghosts(), repairencs(), sweeplinedelaunay(), triangulatepolygon(), writeedges(), writeneighbors(), and writevoronoi().
+.SS "#define symself(\fBtriedge\fP)"
+.PP
+\fBValue:\fP.nf
+ptr = (triedge).tri[(triedge).orient];                                      \
+  decode(ptr, triedge);
+.fi
+.PP
+Definition at line 812 of file triangle.c.
+.PP
+Referenced by carveholes(), infecthull(), insertsegment(), insertsite(), locate(), markhull(), mergehulls(), removebox(), removeghosts(), and sweeplinedelaunay().
+.SS "#define triedgecopy(triedge1, triedge2)"
+.PP
+\fBValue:\fP.nf
+(triedge2).tri = (triedge1).tri;                                            \
+  (triedge2).orient = (triedge1).orient
+.fi
+.PP
+Definition at line 952 of file triangle.c.
+.PP
+Referenced by carveholes(), conformingedge(), divconqrecurse(), enqueuebadtri(), frontlocate(), infecthull(), insertsegment(), insertsite(), locate(), markhull(), mergehulls(), preciselocate(), removebox(), removeghosts(), scoutsegment(), splay(), splayinsert(), sweeplinedelaunay(), and triangulatepolygon().
+.SS "#define triedgeequal(triedge1, triedge2)"
+.PP
+\fBValue:\fP.nf
+(((triedge1).tri == (triedge2).tri) &&                                      \
+   ((triedge1).orient == (triedge2).orient))
+.fi
+.PP
+Definition at line 958 of file triangle.c.
+.PP
+Referenced by deletesite(), frontlocate(), infecthull(), markhull(), plague(), removebox(), removeghosts(), and sweeplinedelaunay().
+.SS "#define TRIPERBLOCK   4092"
+.PP
+Definition at line 259 of file triangle.c.
+.PP
+Referenced by initializetrisegpools(), and locate().
+.SS "#define tsbond(\fBtriedge\fP, \fBedge\fP)"
+.PP
+\fBValue:\fP.nf
+(triedge).tri[6 + (triedge).orient] = (triangle) sencode(edge);             \
+  (edge).sh[4 + (edge).shorient] = (shelle) encode(triedge)
+.fi
+.PP
+Definition at line 1111 of file triangle.c.
+.PP
+Referenced by deletesite(), flip(), insertshelle(), insertsite(), and reconstruct().
+.SS "#define tsdissolve(\fBtriedge\fP)   (\fBtriedge\fP).tri[6 + (\fBtriedge\fP).orient] = (\fBtriangle\fP) \fBdummysh\fP"
+.PP
+Definition at line 1117 of file triangle.c.
+.PP
+Referenced by flip(), insertsite(), plague(), and reconstruct().
+.SS "#define tspivot(\fBtriedge\fP, \fBedge\fP)"
+.PP
+\fBValue:\fP.nf
+sptr = (shelle) (triedge).tri[6 + (triedge).orient];                        \
+  sdecode(sptr, edge)
+.fi
+.PP
+Definition at line 1098 of file triangle.c.
+.PP
+Referenced by checkdelaunay(), conformingedge(), constrainededge(), delaunayfixup(), deletesite(), flip(), highorder(), infecthull(), insertshelle(), insertsite(), plague(), regionplague(), repairencs(), scoutsegment(), testtriangle(), and writeedges().
+.SS "#define Two_Diff(\fBa\fP, \fBb\fP, x, y)"
+.PP
+\fBValue:\fP.nf
+x = (REAL) (a - b); \
+  Two_Diff_Tail(a, b, x, y)
+.fi
+.PP
+Definition at line 3941 of file triangle.c.
+.SS "#define Two_Diff_Tail(\fBa\fP, \fBb\fP, x, y)"
+.PP
+\fBValue:\fP.nf
+bvirt = (REAL) (a - x); \
+  avirt = x + bvirt; \
+  bround = bvirt - b; \
+  around = a - avirt; \
+  y = around + bround
+.fi
+.PP
+Definition at line 3934 of file triangle.c.
+.PP
+Referenced by counterclockwiseadapt(), and incircleadapt().
+.SS "#define Two_One_Diff(\fBa1\fP, a0, \fBb\fP, \fBx2\fP, \fBx1\fP, \fBx0\fP)"
+.PP
+\fBValue:\fP.nf
+Two_Diff(a0, b , _i, x0); \
+  Two_Sum( a1, _i, x2, x1)
+.fi
+.PP
+Definition at line 3993 of file triangle.c.
+.SS "#define Two_One_Sum(\fBa1\fP, a0, \fBb\fP, \fBx2\fP, \fBx1\fP, \fBx0\fP)"
+.PP
+\fBValue:\fP.nf
+Two_Sum(a0, b , _i, x0); \
+  Two_Sum(a1, _i, x2, x1)
+.fi
+.PP
+Definition at line 3989 of file triangle.c.
+.SS "#define Two_Product(\fBa\fP, \fBb\fP, x, y)"
+.PP
+\fBValue:\fP.nf
+x = (REAL) (a * b); \
+  Two_Product_Tail(a, b, x, y)
+.fi
+.PP
+Definition at line 3959 of file triangle.c.
+.PP
+Referenced by counterclockwiseadapt(), and incircleadapt().
+.SS "#define Two_Product_Presplit(\fBa\fP, \fBb\fP, bhi, blo, x, y)"
+.PP
+\fBValue:\fP.nf
+x = (REAL) (a * b); \
+  Split(a, ahi, alo); \
+  err1 = x - (ahi * bhi); \
+  err2 = err1 - (alo * bhi); \
+  err3 = err2 - (ahi * blo); \
+  y = (alo * blo) - err3
+.fi
+.PP
+Definition at line 3966 of file triangle.c.
+.PP
+Referenced by scale_expansion_zeroelim().
+.SS "#define Two_Product_Tail(\fBa\fP, \fBb\fP, x, y)"
+.PP
+\fBValue:\fP.nf
+Split(a, ahi, alo); \
+  Split(b, bhi, blo); \
+  err1 = x - (ahi * bhi); \
+  err2 = err1 - (alo * bhi); \
+  err3 = err2 - (ahi * blo); \
+  y = (alo * blo) - err3
+.fi
+.PP
+Definition at line 3951 of file triangle.c.
+.SS "#define Two_Sum(\fBa\fP, \fBb\fP, x, y)"
+.PP
+\fBValue:\fP.nf
+x = (REAL) (a + b); \
+  Two_Sum_Tail(a, b, x, y)
+.fi
+.PP
+Definition at line 3930 of file triangle.c.
+.PP
+Referenced by fast_expansion_sum_zeroelim(), and scale_expansion_zeroelim().
+.SS "#define Two_Sum_Tail(\fBa\fP, \fBb\fP, x, y)"
+.PP
+\fBValue:\fP.nf
+bvirt = (REAL) (x - a); \
+  avirt = x - bvirt; \
+  bround = b - bvirt; \
+  around = a - avirt; \
+  y = around + bround
+.fi
+.PP
+Definition at line 3923 of file triangle.c.
+.SS "#define Two_Two_Diff(\fBa1\fP, a0, \fBb1\fP, b0, x3, \fBx2\fP, \fBx1\fP, \fBx0\fP)"
+.PP
+\fBValue:\fP.nf
+Two_One_Diff(a1, a0, b0, _j, _0, x0); \
+  Two_One_Diff(_j, _0, b1, x3, x2, x1)
+.fi
+.PP
+Definition at line 4001 of file triangle.c.
+.PP
+Referenced by counterclockwiseadapt(), and incircleadapt().
+.SS "#define Two_Two_Sum(\fBa1\fP, a0, \fBb1\fP, b0, x3, \fBx2\fP, \fBx1\fP, \fBx0\fP)"
+.PP
+\fBValue:\fP.nf
+Two_One_Sum(a1, a0, b0, _j, _0, x0); \
+  Two_One_Sum(_j, _0, b1, x3, x2, x1)
+.fi
+.PP
+Definition at line 3997 of file triangle.c.
+.PP
+Referenced by incircleadapt().
+.SS "#define uninfect(\fBtriedge\fP)"
+.PP
+\fBValue:\fP.nf
+(triedge).tri[6] = (triangle)                                               \
+                     ((unsigned long) (triedge).tri[6] & ~ (unsigned long) 2l)
+.fi
+.PP
+Definition at line 969 of file triangle.c.
+.PP
+Referenced by plague(), and regionplague().
+.SS "#define VIRUSPERBLOCK   1020"
+.PP
+Definition at line 262 of file triangle.c.
+.PP
+Referenced by carveholes().
+.SS "#define VOID   int"
+.PP
+Definition at line 280 of file triangle.c.
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef REAL* \fBpoint\fP"
+.PP
+Definition at line 515 of file triangle.c.
+.PP
+Referenced by alternateaxes(), boundingbox(), carveholes(), check4deadevent(), checkdelaunay(), checkedge4encroach(), checkmesh(), circletop(), circletopinsert(), conformingedge(), constrainededge(), counterclockwise(), counterclockwiseadapt(), createeventheap(), delaunayfixup(), deletesite(), divconqdelaunay(), divconqrecurse(), enqueuebadtri(), findcircumcenter(), finddirection(), flip(), formskeleton(), frontlocate(), getpoint(), highorder(), incircle(), incircleadapt(), incrementaldelaunay(), infecthull(), insertsegment(), insertshelle(), insertsite(), locate(), main(), makepointmap(), makering(), map(), mergehulls(), numbernodes(), plague(), pointdealloc(), pointmedian(), pointsort(), pointtraverse(), preciselocate(), printshelle(), printtriangle(), quality_statistics(), readnodes(), reconstruct(), regionplague(), removebox(), removeghosts(), repairencs(), rightofhyperbola(), scoutsegment(), segmentintersection(), splay(), splayinsert(), splittriangle(), sweeplinedelaunay(), testtriangle(), triangulatepolygon(), writeedges(), writeelements(), writenodes(), writeoff(), writepoly(), and writevoronoi().
+.SS "typedef REAL** \fBshelle\fP"
+.PP
+Definition at line 498 of file triangle.c.
+.PP
+Referenced by checkdelaunay(), conformingedge(), constrainededge(), delaunayfixup(), deletesite(), dummyinit(), flip(), highorder(), infecthull(), insertshelle(), insertsite(), makeshelle(), plague(), reconstruct(), regionplague(), repairencs(), scoutsegment(), shelledealloc(), shelletraverse(), tallyencs(), testtriangle(), writeedges(), and writepoly().
+.SS "typedef REAL** \fBtriangle\fP"
+.PP
+Definition at line 482 of file triangle.c.
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBcircumcenterresult\fP"
+.PP
+\fBEnumeration values: \fP
+.in +1c
+.TP
+\fB\fIOPPOSITEORG \fP\fP
+.TP
+\fB\fIOPPOSITEDEST \fP\fP
+.TP
+\fB\fIOPPOSITEAPEX \fP\fP
+
+.PP
+Definition at line 366 of file triangle.c.
+.PP
+Referenced by findcircumcenter(), and splittriangle().
+.SS "enum \fBfinddirectionresult\fP"
+.PP
+\fBEnumeration values: \fP
+.in +1c
+.TP
+\fB\fIWITHIN \fP\fP
+.TP
+\fB\fILEFTCOLLINEAR \fP\fP
+.TP
+\fB\fIRIGHTCOLLINEAR \fP\fP
+
+.PP
+Definition at line 361 of file triangle.c.
+.PP
+Referenced by finddirection(), scoutsegment(), and segmentintersection().
+.SS "enum \fBinsertsiteresult\fP"
+.PP
+\fBEnumeration values: \fP
+.in +1c
+.TP
+\fB\fISUCCESSFULPOINT \fP\fP
+.TP
+\fB\fIENCROACHINGPOINT \fP\fP
+.TP
+\fB\fIVIOLATINGPOINT \fP\fP
+.TP
+\fB\fIDUPLICATEPOINT \fP\fP
+
+.PP
+Definition at line 353 of file triangle.c.
+.PP
+Referenced by conformingedge(), insertsite(), repairencs(), segmentintersection(), and splittriangle().
+.SS "enum \fBlocateresult\fP"
+.PP
+\fBEnumeration values: \fP
+.in +1c
+.TP
+\fB\fIINTRIANGLE \fP\fP
+.TP
+\fB\fIONEDGE \fP\fP
+.TP
+\fB\fIONVERTEX \fP\fP
+.TP
+\fB\fIOUTSIDE \fP\fP
+
+.PP
+Definition at line 346 of file triangle.c.
+.PP
+Referenced by carveholes(), insertsite(), locate(), and preciselocate().
+.SS "enum \fBwordtype\fP"
+.PP
+\fBEnumeration values: \fP
+.in +1c
+.TP
+\fB\fIPOINTER \fP\fP
+.TP
+\fB\fIFLOATINGPOINT \fP\fP
+
+.PP
+Definition at line 340 of file triangle.c.
+.PP
+Referenced by poolinit().
+.SH "Function Documentation"
+.PP 
+.SS "void alternateaxes (\fBpoint\fP * sortarray, int arraysize, int axis)"
+.PP
+Definition at line 7103 of file triangle.c.
+.PP
+References point, and pointmedian().
+.PP
+Referenced by divconqdelaunay().
+.SS "void badsegmentdealloc (struct \fBedge\fP * dyingseg)"
+.PP
+Definition at line 3713 of file triangle.c.
+.PP
+References badsegments, pooldealloc(), and VOID.
+.PP
+Referenced by repairencs().
+.SS "struct \fBedge\fP* badsegmenttraverse ()"
+.PP
+Definition at line 3732 of file triangle.c.
+.PP
+References badsegments, and traverse().
+.PP
+Referenced by repairencs().
+.SS "void boundingbox ()"
+.PP
+* Definition at line 7766 of file triangle.c.
+.PP
+References dummytri, exit(), infpoint1, infpoint2, infpoint3, memorypool::itembytes, maketriangle(), malloc(), point, points, printtriangle(), REAL, setapex, setdest, setorg, triedge::tri, triangle, verbose, xmax, xmin, ymax, and ymin.
+.PP
+Referenced by incrementaldelaunay().
+.SS "void carveholes (REAL * holelist, int holes, REAL * regionlist, int regions)"
+.PP
+Definition at line 10428 of file triangle.c.
+.PP
+References convex, counterclockwise(), dest, dummytri, eextras, exit(), free(), holes, i, infect, infected, infecthull(), memorypool::items, locate(), locateresult, malloc(), noholes, org, triedge::orient, OUTSIDE, plague(), point, POINTER, poolalloc(), pooldeinit(), poolinit(), quiet, REAL, refine, regionattrib, regionplague(), regions, setelemattribute, symself, traversalinit(), triedge::tri, triangle, triangles, triangletraverse(), triedgecopy, vararea, verbose, viri, VIRUSPERBLOCK, xmax, xmin, ymax, and ymin.
+.PP
+Referenced by main().
+.SS "void check4deadevent (struct \fBtriedge\fP * checktri, struct \fBevent\fP ** freeevents, struct \fBevent\fP ** eventheap, int * heapsize)"
+.PP
+Definition at line 8189 of file triangle.c.
+.PP
+References eventheapdelete(), org, point, setorg, and VOID.
+.PP
+Referenced by sweeplinedelaunay().
+.SS "void checkdelaunay ()"
+.PP
+Definition at line 5169 of file triangle.c.
+.PP
+References apex, checksegments, dest, dummysh, dummytri, incircle(), noexact, org, triedge::orient, point, printtriangle(), quiet, edge::sh, shelle, sym, traversalinit(), triedge::tri, triangle, triangles, triangletraverse(), and tspivot.
+.PP
+Referenced by main().
+.SS "int checkedge4encroach (struct \fBedge\fP * testedge)"
+.PP
+Definition at line 5344 of file triangle.c.
+.PP
+References apex, badsegments, dummytri, nobisect, point, poolalloc(), sdest, shellecopy, sorg, ssym, stpivot, triedge::tri, triangle, and verbose.
+.PP
+Referenced by insertsite(), repairencs(), and tallyencs().
+.SS "void checkmesh ()"
+.PP
+* Definition at line 5077 of file triangle.c.
+.PP
+References apex, counterclockwise(), dest, dummytri, noexact, org, triedge::orient, point, printtriangle(), quiet, sym, traversalinit(), triedge::tri, triangle, triangles, and triangletraverse().
+.PP
+Referenced by main().
+.SS "REAL circletop (\fBpoint\fP pa, \fBpoint\fP pb, \fBpoint\fP pc, REAL ccwabc)"
+.PP
+Definition at line 8161 of file triangle.c.
+.PP
+References circletopcount, point, and REAL.
+.PP
+Referenced by sweeplinedelaunay().
+.SS "struct \fBsplaynode\fP* circletopinsert (struct \fBsplaynode\fP * splayroot, struct \fBtriedge\fP * newkey, \fBpoint\fP pa, \fBpoint\fP pb, \fBpoint\fP pc, REAL topy)"
+.PP
+Definition at line 8356 of file triangle.c.
+.PP
+References counterclockwise(), dummytri, point, REAL, splay(), and splayinsert().
+.PP
+Referenced by sweeplinedelaunay().
+.SS "void conformingedge (\fBpoint\fP endpoint1, \fBpoint\fP endpoint2, int newmark)"
+.PP
+Definition at line 9439 of file triangle.c.
+.PP
+References DUPLICATEPOINT, i, insertsite(), insertsiteresult, internalerror(), nextras, org, point, pointdealloc(), points, poolalloc(), scoutsegment(), setpointmark, shelle, steinerleft, SUCCESSFULPOINT, triedge::tri, triangle, triedgecopy, tspivot, verbose, and VIOLATINGPOINT.
+.PP
+Referenced by insertsegment().
+.SS "void constrainededge (struct \fBtriedge\fP * starttri, \fBpoint\fP endpoint2, int newmark)"
+.PP
+Definition at line 9666 of file triangle.c.
+.PP
+References counterclockwise(), delaunayfixup(), dummysh, flip(), insertshelle(), lnext, lprevself, oprev, oprevself, org, point, REAL, scoutsegment(), segmentintersection(), edge::sh, shelle, triangle, and tspivot.
+.PP
+Referenced by insertsegment().
+.SS "REAL counterclockwise (\fBpoint\fP pa, \fBpoint\fP pb, \fBpoint\fP pc)"
+.PP
+Definition at line 4335 of file triangle.c.
+.PP
+References ccwerrboundA, counterclockcount, counterclockwiseadapt(), det(), noexact, point, and REAL.
+.PP
+Referenced by carveholes(), checkmesh(), circletopinsert(), constrainededge(), delaunayfixup(), divconqrecurse(), findcircumcenter(), finddirection(), insertsite(), locate(), mergehulls(), preciselocate(), quality_statistics(), and sweeplinedelaunay().
+.SS "REAL counterclockwiseadapt (\fBpoint\fP pa, \fBpoint\fP pb, \fBpoint\fP pc, REAL detsum)"
+.PP
+Definition at line 4251 of file triangle.c.
+.PP
+References Absolute, B, c, ccwerrboundB, ccwerrboundC, det(), estimate(), fast_expansion_sum_zeroelim(), INEXACT, point, REAL, resulterrbound, t0, Two_Diff_Tail, Two_Product, and Two_Two_Diff.
+.PP
+Referenced by counterclockwise().
+.SS "void createeventheap (struct \fBevent\fP *** eventheap, struct \fBevent\fP ** events, struct \fBevent\fP ** freeevents)"
+.PP
+Definition at line 8090 of file triangle.c.
+.PP
+References eventheapinsert(), exit(), i, inpoints, malloc(), point, points, pointtraverse(), traversalinit(), and VOID.
+.PP
+Referenced by sweeplinedelaunay().
+.SS "long delaunay ()"
+.PP
+* Definition at line 8632 of file triangle.c.
+.PP
+References divconqdelaunay(), eextras, incremental, incrementaldelaunay(), initializetrisegpools(), quiet, sweepline, and sweeplinedelaunay().
+.PP
+Referenced by main().
+.SS "void delaunayfixup (struct \fBtriedge\fP * fixuptri, int leftside)"
+.PP
+Definition at line 9555 of file triangle.c.
+.PP
+References apex, counterclockwise(), dest, dummysh, dummytri, flip(), incircle(), lnext, lprevself, org, point, edge::sh, shelle, sym, triedge::tri, triangle, and tspivot.
+.PP
+Referenced by constrainededge().
+.SS "void deletesite (struct \fBtriedge\fP * deltri)"
+.PP
+Definition at line 6830 of file triangle.c.
+.PP
+References bond, dnext, dummysh, dummytri, internalerror(), lprev, nobisect, onext, onextself, oprev, org, point, pointdealloc(), setorg, edge::sh, shelle, sym, testtriangle(), triedge::tri, triangle, triangledealloc(), triangulatepolygon(), triedgeequal, tsbond, tspivot, and verbose.
+.PP
+Referenced by splittriangle().
+.SS "struct \fBbadface\fP* dequeuebadtri ()"
+.PP
+Definition at line 5306 of file triangle.c.
+.PP
+References badface::nextface, queuefront, and queuetail.
+.PP
+Referenced by enforcequality().
+.SS "long divconqdelaunay ()"
+.PP
+Definition at line 7683 of file triangle.c.
+.PP
+References alternateaxes(), divconqrecurse(), dwyer, exit(), free(), i, inpoints, j, malloc(), point, points, pointsort(), pointtraverse(), quiet, removeghosts(), traversalinit(), and verbose.
+.PP
+Referenced by delaunay().
+.SS "void divconqrecurse (\fBpoint\fP * sortarray, int vertices, int axis, struct \fBtriedge\fP * farleft, struct \fBtriedge\fP * farright)"
+.PP
+Definition at line 7472 of file triangle.c.
+.PP
+References bond, counterclockwise(), lnext, lnextself, lprev, lprevself, maketriangle(), mergehulls(), point, printtriangle(), REAL, setapex, setdest, setorg, triedgecopy, and verbose.
+.PP
+Referenced by divconqdelaunay().
+.SS "void dummyinit (int trianglewords, int shellewords)"
+.PP
+Definition at line 3435 of file triangle.c.
+.PP
+References memorypool::alignbytes, dummysh, dummyshbase, dummytri, dummytribase, exit(), malloc(), shelle, shelles, shwords, triangle, triangles, triwords, and useshelles.
+.PP
+Referenced by initializetrisegpools().
+.SS "void enforcequality ()"
+.PP
+Definition at line 11020 of file triangle.c.
+.PP
+References BADSEGMENTPERBLOCK, badsegments, badtriangles, BADTRIPERBLOCK, dequeuebadtri(), fixedarea, i, memorypool::items, minangle, POINTER, poolinit(), queuefront, queuetail, quiet, repairencs(), splittriangle(), steinerleft, tallyencs(), tallyfaces(), vararea, and verbose.
+.PP
+Referenced by main().
+.SS "void enqueuebadtri (struct \fBtriedge\fP * instri, REAL angle, \fBpoint\fP insapex, \fBpoint\fP insorg, \fBpoint\fP insdest)"
+.PP
+Definition at line 5257 of file triangle.c.
+.PP
+References angle, badtriangles, badface::nextface, point, poolalloc(), queuetail, REAL, triedgecopy, and verbose.
+.PP
+Referenced by testtriangle().
+.SS "REAL estimate (int elen, REAL * e)"
+.PP
+Definition at line 4217 of file triangle.c.
+.PP
+References e, and REAL.
+.PP
+Referenced by counterclockwiseadapt(), and incircleadapt().
+.SS "void eventheapdelete (struct \fBevent\fP ** heap, int heapsize, int eventnum)"
+.PP
+Definition at line 8052 of file triangle.c.
+.PP
+References eventheapify(), and REAL.
+.PP
+Referenced by check4deadevent(), and sweeplinedelaunay().
+.SS "void eventheapify (struct \fBevent\fP ** heap, int heapsize, int eventnum)"
+.PP
+Definition at line 8001 of file triangle.c.
+.PP
+References REAL.
+.PP
+Referenced by eventheapdelete().
+.SS "void eventheapinsert (struct \fBevent\fP ** heap, int heapsize, struct \fBevent\fP * newevent)"
+.PP
+* Definition at line 7965 of file triangle.c.
+.PP
+References REAL.
+.PP
+Referenced by createeventheap(), and sweeplinedelaunay().
+.SS "void exactinit ()"
+.PP
+Definition at line 4024 of file triangle.c.
+.PP
+References ccwerrboundA, ccwerrboundB, ccwerrboundC, epsilon, iccerrboundA, iccerrboundB, iccerrboundC, REAL, resulterrbound, splitter, and verbose.
+.PP
+Referenced by triangleinit().
+.SS "void exit ()"
+.PP
+Referenced by addfiltercondition(), alloc_grays(), alloc_shades(), argserror(), boundingbox(), carveholes(), copyitemcontents(), cpgellipses(), createeventheap(), deleteheaderitem(), deleteobjectitem(), dispose(), divconqdelaunay(), dofilter(), dummyinit(), error_exit(), fastmap(), formskeleton(), forward_fft(), get_fft(), getaddress(), getargs(), getheaderitemaddress(), getobjectitem(), getobjectitemindex(), getobjects(), getop(), gettype(), iis_error(), info(), inheritcontents(), internalerror(), inverse_fft(), main(), make_pixmap(), makecell(), makeXImage(), myworkproc1(), newitem(), newitembydimarray(), newop(), newopitem(), newtonraphson(), nrerror(), openfits(), openiispipe(), openiostream(), outputrcat(), parsecommandline(), poolalloc(), poolinit(), quit_button_callback(), ran1(), readcathead(), readholes(), readitem(), readline(), readmergedcat(), readnewitem(), readnodes(), reconstruct(), repairencs(), set_fft(), setaddress(), setheaderitemaddress(), size(), smprofile(), sscanitem(), sscannewitem(), startfilter(), sweeplinedelaunay(), syntax(), Syntax(), writeedges(), writeelements(), writeitem(), writeneighbors(), writenodes(), writeoff(), writepoly(), and writevoronoi().
+.SS "int fast_expansion_sum_zeroelim (int elen, REAL * e, int flen, REAL * f, REAL * h)"
+.PP
+Definition at line 4077 of file triangle.c.
+.PP
+References e, f, Fast_Two_Sum, h, INEXACT, REAL, and Two_Sum.
+.PP
+Referenced by counterclockwiseadapt(), and incircleadapt().
+.SS "enum \fBcircumcenterresult\fP findcircumcenter (\fBpoint\fP torg, \fBpoint\fP tdest, \fBpoint\fP tapex, \fBpoint\fP circumcenter, REAL * xi, REAL * eta)"
+.PP
+Definition at line 10844 of file triangle.c.
+.PP
+References circumcentercount, circumcenterresult, counterclockcount, counterclockwise(), dx, dy, noexact, OPPOSITEAPEX, OPPOSITEDEST, OPPOSITEORG, point, and REAL.
+.PP
+Referenced by splittriangle(), and writevoronoi().
+.SS "enum \fBfinddirectionresult\fP finddirection (struct \fBtriedge\fP * searchtri, \fBpoint\fP endpoint)"
+.PP
+* Definition at line 9174 of file triangle.c.
+.PP
+References apex, counterclockwise(), dest, dummytri, finddirectionresult, internalerror(), LEFTCOLLINEAR, onext, onextself, oprevself, org, point, REAL, RIGHTCOLLINEAR, triedge::tri, triangle, and WITHIN.
+.PP
+Referenced by scoutsegment(), and segmentintersection().
+.SS "char* findfield (char * string)"
+.PP
+Definition at line 11229 of file triangle.c.
+.SS "char* findfield ()"
+.PP
+Referenced by formskeleton(), readholes(), readnodes(), and reconstruct().
+.SS "void finishfile (FILE * outfile, int argc, char ** argv)"
+.PP
+Definition at line 11642 of file triangle.c.
+.PP
+References i.
+.PP
+Referenced by writeedges(), writeelements(), writeneighbors(), writenodes(), writeoff(), writepoly(), and writevoronoi().
+.SS "void flip (struct \fBtriedge\fP * flipedge)"
+.PP
+Definition at line 6008 of file triangle.c.
+.PP
+References apex, bond, checksegments, dest, dummysh, dummytri, lnext, lnextself, lprev, org, point, printtriangle(), setapex, setdest, setorg, edge::sh, shelle, sym, triedge::tri, triangle, tsbond, tsdissolve, tspivot, and verbose.
+.PP
+Referenced by constrainededge(), delaunayfixup(), sweeplinedelaunay(), and triangulatepolygon().
+.SS "int formskeleton (FILE * polyfile, char * polyfilename)"
+.PP
+Definition at line 9910 of file triangle.c.
+.PP
+References convex, exit(), findfield(), firstnumber, getpoint(), i, inpoints, inpolyfilename, INPUTLINESIZE, insertsegment(), makepointmap(), markhull(), point, poly, quiet, readline(), strtol(), and verbose.
+.PP
+Referenced by main().
+.SS "void free ()"
+.PP
+Referenced by amoeba(), amotry(), apphot(), average(), avsigclip2(), cartesiantokepler(), carveholes(), cdl_applyZscale(), cdl_close(), cdl_displayFITS(), cdl_displayIRAF(), cdl_getFITSPixels(), cdl_getIRAFPixels(), cdl_readFITSHdr(), cdl_readHeader(), cdl_removeMarker(), cdl_zscale(), closeiostream(), copystring(), cpgellipses(), cycleimage(), disposeof(), divconqdelaunay(), doplot(), dosky(), eps_close(), f1dim(), fdo_stats(), findmode(), fitLine(), fixholes(), fk42gal(), fk52gal(), forward_cfft(), forward_fft(), fread_fits_line(), free3DFloatArray(), free_convert_matrix(), free_cvector(), free_dmatrix(), free_dvector(), free_f3tensor(), free_fft(), free_imatrix(), free_ivector(), free_lvector(), free_matrix(), free_submatrix(), free_vector(), freecathead(), freecell(), freeFloatArray(), freeitem(), freeitemcontents(), freeobject(), freepolygon(), freeShortArray(), fwrite_fits(), gal2fk4(), gal2fk5(), getop(), iis_display(), iis_drawcirc(), imd_close(), imd_displayImage(), imd_readSubRaster(), imd_writeImage(), imd_writeSubRaster(), inverse_cfft(), inverse_fft(), invertmatrix(), jpl_close_ephemeris(), kernel_filter(), linmin(), linmodelsolve(), main(), make_pixmap(), makeitemlist(), myfftwcfft(), pooldeinit(), powell(), print_im(), process(), readitem(), readmergedcat(), reconstruct(), removebox(), sampleImage(), scrunch_stream(), sscanitem(), tcl(), triangledeinit(), updatelinebuffer(), vx_iisclose(), vx_iisio(), vx_initFrame(), wcsinit(), and writename().
+.SS "struct \fBsplaynode\fP* frontlocate (struct \fBsplaynode\fP * splayroot, struct \fBtriedge\fP * bottommost, \fBpoint\fP searchpoint, struct \fBtriedge\fP * searchtri, int * farright)"
+.PP
+Definition at line 8387 of file triangle.c.
+.PP
+References onextself, point, rightofhyperbola(), splay(), triangle, triedgecopy, and triedgeequal.
+.PP
+Referenced by sweeplinedelaunay().
+.SS "\fBpoint\fP getpoint (int number)"
+.PP
+Definition at line 3759 of file triangle.c.
+.PP
+References memorypool::alignbytes, memorypool::firstblock, firstnumber, memorypool::itemsperblock, memorypool::itemwords, number, point, points, and VOID.
+.PP
+Referenced by formskeleton(), and reconstruct().
+.SS "void highorder ()"
+.PP
+* Definition at line 11109 of file triangle.c.
+.PP
+References memorypool::deaditemstack, dest, dummysh, dummytri, highorderindex, i, mark, nextras, org, triedge::orient, point, points, poolalloc(), quiet, setpointmark, edge::sh, shelle, sym, traversalinit(), triedge::tri, triangle, triangles, triangletraverse(), tspivot, useshelles, verbose, and VOID.
+.PP
+Referenced by main().
+.SS "REAL incircle (\fBpoint\fP pa, \fBpoint\fP pb, \fBpoint\fP pc, \fBpoint\fP pd)"
+.PP
+Definition at line 4970 of file triangle.c.
+.PP
+References Absolute, det(), iccerrboundA, incircleadapt(), incirclecount, noexact, point, and REAL.
+.PP
+Referenced by checkdelaunay(), delaunayfixup(), insertsite(), mergehulls(), and triangulatepolygon().
+.SS "REAL incircleadapt (\fBpoint\fP pa, \fBpoint\fP pb, \fBpoint\fP pc, \fBpoint\fP pd, REAL permanent)"
+.PP
+Definition at line 4396 of file triangle.c.
+.PP
+References Absolute, c, det(), estimate(), fast_expansion_sum_zeroelim(), iccerrboundB, iccerrboundC, INEXACT, point, REAL, resulterrbound, scale_expansion_zeroelim(), Square, Two_Diff_Tail, Two_Product, Two_Two_Diff, Two_Two_Sum, and v.
+.PP
+Referenced by incircle().
+.SS "long incrementaldelaunay ()"
+.PP
+Definition at line 7918 of file triangle.c.
+.PP
+References boundingbox(), DUPLICATEPOINT, i, insertsite(), point, points, pointtraverse(), quiet, removebox(), traversalinit(), triedge::tri, triangle, and verbose.
+.PP
+Referenced by delaunay().
+.SS "void infecthull ()"
+.PP
+* Definition at line 10049 of file triangle.c.
+.PP
+References dest, dummysh, dummytri, infect, infected, lnextself, mark, oprev, org, triedge::orient, point, pointmark, poolalloc(), setmark, setpointmark, edge::sh, shelle, symself, triedge::tri, triangle, triedgecopy, triedgeequal, tspivot, verbose, and viri.
+.PP
+Referenced by carveholes().
+.SS "void info ()"
+.PP
+Definition at line 1226 of file triangle.c.
+.PP
+References exit().
+.PP
+Referenced by alloc_grays(), alloc_shades(), and parsecommandline().
+.SS "void initializepointpool ()"
+.PP
+Definition at line 3518 of file triangle.c.
+.PP
+References FLOATINGPOINT, mesh_dim, nextras, point2triindex, POINTER, pointmarkindex, POINTPERBLOCK, points, poly, poolinit(), REAL, and triangle.
+.PP
+Referenced by readnodes().
+.SS "void initializetrisegpools ()"
+.PP
+Definition at line 3549 of file triangle.c.
+.PP
+References areaboundindex, dummyinit(), eextras, elemattribindex, highorderindex, memorypool::itemwords, neighbors, order, POINTER, poolinit(), REAL, regionattrib, SHELLEPERBLOCK, shelles, triangle, triangles, TRIPERBLOCK, useshelles, vararea, and voronoi.
+.PP
+Referenced by delaunay(), and reconstruct().
+.SS "void insertsegment (\fBpoint\fP endpoint1, \fBpoint\fP endpoint2, int newmark)"
+.PP
+Definition at line 9760 of file triangle.c.
+.PP
+References conformingedge(), constrainededge(), decode, dummytri, internalerror(), locate(), ONVERTEX, org, triedge::orient, point, point2tri, recenttri, scoutsegment(), splitseg, symself, triedge::tri, triangle, triedgecopy, and verbose.
+.PP
+Referenced by formskeleton().
+.SS "void insertshelle (struct \fBtriedge\fP * tri, int shellemark)"
+.PP
+* Definition at line 5909 of file triangle.c.
+.PP
+References dest, dummysh, makeshelle(), mark, org, point, pointmark, printshelle(), setmark, setpointmark, setsdest, setsorg, edge::sh, shelle, ssymself, sym, triangle, tsbond, tspivot, and verbose.
+.PP
+Referenced by constrainededge(), insertsite(), markhull(), reconstruct(), and scoutsegment().
+.SS "enum \fBinsertsiteresult\fP insertsite (\fBpoint\fP insertpoint, struct \fBtriedge\fP * searchtri, struct \fBedge\fP * splitedge, int segmentflaws, int triflaws)"
+.PP
+Definition at line 6151 of file triangle.c.
+.PP
+References apex, areabound, badsegments, bond, checkedge4encroach(), checksegments, counterclockwise(), dest, dummysh, dummytri, DUPLICATEPOINT, eextras, elemattribute, ENCROACHINGPOINT, hullsize, i, incircle(), infpoint1, infpoint2, infpoint3, insertshelle(), insertsiteresult, lnext, lnextself, locate(), locateresult, lprev, lprevself, maketriangle(), mark, nobisect, ONEDGE, ONVERTEX, org, triedge::orient, OUTSIDE, point, poolalloc(), preciselocate(), printtriangle(), REAL, recenttri, sbond, setapex, setareabound, setdest, setelemattribute, setorg, setsdest, edge::sh, shelle, shellecopy, spivot, ssymself, SUCCESSFULPOINT, sym, symself, testtriangle(), triedge::tri, triangle, triedgecopy, tsbond, tsdissolve, tspivot, vararea, verbose, and VIOLATINGPOINT.
+.PP
+Referenced by conformingedge(), incrementaldelaunay(), repairencs(), segmentintersection(), and splittriangle().
+.SS "void internalerror ()"
+.PP
+Definition at line 2657 of file triangle.c.
+.PP
+References exit().
+.PP
+Referenced by conformingedge(), deletesite(), finddirection(), insertsegment(), repairencs(), and segmentintersection().
+.SS "enum \fBlocateresult\fP locate (\fBpoint\fP searchpoint, struct \fBtriedge\fP * searchtri)"
+.PP
+Definition at line 5771 of file triangle.c.
+.PP
+References memorypool::alignbytes, counterclockwise(), dest, dist, memorypool::firstblock, i, memorypool::items, memorypool::itemwords, j, lnextself, locateresult, memorypool::maxitems, ONEDGE, ONVERTEX, org, triedge::orient, point, preciselocate(), randomnation(), REAL, recenttri, SAMPLEFACTOR, samples, symself, triedge::tri, triangle, triangles, triedgecopy, TRIPERBLOCK, verbose, and VOID.
+.PP
+Referenced by carveholes(), insertsegment(), and insertsite().
+.SS "int main (int argc, char ** argv)"
+.PP
+Definition at line 12921 of file triangle.c.
+.PP
+References areafilename, carveholes(), checkdelaunay(), checkmesh(), checksegments, convex, delaunay(), docheck, edgefilename, edges, edgesout, eextras, enforcequality(), formskeleton(), free(), geomview, highorder(), holes, hullsize, inelefilename, infpoint1, infpoint2, infpoint3, innodefilename, inpolyfilename, insegments, memorypool::items, l, neighborfilename, neighbors, nextras, noelewritten, noiterationnum, nonodewritten, nopolywritten, numbernodes(), offfilename, order, outelefilename, outnodefilename, outpolyfilename, parsecommandline(), point, points, poly, quality, quiet, readholes(), readnodefile, readnodes(), REAL, reconstruct(), refine, regions, shelles, statistics(), triangledeinit(), triangleinit(), triangles, useshelles, vedgefilename, vnodefilename, voronoi, writeedges(), writeelements(), writeneighbors(), writenodes(), writeoff(), writepoly(), and writevoronoi().
+.SS "void makepointmap ()"
+.PP
+* Definition at line 5552 of file triangle.c.
+.PP
+References encode, org, triedge::orient, point, setpoint2tri, traversalinit(), triedge::tri, triangle, triangles, triangletraverse(), and verbose.
+.PP
+Referenced by formskeleton().
+.SS "void makeshelle (struct \fBedge\fP * newedge)"
+.PP
+Definition at line 3861 of file triangle.c.
+.PP
+References dummysh, dummytri, poolalloc(), setmark, shelle, and shelles.
+.PP
+Referenced by insertshelle(), and reconstruct().
+.SS "void maketriangle (struct \fBtriedge\fP * newtriedge)"
+.PP
+* Definition at line 3824 of file triangle.c.
+.PP
+References dummysh, dummytri, eextras, i, poolalloc(), setareabound, setelemattribute, triangle, triangles, useshelles, and vararea.
+.PP
+Referenced by boundingbox(), divconqrecurse(), insertsite(), mergehulls(), reconstruct(), and sweeplinedelaunay().
+.SS "void* malloc ()"
+.PP
+Referenced by boundingbox(), carveholes(), cdl_applyZscale(), cdl_doPolygonMark(), cdl_getFITSPixels(), cdl_getIRAFPixels(), cdl_getPixRegion(), cdl_initBoxMarker(), cdl_initLineMarker(), cdl_initPointLabelMarker(), cdl_initPolygonMarker(), cdl_initPolylineMarker(), cdl_initTextMarker(), cdl_mapFrame(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_readFITSHdr(), cdl_readFrameBuffer(), cdl_readHeader(), cdl_readImage(), cdl_readSubRaster(), com_readData(), convert_matrix(), createeventheap(), cvector(), divconqdelaunay(), dmatrix(), dummyinit(), dvector(), eps_setLabel(), eps_setTransform(), eqstrn(), f3tensor(), fitLine(), imatrix(), imd_displayImage(), imd_loadImtoolrc(), imd_open(), imd_readFrameBuffer(), imd_readImage(), imd_readSubRaster(), imd_writeImage(), imd_writeSubRaster(), ivector(), lvector(), make_pixmap(), makeXImage(), matrix(), poolalloc(), poolinit(), readholes(), reconstruct(), sampleImage(), submatrix(), vector(), vx_iisio(), vx_initFrame(), writeedges(), writeelements(), writeneighbors(), writenodes(), writepoly(), and writevoronoi().
+.SS "void markhull ()"
+.PP
+Definition at line 9864 of file triangle.c.
+.PP
+References dummytri, insertshelle(), lnextself, oprev, triedge::orient, symself, triedge::tri, triangle, triedgecopy, and triedgeequal.
+.PP
+Referenced by formskeleton().
+.SS "void mergehulls (struct \fBtriedge\fP * farleft, struct \fBtriedge\fP * innerleft, struct \fBtriedge\fP * innerright, struct \fBtriedge\fP * farright, int axis)"
+.PP
+Definition at line 7162 of file triangle.c.
+.PP
+References apex, bond, counterclockwise(), dest, dwyer, incircle(), lnext, lnextself, lprev, lprevself, maketriangle(), org, point, printtriangle(), setapex, setdest, setorg, sym, symself, triangle, triedgecopy, and verbose.
+.PP
+Referenced by divconqrecurse().
+.SS "void numbernodes ()"
+.PP
+Definition at line 11799 of file triangle.c.
+.PP
+References firstnumber, point, points, pointtraverse(), setpointmark, and traversalinit().
+.PP
+Referenced by main().
+.SS "void parsecommandline (int argc, char ** argv)"
+.PP
+Definition at line 2674 of file triangle.c.
+.PP
+References areafilename, convex, docheck, dwyer, edgefilename, edgesout, exit(), FILENAMESIZE, firstnumber, fixedarea, geomview, goodangle, i, incremental, inelefilename, info(), innodefilename, inpolyfilename, j, k, maxarea, minangle, neighborfilename, neighbors, nobisect, nobound, noelewritten, noexact, noholes, noiterationnum, nonodewritten, nopolywritten, offfilename, order, outelefilename, outnodefilename, outpolyfilename, PI, poly, quality, quiet, REAL, refine, regionattrib, splitseg, STARTINDEX, steiner, steinerleft, strtod(), sweepline, syntax(), useshelles, vararea, vedgefilename, verbose, vnodefilename, and voronoi.
+.PP
+Referenced by main().
+.SS "void plague ()"
+.PP
+Definition at line 10122 of file triangle.c.
+.PP
+References apex, dest, dissolve, dummysh, dummytri, hullsize, infect, infected, mark, onext, onextself, oprev, oprevself, org, triedge::orient, point, pointdealloc(), pointmark, poolalloc(), poolrestart(), setmark, setorg, setpointmark, edge::sh, shelle, shelledealloc(), stdissolve, sym, traversalinit(), traverse(), triedge::tri, triangle, triangledealloc(), triedgeequal, tsdissolve, tspivot, uninfect, verbose, and viri.
+.PP
+Referenced by carveholes().
+.SS "void pointdealloc (\fBpoint\fP dyingpoint)"
+.PP
+Definition at line 3676 of file triangle.c.
+.PP
+References DEADPOINT, point, points, pooldealloc(), setpointmark, and VOID.
+.PP
+Referenced by conformingedge(), deletesite(), plague(), reconstruct(), and splittriangle().
+.SS "void pointmedian (\fBpoint\fP * sortarray, int arraysize, int median, int axis)"
+.PP
+Definition at line 7030 of file triangle.c.
+.PP
+References median(), point, randomnation(), and REAL.
+.PP
+Referenced by alternateaxes().
+.SS "void pointsort (\fBpoint\fP * sortarray, int arraysize)"
+.PP
+* Definition at line 6961 of file triangle.c.
+.PP
+References point, randomnation(), and REAL.
+.PP
+Referenced by divconqdelaunay().
+.SS "\fBpoint\fP pointtraverse ()"
+.PP
+Definition at line 3691 of file triangle.c.
+.PP
+References DEADPOINT, point, pointmark, points, and traverse().
+.PP
+Referenced by createeventheap(), divconqdelaunay(), incrementaldelaunay(), numbernodes(), writenodes(), and writeoff().
+.SS "VOID* poolalloc (struct \fBmemorypool\fP * pool)"
+.PP
+Definition at line 3272 of file triangle.c.
+.PP
+References exit(), malloc(), newitem(), POINTER, REAL, and VOID.
+.PP
+Referenced by carveholes(), checkedge4encroach(), conformingedge(), enqueuebadtri(), highorder(), infecthull(), insertsite(), makeshelle(), maketriangle(), plague(), readnodes(), regionplague(), repairencs(), segmentintersection(), splayinsert(), and splittriangle().
+.SS "void pooldealloc (struct \fBmemorypool\fP * pool, VOID * dyingitem)"
+.PP
+Definition at line 3335 of file triangle.c.
+.PP
+References VOID.
+.PP
+Referenced by badsegmentdealloc(), pointdealloc(), shelledealloc(), splay(), splittriangle(), and triangledealloc().
+.SS "void pooldeinit (struct \fBmemorypool\fP * pool)"
+.PP
+Definition at line 3256 of file triangle.c.
+.PP
+References free(), and VOID.
+.PP
+Referenced by carveholes(), sweeplinedelaunay(), and triangledeinit().
+.SS "void poolinit (struct \fBmemorypool\fP * pool, int bytecount, int itemcount, enum \fBwordtype\fP wtype, int alignment)"
+.PP
+* Definition at line 3174 of file triangle.c.
+.PP
+References exit(), malloc(), POINTER, poolrestart(), REAL, VOID, and wordtype.
+.PP
+Referenced by carveholes(), enforcequality(), initializepointpool(), initializetrisegpools(), and sweeplinedelaunay().
+.SS "void poolrestart (struct \fBmemorypool\fP * pool)"
+.PP
+Definition at line 3228 of file triangle.c.
+.PP
+References VOID.
+.SS "void poolrestart ()"
+.PP
+Referenced by plague(), poolinit(), and regionplague().
+.SS "enum \fBlocateresult\fP preciselocate (\fBpoint\fP searchpoint, struct \fBtriedge\fP * searchtri)"
+.PP
+Definition at line 5637 of file triangle.c.
+.PP
+References apex, counterclockwise(), dest, dummytri, INTRIANGLE, lnext, lnextself, locateresult, lprev, lprevself, ONEDGE, ONVERTEX, org, OUTSIDE, point, REAL, sym, triangle, triedgecopy, and verbose.
+.PP
+Referenced by insertsite(), and locate().
+.SS "void precisionerror ()"
+.PP
+Definition at line 10638 of file triangle.c.
+.PP
+Referenced by repairencs(), and splittriangle().
+.SS "void printshelle (struct \fBedge\fP * s)"
+.PP
+Definition at line 3094 of file triangle.c.
+.PP
+References decode, dummysh, dummytri, mark, triedge::orient, point, sdecode, sdest, edge::sh, edge::shorient, sorg, and triedge::tri.
+.PP
+Referenced by insertshelle().
+.SS "void printtriangle (struct \fBtriedge\fP * t)"
+.PP
+* Definition at line 3010 of file triangle.c.
+.PP
+References apex, areabound, decode, dest, dummysh, dummytri, org, triedge::orient, point, sdecode, edge::sh, edge::shorient, t, triedge::tri, useshelles, and vararea.
+.PP
+Referenced by boundingbox(), checkdelaunay(), checkmesh(), divconqrecurse(), flip(), insertsite(), and mergehulls().
+.SS "void quality_statistics ()"
+.PP
+* Definition at line 12614 of file triangle.c.
+.PP
+References apex, counterclockwise(), dest, dx, dy, i, j, k, minus1mod3, org, triedge::orient, PI, plus1mod3, point, REAL, traversalinit(), triedge::tri, triangle, triangles, triangletraverse(), xmax, xmin, ymax, and ymin.
+.PP
+Referenced by statistics().
+.SS "unsigned long randomnation (unsigned int choices)"
+.PP
+Definition at line 5058 of file triangle.c.
+.PP
+References l, and randomseed.
+.PP
+Referenced by locate(), pointmedian(), pointsort(), and sweeplinedelaunay().
+.SS "void readholes (FILE * polyfile, char * polyfilename, REAL ** hlist, int * holes, REAL ** rlist, int * regions)"
+.PP
+Definition at line 11524 of file triangle.c.
+.PP
+References exit(), findfield(), firstnumber, holes, i, INPUTLINESIZE, malloc(), readline(), REAL, refine, regionattrib, regions, strtod(), strtol(), and vararea.
+.PP
+Referenced by main().
+.SS "char* readline (char * string, FILE * infile, char * infilename)"
+.PP
+* Definition at line 11190 of file triangle.c.
+.PP
+References exit(), and INPUTLINESIZE.
+.SS "char* readline ()"
+.PP
+Referenced by formskeleton(), readholes(), readnodes(), and reconstruct().
+.SS "void readnodes (char * nodefilename, char * polyfilename, FILE ** polyfile)"
+.PP
+Definition at line 11265 of file triangle.c.
+.PP
+References exit(), findfield(), firstnumber, i, initializepointpool(), innodefilename, inpoints, INPUTLINESIZE, j, mesh_dim, nextras, point, points, poly, poolalloc(), quiet, readline(), readnodefile, REAL, setpointmark, strtod(), strtol(), x, xmax, xmin, xminextreme, y, ymax, and ymin.
+.PP
+Referenced by main().
+.SS "long reconstruct (char * elefilename, char * areafilename, char * polyfilename, FILE * polyfile)"
+.PP
+Definition at line 8708 of file triangle.c.
+.PP
+References apex, areafilename, bond, DEADPOINT, decode, dest, dummytri, eextras, encode, exit(), findfield(), firstnumber, free(), getpoint(), hullsize, i, inelements, initializetrisegpools(), inpoints, inpolyfilename, INPUTLINESIZE, insegments, insertshelle(), memorypool::items, j, lprev, makeshelle(), maketriangle(), malloc(), triedge::orient, point, pointdealloc(), pointmark, points, poly, quiet, readline(), REAL, setapex, setareabound, setdest, setelemattribute, setmark, setorg, setsdest, setsorg, edge::sh, shelle, shelles, shelletraverse(), edge::shorient, sorg, strtod(), strtol(), sym, traversalinit(), triedge::tri, triangle, triangles, triangletraverse(), tsbond, tsdissolve, vararea, and verbose.
+.PP
+Referenced by main().
+.SS "void regionplague (REAL attribute, REAL area)"
+.PP
+Definition at line 10323 of file triangle.c.
+.PP
+References apex, dest, dummysh, dummytri, eextras, infect, infected, org, triedge::orient, point, poolalloc(), poolrestart(), REAL, regionattrib, setareabound, setelemattribute, edge::sh, shelle, sym, traversalinit(), traverse(), triedge::tri, triangle, tspivot, uninfect, vararea, verbose, and viri.
+.PP
+Referenced by carveholes().
+.SS "long removebox ()"
+.PP
+Definition at line 7828 of file triangle.c.
+.PP
+References dissolve, dummytri, encode, free(), hullsize, infpoint1, infpoint2, infpoint3, l, lnext, lnextself, lprev, lprevself, org, triedge::orient, point, pointmark, poly, setpointmark, sym, symself, triedge::tri, triangle, triangledealloc(), triedgecopy, triedgeequal, and verbose.
+.PP
+Referenced by incrementaldelaunay().
+.SS "long removeghosts (struct \fBtriedge\fP * startghost)"
+.PP
+Definition at line 7627 of file triangle.c.
+.PP
+References dissolve, dummytri, encode, hullsize, lnext, lprev, lprevself, org, point, pointmark, poly, setpointmark, sym, symself, triedge::tri, triangle, triangledealloc(), triedgecopy, triedgeequal, and verbose.
+.PP
+Referenced by divconqdelaunay(), and sweeplinedelaunay().
+.SS "void repairencs (int flaws)"
+.PP
+Definition at line 10670 of file triangle.c.
+.PP
+References badsegmentdealloc(), badsegments, badsegmenttraverse(), checkedge4encroach(), dummysh, dummytri, ENCROACHINGPOINT, exit(), i, insertsite(), insertsiteresult, internalerror(), memorypool::items, lnext, lnextself, mark, nextras, point, points, poolalloc(), precisionerror(), REAL, sdest, setpointmark, edge::sh, shelle, snextself, sorg, SQUAREROOTTWO, steinerleft, stpivot, SUCCESSFULPOINT, sym, traversalinit(), triedge::tri, triangle, tspivot, and verbose.
+.PP
+Referenced by enforcequality().
+.SS "int rightofhyperbola (struct \fBtriedge\fP * fronttri, \fBpoint\fP newsite)"
+.PP
+Definition at line 8129 of file triangle.c.
+.PP
+References apex, dest, hyperbolacount, point, and REAL.
+.PP
+Referenced by frontlocate(), splay(), and splayinsert().
+.SS "int scale_expansion_zeroelim (int elen, REAL * e, REAL b, REAL * h)"
+.PP
+Definition at line 4166 of file triangle.c.
+.PP
+References b, c, e, Fast_Two_Sum, h, INEXACT, REAL, Split, Two_Product_Presplit, and Two_Sum.
+.PP
+Referenced by incircleadapt().
+.SS "int scoutsegment (struct \fBtriedge\fP * searchtri, \fBpoint\fP endpoint2, int newmark)"
+.PP
+Definition at line 9361 of file triangle.c.
+.PP
+References apex, dest, dummysh, finddirection(), finddirectionresult, insertshelle(), LEFTCOLLINEAR, lnext, lnextself, lprevself, org, point, RIGHTCOLLINEAR, segmentintersection(), edge::sh, shelle, triedgecopy, and tspivot.
+.PP
+Referenced by conformingedge(), constrainededge(), and insertsegment().
+.SS "void segmentintersection (struct \fBtriedge\fP * splittri, struct \fBedge\fP * splitshelle, \fBpoint\fP endpoint2)"
+.PP
+Definition at line 9261 of file triangle.c.
+.PP
+References apex, dest, finddirection(), finddirectionresult, i, insertsite(), insertsiteresult, internalerror(), mark, nextras, onextself, org, point, points, poolalloc(), REAL, setpointmark, steinerleft, SUCCESSFULPOINT, triangle, tx, ty, and verbose.
+.PP
+Referenced by constrainededge(), and scoutsegment().
+.SS "void shelledealloc (\fBshelle\fP * dyingshelle)"
+.PP
+Definition at line 3641 of file triangle.c.
+.PP
+References pooldealloc(), shelle, shelles, and VOID.
+.PP
+Referenced by plague().
+.SS "\fBshelle\fP* shelletraverse ()"
+.PP
+Definition at line 3657 of file triangle.c.
+.PP
+References shelle, shelles, and traverse().
+.PP
+Referenced by reconstruct(), tallyencs(), and writepoly().
+.SS "struct \fBsplaynode\fP* splay (struct \fBsplaynode\fP * splaytree, \fBpoint\fP searchpoint, struct \fBtriedge\fP * searchtri)"
+.PP
+Definition at line 8215 of file triangle.c.
+.PP
+References dest, point, pooldealloc(), rightofhyperbola(), splaynodes, triedgecopy, and VOID.
+.PP
+Referenced by circletopinsert(), and frontlocate().
+.SS "struct \fBsplaynode\fP* splayinsert (struct \fBsplaynode\fP * splayroot, struct \fBtriedge\fP * newkey, \fBpoint\fP searchpoint)"
+.PP
+Definition at line 8327 of file triangle.c.
+.PP
+References dest, point, poolalloc(), rightofhyperbola(), splaynodes, and triedgecopy.
+.PP
+Referenced by circletopinsert(), and sweeplinedelaunay().
+.SS "void splittriangle (struct \fBbadface\fP * badtri)"
+.PP
+Definition at line 10912 of file triangle.c.
+.PP
+References apex, badtriangles, circumcenterresult, deletesite(), dest, ENCROACHINGPOINT, findcircumcenter(), i, insertsite(), insertsiteresult, lnextself, lprevself, nextras, OPPOSITEDEST, OPPOSITEORG, org, point, pointdealloc(), points, poolalloc(), pooldealloc(), precisionerror(), quiet, REAL, setpointmark, steinerleft, SUCCESSFULPOINT, verbose, VIOLATINGPOINT, and VOID.
+.PP
+Referenced by enforcequality().
+.SS "void statistics ()"
+.PP
+Definition at line 12812 of file triangle.c.
+.PP
+References badsegments, badtriangles, circletopcount, circumcentercount, counterclockcount, edges, holes, hullsize, hyperbolacount, incirclecount, inelements, inpoints, insegments, memorypool::itembytes, memorypool::items, memorypool::maxitems, points, poly, quality_statistics(), refine, shelles, splaynodes, triangles, verbose, and viri.
+.PP
+Referenced by main().
+.SS "double strtod ()"
+.PP
+Referenced by parsecommandline(), readholes(), readnodes(), and reconstruct().
+.SS "long strtol ()"
+.PP
+Referenced by formskeleton(), readholes(), readnodes(), and reconstruct().
+.SS "long sweeplinedelaunay ()"
+.PP
+Definition at line 8414 of file triangle.c.
+.PP
+References apex, bond, check4deadevent(), circletop(), circletopinsert(), counterclockwise(), createeventheap(), decode, dest, encode, eventheapdelete(), eventheapinsert(), exit(), flip(), frontlocate(), inpoints, lnext, lnextself, lprev, lprevself, maketriangle(), onext, oprev, org, point, POINTER, pooldeinit(), poolinit(), randomnation(), REAL, removeghosts(), SAMPLERATE, setapex, setdest, setorg, splayinsert(), SPLAYNODEPERBLOCK, splaynodes, sym, symself, triangle, triedgecopy, triedgeequal, verbose, VOID, xmin, and xminextreme.
+.PP
+Referenced by delaunay().
+.SS "void syntax ()"
+.PP
+* Definition at line 1155 of file triangle.c.
+.PP
+References exit().
+.PP
+Referenced by parsecommandline().
+.SS "void tallyencs ()"
+.PP
+* Definition at line 10613 of file triangle.c.
+.PP
+References checkedge4encroach(), edge::sh, shelle, shelles, shelletraverse(), edge::shorient, and traversalinit().
+.PP
+Referenced by enforcequality().
+.SS "void tallyfaces ()"
+.PP
+Definition at line 10811 of file triangle.c.
+.PP
+References triedge::orient, testtriangle(), traversalinit(), triedge::tri, triangle, triangles, triangletraverse(), and verbose.
+.PP
+Referenced by enforcequality().
+.SS "void testtriangle (struct \fBtriedge\fP * testtri)"
+.PP
+Definition at line 5426 of file triangle.c.
+.PP
+References angle, apex, areabound, dest, dummysh, enqueuebadtri(), fixedarea, goodangle, lnext, lnextself, lprev, maxarea, org, PI, point, quiet, REAL, edge::sh, shelle, tspivot, and vararea.
+.PP
+Referenced by deletesite(), insertsite(), tallyfaces(), and triangulatepolygon().
+.SS "void traversalinit (struct \fBmemorypool\fP * pool)"
+.PP
+Definition at line 3353 of file triangle.c.
+.PP
+References VOID.
+.PP
+Referenced by carveholes(), checkdelaunay(), checkmesh(), createeventheap(), divconqdelaunay(), highorder(), incrementaldelaunay(), makepointmap(), numbernodes(), plague(), quality_statistics(), reconstruct(), regionplague(), repairencs(), tallyencs(), tallyfaces(), writeedges(), writeelements(), writeneighbors(), writenodes(), writeoff(), writepoly(), and writevoronoi().
+.SS "VOID* traverse (struct \fBmemorypool\fP * pool)"
+.PP
+Definition at line 3384 of file triangle.c.
+.PP
+References newitem(), POINTER, REAL, and VOID.
+.PP
+Referenced by badsegmenttraverse(), plague(), pointtraverse(), regionplague(), shelletraverse(), and triangletraverse().
+.SS "void triangledealloc (\fBtriangle\fP * dyingtriangle)"
+.PP
+Definition at line 3605 of file triangle.c.
+.PP
+References pooldealloc(), triangle, triangles, and VOID.
+.PP
+Referenced by deletesite(), plague(), removebox(), and removeghosts().
+.SS "void triangledeinit ()"
+.PP
+Definition at line 3791 of file triangle.c.
+.PP
+References badsegments, badtriangles, dummyshbase, dummytribase, fixedarea, free(), minangle, points, pooldeinit(), quality, shelles, triangles, useshelles, and vararea.
+.PP
+Referenced by main().
+.SS "void triangleinit ()"
+.PP
+* Definition at line 5032 of file triangle.c.
+.PP
+References badsegments, badtriangles, checksegments, circletopcount, circumcentercount, counterclockcount, exactinit(), hyperbolacount, incirclecount, memorypool::itembytes, l, memorypool::maxitems, points, randomseed, recenttri, samples, shelles, splaynodes, triedge::tri, triangle, triangles, and viri.
+.PP
+Referenced by main().
+.SS "\fBtriangle\fP* triangletraverse ()"
+.PP
+Definition at line 3622 of file triangle.c.
+.PP
+References traverse(), triangle, and triangles.
+.PP
+Referenced by carveholes(), checkdelaunay(), checkmesh(), highorder(), makepointmap(), quality_statistics(), reconstruct(), tallyfaces(), writeedges(), writeelements(), writeneighbors(), writeoff(), and writevoronoi().
+.SS "void triangulatepolygon (struct \fBtriedge\fP * firstedge, struct \fBtriedge\fP * lastedge, int edgecount, int doflip, int triflaws)"
+.PP
+Definition at line 6742 of file triangle.c.
+.PP
+References apex, dest, flip(), i, incircle(), onext, onextself, oprev, point, sym, testtriangle(), triangle, triedgecopy, and verbose.
+.PP
+Referenced by deletesite().
+.SS "void writeedges (char * edgefilename, int argc, char ** argv)"
+.PP
+Definition at line 12094 of file triangle.c.
+.PP
+References dest, dummysh, dummytri, edgefilename, edges, exit(), finishfile(), firstnumber, malloc(), mark, nobound, org, triedge::orient, point, pointmark, quiet, edge::sh, shelle, sym, traversalinit(), triedge::tri, triangle, triangles, triangletraverse(), tspivot, and useshelles.
+.PP
+Referenced by main().
+.SS "void writeelements (char * elefilename, int argc, char ** argv)"
+.PP
+Definition at line 11828 of file triangle.c.
+.PP
+References apex, dest, eextras, elemattribute, exit(), finishfile(), firstnumber, highorderindex, i, memorypool::items, malloc(), order, org, triedge::orient, point, pointmark, quiet, REAL, traversalinit(), triedge::tri, triangle, triangles, and triangletraverse().
+.PP
+Referenced by main().
+.SS "void writeneighbors (char * neighborfilename, int argc, char ** argv)"
+.PP
+Definition at line 12454 of file triangle.c.
+.PP
+References dummytri, exit(), finishfile(), firstnumber, memorypool::items, malloc(), neighborfilename, triedge::orient, quiet, sym, traversalinit(), triedge::tri, triangle, triangles, and triangletraverse().
+.PP
+Referenced by main().
+.SS "void writenodes (char * nodefilename, int argc, char ** argv)"
+.PP
+Definition at line 11678 of file triangle.c.
+.PP
+References exit(), finishfile(), firstnumber, i, memorypool::items, malloc(), mesh_dim, nextras, nobound, point, pointmark, points, pointtraverse(), quiet, REAL, setpointmark, and traversalinit().
+.PP
+Referenced by main().
+.SS "void writeoff (char * offfilename, int argc, char ** argv)"
+.PP
+Definition at line 12554 of file triangle.c.
+.PP
+References apex, dest, edges, exit(), finishfile(), memorypool::items, offfilename, org, triedge::orient, point, pointmark, points, pointtraverse(), quiet, traversalinit(), triedge::tri, triangle, triangles, and triangletraverse().
+.PP
+Referenced by main().
+.SS "void writepoly (char * polyfilename, REAL * holelist, int holes, REAL * regionlist, int regions, int argc, char ** argv)"
+.PP
+Definition at line 11961 of file triangle.c.
+.PP
+References exit(), finishfile(), firstnumber, holes, i, memorypool::items, malloc(), mark, mesh_dim, nextras, nobound, point, pointmark, quiet, REAL, regions, sdest, edge::sh, shelle, shelles, shelletraverse(), edge::shorient, sorg, and traversalinit().
+.PP
+Referenced by main().
+.SS "void writevoronoi (char * vnodefilename, char * vedgefilename, int argc, char ** argv)"
+.PP
+Definition at line 12247 of file triangle.c.
+.PP
+References apex, dest, dummytri, edges, exit(), findcircumcenter(), finishfile(), firstnumber, i, memorypool::items, malloc(), nextras, org, triedge::orient, point, quiet, REAL, sym, traversalinit(), triedge::tri, triangle, triangles, triangletraverse(), vedgefilename, and vnodefilename.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBareaboundindex\fP"
+.PP
+Definition at line 645 of file triangle.c.
+.PP
+Referenced by initializetrisegpools().
+.SS "char \fBareafilename\fP[FILENAMESIZE]"
+.PP
+Definition at line 716 of file triangle.c.
+.PP
+Referenced by main(), parsecommandline(), and reconstruct().
+.SS "struct \fBmemorypool\fP \fBbadsegments\fP"
+.PP
+Definition at line 617 of file triangle.c.
+.PP
+Referenced by badsegmentdealloc(), badsegmenttraverse(), checkedge4encroach(), enforcequality(), insertsite(), repairencs(), statistics(), triangledeinit(), and triangleinit().
+.SS "struct \fBmemorypool\fP \fBbadtriangles\fP"
+.PP
+Definition at line 618 of file triangle.c.
+.PP
+Referenced by enforcequality(), enqueuebadtri(), splittriangle(), statistics(), triangledeinit(), and triangleinit().
+.SS "REAL \fBccwerrboundA\fP"
+.PP
+Definition at line 654 of file triangle.c.
+.PP
+Referenced by counterclockwise(), and exactinit().
+.SS "REAL \fBccwerrboundB\fP"
+.PP
+Definition at line 654 of file triangle.c.
+.PP
+Referenced by counterclockwiseadapt(), and exactinit().
+.SS "REAL \fBccwerrboundC\fP"
+.PP
+Definition at line 654 of file triangle.c.
+.PP
+Referenced by counterclockwiseadapt(), and exactinit().
+.SS "int \fBchecksegments\fP"
+.PP
+Definition at line 646 of file triangle.c.
+.PP
+Referenced by checkdelaunay(), flip(), insertsite(), main(), and triangleinit().
+.SS "long \fBcircletopcount\fP"
+.PP
+Definition at line 661 of file triangle.c.
+.PP
+Referenced by circletop(), statistics(), and triangleinit().
+.SS "long \fBcircumcentercount\fP"
+.PP
+Definition at line 660 of file triangle.c.
+.PP
+Referenced by findcircumcenter(), statistics(), and triangleinit().
+.SS "int \fBconvex\fP"
+.PP
+Definition at line 694 of file triangle.c.
+.PP
+Referenced by carveholes(), formskeleton(), main(), and parsecommandline().
+.SS "long \fBcounterclockcount\fP"
+.PP
+Definition at line 658 of file triangle.c.
+.PP
+Referenced by counterclockwise(), findcircumcenter(), statistics(), and triangleinit().
+.SS "int \fBdocheck\fP"
+.PP
+Definition at line 701 of file triangle.c.
+.PP
+Referenced by main(), and parsecommandline().
+.SS "\fBshelle\fP* \fBdummysh\fP"
+.PP
+Definition at line 740 of file triangle.c.
+.PP
+Referenced by checkdelaunay(), constrainededge(), delaunayfixup(), deletesite(), dummyinit(), flip(), highorder(), infecthull(), insertshelle(), insertsite(), makeshelle(), maketriangle(), plague(), printshelle(), printtriangle(), regionplague(), repairencs(), scoutsegment(), testtriangle(), and writeedges().
+.SS "\fBshelle\fP* \fBdummyshbase\fP"
+.PP
+Definition at line 741 of file triangle.c.
+.PP
+Referenced by dummyinit(), and triangledeinit().
+.SS "\fBtriangle\fP* \fBdummytri\fP"
+.PP
+Definition at line 733 of file triangle.c.
+.PP
+Referenced by boundingbox(), carveholes(), checkdelaunay(), checkedge4encroach(), checkmesh(), circletopinsert(), delaunayfixup(), deletesite(), dummyinit(), finddirection(), flip(), highorder(), infecthull(), insertsegment(), insertsite(), makeshelle(), maketriangle(), markhull(), plague(), preciselocate(), printshelle(), printtriangle(), reconstruct(), regionplague(), removebox(), removeghosts(), repairencs(), writeedges(), writeneighbors(), and writevoronoi().
+.SS "\fBtriangle\fP* \fBdummytribase\fP"
+.PP
+Definition at line 734 of file triangle.c.
+.PP
+Referenced by dummyinit(), and triangledeinit().
+.SS "int \fBdwyer\fP"
+.PP
+Definition at line 699 of file triangle.c.
+.PP
+Referenced by divconqdelaunay(), mergehulls(), and parsecommandline().
+.SS "char \fBedgefilename\fP[FILENAMESIZE]"
+.PP
+Definition at line 720 of file triangle.c.
+.PP
+Referenced by main(), parsecommandline(), and writeedges().
+.SS "long \fBedges\fP"
+.PP
+Definition at line 634 of file triangle.c.
+.PP
+Referenced by cdl_selectFB(), main(), statistics(), writeedges(), writeoff(), and writevoronoi().
+.SS "int \fBedgesout\fP"
+.PP
+Definition at line 696 of file triangle.c.
+.PP
+Referenced by main(), and parsecommandline().
+.SS "int \fBeextras\fP"
+.PP
+Definition at line 637 of file triangle.c.
+.PP
+Referenced by carveholes(), delaunay(), initializetrisegpools(), insertsite(), main(), maketriangle(), reconstruct(), regionplague(), and writeelements().
+.SS "int \fBelemattribindex\fP"
+.PP
+Definition at line 644 of file triangle.c.
+.PP
+Referenced by initializetrisegpools().
+.SS "REAL \fBepsilon\fP"
+.PP
+Definition at line 652 of file triangle.c.
+.PP
+Referenced by exactinit().
+.SS "int \fBfirstnumber\fP"
+.PP
+Definition at line 695 of file triangle.c.
+.PP
+Referenced by formskeleton(), getpoint(), numbernodes(), parsecommandline(), readholes(), readnodes(), reconstruct(), writeedges(), writeelements(), writeneighbors(), writenodes(), writepoly(), and writevoronoi().
+.SS "int \fBfixedarea\fP"
+.PP
+Definition at line 694 of file triangle.c.
+.PP
+Referenced by enforcequality(), parsecommandline(), testtriangle(), and triangledeinit().
+.SS "int \fBgeomview\fP"
+.PP
+Definition at line 696 of file triangle.c.
+.PP
+Referenced by main(), and parsecommandline().
+.SS "REAL \fBgoodangle\fP"
+.PP
+Definition at line 707 of file triangle.c.
+.PP
+Referenced by parsecommandline(), and testtriangle().
+.SS "int \fBhighorderindex\fP"
+.PP
+Definition at line 643 of file triangle.c.
+.PP
+Referenced by highorder(), initializetrisegpools(), and writeelements().
+.SS "int \fBholes\fP"
+.PP
+Definition at line 632 of file triangle.c.
+.PP
+Referenced by carveholes(), main(), readholes(), statistics(), and writepoly().
+.SS "long \fBhullsize\fP"
+.PP
+Definition at line 638 of file triangle.c.
+.PP
+Referenced by insertsite(), main(), plague(), reconstruct(), removebox(), removeghosts(), and statistics().
+.SS "long \fBhyperbolacount\fP"
+.PP
+Definition at line 659 of file triangle.c.
+.PP
+Referenced by rightofhyperbola(), statistics(), and triangleinit().
+.SS "REAL \fBiccerrboundA\fP"
+.PP
+Definition at line 655 of file triangle.c.
+.PP
+Referenced by exactinit(), and incircle().
+.SS "REAL \fBiccerrboundB\fP"
+.PP
+Definition at line 655 of file triangle.c.
+.PP
+Referenced by exactinit(), and incircleadapt().
+.SS "REAL \fBiccerrboundC\fP"
+.PP
+Definition at line 655 of file triangle.c.
+.PP
+Referenced by exactinit(), and incircleadapt().
+.SS "long \fBincirclecount\fP"
+.PP
+Definition at line 657 of file triangle.c.
+.PP
+Referenced by incircle(), statistics(), and triangleinit().
+.SS "int \fBincremental\fP"
+.PP
+Definition at line 699 of file triangle.c.
+.PP
+Referenced by delaunay(), and parsecommandline().
+.SS "char \fBinelefilename\fP[FILENAMESIZE]"
+.PP
+Definition at line 714 of file triangle.c.
+.PP
+Referenced by main(), and parsecommandline().
+.SS "int \fBinelements\fP"
+.PP
+Definition at line 630 of file triangle.c.
+.PP
+Referenced by reconstruct(), and statistics().
+.SS "\fBpoint\fP \fBinfpoint1\fP"
+.PP
+Definition at line 729 of file triangle.c.
+.PP
+Referenced by boundingbox(), insertsite(), main(), and removebox().
+.SS "\fBpoint\fP \fBinfpoint2\fP"
+.PP
+Definition at line 729 of file triangle.c.
+.PP
+Referenced by boundingbox(), insertsite(), main(), and removebox().
+.SS "\fBpoint\fP \fBinfpoint3\fP"
+.PP
+Definition at line 729 of file triangle.c.
+.PP
+Referenced by boundingbox(), insertsite(), main(), and removebox().
+.SS "char \fBinnodefilename\fP[FILENAMESIZE]"
+.PP
+Definition at line 713 of file triangle.c.
+.PP
+Referenced by main(), parsecommandline(), and readnodes().
+.SS "int \fBinpoints\fP"
+.PP
+Definition at line 629 of file triangle.c.
+.PP
+Referenced by createeventheap(), divconqdelaunay(), formskeleton(), readnodes(), reconstruct(), statistics(), and sweeplinedelaunay().
+.SS "char \fBinpolyfilename\fP[FILENAMESIZE]"
+.PP
+Definition at line 715 of file triangle.c.
+.PP
+Referenced by formskeleton(), main(), parsecommandline(), and reconstruct().
+.SS "int \fBinsegments\fP"
+.PP
+Definition at line 631 of file triangle.c.
+.PP
+Referenced by main(), reconstruct(), and statistics().
+.SS "REAL \fBmaxarea\fP"
+.PP
+Definition at line 708 of file triangle.c.
+.PP
+Referenced by parsecommandline(), and testtriangle().
+.SS "int \fBmesh_dim\fP"
+.PP
+Definition at line 635 of file triangle.c.
+.PP
+Referenced by initializepointpool(), readnodes(), writenodes(), and writepoly().
+.SS "REAL \fBminangle\fP"
+.PP
+Definition at line 707 of file triangle.c.
+.PP
+Referenced by enforcequality(), parsecommandline(), and triangledeinit().
+.SS "int \fBminus1mod3\fP[3] = {2, 0, 1}"
+.PP
+Definition at line 779 of file triangle.c.
+.PP
+Referenced by quality_statistics().
+.SS "char \fBneighborfilename\fP[FILENAMESIZE]"
+.PP
+Definition at line 723 of file triangle.c.
+.PP
+Referenced by main(), parsecommandline(), and writeneighbors().
+.SS "int \fBneighbors\fP"
+.PP
+Definition at line 696 of file triangle.c.
+.PP
+Referenced by initializetrisegpools(), main(), and parsecommandline().
+.SS "int \fBnextras\fP"
+.PP
+Definition at line 636 of file triangle.c.
+.PP
+Referenced by conformingedge(), highorder(), initializepointpool(), main(), readnodes(), repairencs(), segmentintersection(), splittriangle(), writenodes(), writepoly(), and writevoronoi().
+.SS "int \fBnobisect\fP"
+.PP
+Definition at line 705 of file triangle.c.
+.PP
+Referenced by checkedge4encroach(), deletesite(), insertsite(), and parsecommandline().
+.SS "int \fBnobound\fP"
+.PP
+Definition at line 697 of file triangle.c.
+.PP
+Referenced by parsecommandline(), writeedges(), writenodes(), and writepoly().
+.SS "int \fBnoelewritten\fP"
+.PP
+Definition at line 697 of file triangle.c.
+.PP
+Referenced by main(), and parsecommandline().
+.SS "int \fBnoexact\fP"
+.PP
+Definition at line 698 of file triangle.c.
+.PP
+Referenced by checkdelaunay(), checkmesh(), counterclockwise(), findcircumcenter(), incircle(), and parsecommandline().
+.SS "int \fBnoholes\fP"
+.PP
+Definition at line 698 of file triangle.c.
+.PP
+Referenced by carveholes(), and parsecommandline().
+.SS "int \fBnoiterationnum\fP"
+.PP
+Definition at line 697 of file triangle.c.
+.PP
+Referenced by main(), and parsecommandline().
+.SS "int \fBnonodewritten\fP"
+.PP
+Definition at line 697 of file triangle.c.
+.PP
+Referenced by main(), and parsecommandline().
+.SS "int \fBnopolywritten\fP"
+.PP
+Definition at line 697 of file triangle.c.
+.PP
+Referenced by main(), and parsecommandline().
+.SS "char \fBofffilename\fP[FILENAMESIZE]"
+.PP
+Definition at line 724 of file triangle.c.
+.PP
+Referenced by main(), parsecommandline(), and writeoff().
+.SS "int \fBorder\fP"
+.PP
+Definition at line 704 of file triangle.c.
+.PP
+Referenced by initializetrisegpools(), main(), parsecommandline(), readamplitudes(), slaDeuler(), writeamplitudes(), and writeelements().
+.SS "char \fBoutelefilename\fP[FILENAMESIZE]"
+.PP
+Definition at line 718 of file triangle.c.
+.PP
+Referenced by main(), and parsecommandline().
+.SS "char \fBoutnodefilename\fP[FILENAMESIZE]"
+.PP
+Definition at line 717 of file triangle.c.
+.PP
+Referenced by main(), and parsecommandline().
+.SS "char \fBoutpolyfilename\fP[FILENAMESIZE]"
+.PP
+Definition at line 719 of file triangle.c.
+.PP
+Referenced by main(), and parsecommandline().
+.SS "int \fBplus1mod3\fP[3] = {1, 2, 0}"
+.PP
+* Definition at line 778 of file triangle.c.
+.PP
+Referenced by quality_statistics().
+.SS "int \fBpoint2triindex\fP"
+.PP
+Definition at line 642 of file triangle.c.
+.PP
+Referenced by initializepointpool().
+.SS "int \fBpointmarkindex\fP"
+.PP
+Definition at line 641 of file triangle.c.
+.PP
+Referenced by initializepointpool().
+.SS "struct \fBmemorypool\fP \fBpoints\fP"
+.PP
+Definition at line 615 of file triangle.c.
+.PP
+Referenced by boundingbox(), conformingedge(), createeventheap(), divconqdelaunay(), getpoint(), highorder(), incrementaldelaunay(), initializepointpool(), main(), numbernodes(), pointdealloc(), pointtraverse(), readnodes(), reconstruct(), repairencs(), segmentintersection(), splittriangle(), statistics(), triangledeinit(), triangleinit(), writenodes(), and writeoff().
+.SS "int \fBpoly\fP"
+.PP
+Definition at line 694 of file triangle.c.
+.PP
+Referenced by formskeleton(), initializepointpool(), main(), parsecommandline(), readnodes(), reconstruct(), removebox(), removeghosts(), and statistics().
+.SS "int \fBquality\fP"
+.PP
+Definition at line 694 of file triangle.c.
+.PP
+Referenced by main(), parsecommandline(), and triangledeinit().
+.SS "struct \fBbadface\fP* \fBqueuefront\fP[64]"
+.PP
+Definition at line 624 of file triangle.c.
+.PP
+Referenced by dequeuebadtri(), and enforcequality().
+.SS "struct \fBbadface\fP** \fBqueuetail\fP[64]"
+.PP
+Definition at line 625 of file triangle.c.
+.PP
+Referenced by dequeuebadtri(), enforcequality(), and enqueuebadtri().
+.SS "int \fBquiet\fP"
+.PP
+Definition at line 702 of file triangle.c.
+.PP
+Referenced by carveholes(), checkdelaunay(), checkmesh(), delaunay(), divconqdelaunay(), enforcequality(), formskeleton(), highorder(), incrementaldelaunay(), main(), parsecommandline(), readnodes(), reconstruct(), splittriangle(), testtriangle(), writeedges(), writeelements(), writeneighbors(), writenodes(), writeoff(), writepoly(), and writevoronoi().
+.SS "unsigned long \fBrandomseed\fP"
+.PP
+Definition at line 649 of file triangle.c.
+.PP
+Referenced by randomnation(), and triangleinit().
+.SS "int \fBreadnodefile\fP"
+.PP
+Definition at line 647 of file triangle.c.
+.PP
+Referenced by main(), and readnodes().
+.SS "struct \fBtriedge\fP \fBrecenttri\fP"
+.PP
+Definition at line 746 of file triangle.c.
+.PP
+Referenced by insertsegment(), insertsite(), locate(), and triangleinit().
+.SS "int \fBrefine\fP"
+.PP
+Definition at line 694 of file triangle.c.
+.PP
+Referenced by carveholes(), main(), parsecommandline(), readholes(), and statistics().
+.SS "int \fBregionattrib\fP"
+.PP
+Definition at line 694 of file triangle.c.
+.PP
+Referenced by carveholes(), initializetrisegpools(), parsecommandline(), readholes(), and regionplague().
+.SS "int \fBregions\fP"
+.PP
+Definition at line 633 of file triangle.c.
+.PP
+Referenced by carveholes(), main(), readholes(), and writepoly().
+.SS "REAL \fBresulterrbound\fP"
+.PP
+Definition at line 653 of file triangle.c.
+.PP
+Referenced by counterclockwiseadapt(), exactinit(), and incircleadapt().
+.SS "long \fBsamples\fP"
+.PP
+Definition at line 648 of file triangle.c.
+.PP
+Referenced by locate(), and triangleinit().
+.SS "struct \fBmemorypool\fP \fBshelles\fP"
+.PP
+Definition at line 614 of file triangle.c.
+.PP
+Referenced by dummyinit(), initializetrisegpools(), main(), makeshelle(), reconstruct(), shelledealloc(), shelletraverse(), statistics(), tallyencs(), triangledeinit(), triangleinit(), and writepoly().
+.SS "int \fBshwords\fP"
+.PP
+Definition at line 640 of file triangle.c.
+.PP
+Referenced by dummyinit().
+.SS "struct \fBmemorypool\fP \fBsplaynodes\fP"
+.PP
+Definition at line 619 of file triangle.c.
+.PP
+Referenced by splay(), splayinsert(), statistics(), sweeplinedelaunay(), and triangleinit().
+.SS "int \fBsplitseg\fP"
+.PP
+Definition at line 700 of file triangle.c.
+.PP
+Referenced by insertsegment(), and parsecommandline().
+.SS "REAL \fBsplitter\fP"
+.PP
+Definition at line 651 of file triangle.c.
+.PP
+Referenced by exactinit().
+.SS "int \fBsteiner\fP"
+.PP
+Definition at line 706 of file triangle.c.
+.PP
+Referenced by parsecommandline().
+.SS "int \fBsteinerleft\fP"
+.PP
+Definition at line 706 of file triangle.c.
+.PP
+Referenced by conformingedge(), enforcequality(), parsecommandline(), repairencs(), segmentintersection(), and splittriangle().
+.SS "int \fBsweepline\fP"
+.PP
+Definition at line 699 of file triangle.c.
+.PP
+Referenced by delaunay(), and parsecommandline().
+.SS "struct \fBmemorypool\fP \fBtriangles\fP"
+.PP
+Definition at line 613 of file triangle.c.
+.PP
+Referenced by carveholes(), checkdelaunay(), checkmesh(), dummyinit(), highorder(), initializetrisegpools(), locate(), main(), makepointmap(), maketriangle(), quality_statistics(), reconstruct(), statistics(), tallyfaces(), triangledealloc(), triangledeinit(), triangleinit(), triangletraverse(), writeedges(), writeelements(), writeneighbors(), writeoff(), and writevoronoi().
+.SS "int \fBtriwords\fP"
+.PP
+Definition at line 639 of file triangle.c.
+.PP
+Referenced by dummyinit().
+.SS "int \fBuseshelles\fP"
+.PP
+Definition at line 703 of file triangle.c.
+.PP
+Referenced by dummyinit(), highorder(), initializetrisegpools(), main(), maketriangle(), parsecommandline(), printtriangle(), triangledeinit(), and writeedges().
+.SS "int \fBvararea\fP"
+.PP
+Definition at line 694 of file triangle.c.
+.PP
+Referenced by carveholes(), enforcequality(), initializetrisegpools(), insertsite(), maketriangle(), parsecommandline(), printtriangle(), readholes(), reconstruct(), regionplague(), testtriangle(), and triangledeinit().
+.SS "char \fBvedgefilename\fP[FILENAMESIZE]"
+.PP
+Definition at line 722 of file triangle.c.
+.PP
+Referenced by main(), parsecommandline(), and writevoronoi().
+.SS "int \fBverbose\fP"
+.PP
+Definition at line 702 of file triangle.c.
+.PP
+Referenced by boundingbox(), carveholes(), checkedge4encroach(), conformingedge(), deletesite(), divconqdelaunay(), divconqrecurse(), enforcequality(), enqueuebadtri(), exactinit(), flip(), formskeleton(), highorder(), incrementaldelaunay(), infecthull(), insertsegment(), insertshelle(), insertsite(), locate(), main(), makepointmap(), mergehulls(), parsecommandline(), plague(), preciselocate(), reconstruct(), regionplague(), removebox(), removeghosts(), repairencs(), segmentintersection(), splittriangle(), statistics(), sweeplinedelaunay(), tallyfaces(), and triangulatepolygon().
+.SS "struct \fBmemorypool\fP \fBviri\fP"
+.PP
+Definition at line 616 of file triangle.c.
+.PP
+Referenced by carveholes(), infecthull(), plague(), regionplague(), statistics(), and triangleinit().
+.SS "char \fBvnodefilename\fP[FILENAMESIZE]"
+.PP
+Definition at line 721 of file triangle.c.
+.PP
+Referenced by main(), parsecommandline(), and writevoronoi().
+.SS "int \fBvoronoi\fP"
+.PP
+Definition at line 696 of file triangle.c.
+.PP
+Referenced by initializetrisegpools(), main(), and parsecommandline().
+.SS "REAL \fBxmax\fP"
+.PP
+Definition at line 627 of file triangle.c.
+.SS "REAL \fBxmin\fP"
+.PP
+Definition at line 627 of file triangle.c.
+.SS "REAL \fBxminextreme\fP"
+.PP
+Definition at line 628 of file triangle.c.
+.PP
+Referenced by readnodes(), and sweeplinedelaunay().
+.SS "REAL \fBymax\fP"
+.PP
+Definition at line 627 of file triangle.c.
+.SS "REAL \fBymin\fP"
+.PP
+Definition at line 627 of file triangle.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

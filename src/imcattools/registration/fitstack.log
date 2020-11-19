@@ -1,0 +1,103 @@
+This is TeX, C Version 3.14t3 (format=latex 95.12.11)  18 NOV 1996 07:53
+**fitstack
+(fitstack.tex
+LaTeX2e <1995/06/01> patch level 3
+(/usr/local/lib/TeX/inputs/latex209.def
+File: latex209.def 1995/07/07 v0.47 Standard LaTeX file
+
+Entering LaTeX 2.09 compatibility mode.
+\footheight=\dimen102
+\@maxsep=\dimen103
+\@dblmaxsep=\dimen104
+(/usr/local/lib/TeX/inputs/tracefnt.sty
+Package: tracefnt 1995/06/15 v3.0b Standard LaTeX package (font tracing)
+\tracingfonts=\count82
+LaTeX Info: Redefining \selectfont on input line 133.
+)
+\symbold=\mathgroup4
+\symsans=\mathgroup5
+\symtypewriter=\mathgroup6
+\symitalic=\mathgroup7
+\symsmallcaps=\mathgroup8
+\symslanted=\mathgroup9
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 276.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 277.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 278.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 284.
+LaTeX Info: Redefining \em on input line 294.
+
+(/usr/local/lib/TeX/inputs/latexsym.sty
+Package: latexsym 1995/03/18 v2.2a Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup10
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 81.
+)
+LaTeX Font Info:    Redeclaring math delimiter \lgroup on input line 359.
+LaTeX Font Info:    Redeclaring math delimiter \rgroup on input line 361.
+LaTeX Font Info:    Redeclaring math delimiter \bracevert on input line 363.
+)
+(/usr/local/lib/TeX/inputs/article.cls
+Document Class: article 1995/06/26 v1.3g Standard LaTeX document class
+(/usr/local/lib/TeX/inputs/size10.clo
+File: size10.clo 1995/06/26 v1.3g Standard LaTeX file (size option)
+)
+\c@part=\count83
+\c@section=\count84
+\c@subsection=\count85
+\c@subsubsection=\count86
+\c@paragraph=\count87
+\c@subparagraph=\count88
+\c@figure=\count89
+\c@table=\count90
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+Compatibility mode: definition of \rm ignored.
+Compatibility mode: definition of \sf ignored.
+Compatibility mode: definition of \tt ignored.
+Compatibility mode: definition of \bf ignored.
+Compatibility mode: definition of \it ignored.
+Compatibility mode: definition of \sl ignored.
+Compatibility mode: definition of \sc ignored.
+LaTeX Info: Redefining \cal on input line 491.
+LaTeX Info: Redefining \mit on input line 492.
+\bibindent=\dimen105
+)
+No file fitstack.aux.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 28.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 28.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 28.
+(/usr/local/lib/TeX/inputs/Ulasy.fd
+File: Ulasy.fd 1995/03/18 v2.2aLaTeX symbol font definitions
+)
+Overfull \hbox (1.16441pt too wide) in paragraph at lines 43--47
+\OT1/cmr/m/n/10 thus the first few modes are $\OML/cmm/m/it/10 y; x[]; xy; y[];
+ x[]; x[]y; xy[]; y[]; x[]; x[]y; x[]y[]; xy[]; y[]; []$
+ []
+
+[1
+
+] [2] [3] (fitstack.aux) ) 
+Here is how much of TeX's memory you used:
+ 385 strings out of 3461
+ 3753 string characters out of 49650
+ 58047 words of memory out of 262141
+ 3235 multiletter control sequences out of 9500
+ 10057 words of font info for 38 fonts, out of 72000 for 255
+ 14 hyphenation exceptions out of 607
+ 19i,10n,21p,221b,120s stack positions out of 300i,40n,60p,3000b,4000s
+
+Output written on fitstack.dvi (3 pages, 11792 bytes).

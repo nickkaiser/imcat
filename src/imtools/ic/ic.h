@@ -1,0 +1,10 @@
+/*
+ * ic.h
+ */
+
+double	xp(void);
+double	yp(void);
+double	x(void);
+double	y(void);
+double gasdev(void);
+

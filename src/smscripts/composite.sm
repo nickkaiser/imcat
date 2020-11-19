@@ -1,0 +1,24 @@
+composite
+	data comp.out
+	read {r 1 f 2 dfdr 3 a0 4 a1 5 a2 6 a3 7 a4 8 a5 9}
+	window 1 2 1 1
+	limits r f
+	box     
+	connect r f
+	xlabel r
+	ylabel <SB>
+	window 1 2 1 2
+	limits r 0 1.5
+	box     
+	connect r a0
+	connect r a1
+	connect r a2
+	connect r a3
+	connect r a4
+	connect r a5
+	relocate 0 1 
+	ltype 2 
+	draw 20 1
+	ltype 0
+	xlabel r
+	ylabel \ga

@@ -1,0 +1,68 @@
+.TH "orbit.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+orbit.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+\fC#include 'Ffunc.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBUSAGE\fP   'usage : orbit\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBDTINY\fP   1.0\fBe\fP-20"
+.br
+.ti -1c
+.RI "#define \fBFTOL\fP   1.0\fBe\fP-8"
+.br
+.ti -1c
+.RI "#define \fBNITERMAX\fP   100"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define DTINY   1.0\fBe\fP-20"
+.PP
+Definition at line 9 of file orbit.c.
+.SS "#define FTOL   1.0\fBe\fP-8"
+.PP
+Definition at line 10 of file orbit.c.
+.SS "#define NITERMAX   100"
+.PP
+Definition at line 11 of file orbit.c.
+.SS "#define USAGE   'usage : orbit\\\fBn\fP'"
+.PP
+Definition at line 7 of file orbit.c.
+.PP
+Referenced by main().
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 14 of file orbit.c.
+.PP
+References assign(), copy(), d, dFdd(), diff(), dot(), dr, drand48(), DTINY, exit(), F(), FTOL, ge(), getperp(), i, length(), n, NITERMAX, nobs, nt, printvec(), ra, re, scale(), sigma, t, tmp, and va.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

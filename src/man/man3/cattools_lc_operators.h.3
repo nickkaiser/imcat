@@ -1,0 +1,53 @@
+.TH "operators.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+operators.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBitem\fP * \fBnewopitem\fP (char *name)"
+.br
+.ti -1c
+.RI "void \fBnum1func\fP (\fBitem\fP *operand, \fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBnum2func\fP (\fBitem\fP *operand1, \fBitem\fP *operand2, \fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBgenfunc\fP (\fBitem\fP *operator)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void genfunc (\fBitem\fP * operator)"
+.PP
+Definition at line 146 of file cattools/lc/operators.c.
+.PP
+References genfuncdoit, and genfuncinit.
+.PP
+Referenced by evalrpnfunction().
+.SS "\fBitem\fP* newopitem (char * name)"
+.PP
+Definition at line 57 of file cattools/lc/operators.c.
+.PP
+References item::addr, item::dim, exit(), GEN_OP_TYPE, genfuncname, N_GEN_OPS, N_NUM1_OPS, N_NUM2_OPS, newitem(), NUM1_OP_TYPE, num1funcarray, num1funcname, NUM2_OP_TYPE, num2funcarray, and num2funcname.
+.PP
+Referenced by getop().
+.SS "void num1func (\fBitem\fP * operand, \fBitem\fP * operator)"
+.PP
+Definition at line 100 of file cattools/lc/operators.c.
+.PP
+References item::addr, allocitemcontents(), item::dim, error_exit, item::itype, item::ndim, item::next, num1funcarray, NUM_TYPE, and output().
+.SS "void num2func (\fBitem\fP * operand1, \fBitem\fP * operand2, \fBitem\fP * operator)"
+.PP
+Definition at line 120 of file cattools/lc/operators.c.
+.PP
+References item::addr, allocitemcontents(), item::dim, error_exit, item::itype, item::ndim, item::next, num2funcarray, NUM_TYPE, and output().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,9 @@
+#! /bin/sh
+
+echoeval "mergestack -d 30 -s .isol -e test.names -o test.merge0"
+for n in 1 2
+do
+	echoeval "mergestack -d 30 -s .isol -e test$n.names -o test$n.merge0"
+done
+
+	

@@ -1,0 +1,46 @@
+.TH "testkepler.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+testkepler.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+\fC#include 'kepler.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	testkepler\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	testkepler \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	testkepler reads \fBr\fP[3], \fBv\fP[3] values from stdin in lc-format\\\fBn\fP\\	and converts these to Kepler elements and back again.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	testkepler\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	testkepler \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	testkepler reads \fBr\fP[3], \fBv\fP[3] values from stdin in lc-format\\\fBn\fP\\	and converts these to Kepler elements and back again.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 12 of file testkepler.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 26 of file testkepler.c.
+.PP
+References buff, cartesiantokepler(), exit(), fillbufferfromkeplerorbit(), ipf, keplertocartesian(), r, theorbit, usage, and v.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

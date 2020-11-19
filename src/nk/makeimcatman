@@ -1,0 +1,99 @@
+#!/usr/bin/perl
+
+$| = 1;			# force flushing
+
+chop($com = `basename $0`);
+
+$usage = "\
+NAME\
+	$com --- perl script to generate top-level man page and the imcat users manual\
+\
+SYNOPSIS\
+	$com [-b | -t] docdir section ....\
+\
+DESCRIPTION\
+	We first sort the command line arguments.  We then generate a\
+	top level index page.\
+\
+	With -b option this is copied to\
+	imcatman.groff followed by the section index pages, \
+	followed by the actual command the man pages.\
+\
+	With -t option we make a tex format reference manual imcatref.tex.\
+\
+";
+
+$arg = shift(@ARGV) || die $usage;
+die $usage if ($arg =~ /^-u$/);
+if ($arg =~ /^-b$/) {
+	$dobook = 1;
+	$docdir = shift(@ARGV) || die $usage;
+} elsif ($arg =~ /^-t$/) {
+	$dotex = 1;
+	$docdir = shift(@ARGV) || die $usage;
+} else {
+	$docdir = $arg;
+}
+
+@sections = sort(@ARGV);
+
+open(OP, "| makegroffmanpage imcat Imcat > imcat.1");
+print OP "NAME\
+	imcat - image and catalogue manipulation software\
+\
+DESCRIPTION\
+	The imcat tools are arranged into sections.\
+	Use 'man sectionname' to list the tools available in a section.\
+\
+SECTIONS\n";
+
+foreach $section (@sections) {
+	$section =~ s/_$//;
+	print OP "\t$section\t#\n";
+}
+print OP "\nINFORMATION\n";
+$readme = `cat doc/readme.man`;
+@lines = split("\n", $readme);
+foreach $line (@lines) {
+	print OP "\t", $line, "\n" unless ($line =~ /^\w.$/);
+}
+print OP "\nAUTHOR\n\tNick Kaiser - kaiser\@hawaii.edu\n";
+close(OP);
+
+if ($dotex) {
+	echosys("cat doc/imcatrefhead.tex > imcatref.tex");
+	echosys("maketexmanpage 1 < imcat.1 >> imcatref.tex");
+	foreach $section (@sections) {
+		$subdir = $section;
+		$subdir =~ s/_/\//g;
+		$sectiontex = "$docdir/$subdir/$section.tex";
+		echosys("echo '\\input' $sectiontex >> imcatref.tex");
+	}
+	echosys("cat doc/imcatreftail.tex >> imcatref.tex");
+}
+
+if ($dobook) {
+	system("cat imcat.1 > imcatbook.1");
+	foreach $section (@sections) {
+		warn "# adding index for $section\n";
+		$subdir = $section;
+		$subdir =~ s/_/\//g;
+		$sectionpage = "$docdir/$subdir/$section.1";
+		system("cat $sectionpage >> imcatbook.1");
+	}
+	foreach $section (@sections) {
+		warn "# adding pages for $section\n";
+		$subdir = $section;
+		$subdir =~ s/_/\//g;
+		$sectionpages = "$docdir/$subdir/AAA.groff";
+		system("cat $sectionpages >> imcatbook.1");
+	}
+}
+
+exit;
+
+sub echosys {
+        warn ("# ", $_[0], "\n");
+        system($_[0]);
+}
+

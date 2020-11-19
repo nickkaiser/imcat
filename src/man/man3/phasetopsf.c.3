@@ -1,0 +1,54 @@
+.TH "phasetopsf.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+phasetopsf.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/arrays.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'fftlib/myfft.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	phasetopsf - computes PSF from phase screen \fBFITS\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	phasetopsf [-\fBN\fP Nout] [-D D] [-p pupil]\\\fBn\fP\\\\\fBn\fP\\	Options are:\\\fBn\fP\\		-\fBN\fP Nout		# output only central Nout x Nout subimage (\fBN\fP)\\\fBn\fP\\		-D D		# mirror diameter in pixels (\fBN\fP)\\\fBn\fP\\		-p pupilim	# supply pupil image.\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\\\\fBn\fP\\	phasetopsf reads \fBa\fP stream of \fBN\fP x \fBN\fP phase screen \fBsamples\fP from stdin and sends to\\\fBn\fP\\	stdout \fBa\fP stream of psfs.\\\fBn\fP\\\\\fBn\fP\\	With -p option we ignore any D value supplied with the -D option and we\\\fBn\fP\\	read the pupil from 'pupilim'.  If this is 2\fBN\fP x 2\fBN\fP then it is treated as \fBa\fP\\\fBn\fP\\	\fBreal\fP amplitude transmission function $0 <= T <= 1$.  If it is 2 x 2\fBN\fP x 2\fBN\fP\\\fBn\fP\\	the first plane is consisered to be the \fBreal\fP amplitude transmission function\\\fBn\fP\\	and the second plane is the phase in radians.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	phasetopsf - computes PSF from phase screen \fBFITS\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	phasetopsf [-\fBN\fP Nout] [-D D] [-p pupil]\\\fBn\fP\\\\\fBn\fP\\	Options are:\\\fBn\fP\\		-\fBN\fP Nout		# output only central Nout x Nout subimage (\fBN\fP)\\\fBn\fP\\		-D D		# mirror diameter in pixels (\fBN\fP)\\\fBn\fP\\		-p pupilim	# supply pupil image.\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\\\\fBn\fP\\	phasetopsf reads \fBa\fP stream of \fBN\fP x \fBN\fP phase screen \fBsamples\fP from stdin and sends to\\\fBn\fP\\	stdout \fBa\fP stream of psfs.\\\fBn\fP\\\\\fBn\fP\\	With -p option we ignore any D value supplied with the -D option and we\\\fBn\fP\\	read the pupil from 'pupilim'.  If this is 2\fBN\fP x 2\fBN\fP then it is treated as \fBa\fP\\\fBn\fP\\	\fBreal\fP amplitude transmission function $0 <= T <= 1$.  If it is 2 x 2\fBN\fP x 2\fBN\fP\\\fBn\fP\\	the first plane is consisered to be the \fBreal\fP amplitude transmission function\\\fBn\fP\\	and the second plane is the phase in radians.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 15 of file phasetopsf.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 42 of file phasetopsf.c.
+.PP
+References a, add_comment(), alloc_fft(), allocFloatArray(), argsinit(), b, copyfitsheader(), error_exit, exit(), fft_type, flag, forward_fft(), frame, g(), get_fft(), getargi(), getargs(), getflag(), ix, M, fitsheader::n, N, fitsheader::ndim, nframes, phi, r, readfitsheader(), readfitsplane(), usage, writefitsheader(), writefitsplane(), x, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,76 @@
+.TH "stack.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stack.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include 'stack.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTACK_DEPTH\fP   100"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBpush\fP (\fBitem\fP *theitem)"
+.br
+.ti -1c
+.RI "\fBitem\fP * \fBpop\fP (void)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBitem\fP * \fBitemstack\fP [STACK_DEPTH]"
+.br
+.ti -1c
+.RI "int \fBstackpos\fP = 0"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define STACK_DEPTH   100"
+.PP
+Definition at line 11 of file cattools/lc/stack.c.
+.PP
+Referenced by main(), and push().
+.SH "Function Documentation"
+.PP 
+.SS "\fBitem\fP* pop (void)"
+.PP
+Definition at line 32 of file cattools/lc/stack.c.
+.PP
+Referenced by derefdoit(), derefinit(), dotdoit(), dotinit(), enter(), enterdoit(), enterinit(), evalrpnfunction(), If(), ifdoit(), ifinit(), inversedoit(), inverseinit(), lintransdoit(), lintransinit(), madddoit(), maddinit(), main(), mscaledoit(), mscaleinit(), msubdoit(), msubinit(), streqdoit(), streqinit(), vadddoit(), vaddinit(), vectordoit(), vectorinit(), vscaledoit(), vscaleinit(), vshiftdoit(), vshiftinit(), vsubdoit(), and vsubinit().
+.SS "void push (\fBitem\fP * theitem)"
+.PP
+Definition at line 16 of file cattools/lc/stack.c.
+.SH "Variable Documentation"
+.PP 
+.SS "\fBitem\fP* \fBitemstack\fP[STACK_DEPTH]"
+.PP
+Definition at line 13 of file cattools/lc/stack.c.
+.PP
+Referenced by pop(), and push().
+.SS "int \fBstackpos\fP = 0"
+.PP
+Definition at line 14 of file cattools/lc/stack.c.
+.PP
+Referenced by constfunc(), imvalfunc(), num0func(), num1func(), num2func(), pop(), push(), and resetstack().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

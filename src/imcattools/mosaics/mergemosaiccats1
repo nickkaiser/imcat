@@ -1,0 +1,82 @@
+#!/usr/bin/perl
+
+$usage = "\
+NAME\
+	mergemosaiccats1 --- perl script to generate a merged catalogue of mosaiccats\
+\
+SYNOPSIS\
+	mergemosaiccats1 [options...]\
+\
+DESCRIPTION\
+	mergemosacicats1  makes a first attempt at merging the mosaic-cats\
+	created by 'makemosacicats'.  For each pair of mosaic cats\
+	we run 'registercats' to get approximate transformations\
+	which we apply to the 1st of each pair and then run 'mergecats'\
+	with a fairly generous linking length.  The results of all these\
+	merges is concatenated to the file mergemosaiccats1.out.\
+	Options are:
+		-d d		# linking length (30)\
+		-D dbdir	# directory containing mosaic database (~/8k)\
+		-c catdir	# directory containing the mosaic cats (./mosaiccats)\
+		-t		# just calculate transformation parameters\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+";
+
+# defaults
+$HOME = $ENV{'HOME'};
+$catdir = "./mosaiccats";
+$dbdir = "$HOME/8k";
+$d = 30.0;
+$outfile = "mergemosaiccats1.out";
+$paramsonly = 0;
+
+
+while ($_ = shift(@ARGV)) {
+	if (/^-d/) {
+		$d = shift(@ARGV) || die $usage;
+	} elsif (/^-D/) {
+		$dbdir = shift(@ARGV) || die $usage;
+	} elsif (/^-c/) {
+		$catdir = shift(@ARGV) || die $usage;
+	} elsif (/^-t/) {
+		$paramsonly = 1;
+	} else {
+		die $usage;
+	}
+}
+
+
+		
+
+require "$dbdir/fields.db";
+$lcflag = "";
+
+&echosys("rm -f $outfile");
+
+for ($exp1 = 0; $exp1 < $nfields; $exp1++) {
+	for ($exp2 = 0; $exp2 < $nfields; $exp2++) {
+		next if ($exp2 <= $exp1);
+		print "\ncombining exposures: ", $fieldname[$exp1], " ", $fieldname[$exp2], "\n";
+		print "# calculating transformation....\n";
+		$params = `registercats $catdir/$fieldname[$exp1].cat $catdir/$fieldname[$exp2].cat  -i 256 -t $d`;
+		if ($paramsonly) {
+			print $exp1, " ", $exp2, " ", $params;
+		} else {
+		chop $params;
+			&echosys("scalerottrans $params < $catdir/$fieldname[$exp1].cat > $$.1.tmp");
+			&echosys("mergecats $d $$.1.tmp $catdir/$fieldname[$exp2].cat  > $$.2.tmp");
+			&echosys("lc -b -x +all 'x = %x[0]' 'temp = %x[1]' < $$.2.tmp | scalerottrans $params -i > $$.3.tmp");
+			&echosys("lc -b $lcflag -x +all 'x = %x %temp 2 vector' -r temp < $$.3.tmp >> $outfile");
+			$lcflag = "-o";
+		}
+	}
+}
+&echosys("rm $$.[123].tmp");
+
+
+sub echosys {
+        print @_, "\n";
+        system(@_) && die "$0: System call $_[0] failed!\n";
+}

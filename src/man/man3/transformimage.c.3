@@ -1,0 +1,110 @@
+.TH "transformimage.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+transformimage.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../imlib/map.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	transformimage - apply spatial linear transformation to \fBa\fP \fBFITS\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	transformimage [\fBoptions\fP...]\\\fBn\fP\\		-p psi_xx psi_xy psi_yx psi_yy	# distortion matrix (1,0,0,1)\\\fBn\fP\\		-\fBt\fP t_x t_y			# translation vector (0,0)\\\fBn\fP\\		-\fBn\fP \fBN1\fP \fBN2\fP			# size of output image\\\fBn\fP\\		-\fBm\fP \fBmode\fP				# mapping \fBmode\fP (1)\\\fBn\fP\\		-\fBc\fP				# keep image centre fixed\\\fBn\fP\\		-\fBC\fP				# keep center of (\fBN1\fP/2, \fBN2\fP/2) \fBpixel\fP fixed\\\fBn\fP\\		-\fBi\fP				# do inverse transformation\\\fBn\fP\\		-f fitsfile			# source for target image\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'transformimage\\' applies \fBa\fP general linear transformation to \fBa\fP source\\\fBn\fP\\	image fs(x) to make \fBa\fP target image f(\fBr\fP) = fs(x(\fBr\fP))\\\fBn\fP\\	where the mapping is x_i(\fBr\fP) = psi_ij r_j + t_i.\\\fBn\fP\\	By default output image = input image size.\\\fBn\fP\\	Use -\fBm\fP option to specify \fBmode\fP, where these are (in \fBorder\fP of expense)\\\fBn\fP\\		\fBmode\fP = 0:	# nearest \fBpixel\fP\\\fBn\fP\\		\fBmode\fP = 1:	# linear interpolation\\\fBn\fP\\		\fBmode\fP = 2:	# sum over \fBtriangles\fP\\\fBn\fP\\	With -\fBc\fP option we calculate t_x, t_y so that the centre\\\fBn\fP\\	\fBpixel\fP is mapped to centre of output \fBpixel\fP.\\\fBn\fP\\	By default, target image is initialised to zero\\\fBn\fP\\	but use -f option to read in an image on which we paint\\\fBn\fP\\	the mapped pixels.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBTINY\fP   1.\fBe\fP-50"
+.br
+.ti -1c
+.RI "#define \fBPRESERVE_ORIGIN\fP   0"
+.br
+.ti -1c
+.RI "#define \fBPRESERVE_IMAGE_CENTER\fP   1"
+.br
+.ti -1c
+.RI "#define \fBPRESERVE_PIXEL_CENTER\fP   2"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBdeflection\fP (float ri, float rj, float *\fBdi\fP, float *\fBdj\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float \fBpsi\fP [2][2]"
+.br
+.ti -1c
+.RI "float \fBt\fP [2]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define PRESERVE_IMAGE_CENTER   1"
+.PP
+Definition at line 55 of file transformimage.c.
+.PP
+Referenced by main().
+.SS "#define PRESERVE_ORIGIN   0"
+.PP
+Definition at line 54 of file transformimage.c.
+.PP
+Referenced by main().
+.SS "#define PRESERVE_PIXEL_CENTER   2"
+.PP
+Definition at line 56 of file transformimage.c.
+.PP
+Referenced by main().
+.SS "#define TINY   1.\fBe\fP-50"
+.PP
+Definition at line 52 of file transformimage.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	transformimage - apply spatial linear transformation to \fBa\fP \fBFITS\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	transformimage [\fBoptions\fP...]\\\fBn\fP\\		-p psi_xx psi_xy psi_yx psi_yy	# distortion matrix (1,0,0,1)\\\fBn\fP\\		-\fBt\fP t_x t_y			# translation vector (0,0)\\\fBn\fP\\		-\fBn\fP \fBN1\fP \fBN2\fP			# size of output image\\\fBn\fP\\		-\fBm\fP \fBmode\fP				# mapping \fBmode\fP (1)\\\fBn\fP\\		-\fBc\fP				# keep image centre fixed\\\fBn\fP\\		-\fBC\fP				# keep center of (\fBN1\fP/2, \fBN2\fP/2) \fBpixel\fP fixed\\\fBn\fP\\		-\fBi\fP				# do inverse transformation\\\fBn\fP\\		-f fitsfile			# source for target image\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'transformimage\\' applies \fBa\fP general linear transformation to \fBa\fP source\\\fBn\fP\\	image fs(x) to make \fBa\fP target image f(\fBr\fP) = fs(x(\fBr\fP))\\\fBn\fP\\	where the mapping is x_i(\fBr\fP) = psi_ij r_j + t_i.\\\fBn\fP\\	By default output image = input image size.\\\fBn\fP\\	Use -\fBm\fP option to specify \fBmode\fP, where these are (in \fBorder\fP of expense)\\\fBn\fP\\		\fBmode\fP = 0:	# nearest \fBpixel\fP\\\fBn\fP\\		\fBmode\fP = 1:	# linear interpolation\\\fBn\fP\\		\fBmode\fP = 2:	# sum over \fBtriangles\fP\\\fBn\fP\\	With -\fBc\fP option we calculate t_x, t_y so that the centre\\\fBn\fP\\	\fBpixel\fP is mapped to centre of output \fBpixel\fP.\\\fBn\fP\\	By default, target image is initialised to zero\\\fBn\fP\\	but use -f option to read in an image on which we paint\\\fBn\fP\\	the mapped pixels.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file transformimage.c.
+.SH "Function Documentation"
+.PP 
+.SS "int deflection (float ri, float rj, float * di, float * dj)"
+.PP
+Definition at line 142 of file lensmap.c.
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 58 of file transformimage.c.
+.PP
+References a, add_comment(), allocFloatArray(), b, c, copyfitsheader(), d, deflection(), det(), e1, error_exit, exit(), FAST_MAP_MODE, fastmap(), M1, M2, map(), fitsheader::n, N1, N2, PRESERVE_IMAGE_CENTER, PRESERVE_ORIGIN, PRESERVE_PIXEL_CENTER, psi, read2Dfloatimage(), t, t0, TINY, TRIANGLE_MAP_MODE, ULTRAFAST_MAP_MODE, ultrafastmap(), usage, and write2Dfloatimage().
+.SH "Variable Documentation"
+.PP 
+.SS "float \fBpsi\fP[2][2]"
+.PP
+Definition at line 50 of file transformimage.c.
+.PP
+Referenced by main(), and slaDeuler().
+.SS "float \fBt\fP[2]"
+.PP
+Definition at line 50 of file transformimage.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

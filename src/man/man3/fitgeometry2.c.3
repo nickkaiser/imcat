@@ -1,0 +1,98 @@
+.TH "fitgeometry2.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitgeometry2.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'utils/modefunc.h'\fP
+.br
+\fC#include 'utils/lu.h'\fP
+.br
+\fC#include 'utils/ipbuff.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitgeometry2 --- \fBfit\fP layout of \fBa\fP set of images\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitgeometry2 \fBnp\fP [\fBoptions\fP...]\\\fBn\fP\\		-\fBl\fP \fBlmax\fP		# maximum \fBorder\fP for polynomial distortion model (1)\\\fBn\fP\\		-o outputdir	# directory for the output files (must exist)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	fitgeometry2 reads from stdin the result of merging (using 'mergecats')\\\fBn\fP\\	\fBa\fP set of \fBnp\fP 'planes' of catalogues and solves for the location\\\fBn\fP\\	in some 'reference \fBframe\fP coordinates' of objects on the catalogue\\\fBn\fP\\	and also \fBa\fP set of parameters describing the distorted mapping between\\\fBn\fP\\	these reference \fBframe\fP coordinates and \fBpixel\fP coordinates on the\\\fBn\fP\\	images from which the catalogues were derived.\\\fBn\fP\\\\\fBn\fP\\	Fitgeometry2 was written to solve the following problem: We have \fBa\fP set\\\fBn\fP\\	of '\fBdata\fP' images from \fBa\fP mosiac camera (which have some uncertain\\\fBn\fP\\	layout of the chips on the detector \fBframe\fP - which need not be static - and\\\fBn\fP\\	also suffer from telescope field distortion and possibly atmospheric refraction).\\\fBn\fP\\	From each these images one can extract typically ~100 stars whose positions\\\fBn\fP\\	have \fBa\fP precision of \fBa\fP small fraction <~ 1/10 of \fBa\fP \fBpixel\fP. These allow one to\\\fBn\fP\\	determine \fBa\fP set of polynomial mappings (with one image taken to define\\\fBn\fP\\	the reference coordinate system) which map these images onto one\\\fBn\fP\\	another to \fBa\fP very high precision.  However, this procedure does not\\\fBn\fP\\	remove telescope or atmospheric field distortion and tends to be\\\fBn\fP\\	unstable to introducing further artificial field distortion.  To avoid this\\\fBn\fP\\	we incorporate in the fitting \fBa\fP catalogue which derives from the digital\\\fBn\fP\\	sky survey image for example, and for which \fBa\fP good 'plate solution'\\\fBn\fP\\	already exists.  Providing this catalogue as the 'reference catalogue'\\\fBn\fP\\	solves our problem and provides one with \fBa\fP mapping from \fBdata\fP \fBpixel\fP\\\fBn\fP\\	coordinates to the `world coordinate system'.  \fBA\fP complication of this\\\fBn\fP\\	procedure is that the reference catalogue positions tend to be relatively\\\fBn\fP\\	imprecise, and it is necessary to incorporate this information in the\\\fBn\fP\\	fitting (as weight factors), so the input catalogues most contain both\\\fBn\fP\\	the measured position and an estimate of the precision.\\\fBn\fP\\\\\fBn\fP\\	The catalogues to be merged must contain at least the following items:\\\fBn\fP\\\\\fBn\fP\\		x[2]	# spatial coordinate\\\fBn\fP\\		\fBi\fP	# unique image ID (\fBi\fP = 0 for reference image)\\\fBn\fP\\		I	# I = 1 -- used internally\\\fBn\fP\\		s	# \fBsigma\fP^2 = position measurement variance   \\\fBn\fP\\\\\fBn\fP\\	but will usually contain additional information such as an approximate\\\fBn\fP\\	'sky coordinate' used by mergecats to link the objects.\\\fBn\fP\\	The result of such \fBa\fP merging is \fBa\fP set of unique particles and their\\\fBn\fP\\	measured positions in each and all of the images in which they appear.\\\fBn\fP\\\\\fBn\fP\\	The 'planes' which get merged could be just the set of all images.  However,\\\fBn\fP\\	in the case of \fBa\fP mosaic camera an \fBobject\fP can only be detected on at most\\\fBn\fP\\	one chip per exposure, so the merged catalogue will be very sparse.  It is\\\fBn\fP\\	more efficient to group sets of such 'known to be mutually non-overlapping'\\\fBn\fP\\	catalogues into planes before merging.  Since one cannot then infer\\\fBn\fP\\	the 'image \fBnumber\fP' of \fBa\fP catalogue from its 'plane \fBnumber\fP' we include the image\\\fBn\fP\\	identifier '\fBi\fP' in the catalogue.\\\fBn\fP\\\\\fBn\fP\\	Fitgeometry2 assumes that coordinates x_pi of the p'th of \fBnp\fP stars on the \fBi\fP'th\\\fBn\fP\\	image is related to the coordinates r_p in the reference \fBframe\fP by:\\\fBn\fP\\\\\fBn\fP\\     		r_p = x_pi + sum_m a_im f_m(x_pi) + e_pi\\\fBn\fP\\\\\fBn\fP\\	whereas for the reference image (\fBi\fP = 0)\\\fBn\fP\\\\\fBn\fP\\     		r_p = x_p0 + e_p0\\\fBn\fP\\\\\fBn\fP\\	Here the f_m(x) are \fBa\fP set of \fBnm\fP polynomial \fBmode\fP functions\\\fBn\fP\\	and a_im denotes the amplitudes of these functions in the distortion\\\fBn\fP\\	of the \fBi\fP'th image.  The e_pi represent the uncertainty in the position.\\\fBn\fP\\	It finds the set of parameters a_il and positions r_p which minimise\\\fBn\fP\\	the 'chi-squared' function:\\\fBn\fP\\\\\fBn\fP\\	chi^2 = sum_p [ sum_i (x_pi - sum_l a_il f_l(x_pi) - r_p)^2 / s_pi^2\\\fBn\fP\\			+ (x_p0 - r_p)^2 / s_p0]\\\fBn\fP\\\\\fBn\fP\\	Since this is quadratic in the a_il, r_p the result is \fBa\fP set of\\\fBn\fP\\	\fBnm\fP * (nimages - 1) + \fBnp\fP linear equations for each of the 2 spatial\\\fBn\fP\\	coordinate components.\\\fBn\fP\\	The summation over '\fBi\fP' here does not include the reference\\\fBn\fP\\	catalogue (\fBi\fP=0). For small distortions this is equivalent to the\\\fBn\fP\\	maximum likelihood solution if we assume that the position errors are\\\fBn\fP\\	gaussian distributed.\\\fBn\fP\\\\\fBn\fP\\	The result is:\\\fBn\fP\\	1) \fBA\fP set of parameter files ouputdir/\fBi\fP.par, where \fBi\fP is the image \fBnumber\fP.\\\fBn\fP\\	By default ouputdir = \\'geofit2dir\\', but you can change this\\\fBn\fP\\	with the -o \fBflag\fP.\\\fBn\fP\\	2) \fBA\fP set of catalogues ouputdir/\fBi\fP.cat which contains the\\\fBn\fP\\	x, \fBi\fP, I, s values for the \fBpoints\fP detected on the \fBi\fP'th image, as well\\\fBn\fP\\	as the following items:\\\fBn\fP\\		rref		# the reference catalogue solution (rref = r_p)\\\fBn\fP\\		p		# the \fBparticle\fP \fBnumber\fP\\\fBn\fP\\		ndet		# the \fBnumber\fP of images in which \fBparticle\fP p was detected\\\fBn\fP\\		refdet		# refdet = 1 if \fBparticle\fP was detected in the reference cat\\\fBn\fP\\		\fBr\fP		# obtained by applying the approximate polynomial model   \\\fBn\fP\\	3) \fBA\fP reference catalogue ouputdir/ref.cat containing the solutions r_p.\\\fBn\fP\\\\\fBn\fP\\        See also <\fBa\fP href=\\'fitgeom.html\\'>notes on various fitgeometry tools</\fBa\fP>\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBIPRECUNIT\fP   5"
+.br
+.ti -1c
+.RI "#define \fBIPxPOS\fP   0"
+.br
+.ti -1c
+.RI "#define \fBIPiPOS\fP   2"
+.br
+.ti -1c
+.RI "#define \fBIPIPOS\fP   3"
+.br
+.ti -1c
+.RI "#define \fBIPsPOS\fP   4"
+.br
+.ti -1c
+.RI "#define \fBMAXIMAGES\fP   1000"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define IPIPOS   3"
+.PP
+Definition at line 187 of file fitgeometry2.c.
+.PP
+Referenced by main().
+.SS "#define IPiPOS   2"
+.PP
+Definition at line 186 of file fitgeometry2.c.
+.PP
+Referenced by main().
+.SS "#define IPRECUNIT   5"
+.PP
+Definition at line 184 of file fitgeometry2.c.
+.PP
+Referenced by main().
+.SS "#define IPsPOS   4"
+.PP
+Definition at line 188 of file fitgeometry2.c.
+.PP
+Referenced by main().
+.SS "#define IPxPOS   0"
+.PP
+Definition at line 185 of file fitgeometry2.c.
+.PP
+Referenced by main().
+.SS "#define MAXIMAGES   1000"
+.PP
+Definition at line 190 of file fitgeometry2.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitgeometry2 --- \fBfit\fP layout of \fBa\fP set of images\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitgeometry2 \fBnp\fP [\fBoptions\fP...]\\\fBn\fP\\		-\fBl\fP \fBlmax\fP		# maximum \fBorder\fP for polynomial distortion model (1)\\\fBn\fP\\		-o outputdir	# directory for the output files (must exist)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	fitgeometry2 reads from stdin the result of merging (using 'mergecats')\\\fBn\fP\\	\fBa\fP set of \fBnp\fP 'planes' of catalogues and solves for the location\\\fBn\fP\\	in some 'reference \fBframe\fP coordinates' of objects on the catalogue\\\fBn\fP\\	and also \fBa\fP set of parameters describing the distorted mapping between\\\fBn\fP\\	these reference \fBframe\fP coordinates and \fBpixel\fP coordinates on the\\\fBn\fP\\	images from which the catalogues were derived.\\\fBn\fP\\\\\fBn\fP\\	Fitgeometry2 was written to solve the following problem: We have \fBa\fP set\\\fBn\fP\\	of '\fBdata\fP' images from \fBa\fP mosiac camera (which have some uncertain\\\fBn\fP\\	layout of the chips on the detector \fBframe\fP - which need not be static - and\\\fBn\fP\\	also suffer from telescope field distortion and possibly atmospheric refraction).\\\fBn\fP\\	From each these images one can extract typically ~100 stars whose positions\\\fBn\fP\\	have \fBa\fP precision of \fBa\fP small fraction <~ 1/10 of \fBa\fP \fBpixel\fP. These allow one to\\\fBn\fP\\	determine \fBa\fP set of polynomial mappings (with one image taken to define\\\fBn\fP\\	the reference coordinate system) which map these images onto one\\\fBn\fP\\	another to \fBa\fP very high precision.  However, this procedure does not\\\fBn\fP\\	remove telescope or atmospheric field distortion and tends to be\\\fBn\fP\\	unstable to introducing further artificial field distortion.  To avoid this\\\fBn\fP\\	we incorporate in the fitting \fBa\fP catalogue which derives from the digital\\\fBn\fP\\	sky survey image for example, and for which \fBa\fP good 'plate solution'\\\fBn\fP\\	already exists.  Providing this catalogue as the 'reference catalogue'\\\fBn\fP\\	solves our problem and provides one with \fBa\fP mapping from \fBdata\fP \fBpixel\fP\\\fBn\fP\\	coordinates to the `world coordinate system'.  \fBA\fP complication of this\\\fBn\fP\\	procedure is that the reference catalogue positions tend to be relatively\\\fBn\fP\\	imprecise, and it is necessary to incorporate this information in the\\\fBn\fP\\	fitting (as weight factors), so the input catalogues most contain both\\\fBn\fP\\	the measured position and an estimate of the precision.\\\fBn\fP\\\\\fBn\fP\\	The catalogues to be merged must contain at least the following items:\\\fBn\fP\\\\\fBn\fP\\		x[2]	# spatial coordinate\\\fBn\fP\\		\fBi\fP	# unique image ID (\fBi\fP = 0 for reference image)\\\fBn\fP\\		I	# I = 1 -- used internally\\\fBn\fP\\		s	# \fBsigma\fP^2 = position measurement variance   \\\fBn\fP\\\\\fBn\fP\\	but will usually contain additional information such as an approximate\\\fBn\fP\\	'sky coordinate' used by mergecats to link the objects.\\\fBn\fP\\	The result of such \fBa\fP merging is \fBa\fP set of unique particles and their\\\fBn\fP\\	measured positions in each and all of the images in which they appear.\\\fBn\fP\\\\\fBn\fP\\	The 'planes' which get merged could be just the set of all images.  However,\\\fBn\fP\\	in the case of \fBa\fP mosaic camera an \fBobject\fP can only be detected on at most\\\fBn\fP\\	one chip per exposure, so the merged catalogue will be very sparse.  It is\\\fBn\fP\\	more efficient to group sets of such 'known to be mutually non-overlapping'\\\fBn\fP\\	catalogues into planes before merging.  Since one cannot then infer\\\fBn\fP\\	the 'image \fBnumber\fP' of \fBa\fP catalogue from its 'plane \fBnumber\fP' we include the image\\\fBn\fP\\	identifier '\fBi\fP' in the catalogue.\\\fBn\fP\\\\\fBn\fP\\	Fitgeometry2 assumes that coordinates x_pi of the p'th of \fBnp\fP stars on the \fBi\fP'th\\\fBn\fP\\	image is related to the coordinates r_p in the reference \fBframe\fP by:\\\fBn\fP\\\\\fBn\fP\\     		r_p = x_pi + sum_m a_im f_m(x_pi) + e_pi\\\fBn\fP\\\\\fBn\fP\\	whereas for the reference image (\fBi\fP = 0)\\\fBn\fP\\\\\fBn\fP\\     		r_p = x_p0 + e_p0\\\fBn\fP\\\\\fBn\fP\\	Here the f_m(x) are \fBa\fP set of \fBnm\fP polynomial \fBmode\fP functions\\\fBn\fP\\	and a_im denotes the amplitudes of these functions in the distortion\\\fBn\fP\\	of the \fBi\fP'th image.  The e_pi represent the uncertainty in the position.\\\fBn\fP\\	It finds the set of parameters a_il and positions r_p which minimise\\\fBn\fP\\	the 'chi-squared' function:\\\fBn\fP\\\\\fBn\fP\\	chi^2 = sum_p [ sum_i (x_pi - sum_l a_il f_l(x_pi) - r_p)^2 / s_pi^2\\\fBn\fP\\			+ (x_p0 - r_p)^2 / s_p0]\\\fBn\fP\\\\\fBn\fP\\	Since this is quadratic in the a_il, r_p the result is \fBa\fP set of\\\fBn\fP\\	\fBnm\fP * (nimages - 1) + \fBnp\fP linear equations for each of the 2 spatial\\\fBn\fP\\	coordinate components.\\\fBn\fP\\	The summation over '\fBi\fP' here does not include the reference\\\fBn\fP\\	catalogue (\fBi\fP=0). For small distortions this is equivalent to the\\\fBn\fP\\	maximum likelihood solution if we assume that the position errors are\\\fBn\fP\\	gaussian distributed.\\\fBn\fP\\\\\fBn\fP\\	The result is:\\\fBn\fP\\	1) \fBA\fP set of parameter files ouputdir/\fBi\fP.par, where \fBi\fP is the image \fBnumber\fP.\\\fBn\fP\\	By default ouputdir = \\'geofit2dir\\', but you can change this\\\fBn\fP\\	with the -o \fBflag\fP.\\\fBn\fP\\	2) \fBA\fP set of catalogues ouputdir/\fBi\fP.cat which contains the\\\fBn\fP\\	x, \fBi\fP, I, s values for the \fBpoints\fP detected on the \fBi\fP'th image, as well\\\fBn\fP\\	as the following items:\\\fBn\fP\\		rref		# the reference catalogue solution (rref = r_p)\\\fBn\fP\\		p		# the \fBparticle\fP \fBnumber\fP\\\fBn\fP\\		ndet		# the \fBnumber\fP of images in which \fBparticle\fP p was detected\\\fBn\fP\\		refdet		# refdet = 1 if \fBparticle\fP was detected in the reference cat\\\fBn\fP\\		\fBr\fP		# obtained by applying the approximate polynomial model   \\\fBn\fP\\	3) \fBA\fP reference catalogue ouputdir/ref.cat containing the solutions r_p.\\\fBn\fP\\\\\fBn\fP\\        See also <\fBa\fP href=\\'fitgeom.html\\'>notes on various fitgeometry tools</\fBa\fP>\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 72 of file fitgeometry2.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 192 of file fitgeometry2.c.
+.PP
+References A, a, B, det(), e, e1, e2, error_exit, exit(), f(), i, I(), indx, IPiPOS, IPIPOS, IPRECUNIT, IPsPOS, IPxPOS, j, l, lcpipe, m, MAXIMAGES, modefunc_addargcomment(), mylubksb(), myludcmp(), n, nim, nmodes, readdoublebuff(), usage, write2Dpolymodel(), and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

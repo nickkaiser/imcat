@@ -1,0 +1,68 @@
+.TH "efit_stuff.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+efit_stuff.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include 'efit_stuff.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBg\fP (int \fBmode\fP, double \fBxx\fP, double \fByy\fP)"
+.br
+.ti -1c
+.RI "void \fBreadamplitudes\fP (int *\fBnmodes\fP, int *\fBframesize\fP, int *\fBorder\fP, double ***amp, FILE *stream)"
+.br
+.ti -1c
+.RI "void \fBwriteamplitudes\fP (int \fBnmodes\fP, int \fBorder\fP, int \fBframesize\fP, double **amp)"
+.br
+.ti -1c
+.RI "void \fBsetframesize\fP (int \fBN\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBframesize\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "double g (int mode, double xx, double yy)"
+.PP
+Definition at line 15 of file efit_stuff.c.
+.PP
+Referenced by addjupitergravity(), eps_setCmap(), frprmn(), getcolormap(), getrgbfromcmap(), main(), make_pop(), platepix(), poidev(), set_shades(), and tcl().
+.SS "void readamplitudes (int * nmodes, int * framesize, int * order, double *** amp, FILE * stream)"
+.PP
+Definition at line 117 of file efit_stuff.c.
+.SS "void setframesize (int N)"
+.PP
+Definition at line 164 of file efit_stuff.c.
+.SS "void writeamplitudes (int nmodes, int order, int framesize, double ** amp)"
+.PP
+Definition at line 152 of file efit_stuff.c.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBframesize\fP\fC [static]\fP"
+.PP
+Definition at line 13 of file efit_stuff.c.
+.PP
+Referenced by g(), readamplitudes(), setframesize(), and writeamplitudes().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

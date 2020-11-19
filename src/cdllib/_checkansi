@@ -1,0 +1,5 @@
+#!/bin/csh -f
+foreach i ( cdl.c cdl_f77.c cdl_spp.c cdlfits.c cdliraf.c cdlmark.c cdlzscale.c comm.c eps.c imd.c vximtool.c)
+   echo $i
+   gcc -g -Wall -pedantic -g -ansi   -I.  -I/usr/X11R6/include -DFUNCPROTO=15 -DNARROWPROTO   -g -ansi   -I. -I/usr/X11R6/include -Dlinux -DFUNCPROTO=15 -DNARROWPROTO  -DCDL_ANSIC -c  $i |& egrep -v "(implicit|function)"
+end

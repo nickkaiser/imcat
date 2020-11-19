@@ -1,0 +1,50 @@
+<html>
+<head>
+<title> about imcat </title>
+</head>
+<body bgcolor="#FFFFFF">
+<h2>about imcat </h2><hr>
+<p>
+The 'imcat' software was developed initially to do faint
+galaxy photometry for weak lensing studies, and provides
+a fairly complete set of tools for this kind of work.
+<p>
+Unlike most packages for doing data analysis, the tools here
+are provided as a set of standalone unix commands which you can
+invoke from the shell, via shell scripts or from perl scripts
+as you think appropriate.  You don't have to learn a new
+shell syntax - just use whatever you are most comfortable
+with - and you can just use whatever bits you want.  The imcat libraries
+are not shared, so you can just download a single executable if you like.
+The standard unix and pgplot libraries are shared, and you may need
+to explicitly locate them via the LD_LIBRARY_PATH env variable.
+<p>
+All of the commands have a "man-page".  The html versions here tend to be
+out of date, but the most definitive version for any command
+can always be obtained by issuing the command with the '-u' (for
+usage) flag.  Of course, there is no guarantee that these
+are perfectly accurate - as a last resort simply peruse the c-code
+which is well known to be "self-documenting" ;)
+
+<h2> organisation </h2>
+<p>
+The tools are arranges in a tree of directories.
+<p>
+One main branch is the 'imtools'.  These deal only with
+fits files.  The most important imtool is the 'image
+calculator' 'ic' which allows one to do rather general
+operations on fits images.
+<p> 
+A second branch is the 'catools' which operate only
+on catalogues.  The key cattool is 'lc'; this effectively
+defines the format of imcat catalogues, and allows one to
+do very general operations on and filtering of such catalogues.
+<p>
+A third branch is the 'imcattools'.  These tend to be much
+more specialised than the cattools and imcattools and are
+focussed on faint galaxy photometry.  They also tend to be more
+volatile than the other sections as they are under active development.
+<hr>
+<p>back to <a href="mainindex.html">main index</a>
+</body>
+</html>

@@ -1,0 +1,74 @@
+.TH "cleancat.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cleancat.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include 'grid.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	cleancat - remove objects with brighter close neighbours\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	cleancat [\fBoptions\fP....] dmax\\\fBn\fP\\		-u		# print this man page\\\fBn\fP\\		-x \fBxname\fP 	# specify name for coords (x)\\\fBn\fP\\		-\fBm\fP magname 	# specify name for magnitude (\fBmag\fP)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\        'cleancat' reads \fBa\fP catalogue from stdin and writes to stdout\\\fBn\fP\\	\fBa\fP catalogue containing only those objects from the input\\\fBn\fP\\	catalogue which have no brighter neighbours within distance\\\fBn\fP\\	dmax.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBBIG_POS\fP   1.e100"
+.br
+.ti -1c
+.RI "#define \fBBIG_NEG\fP   -1.e100"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBsep2\fP (\fBobject\fP *obj1, \fBobject\fP *obj2, int \fBxindex\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define BIG_NEG   -1.e100"
+.PP
+Definition at line 36 of file cleancat.c.
+.PP
+Referenced by findpeak(), and main().
+.SS "#define BIG_POS   1.e100"
+.PP
+Definition at line 35 of file cleancat.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	cleancat - remove objects with brighter close neighbours\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	cleancat [\fBoptions\fP....] dmax\\\fBn\fP\\		-u		# print this man page\\\fBn\fP\\		-x \fBxname\fP 	# specify name for coords (x)\\\fBn\fP\\		-\fBm\fP magname 	# specify name for magnitude (\fBmag\fP)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\        'cleancat' reads \fBa\fP catalogue from stdin and writes to stdout\\\fBn\fP\\	\fBa\fP catalogue containing only those objects from the input\\\fBn\fP\\	catalogue which have no brighter neighbours within distance\\\fBn\fP\\	dmax.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file cleancat.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 38 of file cleancat.c.
+.PP
+References addargscomment(), object::addrlist, allocgrid(), allocobjectcontents(), BIG_NEG, BIG_POS, cathead, d, item::dim, dmax, error_exit, exit(), getcatipfiletype(), getgridcoords(), getneighbours(), getobjectitem(), getobjectitemindex(), getobjects(), i, item::itype, ix, j, MAX_NEIGHBOURS, item::ndim, newobject(), object::next, NUM_TYPE, readcathead(), readobject(), sep2(), setcatopfiletype(), setgridsize(), usage, writecathead(), writeobject(), x, xmax, and xmin.
+.SS "double sep2 (\fBobject\fP * obj1, \fBobject\fP * obj2, int xindex)"
+.PP
+Definition at line 172 of file cleancat.c.
+.PP
+References object::addrlist, dx, and dy.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

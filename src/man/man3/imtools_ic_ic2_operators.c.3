@@ -1,0 +1,265 @@
+.TH "operators.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+operators.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'getop.h'\fP
+.br
+\fC#include 'operators.h'\fP
+.br
+\fC#include 'op_math.h'\fP
+.br
+\fC#include 'op_logic.h'\fP
+.br
+\fC#include 'ic.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTACK_DEPTH\fP   100"
+.br
+.ti -1c
+.RI "#define \fBN_NUM0_OPS\fP   8"
+.br
+.ti -1c
+.RI "#define \fBN_NUM1_OPS\fP   17"
+.br
+.ti -1c
+.RI "#define \fBN_NUM2_OPS\fP   13"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBnum0func\fP (\fBop\fP *theop)"
+.br
+.ti -1c
+.RI "void \fBnum1func\fP (\fBop\fP *theop)"
+.br
+.ti -1c
+.RI "void \fBnum2func\fP (\fBop\fP *theop)"
+.br
+.ti -1c
+.RI "void \fBconstfunc\fP (\fBop\fP *theop)"
+.br
+.ti -1c
+.RI "void \fBimvalfunc\fP (\fBop\fP *theop)"
+.br
+.ti -1c
+.RI "double(* \fBnum0funcarray\fP [N_NUM0_OPS])(void)="
+.br
+.ti -1c
+.RI "double(* \fBnum1funcarray\fP [N_NUM1_OPS])(double)="
+.br
+.ti -1c
+.RI "double(* \fBnum2funcarray\fP [N_NUM2_OPS])(double, double)="
+.br
+.ti -1c
+.RI "\fBop\fP * \fBnewop\fP (char *thename)"
+.br
+.ti -1c
+.RI "double \fBIf\fP (void)"
+.br
+.ti -1c
+.RI "double \fBenter\fP (void)"
+.br
+.ti -1c
+.RI "double \fBpop\fP (void)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBix\fP"
+.br
+.ti -1c
+.RI "float ** \fBf\fP"
+.br
+.ti -1c
+.RI "double \fBstack\fP [STACK_DEPTH]"
+.br
+.ti -1c
+.RI "int \fBstackpos\fP = -1"
+.br
+.ti -1c
+.RI "double(* \fBnum0funcarray\fP [])(void)"
+.br
+.ti -1c
+.RI "double(* \fBnum1funcarray\fP [])(double)"
+.br
+.ti -1c
+.RI "double(* \fBnum2funcarray\fP [])(double, double)"
+.br
+.ti -1c
+.RI "void(* \fBfuncarray\fP [N_TYPES])(\fBop\fP *)="
+.br
+.ti -1c
+.RI "char * \fBnum0funcname\fP [N_NUM0_OPS]"
+.br
+.ti -1c
+.RI "char * \fBnum1funcname\fP [N_NUM1_OPS]"
+.br
+.ti -1c
+.RI "char * \fBnum2funcname\fP [N_NUM2_OPS]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define N_NUM0_OPS   8"
+.PP
+Definition at line 44 of file imtools/ic/ic2/operators.c.
+.SS "#define N_NUM1_OPS   17"
+.PP
+Definition at line 51 of file imtools/ic/ic2/operators.c.
+.SS "#define N_NUM2_OPS   13"
+.PP
+Definition at line 62 of file imtools/ic/ic2/operators.c.
+.SS "#define STACK_DEPTH   100"
+.PP
+Definition at line 24 of file imtools/ic/ic2/operators.c.
+.SH "Function Documentation"
+.PP 
+.SS "void constfunc (\fBop\fP * theop)"
+.PP
+Definition at line 145 of file imtools/ic/ic2/operators.c.
+.PP
+References op::data, stack, and stackpos.
+.SS "double enter (void)"
+.PP
+Definition at line 170 of file imtools/ic/ic2/operators.c.
+.PP
+References pop(), and push().
+.SS "double If (void)"
+.PP
+Definition at line 158 of file imtools/ic/ic2/operators.c.
+.PP
+References c, f, pop(), and t.
+.SS "void imvalfunc (\fBop\fP * theop)"
+.PP
+Definition at line 151 of file imtools/ic/ic2/operators.c.
+.PP
+References f, ix, op::opno, stack, and stackpos.
+.SS "\fBop\fP* newop (char * thename)"
+.PP
+Definition at line 75 of file imtools/ic/ic2/operators.c.
+.PP
+References op::addr, exit(), N_NUM0_OPS, N_NUM1_OPS, N_NUM2_OPS, NUM0_FUNC_TYPE, num0funcarray, num0funcname, NUM1_FUNC_TYPE, num1funcarray, num1funcname, NUM2_FUNC_TYPE, num2funcarray, num2funcname, op::opno, and op::type.
+.PP
+Referenced by getop().
+.SS "void num0func (\fBop\fP * theop)"
+.PP
+Definition at line 127 of file imtools/ic/ic2/operators.c.
+.PP
+References num0funcarray, op::opno, stack, and stackpos.
+.SS "double(* num0funcarray (void)"
+.PP
+Definition at line 47 of file imtools/ic/ic2/operators.c.
+.PP
+References drand48(), enter(), If(), x, xp(), y, and yp().
+.SS "void num1func (\fBop\fP * theop)"
+.PP
+Definition at line 133 of file imtools/ic/ic2/operators.c.
+.PP
+References num1funcarray, op::opno, stack, and stackpos.
+.PP
+Referenced by evalrpnfunction().
+.SS "double(* num1funcarray (double)"
+.PP
+Definition at line 56 of file imtools/ic/ic2/operators.c.
+.PP
+References not().
+.SS "void num2func (\fBop\fP * theop)"
+.PP
+Definition at line 138 of file imtools/ic/ic2/operators.c.
+.PP
+References num2funcarray, op::opno, stack, and stackpos.
+.PP
+Referenced by evalrpnfunction().
+.SS "double(* num2funcarray (double, double)"
+.PP
+Definition at line 67 of file imtools/ic/ic2/operators.c.
+.PP
+References divide(), ge(), gt(), le(), lt(), minus(), ne, plus(), and times().
+.SS "double pop (void)"
+.PP
+Definition at line 182 of file imtools/ic/ic2/operators.c.
+.PP
+References stack, and stackpos.
+.SH "Variable Documentation"
+.PP 
+.SS "float** f"
+.PP
+Definition at line 22 of file imtools/ic/ic2/operators.c.
+.SS "void(* \fBfuncarray\fP[N_TYPES])(\fBop\fP *) ="
+.PP
+Definition at line 40 of file imtools/ic/ic2/operators.c.
+.PP
+Referenced by main().
+.SS "int \fBix\fP"
+.PP
+Definition at line 21 of file imtools/ic/ic2/operators.c.
+.PP
+Referenced by addarea(), addgalaxy(), allocgrid(), apphot(), assigncharge(), assigncharge_cic(), ccf(), cfilter(), contourplot(), fill_pixmap(), filter(), findpeak(), func(), fwrite_fits(), get_fft(), getcoords(), getgridcoords(), getneighbours(), getobjects(), getop(), getshape2(), getshape3(), getsky(), getsourceij(), ifunc(), iisdisplay(), imvalfunc(), main(), makebetamodel(), makemodel(), painttriangle(), power(), rfunc(), rpetrosian(), set_fft(), x(), xp(), and zap().
+.SS "double(* num0funcarray[N_NUM0_OPS])(void) ="
+.PP
+Definition at line 47 of file imtools/ic/ic2/operators.c.
+.SS "char* \fBnum0funcname\fP[N_NUM0_OPS]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+'rand', 'x', 'y', 'xp', 'yp', 'if', '?', 'enter'}
+.fi
+.PP
+Definition at line 45 of file imtools/ic/ic2/operators.c.
+.PP
+Referenced by newop().
+.SS "double(* num1funcarray[N_NUM1_OPS])(double) ="
+.PP
+Definition at line 56 of file imtools/ic/ic2/operators.c.
+.SS "char* \fBnum1funcname\fP[N_NUM1_OPS]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+'acos', 'asin', 'atan', 'ceil', 'cos', 'cosh', 'exp', 'fabs', 'floor',
+'log', 'log10', 'sin', 'sinh', 'sqrt', 'tan', 'tanh', '!'
+}
+.fi
+.PP
+Definition at line 52 of file imtools/ic/ic2/operators.c.
+.PP
+Referenced by newop().
+.SS "double(* num2funcarray[N_NUM2_OPS])(double, double) ="
+.PP
+Definition at line 67 of file imtools/ic/ic2/operators.c.
+.SS "char* \fBnum2funcname\fP[N_NUM2_OPS]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+'mult', '*',    '+',  '/',   '-', 'atan2', 'pow', 'fmod',
+'>', '>=', '<', '<=', '!='
+}
+.fi
+.PP
+Definition at line 63 of file imtools/ic/ic2/operators.c.
+.PP
+Referenced by newop().
+.SS "double \fBstack\fP[STACK_DEPTH]"
+.PP
+Definition at line 26 of file imtools/ic/ic2/operators.c.
+.SS "int \fBstackpos\fP = -1"
+.PP
+Definition at line 27 of file imtools/ic/ic2/operators.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

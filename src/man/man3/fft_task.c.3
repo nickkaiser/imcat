@@ -1,0 +1,78 @@
+.TH "fft_task.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fft_task.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <errno.h>\fP
+.br
+\fC#include <sys/types.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include '../fftlib/myfft.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include 'fft_task.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "char * \fBusage\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 39 of file fft_task.c.
+.PP
+References cfftb_(), cfftf_(), cffti_(), error_exit, exit(), FORWARD_X, FORWARD_Y, free(), INVERSE_X, INVERSE_Y, n, nx, ny, r, rfftb_(), rfftf_(), rffti_(), usage, x, and y.
+.SH "Variable Documentation"
+.PP 
+.SS "char* \fBusage\fP"
+.PP
+\fBInitial value:\fP.nf
+ '\n\
+NAME\n\
+  fft_task --- fft engine for double processor\n\
+\n\
+SYNOPSYS\n\
+  fft_task fr_shmid fk_shmid nx ny mode\n\
+\n\
+DESCRIPTION\n\
+  'fft_task' is invoked to handle 2-D FFTPACK fft's on\n\
+  dual processor machines.\n\
+  You should not have to invoke it directly.\n\
+  It's first two arguments are the id's of shared\n\
+  memory segments for the real-space and transformed\n\
+  data. nx, ny are dimensions of the fft (must be\n\
+  even), and mode can be one of\n\
+    0 forward x-transforms\n\
+    1 forward y-transforms\n\
+    2 inverse x-transforms\n\
+    3 inverse y-transforms\n\
+\n\
+AUTHOR\n\
+  Nick Kaiser --- kaiser@ifa.hawaii.edu\n\
+\n\n'
+.fi
+.PP
+Definition at line 14 of file fft_task.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

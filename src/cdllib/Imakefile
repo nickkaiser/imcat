@@ -1,0 +1,81 @@
+XCOMM
+XCOMM  Imakefile for the Client Display Library V1.0
+XCOMM
+XCOMM  Mike Fitzpatrick, National Optical Astronomy Observatories, IRAF project.
+XCOMM  Feb 1997
+
+#define IHaveSubdirs
+#define PassCDebugFlags 'CDEBUGFLAGS=$(CDEBUGFLAGS)'
+
+    CDEBUGFLAGS = -g
+ EXTRA_INCLUDES = -I.
+#if defined (HPArchitecture) || defined(RsArchitecture)
+  EXTRA_DEFINES = -D_NO_US_
+#else 
+  EXTRA_DEFINES =
+#endif
+
+#if HasLargeTmp | SystemV4
+          ARADD = ar ru
+#else
+          ARADD = ar rul
+#endif
+
+#if defined (SunArchitecture)  &&  OSMajorVersion >= 5 && HasSunC
+# Hack to compile under SunPRO V4 on Solaris
+      CCOPTIONS = -Xs
+EXTRA_LDOPTIONS = -xildoff
+#else
+#if defined (UltrixArchitecture)
+        CCOPTIONS = -DULTRIX
+#endif
+#if defined (OSF1Architecture) && OSMajorVersion >= 4
+        CCOPTIONS = -DOSF1
+#endif
+#endif
+
+        SUBDIRS = examples test
+        MATHLIB = -lm
+
+           SRCS = cdl.c cdlmark.c cdlfits.c cdliraf.c cdlzscale.c cdl_f77.c \
+		  cdl_spp.c eps.c comm.c imd.c
+           OBJS = cdl.o cdlmark.o cdlfits.o cdliraf.o cdlzscale.o cdl_f77.o \
+		  cdl_spp.o eps.o comm.o imd.o
+   CDL_INCLUDES = cdl.h cdlP.h cdlProto.h cdl_f77.h cdlfont.h eps.h
+
+World::
+	@echo "Building Release 1.6 of the IRAF CLient Display Library"
+	@echo "" ; date ; echo ""
+	$(MAKE) $(MFLAGS) Makefiles
+	$(MAKE) $(MFLAGS) clean
+	$(MAKE) $(MFLAGS) depend
+	$(MAKE) $(MFLAGS) all
+	@echo "Done." ; date ; echo ""
+
+all::	libcdl.a vximtool
+
+NormalLibraryTarget(cdl,$(OBJS))
+
+vximtool: vximtool.o
+	$(RM) vximtool
+	$(CC) -o vximtool -DHAVE_CDL vximtool.o $(LDOPTIONS) libcdl.a $(MATHLIB)
+
+vximtool.o:
+	$(CC) -c $(CFLAGS) -DHAVE_CDL vximtool.c
+
+clean:: 
+	$(RM) vximtool vximtool.o
+
+ForceSubdirs($(SUBDIRS))
+MakeSubdirs($(SUBDIRS))
+DependSubdirs($(SUBDIRS))
+
+pristine::
+	$(MAKE) $(MFLAGS) clean
+	$(RM) -f Makefile test/Makefile examples/Makefile *spool*
+
+archive::
+	$(MAKE) $(MFLAGS) pristine
+	!tar -cvf - . | compress > ../cdl.tar.Z
+
+DependTarget()

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+for m in `find . -name Makefile -print`
+do
+        echo "fixing $m ...."
+        cp $m $m.bak
+        sed 's:test -h:test -l:g' < $m.bak > $m
+done

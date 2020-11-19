@@ -1,0 +1,12 @@
+#! /bin/sh
+ 
+for i in 0 1024
+do
+        for j in 0 1024
+        do
+                echo printing $i $j
+                makesubimage $i $j 1024 1024 <$1 >q_$i_$j.fits
+                print_image q_$i_$j.fits -f 0 20  | lpr
+                rm q_$i_$j.fits
+        done
+done

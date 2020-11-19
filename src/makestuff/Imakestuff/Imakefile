@@ -1,0 +1,4 @@
+dummy:
+	echo ${CFLAGS}
+	echo ${LDFLAGS}
+	echo ${XTOOLLIB} ${XLIB} ${LDLIBS}

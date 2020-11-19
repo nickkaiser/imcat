@@ -1,0 +1,86 @@
+.TH "makeotf.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makeotf.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'fftlib/myfft.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	makeotf --- make fast guiding otf\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makeotf [-\fBN\fP \fBN\fP] [-R r_outer] [-\fBr\fP r0] [-D D] [-o opfile] [-\fBz\fP zmax] [-\fBi\fP imname]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'makeotf' computes the OTF gk(\fBz\fP) for perfect fast guiding.\\\fBn\fP\\\\\fBn\fP\\	Options are\\\fBn\fP\\		-\fBN\fP \fBN\fP		# image size in pixels (256)\\\fBn\fP\\		-R r_outer	# outer scale in \fBm\fP (infinite)\\\fBn\fP\\		-\fBr\fP r0		# Fried length in \fBm\fP (0.4)\\\fBn\fP\\		-D D		# telescope diameter (1.6)\\\fBn\fP\\		-\fBe\fP \fBe\fP		# obscuration = D_2 / D (0.0)\\\fBn\fP\\		-o opfile	# output file\\\fBn\fP\\		-\fBz\fP zmax		# upper limit for integerized \fBz\fP (\fBN\fP/2)\\\fBn\fP\\		-\fBd\fP dz		# step in \fBinteger\fP \fBz\fP (1)\\\fBn\fP\\		-\fBi\fP imname	# output image 'imname' and exit\\\fBn\fP\\		-g xg yg	# location of the guide star\\\fBn\fP\\\\\fBn\fP\\	Output is \fBa\fP table (in lc or human readable format) containing:\\\fBn\fP\\		\fBz\fP		# argument of transfer function (in \fBm\fP)\\\fBn\fP\\		S(\fBz\fP)		# atmospheric phase structure function\\\fBn\fP\\		gknatl		# atmospheric OTF = exp(-S/2)\\\fBn\fP\\		gkdiff		# diffraction limited OTF\\\fBn\fP\\		gktilt		# fast guiding OTF\\\fBn\fP\\		gkfried		# Fried approximation\\\fBn\fP\\	except with -\fBi\fP option in which case it will output \fBFITS\fP image\\\fBn\fP\\	'imname' which can be one of\\\fBn\fP\\		T, S, Sg, TT, TTxS, WxS, TxT\\\fBn\fP\\\\\fBn\fP\\	Currently, -g option only works with pure Kolmogorov (infinite outer\\\fBn\fP\\	scale) spectrum.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBgradx\fP (float **f, int \fBN1\fP, int \fBN2\fP, float **fx)"
+.br
+.ti -1c
+.RI "void \fBmult\fP (float **f, int \fBN1\fP, int \fBN2\fP, float fac)"
+.br
+.ti -1c
+.RI "void \fBzero\fP (float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	makeotf --- make fast guiding otf\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makeotf [-\fBN\fP \fBN\fP] [-R r_outer] [-\fBr\fP r0] [-D D] [-o opfile] [-\fBz\fP zmax] [-\fBi\fP imname]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'makeotf' computes the OTF gk(\fBz\fP) for perfect fast guiding.\\\fBn\fP\\\\\fBn\fP\\	Options are\\\fBn\fP\\		-\fBN\fP \fBN\fP		# image size in pixels (256)\\\fBn\fP\\		-R r_outer	# outer scale in \fBm\fP (infinite)\\\fBn\fP\\		-\fBr\fP r0		# Fried length in \fBm\fP (0.4)\\\fBn\fP\\		-D D		# telescope diameter (1.6)\\\fBn\fP\\		-\fBe\fP \fBe\fP		# obscuration = D_2 / D (0.0)\\\fBn\fP\\		-o opfile	# output file\\\fBn\fP\\		-\fBz\fP zmax		# upper limit for integerized \fBz\fP (\fBN\fP/2)\\\fBn\fP\\		-\fBd\fP dz		# step in \fBinteger\fP \fBz\fP (1)\\\fBn\fP\\		-\fBi\fP imname	# output image 'imname' and exit\\\fBn\fP\\		-g xg yg	# location of the guide star\\\fBn\fP\\\\\fBn\fP\\	Output is \fBa\fP table (in lc or human readable format) containing:\\\fBn\fP\\		\fBz\fP		# argument of transfer function (in \fBm\fP)\\\fBn\fP\\		S(\fBz\fP)		# atmospheric phase structure function\\\fBn\fP\\		gknatl		# atmospheric OTF = exp(-S/2)\\\fBn\fP\\		gkdiff		# diffraction limited OTF\\\fBn\fP\\		gktilt		# fast guiding OTF\\\fBn\fP\\		gkfried		# Fried approximation\\\fBn\fP\\	except with -\fBi\fP option in which case it will output \fBFITS\fP image\\\fBn\fP\\	'imname' which can be one of\\\fBn\fP\\		T, S, Sg, TT, TTxS, WxS, TxT\\\fBn\fP\\\\\fBn\fP\\	Currently, -g option only works with pure Kolmogorov (infinite outer\\\fBn\fP\\	scale) spectrum.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file makeotf.c.
+.SH "Function Documentation"
+.PP 
+.SS "void gradx (float ** f, int N1, int N2, float ** fx)"
+.PP
+Definition at line 303 of file makeotf.c.
+.PP
+References f, N1, N2, x, and y.
+.PP
+Referenced by main().
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 57 of file makeotf.c.
+.PP
+References alloc_fft(), allocFloatArray(), argsinit(), argsToString(), ccf(), e, error_exit, exit(), fft_type, fits, flag, FLOAT_PIXTYPE, forward_fft(), getargd(), getargi(), getargs(), getflag(), gradx(), M1, M2, mult(), N, N2, new2Dfitsheader(), pixsize(), r, read2Dfloatimage(), S, usage, write2Dfloatimage(), x, xp(), xx, y, yy, and z.
+.SS "void mult (float ** f, int N1, int N2, float fac)"
+.PP
+Definition at line 314 of file makeotf.c.
+.PP
+References f, N1, N2, x, and y.
+.PP
+Referenced by fan(), and main().
+.SS "void zero (float ** f, int N1, int N2)"
+.PP
+Definition at line 326 of file makeotf.c.
+.PP
+References f, N1, N2, x, and y.
+.PP
+Referenced by fk425m(), fk524m(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

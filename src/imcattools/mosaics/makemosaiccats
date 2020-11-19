@@ -1,0 +1,81 @@
+#! /usr/bin/perl
+
+# create mosaic cats with x, mag, chipno
+
+$usage = "\
+NAME
+	makemosaiccats --- combine cats from a mosaic camera\
+\
+SYNOPSIS\
+	makemosaiccats [options...]\
+		-s suf		# suffix (stars)\
+		-d dbdir	# data-base dir (~/8k)\
+		-c catdir	# base directory for cats (.)\
+		-m moscatdir	# directory for mosaiccats (./mosaiccats)\
+\
+DESCRIPTION\
+	'makemosaiccats' reads catalogues with suffix 'suf' which assumed\
+	to be contained in catdir/chip? amd creates 'mosaiccat's containing\
+	position, chip-number, exposure-number and magnitude using\n\
+	information on chip names, geometry and exposure names contained\n\
+	in associative arrays in directory 'dbdir'\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+";
+# defaults
+$HOME = $ENV{'HOME'};
+$catdir = ".";
+$moscatdir = "./mosaiccats";
+$dbdir = "$HOME/8k";
+$suf = "stars";
+
+while ($_ = shift(@ARGV)) {
+	if (/^-s/) {
+		$suf = shift(@ARGV) || die $usage;
+	} elsif (/^-d/) {
+		$dbdir = shift(@ARGV) || die $usage;
+	} elsif (/^-m/) {
+		$moscatdir = shift(@ARGV) || die $usage;
+	} elsif (/^-c/) {
+		$catdir = shift(@ARGV) || die $usage;
+	} else {
+		die $usage;
+	}
+}
+
+
+
+
+require "$dbdir/nominal.db";
+require "$dbdir/chips.db";
+require "$dbdir/fields.db";
+
+for ($fieldnum = 0; $fieldnum < $nfields; $fieldnum++) {
+	$field = $fieldname[$fieldnum];
+	print "# field $field ...\n";
+	$themoscat = "$moscatdir/$field.cat";
+	open(SL, "| lc -C -b -N '1 2 x' -n chip -n exp -n mag > $themoscat") || die "Can't open $themoscat\n";
+	for ($chipnum = 0; $chipnum < $nchips; $chipnum++) {
+		$dx = $ix[$chipnum] * $Xsize + $xmargin;
+		$dy = $iy[$chipnum] * $Ysize + $ymargin;
+		$thecat = "$catdir/chip$chipname[$chipnum]/$field.$suf";
+		open(CAT, "lc x mag < $thecat |") || die "Can't open $thecat\n";
+		while (<CAT>) {
+			unless (/^#/) {
+				($x,$y,$mag) = split(' ');
+#				if ($orient{$chipnum} < 1) {
+#					$x = $xsize - 1 - $x;
+#					$y = $ysize - 1 - $y;
+#				}
+				$x += $dx;
+				$y += $dy;
+				printf SL "%13g %13g %2d %2d %13g\n", 
+						$x, $y, $chipnum, $fieldnum, $mag;
+			}
+		}
+		close(CAT);
+	}
+	close(SL);
+}
+

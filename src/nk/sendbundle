@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# script to send files in a comrpessed bundle
+
+bundle $* >temp
+compress temp
+sz -b temp.Z
+rm temp.Z

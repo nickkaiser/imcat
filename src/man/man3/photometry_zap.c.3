@@ -1,0 +1,50 @@
+.TH "zap.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+zap.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include 'zap.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBzap\fP (int \fBmode\fP, double rmax, double *x, float **f, float **fzap, short **nzap, int \fBN1\fP, int \fBN2\fP)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 11 of file photometry/zap.c.
+.SH "Function Documentation"
+.PP 
+.SS "void zap (int mode, double rmax, double * x, float ** f, float ** fzap, short ** nzap, int N1, int N2)"
+.PP
+Definition at line 13 of file photometry/zap.c.
+.PP
+References d, error_exit, f, ix, MAGIC, N1, N2, UNZAP_MODE, x, and ZAP_MODE.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

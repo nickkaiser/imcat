@@ -1,0 +1,171 @@
+.TH "efit.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+efit.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include 'efit_stuff.h'\fP
+.br
+\fC#include '../../utils/lu.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\		efit --- generate model for stellar ellipticities\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		efit	[option...] \fBa\fP.cat \fBb\fP.cat ....\\\fBn\fP\\			-\fBm\fP emax		# reject stars with |\fBe\fP| > emax (0.4)\\\fBn\fP\\			-x numax	# don'\fBt\fP use stars with |\fBeres\fP| > numax * \fBsigma\fP (3.0)\\\fBn\fP\\			-\fBn\fP \fBN\fP		# image size (2048)\\\fBn\fP\\			-o \fBorder\fP	# output this \fBorder\fP model to stdout (1)\\\fBn\fP\\			-\fBr\fP		# output \fBe\fP's and residuals\\\fBn\fP\\			-\fBe\fP ename	# name for ellipticity (\fBe\fP)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		\\'efit\\' fits the p = psm^{-1} \fBe\fP values of stars from \fBa\fP list of cat files\\\fBn\fP\\		to \fBa\fP model of constant offset for each \fBframe\fP plus \fBa\fP global 1\fBst\fP or\\\fBn\fP\\		2nd \fBorder\fP Taylor expansion\\\fBn\fP\\		Does least squares 1\fBst\fP \fBorder\fP \fBfit\fP, then refits ignoring outliers > numax * \fBsigma\fP\\\fBn\fP\\		finally refits 2nd \fBorder\fP Taylor expansion\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBfillarrays\fP (void)"
+.br
+.ti -1c
+.RI "void \fBmakeresiduals\fP (double *sigmae)"
+.br
+.ti -1c
+.RI "double \fBmodelrms\fP (int mode1, int mode2)"
+.br
+.ti -1c
+.RI "void \fBwriteamplitudes\fP (int \fBorder\fP, int \fBframesize\fP)"
+.br
+.ti -1c
+.RI "void \fBprintoffsets\fP (void)"
+.br
+.ti -1c
+.RI "void \fBprintgrads\fP (void)"
+.br
+.ti -1c
+.RI "void \fBprintgradgrads\fP (void)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double ** \fBx\fP [2]"
+.br
+.ti -1c
+.RI "double ** \fBe\fP [2]"
+.br
+.ti -1c
+.RI "double ** \fBeres\fP [2]"
+.br
+.ti -1c
+.RI "double \fBereslimit\fP"
+.br
+.ti -1c
+.RI "int \fBnframes\fP = 0 *\fBnobj\fP \fBnmodes\fP \fBnoutliers\fP"
+.br
+.ti -1c
+.RI "double ** \fBA\fP"
+.br
+.ti -1c
+.RI "double * \fBB\fP [2]"
+.br
+.ti -1c
+.RI "double * \fBa\fP [2]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\		efit --- generate model for stellar ellipticities\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		efit	[option...] \fBa\fP.cat \fBb\fP.cat ....\\\fBn\fP\\			-\fBm\fP emax		# reject stars with |\fBe\fP| > emax (0.4)\\\fBn\fP\\			-x numax	# don'\fBt\fP use stars with |\fBeres\fP| > numax * \fBsigma\fP (3.0)\\\fBn\fP\\			-\fBn\fP \fBN\fP		# image size (2048)\\\fBn\fP\\			-o \fBorder\fP	# output this \fBorder\fP model to stdout (1)\\\fBn\fP\\			-\fBr\fP		# output \fBe\fP's and residuals\\\fBn\fP\\			-\fBe\fP ename	# name for ellipticity (\fBe\fP)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		\\'efit\\' fits the p = psm^{-1} \fBe\fP values of stars from \fBa\fP list of cat files\\\fBn\fP\\		to \fBa\fP model of constant offset for each \fBframe\fP plus \fBa\fP global 1\fBst\fP or\\\fBn\fP\\		2nd \fBorder\fP Taylor expansion\\\fBn\fP\\		Does least squares 1\fBst\fP \fBorder\fP \fBfit\fP, then refits ignoring outliers > numax * \fBsigma\fP\\\fBn\fP\\		finally refits 2nd \fBorder\fP Taylor expansion\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file old/efit.c.
+.SH "Function Documentation"
+.PP 
+.SS "void fillarrays (void)"
+.PP
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 51 of file old/efit.c.
+.PP
+References A, a, B, d, e, eres, ereslimit, error_exit, exit(), fillarrays(), frame, indx, l, line, m, makeresiduals(), modelrms(), mylubksb(), myludcmp(), N, nframes, nmodes, nobj, noutliers, order, setframesize(), setnframes(), usage, writeamplitudes(), and x.
+.SS "void makeresiduals (double * sigmae)"
+.PP
+Referenced by main().
+.SS "double modelrms (int mode1, int mode2)"
+.PP
+Definition at line 324 of file old/efit.c.
+.PP
+References a, frame, g(), nframes, nobj, and x.
+.PP
+Referenced by main().
+.SS "void printgradgrads (void)"
+.PP
+Definition at line 394 of file old/efit.c.
+.PP
+References a, l, and nframes.
+.PP
+Referenced by writeamplitudes().
+.SS "void printgrads (void)"
+.PP
+Definition at line 382 of file old/efit.c.
+.PP
+References a, l, and nframes.
+.PP
+Referenced by writeamplitudes().
+.SS "void printoffsets (void)"
+.PP
+Definition at line 370 of file old/efit.c.
+.PP
+References a, l, and nframes.
+.PP
+Referenced by writeamplitudes().
+.SS "void writeamplitudes (int order, int framesize)"
+.PP
+Definition at line 347 of file old/efit.c.
+.PP
+References error_exit, nframes, nmodes, order, printgradgrads(), printgrads(), and printoffsets().
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "double * \fBa\fP[2]"
+.PP
+Definition at line 41 of file old/efit.c.
+.SS "double** \fBA\fP"
+.PP
+Definition at line 41 of file old/efit.c.
+.SS "double * \fBB\fP[2]"
+.PP
+Definition at line 41 of file old/efit.c.
+.SS "double** \fBe\fP[2]"
+.PP
+Definition at line 39 of file old/efit.c.
+.SS "double ** \fBeres\fP[2]"
+.PP
+Definition at line 39 of file old/efit.c.
+.SS "double \fBereslimit\fP"
+.PP
+Definition at line 39 of file old/efit.c.
+.SS "int \fBnframes\fP = 0 *\fBnobj\fP \fBnmodes\fP \fBnoutliers\fP"
+.PP
+Definition at line 40 of file old/efit.c.
+.SS "double** x[2]"
+.PP
+Definition at line 38 of file old/efit.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

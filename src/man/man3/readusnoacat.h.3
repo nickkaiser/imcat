@@ -1,0 +1,35 @@
+.TH "readusnoacat.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+readusnoacat.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBgetobjects\fP (char *basefilename, double ra0, double ra1, double dec0, double dec1, double rao, double deco)"
+.br
+.ti -1c
+.RI "int \fBgetxcoords\fP (double \fBra\fP, double dec, double rao, double deco, double *x)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int getobjects (char * basefilename, double ra0, double ra1, double dec0, double dec1, double rao, double deco)"
+.PP
+Definition at line 137 of file readusnoacat.c.
+.PP
+References catfile, exit(), getxcoords(), lcpipe, ra, swap_word, and x.
+.SS "int getxcoords (double ra, double dec, double rao, double deco, double * x)"
+.PP
+Definition at line 15 of file getxfromradecfunc.c.
+.PP
+References i, phi, ra, x, xo, and xp().
+.PP
+Referenced by getobjects(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

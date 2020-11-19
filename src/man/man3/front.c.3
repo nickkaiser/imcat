@@ -1,0 +1,311 @@
+.TH "front.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+front.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <X11/Xlib.h>\fP
+.br
+\fC#include <X11/Intrinsic.h>\fP
+.br
+\fC#include <X11/StringDefs.h>\fP
+.br
+\fC#include <X11/Shell.h>\fP
+.br
+\fC#include <X11/cursorfont.h>\fP
+.br
+\fC#include <X11/Xaw/Label.h>\fP
+.br
+\fC#include <X11/Xaw/Box.h>\fP
+.br
+\fC#include <X11/Xaw/Form.h>\fP
+.br
+\fC#include <X11/Xaw/Command.h>\fP
+.br
+\fC#include <X11/Xaw/Viewport.h>\fP
+.br
+\fC#include <X11/Xaw/Scrollbar.h>\fP
+.br
+\fC#include <X11/Xaw/Dialog.h>\fP
+.br
+\fC#include <X11/Xaw/Cardinals.h>\fP
+.br
+\fC#include 'front.h'\fP
+.br
+\fC#include 'back.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fB_AppResources\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fB_AppResources\fP \fBAppResources\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char **argv)"
+.br
+.ti -1c
+.RI "void \fBSyntax\fP (XtAppContext app_con, char *call)"
+.br
+.ti -1c
+.RI "void \fBxfgetargstring\fP (char **argstrptr)"
+.br
+.ti -1c
+.RI "float \fBxfgetvalue\fP (int name)"
+.br
+.ti -1c
+.RI "void \fBmakewidgetdatabase\fP (void)"
+.br
+.ti -1c
+.RI "int \fBxfgetwidgetnumber\fP (Widget thewidget)"
+.br
+.ti -1c
+.RI "Widget \fBxfgetwidget\fP (int thenumber)"
+.br
+.ti -1c
+.RI "void \fBsetlabelstring\fP (Widget \fBw\fP, char *thestring)"
+.br
+.ti -1c
+.RI "void \fBsetlabelnumber\fP (Widget \fBw\fP, float thenumber)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "XtResource \fBresources\fP []"
+.br
+.ti -1c
+.RI "String \fBfallback_resources\fP []"
+.br
+.ti -1c
+.RI "XrmOptionDescRec \fBoptions\fP []"
+.br
+.ti -1c
+.RI "char * \fBhelpmsg\fP []"
+.br
+.ti -1c
+.RI "Widget \fBtoplevel\fP"
+.br
+.ti -1c
+.RI "Widget \fBpicwidget\fP"
+.br
+.ti -1c
+.RI "Widget \fBviewport\fP"
+.br
+.ti -1c
+.RI "Widget \fBtopform\fP"
+.br
+.ti -1c
+.RI "Widget \fBstats\fP"
+.br
+.ti -1c
+.RI "Widget \fBflabel\fP"
+.br
+.ti -1c
+.RI "Widget \fBtlabel\fP"
+.br
+.ti -1c
+.RI "Widget \fBwidgetlist\fP [100]"
+.br
+.ti -1c
+.RI "int \fBnumberlist\fP [100]"
+.br
+.ti -1c
+.RI "\fBAppResources\fP \fBapp_resources\fP"
+.br
+.ti -1c
+.RI "char \fBargstring\fP [256]"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fB_AppResources\fP  \fBAppResources\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char ** argv)"
+.PP
+Definition at line 97 of file front.c.
+.PP
+References alloc_shades(), app_resources, argsToString(), argstring, _AppResources::blocksize, _AppResources::colormapindex, create_pixmap(), fallback_resources, fill_pixmap(), flabel, _AppResources::fmax, _AppResources::fmin, makewidgetdatabase(), makeXImage(), myworkproc1(), N1, N2, options, picwidget, readimheader(), resources, setblocksize(), setcolormapindex(), setfrange(), showpixmap(), stats, Syntax(), tlabel, topform, toplevel, True, and viewport.
+.SS "void makewidgetdatabase (void)"
+.PP
+Definition at line 236 of file front.c.
+.PP
+Referenced by main().
+.SS "void setlabelnumber (Widget w, float thenumber)"
+.PP
+Definition at line 297 of file front.c.
+.SS "void setlabelstring (Widget w, char * thestring)"
+.PP
+Definition at line 284 of file front.c.
+.SS "void Syntax (XtAppContext app_con, char * call)"
+.PP
+Definition at line 193 of file front.c.
+.SS "void xfgetargstring (char ** argstrptr)"
+.PP
+Definition at line 210 of file front.c.
+.SS "float xfgetvalue (int name)"
+.PP
+Definition at line 218 of file front.c.
+.SS "Widget xfgetwidget (int thenumber)"
+.PP
+Definition at line 268 of file front.c.
+.SS "int xfgetwidgetnumber (Widget thewidget)"
+.PP
+Definition at line 252 of file front.c.
+.SH "Variable Documentation"
+.PP 
+.SS "\fBAppResources\fP \fBapp_resources\fP\fC [static]\fP"
+.PP
+Definition at line 93 of file front.c.
+.PP
+Referenced by main(), and xfgetvalue().
+.SS "char \fBargstring\fP[256]\fC [static]\fP"
+.PP
+Definition at line 94 of file front.c.
+.PP
+Referenced by main(), and xfgetargstring().
+.SS "String \fBfallback_resources\fP[]"
+.PP
+\fBInitial value:\fP.nf
+ { 
+  '*Viewport*allowVert: True',
+  '*Viewport*allowHoriz: True',
+        '*Scrollbar*length: 100',
+  '*picwidget.cursor: crosshair',
+  '*picwidget.foreground: yellow',
+  '*Form.background:  DarkSlateBlue',
+  '*Command.background: CornflowerBlue',
+  '*Label.background: LightBlue',
+  '*Scrollbar.background: LightBlue',
+  '*picwidget.background: grey',
+    NULL,
+}
+.fi
+.PP
+Definition at line 54 of file front.c.
+.PP
+Referenced by main().
+.SS "Widget \fBflabel\fP\fC [static]\fP"
+.PP
+Definition at line 87 of file front.c.
+.PP
+Referenced by main(), and makewidgetdatabase().
+.SS "char* \fBhelpmsg\fP[]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+    '-min fmin                minimum f-value (0.0)',
+    '-max fmax                maximum f-value (255)',
+    '-b   blocksize             paint pixels this size (1)',
+    '-c   cmapindex             colormap (-1)',
+NULL }
+.fi
+.PP
+Definition at line 76 of file front.c.
+.PP
+Referenced by Syntax().
+.SS "int \fBnumberlist\fP[100]\fC [static]\fP"
+.PP
+Definition at line 90 of file front.c.
+.PP
+Referenced by makewidgetdatabase(), xfgetwidget(), and xfgetwidgetnumber().
+.SS "XrmOptionDescRec \fBoptions\fP[]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+    {'-min', 'fmin',   XrmoptionSepArg,       NULL},
+    {'-max', 'fmax',   XrmoptionSepArg,        NULL},
+    {'-b', 'blocksize',   XrmoptionSepArg,        NULL},
+    {'-c', 'colormapindex',   XrmoptionSepArg,        NULL},
+}
+.fi
+.PP
+Definition at line 68 of file front.c.
+.PP
+Referenced by main().
+.SS "Widget \fBpicwidget\fP\fC [static]\fP"
+.PP
+Definition at line 85 of file front.c.
+.PP
+Referenced by main(), and makewidgetdatabase().
+.SS "XtResource \fBresources\fP[]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+    {'fmin', 'Fmin', XtRFloat, sizeof(float),
+     XtOffsetOf(AppResources, fmin), XtRString, '0.0' },
+    {'fmax', 'Fmax', XtRFloat, sizeof(float),
+     XtOffsetOf(AppResources, fmax), XtRString, '256.0' },
+    {'blocksize', 'Blocksize', XtRInt, sizeof(int),
+     XtOffsetOf(AppResources, blocksize), XtRImmediate, (XtPointer) 1},
+    {'colormapindex', 'Colormapindex', XtRInt, sizeof(int),
+     XtOffsetOf(AppResources, colormapindex), XtRImmediate, (XtPointer) -1},
+}
+.fi
+.PP
+Definition at line 43 of file front.c.
+.PP
+Referenced by main().
+.SS "Widget \fBstats\fP\fC [static]\fP"
+.PP
+Definition at line 86 of file front.c.
+.PP
+Referenced by main().
+.SS "Widget \fBtlabel\fP\fC [static]\fP"
+.PP
+Definition at line 87 of file front.c.
+.PP
+Referenced by main(), and makewidgetdatabase().
+.SS "Widget \fBtopform\fP\fC [static]\fP"
+.PP
+Definition at line 86 of file front.c.
+.PP
+Referenced by main().
+.SS "Widget \fBtoplevel\fP\fC [static]\fP"
+.PP
+Definition at line 84 of file front.c.
+.PP
+Referenced by main(), and makewidgetdatabase().
+.SS "Widget \fBviewport\fP\fC [static]\fP"
+.PP
+Definition at line 85 of file front.c.
+.PP
+Referenced by main().
+.SS "Widget \fBwidgetlist\fP[100]\fC [static]\fP"
+.PP
+Definition at line 89 of file front.c.
+.PP
+Referenced by makewidgetdatabase(), xfgetwidget(), and xfgetwidgetnumber().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,106 @@
+.TH "xfv.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+xfv.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <X11/Xlib.h>\fP
+.br
+\fC#include <X11/Xutil.h>\fP
+.br
+\fC#include <X11/extensions/shape.h>\fP
+.br
+\fC#include <Imlib.h>\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/arrays.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\        xfv --- \fBFITS\fP stream viewer\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\        xvf [-\fBb\fP \fBblocksize\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\        xvf is an \fBX\fP-based \fBFITS\fP Viewer for viewing 3D \fBFITS\fP\\\fBn\fP\\        images as \fBa\fP movie. It reads from stdin \fBa\fP series of\\\fBn\fP\\	8 bit \fBFITS\fP images.  These can either be monochrome,\\\fBn\fP\\	in which case the image is 3D: f[NFRAMES][NY][NX], or\\\fBn\fP\\	or in RGB format: f[NFRAMES][3][NY][NX] and\\\fBn\fP\\	consisting of the R, G, \fBB\fP planes of \fBa\fP set of images.\\\fBn\fP\\\\\fBn\fP\\	It does no scaling.\\\fBn\fP\\\\\fBn\fP\\	You can use 'colorize' to convert monochrome to \fBcolor\fP.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\        Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBgetimageplane\fP (void)"
+.br
+.ti -1c
+.RI "int \fBmain\fP (int argc, char **argv)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "unsigned char * \fBsrcdat\fP"
+.br
+.ti -1c
+.RI "unsigned char * \fBimdat\fP"
+.br
+.ti -1c
+.RI "int \fBw\fP"
+.br
+.ti -1c
+.RI "int \fBh\fP"
+.br
+.ti -1c
+.RI "int \fBrgbsourceimage\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\        xfv --- \fBFITS\fP stream viewer\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\        xvf [-\fBb\fP \fBblocksize\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\        xvf is an \fBX\fP-based \fBFITS\fP Viewer for viewing 3D \fBFITS\fP\\\fBn\fP\\        images as \fBa\fP movie. It reads from stdin \fBa\fP series of\\\fBn\fP\\	8 bit \fBFITS\fP images.  These can either be monochrome,\\\fBn\fP\\	in which case the image is 3D: f[NFRAMES][NY][NX], or\\\fBn\fP\\	or in RGB format: f[NFRAMES][3][NY][NX] and\\\fBn\fP\\	consisting of the R, G, \fBB\fP planes of \fBa\fP set of images.\\\fBn\fP\\\\\fBn\fP\\	It does no scaling.\\\fBn\fP\\\\\fBn\fP\\	You can use 'colorize' to convert monochrome to \fBcolor\fP.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\        Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 15 of file xfv.c.
+.SH "Function Documentation"
+.PP 
+.SS "int getimageplane (void)"
+.PP
+Definition at line 165 of file xfv.c.
+.PP
+References c, h, imdat, rgbsourceimage, srcdat, w, x, and y.
+.PP
+Referenced by main().
+.SS "int main (int argc, char ** argv)"
+.PP
+Definition at line 41 of file xfv.c.
+.PP
+References argsinit(), error_exit, fitsheader::extpixtype, f, False, fits, flag, getargi(), getflag(), getimageplane(), h, imdat, m, fitsheader::n, fitsheader::ndim, nframes, readfitsheader(), rgbsourceimage, srcdat, UCHAR_PIXTYPE, usage, and w.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBh\fP\fC [static]\fP"
+.PP
+Definition at line 39 of file xfv.c.
+.SS "unsigned char * \fBimdat\fP\fC [static]\fP"
+.PP
+Definition at line 37 of file xfv.c.
+.PP
+Referenced by getimageplane(), and main().
+.SS "int \fBrgbsourceimage\fP\fC [static]\fP"
+.PP
+Definition at line 39 of file xfv.c.
+.PP
+Referenced by getimageplane(), and main().
+.SS "unsigned char* \fBsrcdat\fP\fC [static]\fP"
+.PP
+Definition at line 37 of file xfv.c.
+.PP
+Referenced by getimageplane(), and main().
+.SS "int \fBw\fP\fC [static]\fP"
+.PP
+Definition at line 39 of file xfv.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

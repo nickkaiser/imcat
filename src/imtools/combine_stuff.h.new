@@ -1,0 +1,10 @@
+/*
+ * combine_stuff.h
+ */
+
+
+float   	median(float *f, int nel);
+float   	mean(float *f, int nel);
+float   	avsigclip(float *f, int nel, float clip);
+float   	avsigclip2(float *f, float *sigma, int nel, float clip,
+			float *sigmaout);

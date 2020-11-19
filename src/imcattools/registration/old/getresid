@@ -1,0 +1,68 @@
+#!/usr/bin/perl
+
+# now we have run fitstack to get 1st approcimation to fitstack.par
+# we want to make a refined mergestack2.out by removing pairs of
+# objects with large residual
+
+$usage =  "\
+NAME\
+	getresid --- perl script to calculate residuals\
+\
+SYNOPSIS\
+	getresid [options...]\
+\
+DESCRIPTION\
+	'getresid' reads a set of transformation coefficients from\
+	'fitstack.par'  (previously generated from 'mergestack1.out'\
+	with 'fitstack') and then reads lines from 'mergestack1.out'\
+	applies the appropriate transformations to 'sky' coords and\
+	outputs the separation to resid.out\
+	It also needs 'exp.db' which should define \$Nexp and\
+	the associative array 'expname'.\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+";
+
+require "exp.db";
+$tol = 2;
+
+while ($_ = shift(@ARGV)) {
+        if (/^-d/) {
+                $tol = shift(@ARGV) || die $usage;
+        } else {
+                die $usage;
+        }
+}
+
+
+# read the transformation coefficients
+open(COEFFTS, "fitstack.par") || die "Can't open fitstack.par";
+for ($exp = 0; $exp < $Nexp; $exp++) {
+        ($Phi[$exp], $dX[$exp], $dY[$exp], $dM[$exp]) = split(' ', <COEFFTS>);
+}
+close(COEFFTS);
+
+open(IN, "mergestack1.out") || die "Can't open mergstack1.out";
+open(OUT, "| lc -C -N '1 2 dx' -N '1 2 exp' >resid.out") || die "Can't open resid.out";
+
+while (<IN>) {
+        if (/^#/) {
+		print OUT;
+	} else {
+                ($x, $y, $xp, $yp, $e, $ep, $m, $mp) = split(' ');
+                $X = $x + $Phi[$e] * $y + $dX[$e];
+                $Y = $y - $Phi[$e] * $x + $dY[$e];
+                $Xp = $xp + $Phi[$ep] * $yp + $dX[$ep];
+                $Yp = $yp - $Phi[$ep] * $xp + $dY[$ep];
+		$dx = $Xp - $X;
+		$dy = $Yp - $Y;
+               	printf OUT "%f %f %d %d\n", $dx, $dy, $e, $ep;
+        }
+}
+
+
+sub echosys {
+        print @_, "\n";
+        system(@_) && die "system call failed!\n";
+}

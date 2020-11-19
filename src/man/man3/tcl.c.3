@@ -1,0 +1,106 @@
+.TH "tcl.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+tcl.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+\fC#include 'planetdata.h'\fP
+.br
+\fC#include 'tcl.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBtcl\fP (double dt, int nsteps, double *\fBr\fP, double *\fBv\fP)"
+.br
+.ti -1c
+.RI "void \fBjupiteron\fP (double phase)"
+.br
+.ti -1c
+.RI "void \fBaddjupitergravity\fP (double *g, double *\fBr\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBdojupiter\fP = 0"
+.br
+.ti -1c
+.RI "double \fBjupiterphase\fP"
+.br
+.ti -1c
+.RI "double \fBjupiteromega\fP"
+.br
+.ti -1c
+.RI "double \fBjupitermass\fP"
+.br
+.ti -1c
+.RI "double * \fBjupiterr\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void addjupitergravity (double * g, double * r)"
+.PP
+Definition at line 59 of file tcl.c.
+.PP
+References A_JUPITER, assign(), g(), i, jupitermass, jupiterphase, jupiterr, length(), r, and scale().
+.PP
+Referenced by tcl().
+.SS "void jupiteron (double phase)"
+.PP
+Definition at line 50 of file tcl.c.
+.PP
+References A_JUPITER, dojupiter, jupitermass, jupiteromega, jupiterphase, jupiterr, M_JUPITER, and M_SUN.
+.PP
+Referenced by main().
+.SS "void tcl (double dt, int nsteps, double * r, double * v)"
+.PP
+Definition at line 11 of file tcl.c.
+.PP
+References addjupitergravity(), copy(), dojupiter, free(), g(), i, jupiteromega, jupiterphase, length(), r, scale(), and v.
+.PP
+Referenced by chisquared(), and main().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBdojupiter\fP = 0\fC [static]\fP"
+.PP
+Definition at line 8 of file tcl.c.
+.PP
+Referenced by jupiteron(), and tcl().
+.SS "double \fBjupitermass\fP\fC [static]\fP"
+.PP
+Definition at line 9 of file tcl.c.
+.PP
+Referenced by addjupitergravity(), and jupiteron().
+.SS "double \fBjupiteromega\fP\fC [static]\fP"
+.PP
+Definition at line 9 of file tcl.c.
+.PP
+Referenced by jupiteron(), and tcl().
+.SS "double \fBjupiterphase\fP\fC [static]\fP"
+.PP
+Definition at line 9 of file tcl.c.
+.PP
+Referenced by addjupitergravity(), jupiteron(), and tcl().
+.SS "double * \fBjupiterr\fP\fC [static]\fP"
+.PP
+Definition at line 9 of file tcl.c.
+.PP
+Referenced by addjupitergravity(), and jupiteron().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

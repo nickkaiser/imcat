@@ -1,0 +1,116 @@
+<html>
+
+<head>
+<title>Byte-Order, FITS Standard and MAGIC Pixels in Imcat</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+<h1> 
+Byte-Order, FITS Standard and MAGIC Pixels in Imcat
+</h1>
+<hr>
+<h2>
+From: A Voyage to Lilliput, by Jonathan Swift 
+</h2>
+<hr>
+
+<p>
+It began upon the following occasion. 
+<p>
+It is allowed on all hands, that the primitive way of breaking eggs 
+before we eat them, was upon the larger end: but his present Majesty's grandfather,
+while he was a boy, going to eat an egg, and breaking it according to 
+the ancient practice, happened to cut one of his fingers.  Whereupon the Emperor his
+father published an edict, commanding all his subjects, upon great penalties, 
+to break the smaller end of their eggs.  
+<p>
+The people so highly resented this law, that our Histories tell us there have been 
+six rebellions raised on that account, wherein one Emperor lost his life,
+and another his crown.  These civil commotions were constantly formented by the 
+monarchs of Blefuscu, and when they were quelled, the exiles
+always fled for refuge to that Empire.  
+<p>
+It is computed, that eleven thousand persons have, at several times, suffered death, 
+rather than submit to break their eggs at the smaller end.  Many
+hundred large volums have been published upon this controversy: but the books of the 
+Big­Endians have been long forbidden, and the whole party
+rendered incapable by law of holding employments.  
+<p>
+During the course of these troubles, the emperors of Blefuscu did frequently 
+expostulate by their ambassadors, accusing us of making a schism in
+religion, by offending against a fundamental doctrine of our great prophet 
+Lustrog, in the fifty­fourth chapter of the Brundecral (which is their Alcoran). 
+This, however, is thought to be a mere strain upon the text: for their words are 
+these; That all true believers shall break their eggs at the convenient end:
+and which is the convenient end, seems, in my humble opinion, to be left to 
+every man's conscience, or at least in the power of the chief magistrate to
+determine. 
+
+<hr>
+<h2>
+Byte order in Imcat
+</h2>
+<hr>
+<p>
+While the original FITS standard did not specify a particular byte
+order, the NASA <a href="http://fits.gsfc.nasa.gov" target="_top"> NOST FITS definition </a> has decreed
+a big-endian ordering.  This is of course inefficent on little-endian
+machines such as DEC Alpha and Linux on PC's, so I have decided to
+ignore NASA and to store images on disk in native format. I have provided
+a command <a href="man/changesex.html">changesex</a> which swaps the byte order.
+<p>
+I appreciate this can be confusing if you are accessing images from machines of
+differing byte ordering conventions.  As of 11/8/98 I have added the ability to
+define an environment variable IMCATSWAPFITSBYTES which, if defined, causes
+the fitsio routines to input and output image data in non-native format (i.e.
+the opposite byte ordering from that used internally).  So, for example, you might define
+this on your DEC-ALPHA but not on your Sun workstation, in which case all
+FITS files (and FITS data piped between processes) will conform to the
+NOST decree and you can access the data using binaries on either machine without
+confusion.
+<p>
+FITS images writen by imcat tools contain a header item with
+key BYTEORDR and with value BIG_ENDIAN or LITTLE_ENDIAN to
+indicate the byte order.
+<p>
+Note that there are command line options for 'saoimage' which allow it to read
+images of either persuasion.
+<hr>
+<h2>
+Magic pixel values
+</h2>
+Certain 'magic' pixel values are used to flag data as corrupt.  Essentially all imcat image processing
+functions test for these values and ignore them and generate magic output values as appropriate.
+<p>
+The magic values are defined in  fits.h (see
+<a href="man/imlib.html">imlib</a> man page)
+as
+<pre>
+------------------------------------------------------------------
+BITPIX          MAGIC VALUE
+------------------------------------------------------------------
+8               UCHAR_MAX=255
+16              SHRT_MIN=-32768
+32              INT_MIN=-2147483648
+-32             (-((float)  0x80000000) * ((float)  0x80000000))
+-64             (-((double) 0x80000000) * ((double) 0x80000000))
+------------------------------------------------------------------
+</pre>
+<p>
+The image calculator command 
+<a href="man/ic.html">ic</a>
+has a flag you can use to convert
+magic pixels to some other chosen value.
+<p>
+Some other software (e.g. IRAF) uses NaN to flag bad pixels.  This 
+only works for floating point images (BITPIX = -32 or -64).  
+As of 12/2/98, if you want
+your float or double images to use this convention then define
+the environment variable IMCATCONVERTNANS.  If this is defined then
+the low level imcat functions for reading images will, for
+BITPIX = -32, -64, convert any NaN's to imcat MAGIC values, and the
+low level image writing routines will convert MAGIC values back to
+NaN's on output.  An advantage of this approach is that saoimage,
+for example, will not get confused by the bad pixels.
+</body>
+</html>

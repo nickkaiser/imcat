@@ -1,0 +1,42 @@
+#! /usr/bin/perl
+
+
+
+# generate a grid of stacked images
+$usage = "NAME\
+	combinestacks - combine a stack of images\
+SYNOPSIS\
+	combinestacks ix1 ix2 iy1 iy2 srcdir dstdir\
+DESCRIPTION\
+\trun 'combineimages' on a set of stacks of images\
+\tloop over ix = ix1 ... ix2; iy = iy1 ... iy\
+\tExpects to find source images in srcdir/ix_iy/*.fits\
+\taverage images placed in dstdir/ix_iy_avg.fits\
+\terror images placed in dstdir/ix_iy_sig.fits\n";
+
+$| = 1;
+
+
+
+die $usage if ($#ARGV < 5);
+$ix1 = shift @ARGV;
+$ix2 = shift @ARGV;
+$iy1 = shift @ARGV;
+$iy2 = shift @ARGV;
+$srcdir = shift @ARGV;
+$dstdir = shift @ARGV;
+
+for ($ix = $ix1; $ix <= $ix2; $ix++) {
+	for ($iy = $iy1; $iy <= $iy2; $iy++) {
+		$subdir = "$srcdir/$ix"."_$iy";
+		die "missing image directory!"  unless -d $subdir;
+		$name = "$dstdir/$ix"."_$iy";
+		&echosys("combineimages -a 3 -s -o $name $subdir/*.fits");
+	}
+}
+
+
+sub echosys {
+        print @_, "\n";
+       	system(@_) && die "combinestacks: systemcal failed\n";
+}

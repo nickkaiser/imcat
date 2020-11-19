@@ -1,0 +1,106 @@
+.TH "getmoid.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getmoid.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+\fC#include 'kepler.h'\fP
+.br
+\fC#include 'planetdata.h'\fP
+.br
+\fC#include 'extravars.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	getmoid - compute the MOID from Kepler orbit elements\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getmoid [-extravars vardefs]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	getmoid reads \fBa\fP catalog containing Keplerian elements\\\fBn\fP\\	\fBa\fP, \fBe\fP, \fBi\fP, omega, Omega, \fBM\fP and cartesian \fBr\fP[3], \fBv\fP[3].\\\fBn\fP\\\\\fBn\fP\\	It then varies \fBM\fP to find the moid and outputs the\\\fBn\fP\\	elements as well as the velocity of the particles at MOID.\\\fBn\fP\\\\\fBn\fP\\	With -extravars option we carry defined variables along.  For example, use\\\fBn\fP\\		-extrvars myscalar:1:myvector:3\\\fBn\fP\\	to carry along myscalar and myvector[3]\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBoid\fP (double \fBM\fP)"
+.br
+.ti -1c
+.RI "void \fBmnbrak\fP (double *ax, double *bx, double *cx, double *fa, double *\fBfb\fP, double *fc, double(*func)(double))"
+.br
+.ti -1c
+.RI "double \fBbrent\fP (double ax, double bx, double cx, double(*f)(double), double tol, double *\fBxmin\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBkeplerorbit\fP * \fBtheorbit\fP"
+.br
+.ti -1c
+.RI "double * \fBr\fP"
+.br
+.ti -1c
+.RI "double * \fBv\fP"
+.br
+.ti -1c
+.RI "double \fBphi\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	getmoid - compute the MOID from Kepler orbit elements\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getmoid [-extravars vardefs]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	getmoid reads \fBa\fP catalog containing Keplerian elements\\\fBn\fP\\	\fBa\fP, \fBe\fP, \fBi\fP, omega, Omega, \fBM\fP and cartesian \fBr\fP[3], \fBv\fP[3].\\\fBn\fP\\\\\fBn\fP\\	It then varies \fBM\fP to find the moid and outputs the\\\fBn\fP\\	elements as well as the velocity of the particles at MOID.\\\fBn\fP\\\\\fBn\fP\\	With -extravars option we carry defined variables along.  For example, use\\\fBn\fP\\		-extrvars myscalar:1:myvector:3\\\fBn\fP\\	to carry along myscalar and myvector[3]\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 14 of file getmoid.c.
+.SH "Function Documentation"
+.PP 
+.SS "double brent (double ax, double bx, double cx, double(* f)(double), double tol, double * xmin)"
+.PP
+Definition at line 17 of file orbits/orbitutils/brent_dbl.c.
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 41 of file getmoid.c.
+.PP
+References keplerorbit::a, assignkeplerorbitfrombuffer(), AU, brent(), buff, d, dmin, exit(), fb, fillbufferfromkeplerorbit(), G_NEWTON, i, ipf, keplertocartesian(), length(), keplerorbit::M, M, M_EARTH, M_SUN, mnbrak(), oid(), parseextravars(), phi, r, R_EARTH, rotz(), sigma, theorbit, usage, and v.
+.SS "void mnbrak (double * ax, double * bx, double * cx, double * fa, double * fb, double * fc, double(* func)(double))"
+.PP
+Definition at line 17 of file orbits/orbitutils/mnbrak_dbl.c.
+.SS "double oid (double M)"
+.PP
+Definition at line 148 of file getmoid.c.
+.PP
+References keplertocartesian(), and theorbit.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "double \fBphi\fP"
+.PP
+Definition at line 35 of file getmoid.c.
+.SS "double* \fBr\fP"
+.PP
+Definition at line 35 of file getmoid.c.
+.PP
+Referenced by addjupitergravity(), addmaskpoint(), apphot(), brent(), cartesiantokepler(), cdl_fillArea(), chisquared(), circkernel(), cutoff(), do_object_stats(), drawcircle(), drawellipse(), eps_setCmap(), fk42gal(), fk52gal(), forward_fft(), gal2fk4(), gal2fk5(), gasdev(), gaussdev(), getcolormap(), getrgbfromcmap(), Getshape(), getshape(), getsky(), inverse_fft(), jpcon(), jpcop(), keplertocartesian(), keplertocartesian_shapiro(), lmodelfunc(), main(), make_pop(), make_r(), makedddotr(), mnbrak(), outputrcat(), ran1(), recircdef(), rectkernel(), rmodel(), set_shades(), slaDcc2s(), tcl(), zapcircle(), and zapellipse().
+.SS "\fBkeplerorbit\fP* \fBtheorbit\fP"
+.PP
+Definition at line 34 of file getmoid.c.
+.SS "double * \fBv\fP"
+.PP
+Definition at line 35 of file getmoid.c.
+.PP
+Referenced by brent(), cartesiantokepler(), cdl_flip(), cpgellipses(), cvector(), dvector(), free_cvector(), free_dvector(), free_ivector(), free_lvector(), free_vector(), hchange(), hdel(), hputc(), ilmnts_(), incircleadapt(), ivector(), keplertocartesian(), keplertocartesian_shapiro(), lvector(), main(), makedddotr(), print_caption(), setf(), setv(), slaDcc2s(), slaDcs2c(), switchxy(), tcl(), and vector().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

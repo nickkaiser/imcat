@@ -1,0 +1,78 @@
+.TH "gethotpix.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+gethotpix.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	gethotpix - get candidate cosmic ray pixels\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	gethotpix \fBfmin\fP rmax\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'gethotpix' reads \fBa\fP 2-dimensional \fBFITS\fP image from stdin\\\fBn\fP\\	and sends to stdout \fBa\fP catalogue containing the locations\\\fBn\fP\\	of pixels with f > \fBfmin\fP and an immediate \fBN\fP,S,E or W\\\fBn\fP\\	neighbour with \fBr\fP = f_neighbour / f < rmax.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.ti -1c
+.RI "#define \fBBUFFSIZE\fP   4"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBwritehotpixel\fP (int x, int y, float f, float fn)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define BUFFSIZE   4"
+.PP
+Definition at line 28 of file gethotpix.c.
+.PP
+Referenced by main(), output(), readdoublebuff(), and writehotpixel().
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 26 of file gethotpix.c.
+.PP
+Referenced by accumulate(), add_bad_col(), apphot(), do_object_stats(), doplot(), dosky(), fastmap(), getop(), Getshape(), getshape(), getshape2(), getshape3(), getsky(), getstamp(), main(), makescrunchedviews(), picclick(), rpetrosian(), zap(), zapcircle(), and zapellipse().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	gethotpix - get candidate cosmic ray pixels\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	gethotpix \fBfmin\fP rmax\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'gethotpix' reads \fBa\fP 2-dimensional \fBFITS\fP image from stdin\\\fBn\fP\\	and sends to stdout \fBa\fP catalogue containing the locations\\\fBn\fP\\	of pixels with f > \fBfmin\fP and an immediate \fBN\fP,S,E or W\\\fBn\fP\\	neighbour with \fBr\fP = f_neighbour / f < rmax.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file gethotpix.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 32 of file gethotpix.c.
+.PP
+References error_exit, exit(), f, fits, fmin, N1, N2, read2Dfloatimage(), usage, writehotpixel(), x, and y.
+.SS "void writehotpixel (int x, int y, float f, float fn)"
+.PP
+Definition at line 85 of file gethotpix.c.
+.PP
+References buff, BUFFSIZE, f, x, and y.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

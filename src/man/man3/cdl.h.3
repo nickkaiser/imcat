@@ -1,0 +1,852 @@
+.TH "cdl.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cdl.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'eps.h'\fP
+.br
+\fC#include 'cdlP.h'\fP
+.br
+\fC#include 'cdlProto.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBCDL\fP"
+.br
+.ti -1c
+.RI "struct \fBMarker\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCDL_VERSION\fP   'Client Display Library V1.6 02/28/98'"
+.br
+.ti -1c
+.RI "#define \fBMAX_FBCONFIG\fP   128"
+.br
+.ti -1c
+.RI "#define \fBMAX_FRAMES\fP   4"
+.br
+.ti -1c
+.RI "#define \fBDEF_CONTRAST\fP   0.25"
+.br
+.ti -1c
+.RI "#define \fBDEF_NSAMPLE\fP   600"
+.br
+.ti -1c
+.RI "#define \fBDEF_NSAMPLINES\fP   5"
+.br
+.ti -1c
+.RI "#define \fBINDEF\fP   -999"
+.br
+.ti -1c
+.RI "#define \fBFB_AUTO\fP   -1"
+.br
+.ti -1c
+.RI "#define \fBCDL_UNITARY\fP   0"
+.br
+.ti -1c
+.RI "#define \fBCDL_LINEAR\fP   1"
+.br
+.ti -1c
+.RI "#define \fBCDL_LOG\fP   2"
+.br
+.ti -1c
+.RI "#define \fBC_BLACK\fP   202"
+.br
+.ti -1c
+.RI "#define \fBC_WHITE\fP   203"
+.br
+.ti -1c
+.RI "#define \fBC_RED\fP   204"
+.br
+.ti -1c
+.RI "#define \fBC_GREEN\fP   205"
+.br
+.ti -1c
+.RI "#define \fBC_BLUE\fP   206"
+.br
+.ti -1c
+.RI "#define \fBC_YELLOW\fP   207"
+.br
+.ti -1c
+.RI "#define \fBC_CYAN\fP   208"
+.br
+.ti -1c
+.RI "#define \fBC_MAGENTA\fP   209"
+.br
+.ti -1c
+.RI "#define \fBC_CORAL\fP   210"
+.br
+.ti -1c
+.RI "#define \fBC_MAROON\fP   211"
+.br
+.ti -1c
+.RI "#define \fBC_ORANGE\fP   212"
+.br
+.ti -1c
+.RI "#define \fBC_KHAKI\fP   213"
+.br
+.ti -1c
+.RI "#define \fBC_ORCHID\fP   214"
+.br
+.ti -1c
+.RI "#define \fBC_TURQUOISE\fP   215"
+.br
+.ti -1c
+.RI "#define \fBC_VIOLET\fP   216"
+.br
+.ti -1c
+.RI "#define \fBC_WHEAT\fP   217"
+.br
+.ti -1c
+.RI "#define \fBM_FILL\fP   1"
+.br
+.ti -1c
+.RI "#define \fBM_POINT\fP   2"
+.br
+.ti -1c
+.RI "#define \fBM_BOX\fP   4"
+.br
+.ti -1c
+.RI "#define \fBM_PLUS\fP   8"
+.br
+.ti -1c
+.RI "#define \fBM_CROSS\fP   16"
+.br
+.ti -1c
+.RI "#define \fBM_DIAMOND\fP   32"
+.br
+.ti -1c
+.RI "#define \fBM_CIRCLE\fP   64"
+.br
+.ti -1c
+.RI "#define \fBM_STAR\fP   128"
+.br
+.ti -1c
+.RI "#define \fBM_HLINE\fP   256"
+.br
+.ti -1c
+.RI "#define \fBM_VLINE\fP   512"
+.br
+.ti -1c
+.RI "#define \fBM_HBLINE\fP   1024"
+.br
+.ti -1c
+.RI "#define \fBM_VBLINE\fP   2048"
+.br
+.ti -1c
+.RI "#define \fBF_ROMAN\fP   0"
+.br
+.ti -1c
+.RI "#define \fBF_GREEK\fP   1"
+.br
+.ti -1c
+.RI "#define \fBF_FUTURA\fP   2"
+.br
+.ti -1c
+.RI "#define \fBF_TIMES\fP   3"
+.br
+.ti -1c
+.RI "#define \fBF_BOLD\fP   4"
+.br
+.ti -1c
+.RI "#define \fBL_SOLID\fP   0"
+.br
+.ti -1c
+.RI "#define \fBL_DASHED\fP   1"
+.br
+.ti -1c
+.RI "#define \fBL_DOTTED\fP   2"
+.br
+.ti -1c
+.RI "#define \fBL_DOTDASH\fP   3"
+.br
+.ti -1c
+.RI "#define \fBL_HOLLOW\fP   4"
+.br
+.ti -1c
+.RI "#define \fBL_SHADOW\fP   5"
+.br
+.ti -1c
+.RI "#define \fBMK_POINT\fP   0"
+.br
+.ti -1c
+.RI "#define \fBMK_LINE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBMK_BOX\fP   2"
+.br
+.ti -1c
+.RI "#define \fBMK_POLYLINE\fP   3"
+.br
+.ti -1c
+.RI "#define \fBMK_POLYGON\fP   4"
+.br
+.ti -1c
+.RI "#define \fBMK_CIRCLE\fP   5"
+.br
+.ti -1c
+.RI "#define \fBMK_CIRCANN\fP   6"
+.br
+.ti -1c
+.RI "#define \fBMK_ELLIPSE\fP   7"
+.br
+.ti -1c
+.RI "#define \fBMK_ELLIPANN\fP   8"
+.br
+.ti -1c
+.RI "#define \fBMK_TEXT\fP   9"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBCDL\fP * \fBCDLPtr\fP"
+.br
+.ti -1c
+.RI "typedef \fBMarker\fP * \fBMarkerPtr\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBCDLPtr\fP \fBcdl_open\fP ()"
+.br
+.ti -1c
+.RI "char \fBcdl_readCursor\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_displayPix\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_displayIRAF\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_displayFITS\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_readIRAF\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_readFITS\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_clearFrame\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_readImage\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_readFrameBuffer\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_readSubRaster\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_writeSubRaster\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_setCursor\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_printPix\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_printPixToFile\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_setWCS\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_getWCS\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_selectFB\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_close\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_computeZscale\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_zscaleImage\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setFrame\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setFBConfig\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setZTrans\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setZoom\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setSample\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setContrast\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setName\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setTitle\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_getFrame\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_getFBConfig\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_getZTrans\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_getZoom\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_getSample\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_getContrast\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_getName\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_getTitle\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_getSampleLines\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setSampleLines\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_zscale\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setZScale\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_getZScale\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_lookupFBSize\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setDebug\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_markPoint\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_markLine\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_markBox\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_markPolyline\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_markPolygon\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_markCircle\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_markCircAnnuli\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_markEllipse\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_markEllipAnnuli\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_markText\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_deleteMark\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_clearOverlay\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_redrawOverlay\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_markCoordsFile\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setFont\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setTextWidth\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setLineWidth\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setLineStyle\fP ()"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_findNearest\fP (\fBMarkerPtr\fP head, int x, int y)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define C_BLACK   202"
+.PP
+Definition at line 36 of file cdl.h.
+.SS "#define C_BLUE   206"
+.PP
+Definition at line 40 of file cdl.h.
+.SS "#define C_CORAL   210"
+.PP
+Definition at line 44 of file cdl.h.
+.SS "#define C_CYAN   208"
+.PP
+Definition at line 42 of file cdl.h.
+.SS "#define C_GREEN   205"
+.PP
+Definition at line 39 of file cdl.h.
+.SS "#define C_KHAKI   213"
+.PP
+Definition at line 47 of file cdl.h.
+.SS "#define C_MAGENTA   209"
+.PP
+Definition at line 43 of file cdl.h.
+.SS "#define C_MAROON   211"
+.PP
+Definition at line 45 of file cdl.h.
+.SS "#define C_ORANGE   212"
+.PP
+Definition at line 46 of file cdl.h.
+.SS "#define C_ORCHID   214"
+.PP
+Definition at line 48 of file cdl.h.
+.SS "#define C_RED   204"
+.PP
+Definition at line 38 of file cdl.h.
+.SS "#define C_TURQUOISE   215"
+.PP
+Definition at line 49 of file cdl.h.
+.SS "#define C_VIOLET   216"
+.PP
+Definition at line 50 of file cdl.h.
+.SS "#define C_WHEAT   217"
+.PP
+Definition at line 51 of file cdl.h.
+.SS "#define C_WHITE   203"
+.PP
+Definition at line 37 of file cdl.h.
+.SS "#define C_YELLOW   207"
+.PP
+Definition at line 41 of file cdl.h.
+.SS "#define CDL_LINEAR   1"
+.PP
+Definition at line 32 of file cdl.h.
+.PP
+Referenced by cdl_applyZscale(), cdl_mapFrame(), and cdl_open().
+.SS "#define CDL_LOG   2"
+.PP
+Definition at line 33 of file cdl.h.
+.PP
+Referenced by cdl_applyZscale().
+.SS "#define CDL_UNITARY   0"
+.PP
+Definition at line 31 of file cdl.h.
+.PP
+Referenced by cdl_applyZscale().
+.SS "#define CDL_VERSION   'Client Display Library V1.6 02/28/98'"
+.PP
+Definition at line 5 of file cdl.h.
+.PP
+Referenced by cdl_open().
+.SS "#define DEF_CONTRAST   0.25"
+.PP
+Definition at line 14 of file cdl.h.
+.PP
+Referenced by cdl_open().
+.SS "#define DEF_NSAMPLE   600"
+.PP
+Definition at line 15 of file cdl.h.
+.PP
+Referenced by cdl_open().
+.SS "#define DEF_NSAMPLINES   5"
+.PP
+Definition at line 16 of file cdl.h.
+.PP
+Referenced by cdl_open().
+.SS "#define F_BOLD   4"
+.PP
+Definition at line 70 of file cdl.h.
+.PP
+Referenced by cdl_setFont().
+.SS "#define F_FUTURA   2"
+.PP
+Definition at line 68 of file cdl.h.
+.PP
+Referenced by cdl_doTextMarker(), cdl_setFont(), and cdl_strlen().
+.SS "#define F_GREEK   1"
+.PP
+Definition at line 67 of file cdl.h.
+.PP
+Referenced by cdl_doTextMarker(), cdl_setFont(), and cdl_strlen().
+.SS "#define F_ROMAN   0"
+.PP
+Definition at line 66 of file cdl.h.
+.PP
+Referenced by cdl_doTextMarker(), cdl_open(), cdl_setFont(), and cdl_strlen().
+.SS "#define F_TIMES   3"
+.PP
+Definition at line 69 of file cdl.h.
+.PP
+Referenced by cdl_doTextMarker(), cdl_setFont(), and cdl_strlen().
+.SS "#define FB_AUTO   -1"
+.PP
+Definition at line 28 of file cdl.h.
+.PP
+Referenced by cdl_displayPix().
+.SS "#define INDEF   -999"
+.PP
+Definition at line 17 of file cdl.h.
+.PP
+Referenced by cdl_displayPix(), computeSigma(), and imd_displayImage().
+.SS "#define L_DASHED   1"
+.PP
+Definition at line 73 of file cdl.h.
+.PP
+Referenced by cdl_doLineMark(), cdl_doPolygonMark(), cdl_drawThickDashVec(), and cdl_setpixel().
+.SS "#define L_DOTDASH   3"
+.PP
+Definition at line 75 of file cdl.h.
+.PP
+Referenced by cdl_doLineMark(), cdl_doPolygonMark(), cdl_drawThickDashVec(), and cdl_setpixel().
+.SS "#define L_DOTTED   2"
+.PP
+Definition at line 74 of file cdl.h.
+.PP
+Referenced by cdl_doLineMark(), cdl_doPolygonMark(), cdl_drawThickDashVec(), and cdl_setpixel().
+.SS "#define L_HOLLOW   4"
+.PP
+Definition at line 76 of file cdl.h.
+.PP
+Referenced by cdl_doBoxMark(), cdl_doLineInSubRas(), cdl_doLineMark(), cdl_doPolygonMark(), cdl_drawThickVector(), and cdl_markLine().
+.SS "#define L_SHADOW   5"
+.PP
+Definition at line 77 of file cdl.h.
+.PP
+Referenced by cdl_doBoxMark(), and cdl_drawThickVector().
+.SS "#define L_SOLID   0"
+.PP
+Definition at line 72 of file cdl.h.
+.PP
+Referenced by cdl_doBoxMark(), cdl_doLineInSubRas(), cdl_doLineMark(), cdl_doPointMark(), cdl_doPolygonMark(), cdl_doTextMarker(), and cdl_open().
+.SS "#define M_BOX   4"
+.PP
+Definition at line 55 of file cdl.h.
+.PP
+Referenced by cdl_doPointMark().
+.SS "#define M_CIRCLE   64"
+.PP
+Definition at line 59 of file cdl.h.
+.PP
+Referenced by cdl_doPointMark().
+.SS "#define M_CROSS   16"
+.PP
+Definition at line 57 of file cdl.h.
+.PP
+Referenced by cdl_doPointMark().
+.SS "#define M_DIAMOND   32"
+.PP
+Definition at line 58 of file cdl.h.
+.PP
+Referenced by cdl_doPointMark().
+.SS "#define M_FILL   1"
+.PP
+Definition at line 53 of file cdl.h.
+.PP
+Referenced by cdl_doPointMark().
+.SS "#define M_HBLINE   1024"
+.PP
+Definition at line 63 of file cdl.h.
+.PP
+Referenced by cdl_doPointMark().
+.SS "#define M_HLINE   256"
+.PP
+Definition at line 61 of file cdl.h.
+.PP
+Referenced by cdl_doPointMark().
+.SS "#define M_PLUS   8"
+.PP
+Definition at line 56 of file cdl.h.
+.PP
+Referenced by cdl_doPointMark().
+.SS "#define M_POINT   2"
+.PP
+Definition at line 54 of file cdl.h.
+.PP
+Referenced by cdl_doPointMark().
+.SS "#define M_STAR   128"
+.PP
+Definition at line 60 of file cdl.h.
+.PP
+Referenced by cdl_doPointMark().
+.SS "#define M_VBLINE   2048"
+.PP
+Definition at line 64 of file cdl.h.
+.PP
+Referenced by cdl_doPointMark().
+.SS "#define M_VLINE   512"
+.PP
+Definition at line 62 of file cdl.h.
+.PP
+Referenced by cdl_doPointMark().
+.SS "#define MAX_FBCONFIG   128"
+.PP
+Definition at line 12 of file cdl.h.
+.PP
+Referenced by cdl_selectFB(), get_fbconfig(), and imd_loadImtoolrc().
+.SS "#define MAX_FRAMES   4"
+.PP
+Definition at line 13 of file cdl.h.
+.PP
+Referenced by cdl_open(), main(), vx_iisio(), and vx_initFrame().
+.SS "#define MK_BOX   2"
+.PP
+Definition at line 164 of file cdl.h.
+.PP
+Referenced by cdl_findNearest(), cdl_initBoxMarker(), and cdl_printDisplayList().
+.SS "#define MK_CIRCANN   6"
+.PP
+Definition at line 168 of file cdl.h.
+.PP
+Referenced by cdl_findNearest(), cdl_initCircAnnMarker(), and cdl_printDisplayList().
+.SS "#define MK_CIRCLE   5"
+.PP
+Definition at line 167 of file cdl.h.
+.PP
+Referenced by cdl_findNearest(), cdl_initCircleMarker(), and cdl_printDisplayList().
+.SS "#define MK_ELLIPANN   8"
+.PP
+Definition at line 170 of file cdl.h.
+.PP
+Referenced by cdl_findNearest(), cdl_initEllAnnMarker(), and cdl_printDisplayList().
+.SS "#define MK_ELLIPSE   7"
+.PP
+Definition at line 169 of file cdl.h.
+.PP
+Referenced by cdl_findNearest(), cdl_initEllipseMarker(), and cdl_printDisplayList().
+.SS "#define MK_LINE   1"
+.PP
+Definition at line 163 of file cdl.h.
+.PP
+Referenced by cdl_findNearest(), cdl_initLineMarker(), and cdl_printDisplayList().
+.SS "#define MK_POINT   0"
+.PP
+Definition at line 162 of file cdl.h.
+.PP
+Referenced by cdl_deleteMark(), cdl_findNearest(), cdl_initPointLabelMarker(), cdl_initPointMarker(), and cdl_printDisplayList().
+.SS "#define MK_POLYGON   4"
+.PP
+Definition at line 166 of file cdl.h.
+.PP
+Referenced by cdl_findNearest(), cdl_initPolygonMarker(), and cdl_printDisplayList().
+.SS "#define MK_POLYLINE   3"
+.PP
+Definition at line 165 of file cdl.h.
+.PP
+Referenced by cdl_findNearest(), cdl_initPolylineMarker(), and cdl_printDisplayList().
+.SS "#define MK_TEXT   9"
+.PP
+Definition at line 171 of file cdl.h.
+.PP
+Referenced by cdl_deleteMark(), cdl_findNearest(), cdl_initTextMarker(), and cdl_printDisplayList().
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBCDL\fP* \fBCDLPtr\fP"
+.PP
+Definition at line 81 of file cdl.h.
+.PP
+Referenced by cdl_applyZscale(), cdl_clearFrame(), cdl_clearOverlay(), cdl_close(), cdl_computeZscale(), cdl_deleteMark(), cdl_displayFITS(), cdl_displayIRAF(), cdl_displayPix(), cdl_freeDisplayList(), cdl_getContrast(), cdl_getFBConfig(), cdl_getFrame(), cdl_getName(), cdl_getPixRegion(), cdl_getSample(), cdl_getSampleLines(), cdl_getTitle(), cdl_getWCS(), cdl_getZScale(), cdl_getZTrans(), cdl_insertMarker(), cdl_lookupFBSize(), cdl_mapFrame(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markCoordsFile(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_open(), cdl_printPix(), cdl_printPixToFile(), cdl_readCursor(), cdl_readFrameBuffer(), cdl_readImage(), cdl_readSubRaster(), cdl_redrawOverlay(), cdl_removeMarker(), cdl_selectFB(), cdl_setContrast(), cdl_setCursor(), cdl_setFBConfig(), cdl_setFont(), cdl_setFrame(), cdl_setLineStyle(), cdl_setLineWidth(), cdl_setName(), cdl_setSample(), cdl_setSampleLines(), cdl_setTextWidth(), cdl_setTitle(), cdl_setWCS(), cdl_setZScale(), cdl_setZTrans(), cdl_writeSubRaster(), cdl_zscaleImage(), and main().
+.SS "typedef struct \fBMarker\fP* \fBMarkerPtr\fP"
+.PP
+Definition at line 82 of file cdl.h.
+.PP
+Referenced by cdl_clearOverlay(), cdl_deleteMark(), cdl_displayPix(), cdl_findNearest(), cdl_freeDisplayList(), cdl_initBoxMarker(), cdl_initCircAnnMarker(), cdl_initCircleMarker(), cdl_initEllAnnMarker(), cdl_initEllipseMarker(), cdl_initLineMarker(), cdl_initMarkPos(), cdl_initPointLabelMarker(), cdl_initPointMarker(), cdl_initPolygonMarker(), cdl_initPolylineMarker(), cdl_initTextMarker(), cdl_insertMarker(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_open(), cdl_printDisplayList(), cdl_redrawOverlay(), and cdl_removeMarker().
+.SH "Function Documentation"
+.PP 
+.SS "int cdl_clearFrame ()"
+.PP
+Referenced by vx_iisio().
+.SS "int cdl_clearOverlay ()"
+.PP
+.SS "void cdl_close ()"
+.PP
+.SS "void cdl_computeZscale ()"
+.PP
+Referenced by cdl_displayPix().
+.SS "int cdl_deleteMark ()"
+.PP
+.SS "int cdl_displayFITS ()"
+.PP
+.SS "int cdl_displayIRAF ()"
+.PP
+.SS "int cdl_displayPix ()"
+.PP
+Referenced by cdl_displayFITS(), and cdl_displayIRAF().
+.SS "\fBMarkerPtr\fP cdl_findNearest (\fBMarkerPtr\fP head, int x, int y)"
+.PP
+Definition at line 2381 of file cdlmark.c.
+.SS "void cdl_getContrast ()"
+.PP
+.SS "void cdl_getFBConfig ()"
+.PP
+.SS "void cdl_getFrame ()"
+.PP
+.SS "void cdl_getName ()"
+.PP
+.SS "void cdl_getSample ()"
+.PP
+.SS "void cdl_getSampleLines ()"
+.PP
+.SS "void cdl_getTitle ()"
+.PP
+.SS "int cdl_getWCS ()"
+.PP
+Referenced by cdl_mapFrame().
+.SS "void cdl_getZoom ()"
+.PP
+.SS "void cdl_getZScale ()"
+.PP
+Referenced by cdl_applyZscale().
+.SS "void cdl_getZTrans ()"
+.PP
+Referenced by cdl_applyZscale().
+.SS "void cdl_lookupFBSize ()"
+.PP
+.SS "int cdl_markBox ()"
+.PP
+.SS "int cdl_markCircAnnuli ()"
+.PP
+.SS "int cdl_markCircle ()"
+.PP
+.SS "int cdl_markCoordsFile ()"
+.PP
+.SS "int cdl_markEllipAnnuli ()"
+.PP
+.SS "int cdl_markEllipse ()"
+.PP
+.SS "int cdl_markLine ()"
+.PP
+.SS "int cdl_markPoint ()"
+.PP
+Referenced by cdl_markCoordsFile().
+.SS "int cdl_markPolygon ()"
+.PP
+.SS "int cdl_markPolyline ()"
+.PP
+.SS "int cdl_markText ()"
+.PP
+Referenced by cdl_markPoint(), and cdl_markPointLabel().
+.SS "\fBCDLPtr\fP cdl_open ()"
+.PP
+Referenced by main().
+.SS "int cdl_printPix ()"
+.PP
+.SS "int cdl_printPixToFile ()"
+.PP
+.SS "char cdl_readCursor ()"
+.PP
+Referenced by vx_iisio().
+.SS "int cdl_readFITS ()"
+.PP
+Referenced by cdl_displayFITS().
+.SS "int cdl_readFrameBuffer ()"
+.PP
+.SS "int cdl_readImage ()"
+.PP
+.SS "int cdl_readIRAF ()"
+.PP
+Referenced by cdl_displayIRAF().
+.SS "int cdl_readSubRaster ()"
+.PP
+Referenced by cdl_getPixRegion(), and vx_iisio().
+.SS "int cdl_redrawOverlay ()"
+.PP
+.SS "void cdl_selectFB ()"
+.PP
+Referenced by cdl_displayPix().
+.SS "void cdl_setContrast ()"
+.PP
+.SS "int cdl_setCursor ()"
+.PP
+Referenced by vx_iisio().
+.SS "void cdl_setDebug ()"
+.PP
+Referenced by cdl_open().
+.SS "void cdl_setFBConfig ()"
+.PP
+Referenced by cdl_displayPix(), cdl_selectFB(), and vx_iisio().
+.SS "void cdl_setFont ()"
+.PP
+.SS "void cdl_setFrame ()"
+.PP
+Referenced by cdl_mapFrame(), and vx_iisio().
+.SS "void cdl_setLineStyle ()"
+.PP
+.SS "void cdl_setLineWidth ()"
+.PP
+.SS "void cdl_setName ()"
+.PP
+Referenced by cdl_displayFITS(), and cdl_displayIRAF().
+.SS "void cdl_setSample ()"
+.PP
+.SS "void cdl_setSampleLines ()"
+.PP
+.SS "void cdl_setTextWidth ()"
+.PP
+Referenced by cdl_setFont().
+.SS "void cdl_setTitle ()"
+.PP
+Referenced by cdl_displayFITS(), and cdl_displayIRAF().
+.SS "int cdl_setWCS ()"
+.PP
+Referenced by cdl_mapFrame(), and vx_iisio().
+.SS "void cdl_setZoom ()"
+.PP
+.SS "void cdl_setZScale ()"
+.PP
+Referenced by cdl_displayPix(), and cdl_zscaleImage().
+.SS "void cdl_setZTrans ()"
+.PP
+.SS "int cdl_writeSubRaster ()"
+.PP
+Referenced by cdl_clearOverlay(), cdl_deleteMark(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_redrawOverlay(), and vx_iisio().
+.SS "void cdl_zscale ()"
+.PP
+Referenced by cdl_computeZscale().
+.SS "void cdl_zscaleImage ()"
+.PP
+Referenced by cdl_displayPix().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

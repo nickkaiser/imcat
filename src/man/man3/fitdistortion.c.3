@@ -1,0 +1,48 @@
+.TH "fitdistortion.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitdistortion.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'utils/modefunc.h'\fP
+.br
+\fC#include 'utils/lu.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitdistortion --- \fBfit\fP for field distortion\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitdistortion ne [\fBoptions\fP...] \\\fBn\fP\\		-\fBl\fP \fBlmax\fP		# max \fBorder\fP for field distortion polynomials (3)\\\fBn\fP\\		-\fBd\fP parfilebase	# basename for transformation param files\\\fBn\fP\\		-o \fBx0\fP y0	# spatial origin for \fBmode\fP functions\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fitdistortion' reads from stdin \fBa\fP set of pairs of coords x[2][2]\\\fBn\fP\\	and exposure numbers \fBe\fP[2] (as prodced by merging \fBa\fP set of catalogues\\\fBn\fP\\	\fBpair\fP by \fBpair\fP, and with 0 <= \fBe\fP < ne) and \fBfits\fP \fBa\fP model in which sky\\\fBn\fP\\	coord '\fBr\fP' is related to chip coordinate 'x' by\\\fBn\fP\\\\\fBn\fP\\		\fBr\fP = x + sum_M a_M f_M(x) + sum_N a_{eN} f_N(x)\\\fBn\fP\\\\\fBn\fP\\	where the f_M's are polynomials of \fBorder\fP \fBl\fP = 2 to l_max and\\\fBn\fP\\	describe the field distortion and the f_N's are polynomials\\\fBn\fP\\	of \fBorder\fP 0, 1 (\fBi\fP.\fBe\fP. linear transformations) which describe the\\\fBn\fP\\	telescope pointing as well as possible scale changes, or shear\\\fBn\fP\\	introduced by atmospheric refraction etc.  With the -o option\\\fBn\fP\\	these become polynomials position relative to given spatial\\\fBn\fP\\	origin. We let exposure \fBe\fP = 0 define the orientation and scale\\\fBn\fP\\	of the image (so a_{0\fBN\fP} = 0).\\\fBn\fP\\\\\fBn\fP\\	The model is only approximate; really we should have:\\\fBn\fP\\\\\fBn\fP\\		\fBr\fP = x + sum_M a_M f_M(x) + sum_N a_{eN} f_N(x + sum_M a_M f_M(x))\\\fBn\fP\\\\\fBn\fP\\	which is equivalent to the simpler form above in the limit\\\fBn\fP\\	of small \fBmode\fP coefficient amplitudes (\fBi\fP.\fBe\fP small rotations between\\\fBn\fP\\	fields etc.\\\fBn\fP\\	By default, the transformation parameters a_{lm} are written to stdout\\\fBn\fP\\	as \fBa\fP concatenation of '.par' format files (which is not particularly\\\fBn\fP\\	useful), but with the -\fBd\fP option you can specify \fBa\fP basename (which\\\fBn\fP\\	might be \fBa\fP preexisting directory) and fitgeometry will create \fBa\fP set of files\\\fBn\fP\\	'parfilebase''\fBe\fP'.par with \fBe\fP = 0... ne-1 containing the coefficients\\\fBn\fP\\	a_{eN} describing the pointings (\fBa\fP 'null' parameter file for the\\\fBn\fP\\	\fBe\fP = 0 exposure is provided for convenience) and parfilebase'dist.par\\\fBn\fP\\	containing the distortion parameters a_M.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitdistortion --- \fBfit\fP for field distortion\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitdistortion ne [\fBoptions\fP...] \\\fBn\fP\\		-\fBl\fP \fBlmax\fP		# max \fBorder\fP for field distortion polynomials (3)\\\fBn\fP\\		-\fBd\fP parfilebase	# basename for transformation param files\\\fBn\fP\\		-o \fBx0\fP y0	# spatial origin for \fBmode\fP functions\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fitdistortion' reads from stdin \fBa\fP set of pairs of coords x[2][2]\\\fBn\fP\\	and exposure numbers \fBe\fP[2] (as prodced by merging \fBa\fP set of catalogues\\\fBn\fP\\	\fBpair\fP by \fBpair\fP, and with 0 <= \fBe\fP < ne) and \fBfits\fP \fBa\fP model in which sky\\\fBn\fP\\	coord '\fBr\fP' is related to chip coordinate 'x' by\\\fBn\fP\\\\\fBn\fP\\		\fBr\fP = x + sum_M a_M f_M(x) + sum_N a_{eN} f_N(x)\\\fBn\fP\\\\\fBn\fP\\	where the f_M's are polynomials of \fBorder\fP \fBl\fP = 2 to l_max and\\\fBn\fP\\	describe the field distortion and the f_N's are polynomials\\\fBn\fP\\	of \fBorder\fP 0, 1 (\fBi\fP.\fBe\fP. linear transformations) which describe the\\\fBn\fP\\	telescope pointing as well as possible scale changes, or shear\\\fBn\fP\\	introduced by atmospheric refraction etc.  With the -o option\\\fBn\fP\\	these become polynomials position relative to given spatial\\\fBn\fP\\	origin. We let exposure \fBe\fP = 0 define the orientation and scale\\\fBn\fP\\	of the image (so a_{0\fBN\fP} = 0).\\\fBn\fP\\\\\fBn\fP\\	The model is only approximate; really we should have:\\\fBn\fP\\\\\fBn\fP\\		\fBr\fP = x + sum_M a_M f_M(x) + sum_N a_{eN} f_N(x + sum_M a_M f_M(x))\\\fBn\fP\\\\\fBn\fP\\	which is equivalent to the simpler form above in the limit\\\fBn\fP\\	of small \fBmode\fP coefficient amplitudes (\fBi\fP.\fBe\fP small rotations between\\\fBn\fP\\	fields etc.\\\fBn\fP\\	By default, the transformation parameters a_{lm} are written to stdout\\\fBn\fP\\	as \fBa\fP concatenation of '.par' format files (which is not particularly\\\fBn\fP\\	useful), but with the -\fBd\fP option you can specify \fBa\fP basename (which\\\fBn\fP\\	might be \fBa\fP preexisting directory) and fitgeometry will create \fBa\fP set of files\\\fBn\fP\\	'parfilebase''\fBe\fP'.par with \fBe\fP = 0... ne-1 containing the coefficients\\\fBn\fP\\	a_{eN} describing the pointings (\fBa\fP 'null' parameter file for the\\\fBn\fP\\	\fBe\fP = 0 exposure is provided for convenience) and parfilebase'dist.par\\\fBn\fP\\	containing the distortion parameters a_M.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 6 of file fitdistortion.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 59 of file fitdistortion.c.
+.PP
+References A, a, B, det(), e, e1, error_exit, exit(), f(), i, indx, l, lcpipe, ll, M, m, modefunc_addargcomment(), mylubksb(), myludcmp(), N, ne, setorigin(), usage, write2Dpolymodel(), and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,47 @@
+.TH "imview_stuff.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+imview_stuff.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBalloc_grays\fP (int *\fBn_cells\fP)"
+.br
+.ti -1c
+.RI "Pixmap \fBmake_pixmap\fP (int fMin, int fMax, int \fBn_cells\fP)"
+.br
+.ti -1c
+.RI "void \fBset_grays\fP (int \fBn_cells\fP, int n_lo, int n_hi)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void alloc_grays (int * n_cells)"
+.PP
+Definition at line 26 of file imview_stuff.c.
+.PP
+References cmap, depth, exit(), False, i, info(), main_w, MAX_GRAYS, mydisplay, mygc, myscreen, mywindow, n_cells, n_grays, and pixel.
+.PP
+Referenced by main().
+.SS "Pixmap make_pixmap (int fMin, int fMax, int n_cells)"
+.PP
+Definition at line 107 of file imview_stuff.c.
+.PP
+References color_index(), depth, error_exit, exit(), f, free(), gray, i, j, malloc(), mydisplay, mygc, myscreen, mywindow, N, n_cells, read_fits_head(), read_fits_line(), scale, and SIZE_GOAL.
+.PP
+Referenced by main().
+.SS "void set_grays (int n_cells, int n_lo, int n_hi)"
+.PP
+Definition at line 70 of file imview_stuff.c.
+.PP
+References cmap, f, gray, i, mydisplay, n_cells, and pixel.
+.PP
+Referenced by main(), and new_fminmax().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

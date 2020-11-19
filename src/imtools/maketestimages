@@ -1,0 +1,11 @@
+#! /bin/sh
+
+echoeval "ic -c 32 32 'rand' | unscrunch | unscrunch | unscrunch | unscrunch > testgrid512.fits"
+echoeval "makesubimage 0 0 256 256 < testgrid512.fits > testgrid256.fits"
+echoeval "ic -c 512 512 -s 1 'grand 2000 *' | smooth -f 0 0 32 > $$.1"
+echoeval "ic -c 512 512 -s 2 'grand 2000 *' | smooth -f 0 0 32 > $$.2"
+echoeval "album 1 2 $$.1 $$.2 > testdef512.fits"
+echoeval "doto $$.1 makesubimage 0 0 256 256"
+echoeval "doto $$.2 makesubimage 0 0 256 256"
+echoeval "album 1 2 $$.1 $$.2 > testdef256.fits"
+echoeval "rm $$.1 $$.2"

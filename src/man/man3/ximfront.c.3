@@ -1,0 +1,489 @@
+.TH "ximfront.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ximfront.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <X11/Xlib.h>\fP
+.br
+\fC#include <X11/Intrinsic.h>\fP
+.br
+\fC#include <X11/StringDefs.h>\fP
+.br
+\fC#include <X11/Shell.h>\fP
+.br
+\fC#include <X11/cursorfont.h>\fP
+.br
+\fC#include <X11/Xaw/Label.h>\fP
+.br
+\fC#include <X11/Xaw/Box.h>\fP
+.br
+\fC#include <X11/Xaw/Form.h>\fP
+.br
+\fC#include <X11/Xaw/Command.h>\fP
+.br
+\fC#include <X11/Xaw/Viewport.h>\fP
+.br
+\fC#include <X11/Xaw/Scrollbar.h>\fP
+.br
+\fC#include <X11/Xaw/Dialog.h>\fP
+.br
+\fC#include <X11/Xaw/Cardinals.h>\fP
+.br
+\fC#include 'ximfront.h'\fP
+.br
+\fC#include 'ximback.h'\fP
+.br
+\fC#include 'ximbuttons.h'\fP
+.br
+\fC#include 'ximcolor.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fB_AppResources\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX_SLIDERS\fP   5"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fB_AppResources\fP \fBAppResources\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char **argv)"
+.br
+.ti -1c
+.RI "void \fBSyntax\fP (XtAppContext app_con, char *call)"
+.br
+.ti -1c
+.RI "void \fBmakeslider\fP (int index, Widget fromVert, Widget fromHoriz)"
+.br
+.ti -1c
+.RI "void \fBxfgetargstring\fP (char **argstrptr)"
+.br
+.ti -1c
+.RI "int \fBxfgetvalue\fP (int name)"
+.br
+.ti -1c
+.RI "void \fBmakewidgetdatabase\fP (void)"
+.br
+.ti -1c
+.RI "int \fBxfgetwidgetnumber\fP (Widget thewidget)"
+.br
+.ti -1c
+.RI "Widget \fBxfgetwidget\fP (int thenumber)"
+.br
+.ti -1c
+.RI "void \fBsliderChanged\fP (Widget \fBw\fP, XtPointer closure, XtPointer call_data)"
+.br
+.ti -1c
+.RI "void \fBsetslider\fP (int index, float thumbpos, char *\fBlabel\fP, char *value)"
+.br
+.ti -1c
+.RI "void \fBsetlabelstring\fP (Widget \fBw\fP, char *thestring)"
+.br
+.ti -1c
+.RI "void \fBsetlabelnumber\fP (Widget \fBw\fP, float thenumber)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "XtResource \fBresources\fP []"
+.br
+.ti -1c
+.RI "String \fBfallback_resources\fP []"
+.br
+.ti -1c
+.RI "XrmOptionDescRec \fBoptions\fP []"
+.br
+.ti -1c
+.RI "char * \fBhelpmsg\fP []"
+.br
+.ti -1c
+.RI "Widget \fBtoplevel\fP"
+.br
+.ti -1c
+.RI "Widget \fBpicwidget\fP"
+.br
+.ti -1c
+.RI "Widget \fBviewport\fP"
+.br
+.ti -1c
+.RI "Widget \fBtopform\fP"
+.br
+.ti -1c
+.RI "Widget \fBtitle\fP"
+.br
+.ti -1c
+.RI "Widget \fBcontrols\fP"
+.br
+.ti -1c
+.RI "Widget \fBstats\fP"
+.br
+.ti -1c
+.RI "Widget \fBbuttons\fP"
+.br
+.ti -1c
+.RI "Widget \fBsliders\fP"
+.br
+.ti -1c
+.RI "Widget \fBslider\fP [MAX_SLIDERS]"
+.br
+.ti -1c
+.RI "Widget \fBscrollbar\fP [MAX_SLIDERS]"
+.br
+.ti -1c
+.RI "Widget \fBsliderlabel\fP [MAX_SLIDERS]"
+.br
+.ti -1c
+.RI "Widget \fBslidervalue\fP [MAX_SLIDERS]"
+.br
+.ti -1c
+.RI "Widget \fBzoom\fP"
+.br
+.ti -1c
+.RI "Widget \fBunzoom\fP"
+.br
+.ti -1c
+.RI "Widget \fBmakemask\fP"
+.br
+.ti -1c
+.RI "Widget \fBprint\fP"
+.br
+.ti -1c
+.RI "Widget \fBplot\fP"
+.br
+.ti -1c
+.RI "Widget \fBposlabel\fP"
+.br
+.ti -1c
+.RI "Widget \fBpixvallabel\fP"
+.br
+.ti -1c
+.RI "Widget \fBpixrangelabel\fP"
+.br
+.ti -1c
+.RI "Pixmap \fBpixmap\fP [MAX_LEVELS]"
+.br
+.ti -1c
+.RI "Widget \fBwidgetlist\fP [100]"
+.br
+.ti -1c
+.RI "int \fBnumberlist\fP [100]"
+.br
+.ti -1c
+.RI "\fBAppResources\fP \fBapp_resources\fP"
+.br
+.ti -1c
+.RI "char \fBargstring\fP [256]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX_SLIDERS   5"
+.PP
+Definition at line 80 of file ximfront.c.
+.PP
+Referenced by sliderChanged().
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fB_AppResources\fP  \fBAppResources\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char ** argv)"
+.PP
+Definition at line 99 of file ximfront.c.
+.PP
+References app_resources, argsToString(), argstring, buttons, color, controls, fallback_resources, _AppResources::goodwindowsize, makemask, makepopup(), makeslider(), makewidgetdatabase(), myworkproc1(), myworkproc2(), myworkproc3(), options, picclick(), picwidget, pixvallabel, plot, poslabel, print, resources, slider, sliders, stats, Syntax(), Title(), title, topform, toplevel, True, UnZoom(), unzoom, viewport, Zoom(), and zoom.
+.SS "void makeslider (int index, Widget fromVert, Widget fromHoriz)"
+.PP
+Definition at line 260 of file ximfront.c.
+.PP
+References scrollbar, slider, sliderChanged(), sliderlabel, sliders, and slidervalue.
+.PP
+Referenced by main().
+.SS "void makewidgetdatabase (void)"
+.PP
+Definition at line 317 of file ximfront.c.
+.PP
+References flabel, FLABEL, MAKEMASK, makemask, numberlist, PICWIDGET, picwidget, PIXVALLABEL, pixvallabel, PLOT, plot, POSLABEL, poslabel, PRINT, print, slider, SLIDER2, TITLE, title, tlabel, TLABEL, TOPLEVEL, toplevel, and widgetlist.
+.SS "void setlabelnumber (Widget w, float thenumber)"
+.PP
+Definition at line 421 of file ximfront.c.
+.PP
+References setlabelstring(), and w.
+.PP
+Referenced by sliderChanged().
+.SS "void setlabelstring (Widget w, char * thestring)"
+.PP
+Definition at line 408 of file ximfront.c.
+.PP
+References n, and w.
+.PP
+Referenced by myworkproc1(), picclick(), setlabelnumber(), and setslider().
+.SS "void setslider (int index, float thumbpos, char * label, char * value)"
+.PP
+Definition at line 393 of file ximfront.c.
+.PP
+References label, n, scrollbar, setlabelstring(), sliderlabel, and slidervalue.
+.PP
+Referenced by setcolorscheme().
+.SS "void sliderChanged (Widget w, XtPointer closure, XtPointer call_data)"
+.PP
+Definition at line 375 of file ximfront.c.
+.PP
+References MAX_SLIDERS, newslidervalue(), scrollbar, set_shades(), setlabelnumber(), setsliderval(), slidervalue, and w.
+.PP
+Referenced by makeslider().
+.SS "void Syntax (XtAppContext app_con, char * call)"
+.PP
+Definition at line 242 of file ximfront.c.
+.PP
+References exit(), and helpmsg.
+.PP
+Referenced by main().
+.SS "void xfgetargstring (char ** argstrptr)"
+.PP
+Definition at line 288 of file ximfront.c.
+.PP
+References argstring.
+.SS "int xfgetvalue (int name)"
+.PP
+Definition at line 296 of file ximfront.c.
+.PP
+References app_resources, error_exit, _AppResources::fmax, FMAX, _AppResources::fmin, FMIN, GOODSIZE, and _AppResources::goodwindowsize.
+.PP
+Referenced by readdataheader(), and setcolorscheme().
+.SS "Widget xfgetwidget (int thenumber)"
+.PP
+Definition at line 359 of file ximfront.c.
+.PP
+References error_exit, numberlist, and widgetlist.
+.PP
+Referenced by alloc_shades(), myworkproc1(), picclick(), and showpixmap().
+.SS "int xfgetwidgetnumber (Widget thewidget)"
+.PP
+Definition at line 343 of file ximfront.c.
+.PP
+References error_exit, numberlist, and widgetlist.
+.PP
+Referenced by makepopup().
+.SH "Variable Documentation"
+.PP 
+.SS "\fBAppResources\fP \fBapp_resources\fP\fC [static]\fP"
+.PP
+Definition at line 95 of file ximfront.c.
+.PP
+Referenced by main(), and xfgetvalue().
+.SS "char \fBargstring\fP[256]\fC [static]\fP"
+.PP
+Definition at line 96 of file ximfront.c.
+.PP
+Referenced by main(), and xfgetargstring().
+.SS "Widget \fBbuttons\fP\fC [static]\fP"
+.PP
+Definition at line 84 of file ximfront.c.
+.PP
+Referenced by main().
+.SS "Widget \fBcontrols\fP\fC [static]\fP"
+.PP
+Definition at line 84 of file ximfront.c.
+.PP
+Referenced by main().
+.SS "String \fBfallback_resources\fP[]"
+.PP
+\fBInitial value:\fP.nf
+ { 
+  '*Viewport*allowVert: True',
+  '*Viewport*allowHoriz: True',
+        '*Scrollbar*length: 100',
+  '*picwidget.cursor: crosshair',
+  '*picwidget.foreground: yellow',
+  '*Form.background:  DarkSlateBlue',
+  '*Command.background: CornflowerBlue',
+  '*Label.background: LightBlue',
+  '*Scrollbar.background: LightBlue',
+  '*picwidget.background: grey',
+    NULL,
+}
+.fi
+.PP
+Definition at line 51 of file ximfront.c.
+.SS "char* \fBhelpmsg\fP[]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+    '-min fmin                minimum f-value (0)',
+    '-max fmax                maximum f-value (256)',
+    '-goodsize                  good window size (512)',
+NULL }
+.fi
+.PP
+Definition at line 72 of file ximfront.c.
+.PP
+Referenced by Syntax().
+.SS "Widget \fBmakemask\fP\fC [static]\fP"
+.PP
+Definition at line 87 of file ximfront.c.
+.PP
+Referenced by main(), and makewidgetdatabase().
+.SS "int \fBnumberlist\fP[100]\fC [static]\fP"
+.PP
+Definition at line 92 of file ximfront.c.
+.PP
+Referenced by makewidgetdatabase(), xfgetwidget(), and xfgetwidgetnumber().
+.SS "XrmOptionDescRec \fBoptions\fP[]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+    {'-goodsize', 'goodwindowsize',   XrmoptionSepArg,        NULL},
+    {'-min', 'fmin',   XrmoptionSepArg,       NULL},
+    {'-max', 'fmax',   XrmoptionSepArg,        NULL},
+}
+.fi
+.PP
+Definition at line 65 of file ximfront.c.
+.PP
+Referenced by main().
+.SS "Widget \fBpicwidget\fP\fC [static]\fP"
+.PP
+Definition at line 83 of file ximfront.c.
+.PP
+Referenced by main(), and makewidgetdatabase().
+.SS "Pixmap \fBpixmap\fP[MAX_LEVELS]\fC [static]\fP"
+.PP
+Definition at line 89 of file ximfront.c.
+.SS "Widget \fBpixrangelabel\fP\fC [static]\fP"
+.PP
+Definition at line 88 of file ximfront.c.
+.SS "Widget \fBpixvallabel\fP\fC [static]\fP"
+.PP
+Definition at line 88 of file ximfront.c.
+.PP
+Referenced by main(), and makewidgetdatabase().
+.SS "Widget \fBplot\fP\fC [static]\fP"
+.PP
+Definition at line 87 of file ximfront.c.
+.PP
+Referenced by main(), and makewidgetdatabase().
+.SS "Widget \fBposlabel\fP\fC [static]\fP"
+.PP
+Definition at line 88 of file ximfront.c.
+.PP
+Referenced by main(), and makewidgetdatabase().
+.SS "Widget print\fC [static]\fP"
+.PP
+Definition at line 87 of file ximfront.c.
+.PP
+Referenced by main(), and makewidgetdatabase().
+.SS "XtResource \fBresources\fP[]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+    {'fmin', 'Fmin', XtRInt, sizeof(int),
+     XtOffsetOf(AppResources, fmin), XtRImmediate, (XtPointer) 0},
+    {'fmax', 'Fmax', XtRInt, sizeof(int),
+     XtOffsetOf(AppResources, fmax), XtRImmediate, (XtPointer) 256},
+    {'goodwindowsize', 'Goodwindowsize', XtRInt, sizeof(int),
+     XtOffsetOf(AppResources, goodwindowsize), XtRImmediate, (XtPointer) 512},
+}
+.fi
+.PP
+Definition at line 42 of file ximfront.c.
+.PP
+Referenced by main().
+.SS "Widget \fBscrollbar\fP[MAX_SLIDERS]\fC [static]\fP"
+.PP
+Definition at line 85 of file ximfront.c.
+.PP
+Referenced by makeslider(), setslider(), and sliderChanged().
+.SS "Widget \fBslider\fP[MAX_SLIDERS]\fC [static]\fP"
+.PP
+Definition at line 85 of file ximfront.c.
+.PP
+Referenced by main(), makeslider(), and makewidgetdatabase().
+.SS "Widget \fBsliderlabel\fP[MAX_SLIDERS]\fC [static]\fP"
+.PP
+Definition at line 86 of file ximfront.c.
+.PP
+Referenced by makeslider(), and setslider().
+.SS "Widget \fBsliders\fP\fC [static]\fP"
+.PP
+Definition at line 84 of file ximfront.c.
+.PP
+Referenced by main(), and makeslider().
+.SS "Widget \fBslidervalue\fP[MAX_SLIDERS]\fC [static]\fP"
+.PP
+Definition at line 86 of file ximfront.c.
+.PP
+Referenced by makeslider(), setslider(), and sliderChanged().
+.SS "Widget \fBstats\fP\fC [static]\fP"
+.PP
+Definition at line 84 of file ximfront.c.
+.PP
+Referenced by main().
+.SS "Widget \fBtitle\fP\fC [static]\fP"
+.PP
+Definition at line 84 of file ximfront.c.
+.SS "Widget \fBtopform\fP\fC [static]\fP"
+.PP
+Definition at line 84 of file ximfront.c.
+.PP
+Referenced by main().
+.SS "Widget \fBtoplevel\fP\fC [static]\fP"
+.PP
+Definition at line 82 of file ximfront.c.
+.PP
+Referenced by main(), and makewidgetdatabase().
+.SS "Widget \fBunzoom\fP\fC [static]\fP"
+.PP
+Definition at line 87 of file ximfront.c.
+.PP
+Referenced by main().
+.SS "Widget \fBviewport\fP\fC [static]\fP"
+.PP
+Definition at line 83 of file ximfront.c.
+.PP
+Referenced by main().
+.SS "Widget \fBwidgetlist\fP[100]\fC [static]\fP"
+.PP
+Definition at line 91 of file ximfront.c.
+.PP
+Referenced by makewidgetdatabase(), xfgetwidget(), and xfgetwidgetnumber().
+.SS "Widget \fBzoom\fP\fC [static]\fP"
+.PP
+Definition at line 87 of file ximfront.c.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,194 @@
+.TH "print_stuff_nk.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+print_stuff_nk.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <signal.h>\fP
+.br
+\fC#include 'print_stuff.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBPAGE_WIDTH\fP   512"
+.br
+.ti -1c
+.RI "#define \fBPAGE_HEIGHT\fP   692"
+.br
+.ti -1c
+.RI "#define \fBPAGE_MARGIN\fP   50"
+.br
+.ti -1c
+.RI "#define \fBEPSF_A\fP   50"
+.br
+.ti -1c
+.RI "#define \fBEPSF_B\fP   50"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBprint_im\fP (int \fBN1\fP, int \fBN2\fP, int Ncolors, double(*gray)(), char *\fBcaption\fP)"
+.br
+.ti -1c
+.RI "void \fBps\fP (char *string)"
+.br
+.ti -1c
+.RI "void \fBpsDrawChar\fP (char aChar)"
+.br
+.ti -1c
+.RI "void \fBprint_caption\fP (char *\fBcaption\fP)"
+.br
+.ti -1c
+.RI "void \fBset_print_opf\fP (FILE *thefile)"
+.br
+.ti -1c
+.RI "void \fBsetpagesize\fP (int pagewidth, int pageheight, int pagemargin, int dosetpagedevice)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBpage_width\fP = PAGE_WIDTH"
+.br
+.ti -1c
+.RI "int \fBpage_height\fP = PAGE_HEIGHT"
+.br
+.ti -1c
+.RI "int \fBpage_margin\fP = PAGE_MARGIN"
+.br
+.ti -1c
+.RI "int \fBgdosetpagedevice\fP = 0"
+.br
+.ti -1c
+.RI "int \fBpsstringlen\fP"
+.br
+.ti -1c
+.RI "char * \fBpsstring\fP"
+.br
+.ti -1c
+.RI "FILE * \fBopf\fP = stdout"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define EPSF_A   50"
+.PP
+Definition at line 31 of file print_stuff_nk.c.
+.SS "#define EPSF_B   50"
+.PP
+Definition at line 32 of file print_stuff_nk.c.
+.SS "#define PAGE_HEIGHT   692"
+.PP
+Definition at line 29 of file print_stuff_nk.c.
+.SS "#define PAGE_MARGIN   50"
+.PP
+Definition at line 30 of file print_stuff_nk.c.
+.SS "#define PAGE_WIDTH   512"
+.PP
+\fBprint_stuff.c\fP functions for printing images as postscript
+.PP
+public use: int print_im(int N1, int N2, int Ncolors, double (*gray)(), char *caption);
+.PP
+private use: void \fBprint_caption(char *caption)\fP void \fBpsDrawChar(char aChar)\fP void \fBps(char *string)\fP
+.PP
+\fBprint_im()\fP is passed a function which returns gray(i,j,col) on range 0-1.0 where col = 0,1,2 for r,g,b Definition at line 28 of file print_stuff_nk.c.
+.SH "Function Documentation"
+.PP 
+.SS "void print_caption (char * caption)"
+.PP
+Definition at line 176 of file print_stuff_nk.c.
+.PP
+References c, caption, h, len, ps(), psDrawChar(), psstring, size, and v.
+.PP
+Referenced by main(), and print_im().
+.SS "void print_im (int N1, int N2, int Ncolors, double(* gray)(), char * caption)"
+.PP
+Definition at line 46 of file print_stuff_nk.c.
+.PP
+References caption, color, error_exit, gdosetpagedevice, gray(), i, j, N1, N2, page_height, page_margin, page_width, print_caption(), ps(), psstring, and psstringlen.
+.PP
+Referenced by printall(), and printselection().
+.SS "void ps (char * string)"
+.PP
+Definition at line 152 of file print_stuff_nk.c.
+.PP
+References opf.
+.PP
+Referenced by main(), print_caption(), print_im(), printimage(), and psDrawChar().
+.SS "void psDrawChar (char aChar)"
+.PP
+Definition at line 158 of file print_stuff_nk.c.
+.PP
+References ps(), and psstring.
+.PP
+Referenced by print_caption().
+.SS "void set_print_opf (FILE * thefile)"
+.PP
+Definition at line 198 of file print_stuff_nk.c.
+.PP
+References opf.
+.PP
+Referenced by main(), printall(), and printselection().
+.SS "void setpagesize (int pagewidth, int pageheight, int pagemargin, int dosetpagedevice)"
+.PP
+Definition at line 205 of file print_stuff_nk.c.
+.PP
+References gdosetpagedevice, page_height, page_margin, and page_width.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBgdosetpagedevice\fP = 0\fC [static]\fP"
+.PP
+Definition at line 38 of file print_stuff_nk.c.
+.PP
+Referenced by print_im(), and setpagesize().
+.SS "FILE* \fBopf\fP = stdout\fC [static]\fP"
+.PP
+Definition at line 44 of file print_stuff_nk.c.
+.PP
+Referenced by ps(), and set_print_opf().
+.SS "int \fBpage_height\fP = PAGE_HEIGHT\fC [static]\fP"
+.PP
+Definition at line 36 of file print_stuff_nk.c.
+.PP
+Referenced by print_im(), and setpagesize().
+.SS "int \fBpage_margin\fP = PAGE_MARGIN\fC [static]\fP"
+.PP
+Definition at line 37 of file print_stuff_nk.c.
+.PP
+Referenced by print_im(), and setpagesize().
+.SS "int \fBpage_width\fP = PAGE_WIDTH\fC [static]\fP"
+.PP
+Definition at line 35 of file print_stuff_nk.c.
+.PP
+Referenced by print_im(), and setpagesize().
+.SS "char* \fBpsstring\fP"
+.PP
+Definition at line 42 of file print_stuff_nk.c.
+.SS "int \fBpsstringlen\fP"
+.PP
+Definition at line 41 of file print_stuff_nk.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

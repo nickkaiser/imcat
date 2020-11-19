@@ -1,0 +1,47 @@
+.TH "tcl.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+tcl.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBtcl\fP (double dt, int nsteps, double *\fBr\fP, double *\fBv\fP)"
+.br
+.ti -1c
+.RI "void \fBjupiteron\fP (double phase)"
+.br
+.ti -1c
+.RI "void \fBaddjupitergravity\fP (double *g, double *\fBr\fP)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void addjupitergravity (double * g, double * r)"
+.PP
+Definition at line 59 of file tcl.c.
+.PP
+References A_JUPITER, assign(), g(), i, jupitermass, jupiterphase, jupiterr, length(), r, and scale().
+.PP
+Referenced by tcl().
+.SS "void jupiteron (double phase)"
+.PP
+Definition at line 50 of file tcl.c.
+.PP
+References A_JUPITER, dojupiter, jupitermass, jupiteromega, jupiterphase, jupiterr, M_JUPITER, and M_SUN.
+.PP
+Referenced by main().
+.SS "void tcl (double dt, int nsteps, double * r, double * v)"
+.PP
+Definition at line 11 of file tcl.c.
+.PP
+References addjupitergravity(), copy(), dojupiter, free(), g(), i, jupiteromega, jupiterphase, length(), r, scale(), and v.
+.PP
+Referenced by chisquared(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,225 @@
+.TH "cdlProto.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cdlProto.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBIMDPtr\fP \fBimd_open\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_setFBConfig\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_writeDisplay\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_readDisplay\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_setFrame\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_setCursor\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_readCursor\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_close\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_readSubRaster\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_writeSubRaster\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_clearFrame\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_setWCS\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_getWCS\fP ()"
+.br
+.ti -1c
+.RI "int \fBcom_writeData\fP ()"
+.br
+.ti -1c
+.RI "int \fBcom_readData\fP ()"
+.br
+.ti -1c
+.RI "int \fBcom_setFBConfig\fP ()"
+.br
+.ti -1c
+.RI "int \fBcom_readCursor\fP ()"
+.br
+.ti -1c
+.RI "int \fBcom_setCursor\fP ()"
+.br
+.ti -1c
+.RI "int \fBcom_setFrame\fP ()"
+.br
+.ti -1c
+.RI "int \fBcom_writeWCS\fP ()"
+.br
+.ti -1c
+.RI "int \fBcom_readWCS\fP ()"
+.br
+.ti -1c
+.RI "int \fBcom_eraseFrame\fP ()"
+.br
+.ti -1c
+.RI "int \fBcom_setDebug\fP ()"
+.br
+.ti -1c
+.RI "\fBPSImage\fP * \fBeps_init\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_print\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_close\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_setPage\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_setCmap\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_setCompress\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_setColorType\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_setLabel\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_setTransform\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_setCorners\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_getImageSize\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_getImagePos\fP ()"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int com_eraseFrame ()"
+.PP
+Referenced by imd_clearFrame().
+.SS "int com_readCursor ()"
+.PP
+Referenced by imd_readCursor().
+.SS "int com_readData ()"
+.PP
+Referenced by imd_readLine().
+.SS "int com_readWCS ()"
+.PP
+Referenced by imd_getWCS().
+.SS "int com_setCursor ()"
+.PP
+Referenced by imd_setCursor().
+.SS "int com_setDebug ()"
+.PP
+Referenced by cdl_setDebug().
+.SS "int com_setFBConfig ()"
+.PP
+Referenced by imd_getFBConfig(), and imd_setFBConfig().
+.SS "int com_setFrame ()"
+.PP
+Referenced by imd_setFrame().
+.SS "int com_writeData ()"
+.PP
+Referenced by imd_writeLine().
+.SS "int com_writeWCS ()"
+.PP
+Referenced by imd_setWCS().
+.SS "void eps_close ()"
+.PP
+Referenced by cdl_printPix(), and cdl_printPixToFile().
+.SS "void eps_getImagePos ()"
+.PP
+.SS "void eps_getImageSize ()"
+.PP
+.SS "\fBPSImage\fP* eps_init ()"
+.PP
+Definition at line 154 of file eps.c.
+.PP
+References EPS_AUTOSCALE, EPS_GRAYSCALE, EPS_LETTER, EPS_PORTRAIT, eps_setPage(), i, MAX_LENLABEL, NoCompression, pixbuf, ps(), SZ_EPSBUF, and uchar.
+.PP
+Referenced by cdl_printPix(), and cdl_printPixToFile().
+.SS "void eps_print ()"
+.PP
+Referenced by cdl_printPix(), and cdl_printPixToFile().
+.SS "void eps_setCmap ()"
+.PP
+Referenced by cdl_printPix(), and cdl_printPixToFile().
+.SS "void eps_setColorType ()"
+.PP
+Referenced by cdl_printPix(), and cdl_printPixToFile().
+.SS "void eps_setCompress ()"
+.PP
+.SS "void eps_setCorners ()"
+.PP
+Referenced by cdl_printPix(), and cdl_printPixToFile().
+.SS "void eps_setLabel ()"
+.PP
+Referenced by cdl_printPix(), and cdl_printPixToFile().
+.SS "void eps_setPage ()"
+.PP
+Referenced by eps_init().
+.SS "void eps_setTransform ()"
+.PP
+.SS "int imd_clearFrame ()"
+.PP
+Referenced by cdl_clearFrame(), and imd_displayImage().
+.SS "int imd_close ()"
+.PP
+Referenced by cdl_close().
+.SS "int imd_getWCS ()"
+.PP
+Referenced by cdl_getWCS().
+.SS "\fBIMDPtr\fP imd_open ()"
+.PP
+Referenced by cdl_open().
+.SS "int imd_readCursor ()"
+.PP
+Referenced by cdl_readCursor().
+.SS "int imd_readDisplay ()"
+.PP
+.SS "int imd_readSubRaster ()"
+.PP
+Referenced by cdl_readSubRaster(), imd_readFrameBuffer(), and imd_readImage().
+.SS "int imd_setCursor ()"
+.PP
+Referenced by cdl_setCursor().
+.SS "int imd_setFBConfig ()"
+.PP
+Referenced by cdl_open(), cdl_setFBConfig(), and imd_displayImage().
+.SS "int imd_setFrame ()"
+.PP
+Referenced by cdl_open(), cdl_setFrame(), and imd_displayImage().
+.SS "int imd_setWCS ()"
+.PP
+Referenced by cdl_setWCS(), and imd_displayImage().
+.SS "int imd_writeDisplay ()"
+.PP
+.SS "int imd_writeSubRaster ()"
+.PP
+Referenced by cdl_writeSubRaster().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

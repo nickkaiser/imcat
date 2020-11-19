@@ -1,0 +1,65 @@
+#!/usr/bin/perl
+
+$usage = "\
+NAME\
+        mergemosaiccats2 --- perl script to generate refined merged mosaiccats\
+\
+SYNOPSIS\
+        mergemosaiccats2 [options...]\
+\
+DESCRIPTION\
+        mergemosacicats2  makes a second attempt at merging the mosaic-cats\
+        created by 'makemosaiccats' using the parameters in the file\
+	'mosaicfit.par' (produced from 'mergemosacicats1.out' using\
+	'mosaicfit').\
+	The resulting merged file contains extra objects values 'r' and 'magc'\n\
+	which are (pairs of) sky coords and corrected magnitudes respectively,\n\
+	and which can be used to filter out bad pairs before feeding to\n\
+	'mosaicfit' to get a refined solution.\n\
+        Options are:\
+                -d d            # linking length (5)\
+                -D dbdir        # directory containing mosaic database (.)\
+                -c catdir       # directory containing the mosaic cats (./mosaiccats)\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+";
+
+#defaults
+$catdir = "./mosaiccats";
+$dbdir = ".";
+$tol = 5;
+
+while ($_ = shift(@ARGV)) {
+        if (/^-d/) {
+                $tol = shift(@ARGV) || die $usage;
+        } elsif (/^-D/) {
+                $dbdir = shift(@ARGV) || die $usage;
+        } elsif (/^-c/) {
+                $catdir = shift(@ARGV) || die $usage;
+        } else {
+                die $usage;
+        }
+}
+
+require "$dbdir/fields.db";
+
+&echosys("rm -f mergemosaiccats2.out");
+for ($f = 0; $f < $nfields; $f++) {
+	&echosys("transformmosaiccat < $catdir/$fieldname[$f].cat > $$.$f.tmp");
+}
+for ($f1 = 0; $f1 < $nfields; $f1++) {
+	for ($f2 = 0; $f2 < $nfields; $f2++) {
+		next if ($f2 <= $f1);
+		&echosys("mergecats -x r $tol $$.$f1.tmp $$.$f2.tmp $lcpipe >> mergemosaiccats2.out");
+		$lcpipe = "| lc -b -o";
+	}
+}
+# &echosys("doto mergemosaiccats2.out transformmergedmosaiccat");
+&echosys("rm $$.*.tmp");
+
+
+sub echosys {
+        print @_, "\n";
+        system(@_) && die "$0: System call $_[0] failed!\n";
+}

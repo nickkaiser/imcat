@@ -1,0 +1,114 @@
+.TH "warpcat.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+warpcat.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'catlib/cat.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'utils/modefunc.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	warpcat - apply spatial transformation to \fBa\fP catalogue\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	warpcat [\fBoptions\fP...] distparfile\\\fBn\fP\\		-p psi_xx psi_xy psi_yx psi_yy\\\fBn\fP\\		-\fBd\fP d_x d_y\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'warpcat\\' reads \fBa\fP catalogue from stdin and applies \fBa\fP\\\fBn\fP\\	spatial transformation to position vector x[2] according\\\fBn\fP\\	to the parameters in 'distparfile'. It sends to stdout\\\fBn\fP\\	\fBa\fP catalogue with extra vector\\\fBn\fP\\		\fBr\fP = x + sum_m a_m f_m(x)\\\fBn\fP\\	where \fBmode\fP functions are polynomials in x[0], x[1].\\\fBn\fP\\	Use -p and -\fBd\fP \fBoptions\fP to apply \fBa\fP further linear transformation:\\\fBn\fP\\		r_i => phi_ij r_j + d_j\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBTINY\fP   1.\fBe\fP-50"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBrmodel\fP (double *x, double *\fBr\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float \fBphi\fP [2][2]"
+.br
+.ti -1c
+.RI "float \fBd\fP [2]"
+.br
+.ti -1c
+.RI "int \fBnmodes\fP"
+.br
+.ti -1c
+.RI "int * \fBl\fP"
+.br
+.ti -1c
+.RI "int * \fBm\fP"
+.br
+.ti -1c
+.RI "double ** \fBa\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define TINY   1.\fBe\fP-50"
+.PP
+Definition at line 44 of file warpcat.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	warpcat - apply spatial transformation to \fBa\fP catalogue\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	warpcat [\fBoptions\fP...] distparfile\\\fBn\fP\\		-p psi_xx psi_xy psi_yx psi_yy\\\fBn\fP\\		-\fBd\fP d_x d_y\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'warpcat\\' reads \fBa\fP catalogue from stdin and applies \fBa\fP\\\fBn\fP\\	spatial transformation to position vector x[2] according\\\fBn\fP\\	to the parameters in 'distparfile'. It sends to stdout\\\fBn\fP\\	\fBa\fP catalogue with extra vector\\\fBn\fP\\		\fBr\fP = x + sum_m a_m f_m(x)\\\fBn\fP\\	where \fBmode\fP functions are polynomials in x[0], x[1].\\\fBn\fP\\	Use -p and -\fBd\fP \fBoptions\fP to apply \fBa\fP further linear transformation:\\\fBn\fP\\		r_i => phi_ij r_j + d_j\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file warpcat.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 46 of file warpcat.c.
+.PP
+References a, addargscomment(), addobjectitem(), object::addrlist, allocitemcontents(), allocobjectcontents(), connectobjecttocathead(), copycontentinfo(), copyheaderinfo(), d, error_exit, exit(), get2Dpolymodel(), getcatipfiletype(), getobjectitemindex(), i, inheritcontents(), l, m, MODEFUNC_MAX_VARS, newitem(), newobject(), nmodes, NUM_TYPE, phi, r, readcathead(), readobject(), rmodel(), setcatopfiletype(), usage, writecathead(), writeobject(), and x.
+.SS "void rmodel (double * x, double * r)"
+.PP
+Definition at line 158 of file warpcat.c.
+.PP
+References a, f(), i, l, m, nmodes, r, and x.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "double** \fBa\fP"
+.PP
+Definition at line 42 of file warpcat.c.
+.SS "float \fBd\fP[2]"
+.PP
+Definition at line 40 of file warpcat.c.
+.SS "int * \fBl\fP"
+.PP
+Definition at line 41 of file warpcat.c.
+.SS "int * \fBm\fP"
+.PP
+Definition at line 41 of file warpcat.c.
+.SS "int \fBnmodes\fP"
+.PP
+Definition at line 41 of file warpcat.c.
+.SS "float \fBphi\fP[2][2]"
+.PP
+Definition at line 40 of file warpcat.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

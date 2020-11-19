@@ -1,0 +1,66 @@
+.TH "operators.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+operators.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBop\fP * \fBnewop\fP (char *name)"
+.br
+.ti -1c
+.RI "double \fBdrand48\fP (void)"
+.br
+.ti -1c
+.RI "double \fBIf\fP (void)"
+.br
+.ti -1c
+.RI "double \fBenter\fP (void)"
+.br
+.ti -1c
+.RI "double \fBpop\fP (void)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "void(* \fBfuncarray\fP [])(\fBop\fP *)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "double drand48 (void)"
+.PP
+.SS "double enter (void)"
+.PP
+Definition at line 271 of file ic1/ic.c.
+.PP
+References pop(), and push().
+.SS "double If (void)"
+.PP
+Definition at line 261 of file ic1/ic.c.
+.PP
+References c, f, pop(), and t.
+.SS "\fBop\fP* newop (char * name)"
+.PP
+Definition at line 168 of file imtools/ic/getop.c.
+.PP
+References op::addr, exit(), N_NUM0_OPS, N_NUM1_OPS, N_NUM2_OPS, NUM0_FUNC_TYPE, num0funcarray, num0funcname, NUM1_FUNC_TYPE, num1funcarray, num1funcname, NUM2_FUNC_TYPE, num2funcarray, num2funcname, op::opno, and op::type.
+.PP
+Referenced by getop().
+.SS "double pop (void)"
+.PP
+Definition at line 32 of file cattools/lc/stack.c.
+.SH "Variable Documentation"
+.PP 
+.SS "void(* \fBfuncarray\fP[])(\fBop\fP *)"
+.PP
+Definition at line 8 of file imtools/ic/ic2/operators.h.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

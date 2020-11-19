@@ -1,0 +1,81 @@
+readlis 1       #NK read the data from $1.lis
+                define field $1
+                data $1.lis
+                read {i 1 j 2 cl 3.s c 4 r 5 mag1 6 mag2 7 e1 8 e2 9}
+
+rmplot          #NK plot mag vs r
+                erase
+                limits 0 5 30 15
+                points r mag1
+                rel 3 4
+                label $field
+                box
+                xlabel half-light radius [pixels]
+                ylabel ln(luminosity)
+
+cmplot		#NK color magplot
+		erase
+		set col = mag2 - mag1
+		limits 15 30 -3 5
+		points mag1 col
+		box
+		rel 17 -2.5
+		label $field
+		xlabel magnitude
+		ylabel colour
+
+eeplot          #NK scatter plot of e1 e2 - must define rcut
+                erase
+                limits -1 1 -1 1
+                box
+                ptype 6 3
+                points e1 e2 IF (r < $rcut && l > 8 && l < 12)
+                ptype 4 1
+                points e1 e2 IF (r > $rcut)
+                rel 0 -1
+                draw 0 1
+                rel -1 0
+                draw 1 0
+                xlabel e1
+                ylabel e2
+                rel 0.3 -0.7
+                label $field
+
+ijplot  1       #NK scatter plot of i j positions
+                erase
+                limits 0 $1 0 $1
+                box
+                ptype 1 1
+                points j i
+                xlabel j
+                ylabel i
+                rel 1500 300
+                label $field
+
+evectors 1
+                limits 0 $1 0 $1
+                erase
+                box
+                set e = sqrt(e1 * e1 + e2 * e2)
+                set phi = 0.5 * atan2(e2, e1)
+         set len = 20
+        set x1 = j - len * e * sin(phi)
+        set y1 = i - len * e * cos(phi)
+        set x2 = j + len * e * sin(phi)
+        set y2 = i + len * e * cos(phi)
+                do i = 0, dimen(i) - 1 {
+                  rel x1[$i] y1[$i]
+                  dra x2[$i] y2[$i]
+                }
+                xlabel j
+                ylabel i
+                rel 1500 300
+                label $field
+
+hard    1       #NK make a hard copy of macro $1
+                device postscript
+                lw 2
+                $1
+                device x11
+                lw 0
+

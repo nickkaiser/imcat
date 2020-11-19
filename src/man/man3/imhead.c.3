@@ -1,0 +1,54 @@
+.TH "imhead.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+imhead.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/args.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	imhead --- extract \fBfits\fP header\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	imhead [\fBoptions\fP...] \\\fBn\fP\\		-\fBb\fP		# output full binary header\\\fBn\fP\\		-D		# discard header\\\fBn\fP\\		-\fBd\fP		# discard header and tail\\\fBn\fP\\		-\fBv\fP name		# print value of header \fBitem\fP 'name'\\\fBn\fP\\		-\fBt\fP name		# print value of header \fBitem\fP 'name'\\\fBn\fP\\		-g pixtype NAXIS NAXIS1 ...	# generate \fBfits\fP header.\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'imhead\\' prints \fBfits\fP image header info\\\fBn\fP\\	reads/writes from/to stdin/stdout.\\\fBn\fP\\	By default it formats the header values, but with\\\fBn\fP\\	-\fBb\fP option it will output full header with padding\\\fBn\fP\\	exactly as it appears - this is useful if you have some\\\fBn\fP\\	\fBdata\fP in raw bytes format and want to construct \fBa\fP legal\\\fBn\fP\\	\fBfits\fP header: use '\fBic\fP' to generate \fBa\fP suitable image and\\\fBn\fP\\	then pipe this into 'imhead -\fBb\fP' to make the header.\\\fBn\fP\\	Use -D, -\fBd\fP \fBoptions\fP to extract raw image \fBdata\fP.\\\fBn\fP\\	With -\fBv\fP we print the value for the last header\\\fBn\fP\\	\fBitem\fP whose name matches 'name' exactly. Only the\\\fBn\fP\\	first word of the value will be printed.\\\fBn\fP\\	With -\fBt\fP option we print everything following the '= '.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	imhead --- extract \fBfits\fP header\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	imhead [\fBoptions\fP...] \\\fBn\fP\\		-\fBb\fP		# output full binary header\\\fBn\fP\\		-D		# discard header\\\fBn\fP\\		-\fBd\fP		# discard header and tail\\\fBn\fP\\		-\fBv\fP name		# print value of header \fBitem\fP 'name'\\\fBn\fP\\		-\fBt\fP name		# print value of header \fBitem\fP 'name'\\\fBn\fP\\		-g pixtype NAXIS NAXIS1 ...	# generate \fBfits\fP header.\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'imhead\\' prints \fBfits\fP image header info\\\fBn\fP\\	reads/writes from/to stdin/stdout.\\\fBn\fP\\	By default it formats the header values, but with\\\fBn\fP\\	-\fBb\fP option it will output full header with padding\\\fBn\fP\\	exactly as it appears - this is useful if you have some\\\fBn\fP\\	\fBdata\fP in raw bytes format and want to construct \fBa\fP legal\\\fBn\fP\\	\fBfits\fP header: use '\fBic\fP' to generate \fBa\fP suitable image and\\\fBn\fP\\	then pipe this into 'imhead -\fBb\fP' to make the header.\\\fBn\fP\\	Use -D, -\fBd\fP \fBoptions\fP to extract raw image \fBdata\fP.\\\fBn\fP\\	With -\fBv\fP we print the value for the last header\\\fBn\fP\\	\fBitem\fP whose name matches 'name' exactly. Only the\\\fBn\fP\\	first word of the value will be printed.\\\fBn\fP\\	With -\fBt\fP option we print everything following the '= '.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file imhead.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 45 of file imhead.c.
+.PP
+References argsinit(), fitsheader::basecomment, BIG_ENDIAN_BYTE_ORDER, fitsheader::bscale, fitsheader::bscaling, fitsheader::bzero, error_exit, exit(), fitsheader::extpixtype, f, fits, flag, getargi(), getargs(), getcommentbyname(), getflag(), gettextvalue(), fitsheader::hasextensions, i, fitsheader::ipbyteorder, fitsheader::n, n, fitscomment::name, fitsheader::ndim, newfitsheader(), newnumericcomment(), newtextcomment(), fitscomment::next, fitsheader::nextensions, pixsize(), prependcomment(), printall(), readfitsheader(), usage, fitscomment::value, writefitsheader(), and writefitstail().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

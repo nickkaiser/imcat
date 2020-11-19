@@ -1,0 +1,72 @@
+#!/usr/bin/perl
+
+# now we have run fitstack to get 1st approcimation to fitstack.par
+# we want to make a refined mergestack2.out by removing pairs of
+# objects with large residual
+
+$usage =  "\
+NAME\
+	mergestack2 --- perl script to refine mergestack1.out to mergestack2.out\
+\
+SYNOPSIS\
+	mergestack2 [options...]\
+\
+DESCRIPTION\
+	'mergestack2' reads a set of transformation coefficients from\
+	'fitstack.par'  (previously generated from 'mergestack1.out'\
+	with 'fitstack') and then reads lines from 'mergestack1.out'\
+	applies the appropriate transformations to 'sky' coords and\
+	outputs the line if the residual separation is less than tol.\
+	Options are:\
+		-d tol	# tolerance parameter (2)\
+	It also needs 'exp.db' which should define \$Nexp and\
+	the associative array 'expname'.\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+";
+
+require "exp.db";
+$tol = 2;
+
+while ($_ = shift(@ARGV)) {
+        if (/^-d/) {
+                $tol = shift(@ARGV) || die $usage;
+        } else {
+                die $usage;
+        }
+}
+
+
+# read the transformation coefficients
+open(COEFFTS, "fitstack.par") || die "Can't open fitstack.par";
+for ($exp = 0; $exp < $Nexp; $exp++) {
+        ($Phi[$exp], $dX[$exp], $dY[$exp], $dM[$exp]) = split(' ', <COEFFTS>);
+}
+close(COEFFTS);
+
+open(IN, "mergestack1.out") || die "Can't open mergstack1.out";
+open(OUT, ">mergestack2.out") || die "Can't open mergestack2.out";
+
+while (<IN>) {
+        if (/^#/) {
+		print OUT;
+	} else {
+                ($x, $y, $xp, $yp, $e, $ep, $m, $mp) = split(' ');
+                $X = $x + $Phi[$e] * $y + $dX[$e];
+                $Y = $y - $Phi[$e] * $x + $dY[$e];
+                $Xp = $xp + $Phi[$ep] * $yp + $dX[$ep];
+                $Yp = $yp - $Phi[$ep] * $xp + $dY[$ep];
+		$dx = $Xp - $X;
+		$dy = $Yp - $Y;
+		if (sqrt($dx * $dx + $dy * $dy) < $tol) {
+                	print OUT;
+		}
+        }
+}
+
+
+sub echosys {
+        print @_, "\n";
+        system(@_) && die "system call failed!\n";
+}

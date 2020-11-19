@@ -1,0 +1,122 @@
+.TH "print_stuff_mac.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+print_stuff_mac.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <signal.h>\fP
+.br
+\fC#include 'print_stuff.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+\fC#include 'fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBPAGE_WIDTH\fP   512"
+.br
+.ti -1c
+.RI "#define \fBPAGE_HEIGHT\fP   700"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBps\fP (char *string)"
+.br
+.ti -1c
+.RI "void \fBpsDrawChar\fP (char aChar)"
+.br
+.ti -1c
+.RI "void \fBprint_caption\fP (char *\fBcaption\fP)"
+.br
+.ti -1c
+.RI "void \fBprint_im\fP (int \fBN\fP, int \fBfmin\fP, int \fBfmax\fP, char *\fBcaption\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBpsstringlen\fP"
+.br
+.ti -1c
+.RI "char * \fBpsstring\fP"
+.br
+.ti -1c
+.RI "FILE * \fBlprpipe\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define PAGE_HEIGHT   700"
+.PP
+Definition at line 25 of file print_stuff_mac.c.
+.PP
+Referenced by print_im().
+.SS "#define PAGE_WIDTH   512"
+.PP
+functions for printing images on the laser_writer int print_im(short **f, int N); void \fBps(char *string)\fP; void PrPicDoc(PicHandle thePic, THPrint hPrint);
+.PP
+\fBprint_im()\fP requires an 8-bit image (\fBi.e\fP. f-values of 0-256) Definition at line 24 of file print_stuff_mac.c.
+.PP
+Referenced by print_im().
+.SH "Function Documentation"
+.PP 
+.SS "void print_caption (char * caption)"
+.PP
+Definition at line 160 of file print_stuff_mac.c.
+.PP
+References c, caption, h, len, ps(), psDrawChar(), psstring, size, and v.
+.SS "void print_im (int N, int fmin, int fmax, char * caption)"
+.PP
+Definition at line 52 of file print_stuff_mac.c.
+.PP
+References ascii, caption, error_exit, f, fmin, free(), i, j, N, PAGE_HEIGHT, PAGE_WIDTH, print_caption(), ps(), psstring, psstringlen, and read_fits_line().
+.SS "void ps (char * string)"
+.PP
+Definition at line 124 of file print_stuff_mac.c.
+.PP
+References len.
+.PP
+Referenced by eps_init().
+.SS "void psDrawChar (char aChar)"
+.PP
+Definition at line 142 of file print_stuff_mac.c.
+.PP
+References ps(), and psstring.
+.SH "Variable Documentation"
+.PP 
+.SS "FILE* \fBlprpipe\fP"
+.PP
+Definition at line 49 of file print_stuff_mac.c.
+.SS "char* \fBpsstring\fP"
+.PP
+Definition at line 28 of file print_stuff_mac.c.
+.PP
+Referenced by main(), print_caption(), print_im(), printimage(), and psDrawChar().
+.SS "int \fBpsstringlen\fP"
+.PP
+Definition at line 27 of file print_stuff_mac.c.
+.PP
+Referenced by main(), print_im(), and printimage().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

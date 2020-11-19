@@ -1,0 +1,33 @@
+#! /usr/local/bin/wish -f
+
+set auto_path "[set env(IMCATDIR)]/src/cattools/tk $auto_path"
+
+global c mbar
+
+set usage "xyplot xname x1 x2 yname y1 y2"
+
+
+if {$argc != 6} {
+	puts $usage
+	exit
+}
+set xname [lindex $argv 0]
+scan [lindex $argv 1] "%f" x1
+scan [lindex $argv 2] "%f" x2
+set yname	[lindex $argv 3]
+scan [lindex $argv 4] "%f" y1
+scan [lindex $argv 5] "%f" y2
+
+
+set c .c
+set mbar .mbar
+plotinit
+setuserlimits $x1 $y1 $x2 $y2
+box
+xlabel $xname
+ylabel $yname
+
+while {[gets stdin line] >= 0} {
+	scan $line "%f %f" x y
+	dot $x $y 5
+}

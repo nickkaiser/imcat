@@ -1,0 +1,92 @@
+<html>
+<head>
+<title> cattools readme file </title>
+</head>
+<body bgcolor="#FFFFFF">
+<h2>cattools_lmodel readme file</h2><hr>
+<p>
+This section contains some tools for fitting data to 
+models which are superposition of mode functions:
+<p>
+	a(x) = sum_m a_m f_m(x)
+<p>
+where x is some position vector (of arbitrary length),
+and a is a tensor of arbitrary rank. Possible examples
+are polynomials, fourier modes, Zernike polynomials etc..
+<p>
+These 'lmodels' are output as lc-format catalogues with
+the following required header items:
+<pre>
+string		model_type		e.g. polynomial, zernike
+string		aname			name of dependent variable
+string		xname			name of independent variable
+int		xdim			length of independent variable
+
+and the following optional header items
+
+int		nmodes
+double		*xorigin
+
+and for polynomial models
+int		lmin
+int		lmax
+
+and for Zernike models
+int		nmin
+int		nmax
+
+and for Fourier models
+int		kmin
+int		kmax
+double		lbox
+</pre>
+<p>
+Supported models are
+<p>
+<h3>Polynomial models</h3>
+<p>
+model_type = polynomial
+<p>
+The mode functions are labelled by a set
+of indices p[] with same length as x[], the functions are
+<p>
+f_p = x0^p0 x1^p1 .... = product x_i^p_i
+<p>
+and the order l = sum p_i lies in the inclusive interval lmin-lmax.
+An alternative parameterisation of the indices is in terms of
+the order array l[i] = l - sum_i=0^i-1 p[i], in terms of which the
+p-indices are p[i] = l[i] - l[i+1].
+<p>
+<h3>Zernike polynomials</h3>
+<p>
+model_type = zernike
+<p>
+The Zernike polynomial mode functions are only defined in two dimensions
+and are given by the functions U_n^m as defined in eq 10 of sec 9.2.1 of Born and Wolf.
+<p>
+<h3>Fourier modes</h3>
+<p>
+model_type = fourier
+<p>
+The modes are indexed by the vector k[] (which has the same length as x[])
+and the auxilliary index i, and the modes are
+<p>
+f_k^j(x) 
+<p>
+where
+<p>
+f_k^0(x) = cos(2 pi k.x / L)
+<p>
+and
+<p>
+f_k^1(x) = sin(2 pi k.x / L)
+<p>
+Only one half of k-space needs to be occupied.  The standard set of
+modes are defined to be those for which the first non-zero
+component of k[] is non-negative. 
+Additionally, the mode k=0, i=1 is not used.
+<hr>
+<p><a href="../../mainindex.html">main index</a>
+<p><a href="aaaindex.html">section index</a>
+</body>
+</html>

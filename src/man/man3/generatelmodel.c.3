@@ -1,0 +1,52 @@
+.TH "generatelmodel.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+generatelmodel.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'catlib/cat.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'utils/lmodel.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	generatelmodel --- generate \fBlmodel\fP for catalog of \fBpoints\fP\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	generatelmodel [-\fBn\fP aname] \fBlmodel\fP \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'generatelmodel' reads from stdin \fBa\fP catalogue containing at least\\\fBn\fP\\	\fBa\fP position vetor and \fBa\fP linear \fBmode\fP function superposition model\\\fBn\fP\\	from '\fBlmodel\fP' and computes the model function for each \fBpoint\fP in\\\fBn\fP\\	the catalog.\\\fBn\fP\\\\\fBn\fP\\	The name and dimension of the position vector must match '\fBxname\fP'\\\fBn\fP\\	and '\fBxdim\fP' in the \fBlmodel\fP header.\\\fBn\fP\\\\\fBn\fP\\	By default the realised values of the functions will be\\\fBn\fP\\	named as the 'aname' header \fBitem\fP in the \fBlmodel\fP header,\\\fBn\fP\\	and will therefore overwrite any pre-existing opject \fBitem\fP\\\fBn\fP\\	of that name but you can supply an alternative with the -\fBn\fP option.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	generatelmodel --- generate \fBlmodel\fP for catalog of \fBpoints\fP\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	generatelmodel [-\fBn\fP aname] \fBlmodel\fP \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'generatelmodel' reads from stdin \fBa\fP catalogue containing at least\\\fBn\fP\\	\fBa\fP position vetor and \fBa\fP linear \fBmode\fP function superposition model\\\fBn\fP\\	from '\fBlmodel\fP' and computes the model function for each \fBpoint\fP in\\\fBn\fP\\	the catalog.\\\fBn\fP\\\\\fBn\fP\\	The name and dimension of the position vector must match '\fBxname\fP'\\\fBn\fP\\	and '\fBxdim\fP' in the \fBlmodel\fP header.\\\fBn\fP\\\\\fBn\fP\\	By default the realised values of the functions will be\\\fBn\fP\\	named as the 'aname' header \fBitem\fP in the \fBlmodel\fP header,\\\fBn\fP\\	and will therefore overwrite any pre-existing opject \fBitem\fP\\\fBn\fP\\	of that name but you can supply an alternative with the -\fBn\fP option.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 6 of file generatelmodel.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 40 of file generatelmodel.c.
+.PP
+References lmodel::a, a, addargscomment(), addobjectitem(), object::addrlist, addtomatrix(), lmodel::aitem, allocitemcontents(), allocobjectcontents(), lmodel::aname, argsinit(), connectobjecttocathead(), copycontentinfo(), copyheaderinfo(), item::dim, error_exit, exit(), flag, FLAG_ARG, getargs(), getcatipfiletype(), getflag(), getobjectitem(), getobjectitemindex(), inheritcontents(), item::itype, lmodelfunc(), m, item::ndim, newitembydimarray(), newobject(), nextargtype(), lmodel::nmodes, NUM_TYPE, readcathead(), readlmodel(), readobject(), setcatipf(), setcatopfiletype(), usage, writecathead(), writeobject(), x, lmodel::xdim, lmodel::xname, and zeromatrix().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

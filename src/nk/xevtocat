@@ -1,0 +1,82 @@
+#!/usr/bin/perl
+$| = 1;
+
+$usage = "\
+NAME\
+	xevtocat - capture mouse click coordinates\
+\
+SYNOPSIS\
+	xevtocat x1 y1 x2 y2\
+\
+DESCRIPTION\
+	xevtocat reads xev output and generates a lc-format\
+	catalogue containing coordinates of mouse-button clicks\
+\
+	You can use this to generate fairly accurate data from\
+	postscript files using the mouse.\
+\
+EXAMPLE\
+	To digitize data from 'foo.ps', first run\
+\
+	gv foo.ps &\
+\
+	to bring up a gv window.  Then run\
+\
+	xwininfo\
+\
+	click once in the gv window and copy the id to the clipboard.\
+	Then run\
+\
+	xev -id id > xev.out\
+\
+	go back into the xv window, and middle\
+	button click on a series of points, the first two of which\
+	should be conveniently chosen reference points.  Add a few\
+	more points at the end, as some may get lost, and then\
+	control-C in the window where xev was launched to kill it.\
+	Finally, run\
+\
+	xevtocat x1 y1 x2 y2\
+\
+	supplying the user-coordinates of the  two reference points.\
+\
+AUTHOR\
+	Nick Kaiser - kaiser\@hawaii.edu\
+\n";
+
+$x1 = shift(@ARGV) || die $usage;
+$y1 = shift(@ARGV) || die $usage;
+$x2 = shift(@ARGV) || die $usage;
+$y2 = shift(@ARGV) || die $usage;
+
+$needX1 = $needX2 = 1;
+
+open(OP, "| lc -C -x -a 'history: xevtocat $x1 $y1 $x2 $y2' -N '1 2 x'");
+	
+while (<>) {
+	if ($_ =~ /^LeaveNotify/) {
+		$line = <>;
+		@words = split(" ", $line);
+		if ($#words == 7) {
+			$xy = $words[6];
+			$xy =~ s/\(//;
+			$xy =~ s/\)//;
+			@X = split(",", $xy);
+			if ($needX1) {
+				($X1, $Y1) = @X;
+				$needX1 = 0;
+			} elsif ($needX2) {
+				($X2, $Y2) = @X;
+				$xscale = ($x2 - $x1) / ($X2 - $X1);
+				$yscale = ($y2 - $y1) / ($Y2 - $Y1);
+				$needX2 = 0;
+			} else {
+				$x = $x1 + $xscale * ($X[0] - $X1);
+				$y = $y1 + $yscale * ($X[1] - $Y1);
+				printf OP "%14.8g %14.8g\n", $x, $y;
+			}
+		}
+	}
+}
+close(OP);
+exit;

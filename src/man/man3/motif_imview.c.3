@@ -1,0 +1,110 @@
+.TH "imview.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+imview.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <Xm/MainW.h>\fP
+.br
+\fC#include <Xm/Label.h>\fP
+.br
+\fC#include <Xm/Scale.h>\fP
+.br
+\fC#include <Xm/Form.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'imview_stuff.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\		imview -- displays \fBa\fP square image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		imview	[option...] <inputfile\\\fBn\fP\\			-f \fBfmin\fP \fBfmax\fP	# max and min f values\\\fBn\fP\\			-\fBa\fP 		# \fBascii\fP file\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		The range of values may be specified in \fBinteger\fP units\\\fBn\fP\\		otherwise the range is 0 (=white) to 255 (=black)\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char **argv)"
+.br
+.ti -1c
+.RI "void \fBnew_fminmax\fP (Widget scale_w, caddr_t client_data, XmScaleCallbackStruct *cbs)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "Widget \fBmain_w\fP"
+.br
+.ti -1c
+.RI "Widget \fBfminscale\fP"
+.br
+.ti -1c
+.RI "Widget \fBfmaxscale\fP"
+.br
+.ti -1c
+.RI "int \fBfmin\fP = 0 \fBfmax\fP = 256"
+.br
+.ti -1c
+.RI "int \fBn_cells\fP"
+.br
+.ti -1c
+.RI "int \fBascii\fP = 0"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\		imview -- displays \fBa\fP square image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		imview	[option...] <inputfile\\\fBn\fP\\			-f \fBfmin\fP \fBfmax\fP	# max and min f values\\\fBn\fP\\			-\fBa\fP 		# \fBascii\fP file\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		The range of values may be specified in \fBinteger\fP units\\\fBn\fP\\		otherwise the range is 0 (=white) to 255 (=black)\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file motif/imview.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char ** argv)"
+.PP
+Definition at line 31 of file motif/imview.c.
+.PP
+References alloc_grays(), ascii, COM_LENGTH, error_exit, f, ff, fmaxscale, fmin, fminscale, i, j, label, main_w, make_pixmap(), n_cells, new_fminmax(), set_grays(), True, and usage.
+.SS "void new_fminmax (Widget scale_w, caddr_t client_data, XmScaleCallbackStruct * cbs)"
+.PP
+Definition at line 148 of file motif/imview.c.
+.PP
+References fmaxscale, fmin, fminscale, n_cells, and set_grays().
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBascii\fP = 0"
+.PP
+Definition at line 29 of file motif/imview.c.
+.SS "Widget \fBfmaxscale\fP"
+.PP
+Definition at line 27 of file motif/imview.c.
+.SS "int \fBfmin\fP = 0 \fBfmax\fP = 256"
+.PP
+Definition at line 28 of file motif/imview.c.
+.SS "Widget \fBfminscale\fP"
+.PP
+Definition at line 27 of file motif/imview.c.
+.SS "Widget \fBmain_w\fP"
+.PP
+Definition at line 27 of file motif/imview.c.
+.SS "int \fBn_cells\fP"
+.PP
+Definition at line 29 of file motif/imview.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

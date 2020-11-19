@@ -1,0 +1,62 @@
+.TH "contour_3Dtest.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+contour_3Dtest.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include <values.h>\fP
+.br
+\fC#include 'cpgplot.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/colormaps.h'\fP
+.br
+\fC#include 'labels.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	contour --- create contour \fBplot\fP from \fBfits\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	contour [option....] < \fBfitsin\fP\\\fBn\fP\\		-\fBn\fP nc		# \fBnumber\fP of contour intervals (10)\\\fBn\fP\\		-f \fBfmin\fP \fBfmax\fP	# range of contour heights\\\fBn\fP\\		-\fBd\fP device	# pgplot style device ('/xserve')\\\fBn\fP\\		-\fBt\fP \fBtitle\fP	# text for \fBtitle\fP ('contour \fBplot\fP')\\\fBn\fP\\		-\fBl\fP xlab ylab	# labels for axes ('x' 'y')\\\fBn\fP\\		-\fBw\fP lwidth	# \fBline\fP width (1)\\\fBn\fP\\		-H charheight	# character height (1)\\\fBn\fP\\		-\fBX\fP X1 X2 Y1 Y2	# range for tick-labels\\\fBn\fP\\		-\fBj\fP		# switch off justification\\\fBn\fP\\		-\fBa\fP axis		# pgenv 'axis' value (0)\\\fBn\fP\\		-g		# add gray-scale \fBbackground\fP image\\\fBn\fP\\		-\fBc\fP colmap	# add \fBcolor\fP-mapped \fBbackground\fP image\\\fBn\fP\\		-L x y text	# add \fBa\fP \fBlabel\fP\\\fBn\fP\\		-W		# add \fBa\fP wedge for image range\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'contour\\' produces \fBa\fP contour \fBplot\fP from \fBa\fP \fBfits\fP image\\\fBn\fP\\	using pgplot routines.\\\fBn\fP\\\\\fBn\fP\\	If \fBfmin\fP, \fBfmax\fP values are not specified these are\\\fBn\fP\\	calculated from the input image.\\\fBn\fP\\\\\fBn\fP\\	It then draws (nc + 1) contours at levels\\\fBn\fP\\	f - \fBfmin\fP + \fBi\fP * df, with df = (\fBfmax\fP - \fBfmin\fP) / nc.\\\fBn\fP\\	By default, it produces output in an \fBX\fP-window on\\\fBn\fP\\	the screen, but use -\fBd\fP option to specify alternative.\\\fBn\fP\\\\\fBn\fP\\	Use -\fBc\fP to display \fBa\fP colorised image - colmap can be 0,1,2.\\\fBn\fP\\\\\fBn\fP\\	Use -L option to add labels at arbitrary positions.\\\fBn\fP\\\\\fBn\fP\\	Use -W option to add \fBa\fP wedge showing the range of image values.\\\fBn\fP\\\\\fBn\fP\\	Use -\fBa\fP option to control axes, box tickmarks etc.  See\\\fBn\fP\\	plotcat \fBusage\fP for more info.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	contour --- create contour \fBplot\fP from \fBfits\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	contour [option....] < \fBfitsin\fP\\\fBn\fP\\		-\fBn\fP nc		# \fBnumber\fP of contour intervals (10)\\\fBn\fP\\		-f \fBfmin\fP \fBfmax\fP	# range of contour heights\\\fBn\fP\\		-\fBd\fP device	# pgplot style device ('/xserve')\\\fBn\fP\\		-\fBt\fP \fBtitle\fP	# text for \fBtitle\fP ('contour \fBplot\fP')\\\fBn\fP\\		-\fBl\fP xlab ylab	# labels for axes ('x' 'y')\\\fBn\fP\\		-\fBw\fP lwidth	# \fBline\fP width (1)\\\fBn\fP\\		-H charheight	# character height (1)\\\fBn\fP\\		-\fBX\fP X1 X2 Y1 Y2	# range for tick-labels\\\fBn\fP\\		-\fBj\fP		# switch off justification\\\fBn\fP\\		-\fBa\fP axis		# pgenv 'axis' value (0)\\\fBn\fP\\		-g		# add gray-scale \fBbackground\fP image\\\fBn\fP\\		-\fBc\fP colmap	# add \fBcolor\fP-mapped \fBbackground\fP image\\\fBn\fP\\		-L x y text	# add \fBa\fP \fBlabel\fP\\\fBn\fP\\		-W		# add \fBa\fP wedge for image range\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'contour\\' produces \fBa\fP contour \fBplot\fP from \fBa\fP \fBfits\fP image\\\fBn\fP\\	using pgplot routines.\\\fBn\fP\\\\\fBn\fP\\	If \fBfmin\fP, \fBfmax\fP values are not specified these are\\\fBn\fP\\	calculated from the input image.\\\fBn\fP\\\\\fBn\fP\\	It then draws (nc + 1) contours at levels\\\fBn\fP\\	f - \fBfmin\fP + \fBi\fP * df, with df = (\fBfmax\fP - \fBfmin\fP) / nc.\\\fBn\fP\\	By default, it produces output in an \fBX\fP-window on\\\fBn\fP\\	the screen, but use -\fBd\fP option to specify alternative.\\\fBn\fP\\\\\fBn\fP\\	Use -\fBc\fP to display \fBa\fP colorised image - colmap can be 0,1,2.\\\fBn\fP\\\\\fBn\fP\\	Use -L option to add labels at arbitrary positions.\\\fBn\fP\\\\\fBn\fP\\	Use -W option to add \fBa\fP wedge showing the range of image values.\\\fBn\fP\\\\\fBn\fP\\	Use -\fBa\fP option to control axes, box tickmarks etc.  See\\\fBn\fP\\	plotcat \fBusage\fP for more info.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file contour_3Dtest.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 64 of file contour_3Dtest.c.
+.PP
+References c, dx, dy, error_exit, exit(), f, ff, fits, FLOAT_MAGIC, fmin, getcolormap(), MAXFLOAT, MINFLOAT, N1, N2, label::next, read2Dfloatimage(), label::text, usage, label::x, x, label::y, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

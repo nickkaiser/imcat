@@ -1,0 +1,174 @@
+.TH "projectfits.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+projectfits.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/args.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	projectfits - average over rows, cols etc of \fBa\fP \fBFITS\fP file\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	projectfits [-u] [-\fBd\fP \fBM\fP] \fBd\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'projectfits\\' reads \fBa\fP \fBFITS\fP image of arbitrary dimensionality D from\\\fBn\fP\\	stdin and outputs \fBa\fP D-1 dimensional image to stdout which\\\fBn\fP\\	contains the average along the \fBd\fP'th dimension, where\\\fBn\fP\\	\fBd\fP=0 is the fastest direction (row average), \fBd\fP=1 is the next\\\fBn\fP\\	fastest direction (column average) etc.\\\fBn\fP\\\\\fBn\fP\\	Options:\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\		-\fBd\fP \fBM\fP		# deproject   \\\fBn\fP\\\\\fBn\fP\\	With the -\fBd\fP option we stretch out \fBa\fP \fBN\fP-dimensional image along\\\fBn\fP\\	the \fBd\fP'th direction to make \fBa\fP \fBN\fP+1 dimensional image.  For example,\\\fBn\fP\\	with \fBa\fP 3-D input image \fBfin\fP[Nz][\fBNy\fP][\fBNx\fP], the result of\\\fBn\fP\\		projectfits -\fBd\fP 10 2\\\fBn\fP\\	is to make \fBa\fP 4-dimensional image \fBfout\fP[Nz][10][\fBNy\fP][\fBNx\fP] with\\\fBn\fP\\		\fBfout\fP[\fBz\fP][\fBt\fP][y][x] = \fBfin\fP[\fBz\fP][y][x].\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBproject\fP (int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "int \fBdeproject\fP (int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float * \fBfout\fP"
+.br
+.ti -1c
+.RI "float * \fBfin\fP"
+.br
+.ti -1c
+.RI "int * \fBfsizein\fP"
+.br
+.ti -1c
+.RI "int * \fBfsizeout\fP"
+.br
+.ti -1c
+.RI "int * \fBxin\fP"
+.br
+.ti -1c
+.RI "int * \fBxout\fP"
+.br
+.ti -1c
+.RI "int \fBd\fP"
+.br
+.ti -1c
+.RI "int \fBdeproj\fP"
+.br
+.ti -1c
+.RI "int \fBNdeproj\fP"
+.br
+.ti -1c
+.RI "int \fBnlines\fP"
+.br
+.ti -1c
+.RI "\fBfitsheader\fP * \fBfitsin\fP"
+.br
+.ti -1c
+.RI "\fBfitsheader\fP * \fBfitsout\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	projectfits - average over rows, cols etc of \fBa\fP \fBFITS\fP file\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	projectfits [-u] [-\fBd\fP \fBM\fP] \fBd\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'projectfits\\' reads \fBa\fP \fBFITS\fP image of arbitrary dimensionality D from\\\fBn\fP\\	stdin and outputs \fBa\fP D-1 dimensional image to stdout which\\\fBn\fP\\	contains the average along the \fBd\fP'th dimension, where\\\fBn\fP\\	\fBd\fP=0 is the fastest direction (row average), \fBd\fP=1 is the next\\\fBn\fP\\	fastest direction (column average) etc.\\\fBn\fP\\\\\fBn\fP\\	Options:\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\		-\fBd\fP \fBM\fP		# deproject   \\\fBn\fP\\\\\fBn\fP\\	With the -\fBd\fP option we stretch out \fBa\fP \fBN\fP-dimensional image along\\\fBn\fP\\	the \fBd\fP'th direction to make \fBa\fP \fBN\fP+1 dimensional image.  For example,\\\fBn\fP\\	with \fBa\fP 3-D input image \fBfin\fP[Nz][\fBNy\fP][\fBNx\fP], the result of\\\fBn\fP\\		projectfits -\fBd\fP 10 2\\\fBn\fP\\	is to make \fBa\fP 4-dimensional image \fBfout\fP[Nz][10][\fBNy\fP][\fBNx\fP] with\\\fBn\fP\\		\fBfout\fP[\fBz\fP][\fBt\fP][y][x] = \fBfin\fP[\fBz\fP][y][x].\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file projectfits.c.
+.SH "Function Documentation"
+.PP 
+.SS "int deproject (int level)"
+.PP
+Definition at line 204 of file projectfits.c.
+.PP
+References d, fin, fitsin, fitsout, fout, fsizein, fsizeout, i, fitsheader::n, fitsheader::ndim, xin, and xout.
+.PP
+Referenced by main().
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 49 of file projectfits.c.
+.PP
+References add_comment(), argsinit(), copyfitsheader(), d, deproj, deproject(), error_exit, exit(), fin, fitsin, fitsout, flag, FLAG_ARG, fout, fsizein, fsizeout, getargi(), getflag(), i, fitsheader::n, Ndeproj, fitsheader::ndim, nextargtype(), nlines, project(), readfitsheader(), readfitsline(), usage, writefitsheader(), writefitsline(), writefitstail(), xin, and xout.
+.SS "int project (int level)"
+.PP
+Definition at line 168 of file projectfits.c.
+.PP
+References d, ff, fin, fitsin, fitsout, FLOAT_MAGIC, fout, fsizein, fsizeout, i, fitsheader::n, fitsheader::ndim, xin, and xout.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBd\fP\fC [static]\fP"
+.PP
+Definition at line 43 of file projectfits.c.
+.SS "int \fBdeproj\fP\fC [static]\fP"
+.PP
+Definition at line 43 of file projectfits.c.
+.PP
+Referenced by main().
+.SS "float * \fBfin\fP\fC [static]\fP"
+.PP
+Definition at line 42 of file projectfits.c.
+.PP
+Referenced by deproject(), main(), and project().
+.SS "\fBfitsheader\fP* \fBfitsin\fP\fC [static]\fP"
+.PP
+Definition at line 44 of file projectfits.c.
+.PP
+Referenced by deproject(), main(), and project().
+.SS "\fBfitsheader\fP * \fBfitsout\fP\fC [static]\fP"
+.PP
+Definition at line 44 of file projectfits.c.
+.PP
+Referenced by deproject(), main(), and project().
+.SS "float* \fBfout\fP\fC [static]\fP"
+.PP
+Definition at line 42 of file projectfits.c.
+.PP
+Referenced by deproject(), main(), and project().
+.SS "int* \fBfsizein\fP\fC [static]\fP"
+.PP
+Definition at line 43 of file projectfits.c.
+.PP
+Referenced by deproject(), main(), and project().
+.SS "int * \fBfsizeout\fP\fC [static]\fP"
+.PP
+Definition at line 43 of file projectfits.c.
+.PP
+Referenced by deproject(), main(), and project().
+.SS "int \fBNdeproj\fP\fC [static]\fP"
+.PP
+Definition at line 43 of file projectfits.c.
+.PP
+Referenced by main().
+.SS "int \fBnlines\fP\fC [static]\fP"
+.PP
+Definition at line 43 of file projectfits.c.
+.PP
+Referenced by main().
+.SS "int * \fBxin\fP\fC [static]\fP"
+.PP
+Definition at line 43 of file projectfits.c.
+.PP
+Referenced by deproject(), main(), and project().
+.SS "int * \fBxout\fP\fC [static]\fP"
+.PP
+Definition at line 43 of file projectfits.c.
+.PP
+Referenced by deproject(), main(), and project().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,118 @@
+.TH "grid.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+grid.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include 'grid.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBNG_MAX\fP   100"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBsetgridsize\fP (double *\fBxmin\fP, double *\fBxmax\fP, double \fBd\fP)"
+.br
+.ti -1c
+.RI "void \fBallocgrid\fP (\fBobject\fP ****gridptr)"
+.br
+.ti -1c
+.RI "int \fBgetgridcoords\fP (double *x, int *\fBix\fP, int *\fBiy\fP)"
+.br
+.ti -1c
+.RI "void \fBgetneighbours\fP (double *x, \fBobject\fP ***grid, int *\fBnneighbours\fP, \fBobject\fP **\fBneighbourobj\fP)"
+.br
+.ti -1c
+.RI "void \fBgetobjects\fP (\fBobject\fP ***grid, int *nobjs, \fBobject\fP **theobjlist)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBng\fP [2]"
+.br
+.ti -1c
+.RI "double \fBdx\fP [2]"
+.br
+.ti -1c
+.RI "double \fBx0\fP [2]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define NG_MAX   100"
+.PP
+Definition at line 14 of file grid.c.
+.PP
+Referenced by setgridsize().
+.SH "Function Documentation"
+.PP 
+.SS "void allocgrid (\fBobject\fP **** gridptr)"
+.PP
+Definition at line 34 of file grid.c.
+.PP
+References ix, and ng.
+.PP
+Referenced by main().
+.SS "int getgridcoords (double * x, int * ix, int * iy)"
+.PP
+Definition at line 44 of file grid.c.
+.PP
+References dx, ix, ng, x, and x0.
+.PP
+Referenced by getneighbours(), and main().
+.SS "void getneighbours (double * x, \fBobject\fP *** grid, int * nneighbours, \fBobject\fP ** neighbourobj)"
+.PP
+Definition at line 55 of file grid.c.
+.PP
+References error_exit, getgridcoords(), ix, MAX_NEIGHBOURS, n, ng, and x.
+.PP
+Referenced by main().
+.SS "void getobjects (\fBobject\fP *** grid, int * nobjs, \fBobject\fP ** theobjlist)"
+.PP
+Definition at line 81 of file grid.c.
+.SS "void setgridsize (double * xmin, double * xmax, double d)"
+.PP
+Definition at line 17 of file grid.c.
+.PP
+References d, dx, j, ng, NG_MAX, x0, xmax, and xmin.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "double \fBdx\fP[2]\fC [static]\fP"
+.PP
+Definition at line 12 of file grid.c.
+.PP
+Referenced by getgridcoords(), and setgridsize().
+.SS "int \fBng\fP[2]\fC [static]\fP"
+.PP
+Definition at line 11 of file grid.c.
+.PP
+Referenced by allocgrid(), getgridcoords(), getneighbours(), getobjects(), and setgridsize().
+.SS "double \fBx0\fP[2]\fC [static]\fP"
+.PP
+Definition at line 12 of file grid.c.
+.PP
+Referenced by getgridcoords(), and setgridsize().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,954 @@
+.TH "cdlmark.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cdlmark.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'cdl.h'\fP
+.br
+\fC#include 'cdlfont.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCDL_NEED_LINESTYLES\fP"
+.br
+.ti -1c
+.RI "#define \fBCDL_LIBRARY_SOURCE\fP"
+.br
+.ti -1c
+.RI "#define \fBABS\fP(\fBa\fP)   (((\fBa\fP)<0) ? -(\fBa\fP) : (\fBa\fP))"
+.br
+.ti -1c
+.RI "#define \fBSGN\fP(\fBa\fP)   (((\fBa\fP)<0) ? -1 : 1)"
+.br
+.ti -1c
+.RI "#define \fBN_CIRCLE_PTS\fP   48"
+.br
+.ti -1c
+.RI "#define \fBN_ELLIPSE_PTS\fP   64"
+.br
+.ti -1c
+.RI "#define \fBFONT_SCALE\fP   0.4"
+.br
+.ti -1c
+.RI "#define \fBFONT_SPACE\fP   4"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBcdl_freeDisplayList\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setFont\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setLineWidth\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setLineStyle\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_beginDList\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_drawDList\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_clearDList\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_endDList\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_setTextWidth\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_getPixRegion\fP ()"
+.br
+.ti -1c
+.RI "\fBuchar\fP \fBcdl_setpixel\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_insertMarker\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_removeMarker\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_doLineInSubRas\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_drawThickVector\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_drawVector\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_doPointMark\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_doLineMark\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_doBoxMark\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_doPolygonMark\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_doCircleMark\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_doCircAnnuliMark\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_doEllipseMark\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_doEllipAnnuliMark\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_getCircleCoords\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_getEllipseCoords\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_printDisplayList\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_initMarkPos\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_fillArea\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_minmax\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_doDashedLine\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_drawThickDashVec\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_drawDashVec\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_strlen\fP ()"
+.br
+.ti -1c
+.RI "int \fBbitupk\fP ()"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initPointMarker\fP ()"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initLineMarker\fP ()"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initBoxMarker\fP ()"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initPolylineMarker\fP ()"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initPolygonMarker\fP ()"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initCircleMarker\fP ()"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initCircAnnMarker\fP ()"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initEllipseMarker\fP ()"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initEllAnnMarker\fP ()"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_findNearest\fP ()"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initTextMarker\fP ()"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initPointLabelMarker\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_mapFrame\fP (\fBCDLPtr\fP cdl, int \fBframe\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_markPoint\fP (\fBCDLPtr\fP cdl, int x, int y, int \fBnumber\fP, int size, int \fBtype\fP, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_markPointLabel\fP (\fBCDLPtr\fP cdl, int x, int y, char *\fBlabel\fP, int size, int \fBtype\fP, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_markCoordsFile\fP (\fBCDLPtr\fP cdl, char *fname, int \fBtype\fP, int size, int \fBcolor\fP, int \fBlabel\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_markLine\fP (\fBCDLPtr\fP cdl, int xs, int \fBys\fP, int \fBxe\fP, int \fBye\fP, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_markBox\fP (\fBCDLPtr\fP cdl, int lx, int \fBly\fP, int \fBux\fP, int \fBuy\fP, int \fBfill\fP, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_markPolygon\fP (\fBCDLPtr\fP cdl, xarray, \fByarray\fP, int \fBnpts\fP, int \fBfill\fP, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_markPolyline\fP (\fBCDLPtr\fP cdl, int *xarray, int *\fByarray\fP, int \fBnpts\fP, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_markCircle\fP (\fBCDLPtr\fP cdl, int x, int y, int \fBradius\fP, int \fBfill\fP, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_markCircAnnuli\fP (\fBCDLPtr\fP cdl, int x, int y, int \fBradius\fP, int \fBnannuli\fP, int \fBsep\fP, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_markEllipse\fP (\fBCDLPtr\fP cdl, int x, int y, int \fBxrad\fP, int \fByrad\fP, float rotang, int \fBfill\fP, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_markEllipAnnuli\fP (\fBCDLPtr\fP cdl, int x, int y, int \fBxrad\fP, int \fByrad\fP, float \fBang\fP, int \fBnannuli\fP, int \fBsep\fP, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_markText\fP (\fBCDLPtr\fP cdl, int x, int y, char *\fBstr\fP, float size, float \fBangle\fP, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_setFont\fP (\fBCDLPtr\fP cdl, int font)"
+.br
+.ti -1c
+.RI "void \fBcdl_setTextWidth\fP (\fBCDLPtr\fP cdl, int width)"
+.br
+.ti -1c
+.RI "void \fBcdl_setLineWidth\fP (\fBCDLPtr\fP cdl, int width)"
+.br
+.ti -1c
+.RI "void \fBcdl_setLineStyle\fP (\fBCDLPtr\fP cdl, int style)"
+.br
+.ti -1c
+.RI "int \fBcdl_deleteMark\fP (\fBCDLPtr\fP cdl, int x, int y)"
+.br
+.ti -1c
+.RI "int \fBcdl_clearOverlay\fP (\fBCDLPtr\fP cdl)"
+.br
+.ti -1c
+.RI "int \fBcdl_redrawOverlay\fP (\fBCDLPtr\fP cdl)"
+.br
+.ti -1c
+.RI "void \fBcdl_beginDList\fP (int \fBframe\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_endDList\fP (int \fBframe\fP, int flush)"
+.br
+.ti -1c
+.RI "void \fBcdl_clearDList\fP (int \fBframe\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_drawDList\fP (int \fBframe\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_getPixRegion\fP (\fBCDLPtr\fP cdl, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP, \fBuchar\fP *ras)"
+.br
+.ti -1c
+.RI "void \fBcdl_doPointMark\fP (int \fBcolor\fP, int \fBtype\fP, \fBuchar\fP *\fBpix\fP, int sz)"
+.br
+.ti -1c
+.RI "void \fBcdl_doLineMark\fP (int \fBcolor\fP, int width, int style, \fBuchar\fP *\fBpix\fP, int xs, int \fBys\fP, int \fBxe\fP, int \fBye\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_doBoxMark\fP (int \fBcolor\fP, int width, int style, int \fBfill\fP, \fBuchar\fP *\fBpix\fP, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_doPolygonMark\fP (int \fBcolor\fP, int width, int style, int \fBfill\fP, int *x, int *y, int \fBnpts\fP, \fBuchar\fP *\fBpix\fP, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP, int close)"
+.br
+.ti -1c
+.RI "void \fBcdl_doCircleMark\fP (int x, int y, int \fBradius\fP, int \fBcolor\fP, int width, int style, int \fBfill\fP, \fBuchar\fP *\fBpix\fP, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_doCircAnnuliMark\fP (int x, int y, int \fBradius\fP, int \fBnannuli\fP, int \fBsep\fP, int \fBcolor\fP, int width, int style, \fBuchar\fP *\fBpix\fP, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_doEllipseMark\fP (int \fBcolor\fP, int width, int style, int \fBfill\fP, int xc, int yc, int \fBxrad\fP, int \fByrad\fP, float \fBang\fP, \fBuchar\fP *\fBpix\fP, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_doEllipAnnuliMark\fP (int x, int y, int \fBxrad\fP, int \fByrad\fP, float \fBang\fP, int \fBnannuli\fP, int \fBsep\fP, int \fBcolor\fP, int width, int style, \fBuchar\fP *\fBpix\fP, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_doTextMarker\fP (int x, int y, char *string, float txtsize, float \fBangle\fP, int \fBcolor\fP, int width, int txtfont, \fBuchar\fP *\fBpix\fP, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_freeDisplayList\fP (\fBCDLPtr\fP cdl, \fBMarkerPtr\fP head)"
+.br
+.ti -1c
+.RI "void \fBcdl_insertMarker\fP (\fBCDLPtr\fP cdl, \fBMarkerPtr\fP back, \fBMarkerPtr\fP new)"
+.br
+.ti -1c
+.RI "void \fBcdl_removeMarker\fP (\fBCDLPtr\fP cdl, \fBMarkerPtr\fP mk)"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_findNearest\fP (\fBMarkerPtr\fP head, int x, int y)"
+.br
+.ti -1c
+.RI "void \fBcdl_printDisplayList\fP (FILE *fd, \fBMarkerPtr\fP head)"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initPointMarker\fP (int x, int y, int \fBnumber\fP, int size, int \fBtype\fP, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initPointLabelMarker\fP (int x, int y, char *\fBlabel\fP, int size, int \fBtype\fP, int \fBcolor\fP, int font)"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initLineMarker\fP (int \fBx1\fP, int y1, int \fBx2\fP, int y2, int \fBcolor\fP, int width, int style)"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initBoxMarker\fP (int lx, int \fBly\fP, int \fBux\fP, int \fBuy\fP, int \fBfill\fP, int \fBcolor\fP, int width, int style)"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initPolylineMarker\fP (int *x, int *y, int \fBnpts\fP, int \fBcolor\fP, int width, int style)"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initPolygonMarker\fP (int *x, int *y, int \fBnpts\fP, int \fBfill\fP, int \fBcolor\fP, int width, int style)"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initCircleMarker\fP (int x, int y, int \fBradius\fP, int \fBfill\fP, int \fBcolor\fP, int width, int style)"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initCircAnnMarker\fP (int x, int y, int \fBradius\fP, int \fBnannuli\fP, int \fBsep\fP, int \fBcolor\fP, int width, int style)"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initEllipseMarker\fP (int x, int y, int \fBxrad\fP, int \fByrad\fP, float \fBang\fP, int \fBfill\fP, int \fBcolor\fP, int width, int style)"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initEllAnnMarker\fP (int x, int y, int \fBxrad\fP, int \fByrad\fP, float \fBang\fP, int \fBnannuli\fP, int \fBsep\fP, int \fBcolor\fP, int width, int style)"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBcdl_initTextMarker\fP (int x, int y, char *string, float size, int \fBcolor\fP, int font, int width)"
+.br
+.ti -1c
+.RI "void \fBcdl_initMarkPos\fP (\fBMarkerPtr\fP mk, int \fBnx\fP, int \fBny\fP, int lx, int \fBly\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_doLineInSubRas\fP (\fBuchar\fP *\fBpix\fP, int \fBcolor\fP, int width, int style, int \fBx1\fP, int \fBx2\fP, int y1, int y2, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_doDashedLine\fP (\fBuchar\fP *\fBpix\fP, int \fBcolor\fP, int width, int style, int *x, int *y, int \fBnpts\fP, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_drawThickVector\fP (\fBuchar\fP *\fBpix\fP, int \fBcolor\fP, int width, int style, int \fBx1\fP, int \fBx2\fP, int y1, int y2, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_drawVector\fP (\fBuchar\fP *\fBpix\fP, int \fBcolor\fP, int \fBx1\fP, int \fBx2\fP, int y1, int y2, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_drawThickDashVec\fP (\fBuchar\fP *\fBpix\fP, int \fBcolor\fP, int width, int style, int \fBx1\fP, int \fBx2\fP, int y1, int y2, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_drawDashVec\fP (\fBuchar\fP *\fBpix\fP, int \fBcolor\fP, int style, int \fBx1\fP, int \fBx2\fP, int y1, int y2, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP)"
+.br
+.ti -1c
+.RI "\fBuchar\fP \fBcdl_setpixel\fP (\fBuchar\fP \fBpix\fP, int style, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_fillArea\fP (\fBuchar\fP *\fBpix\fP, int \fBnx\fP, int \fBny\fP, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_getCircleCoords\fP (int xcen, int ycen, int \fBradius\fP, int *x, int *y, int \fBnpts\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_getEllipseCoords\fP (int xcen, int ycen, int xradius, int yradius, float rotang, int *x, int *y)"
+.br
+.ti -1c
+.RI "void \fBcdl_minmax\fP (int *array, int \fBnpts\fP, int *amin, int *amax)"
+.br
+.ti -1c
+.RI "int \fBcdl_strlen\fP (char *\fBstr\fP, float txtsize, int txtfont)"
+.br
+.ti -1c
+.RI "int \fBbitupk\fP (unsigned int wordp, int offset, int nbits)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBDLHead\fP [MAX_FRAMES]"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBDLTail\fP [MAX_FRAMES]"
+.br
+.ti -1c
+.RI "int \fBDLFlag\fP []"
+.br
+.ti -1c
+.RI "\fBuchar\fP * \fBDLFBPix\fP [MAX_FRAMES]"
+.br
+.ti -1c
+.RI "int \fBcdl_debug\fP"
+.br
+.ti -1c
+.RI "unsigned \fBbitmask\fP []"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define ABS(\fBa\fP)   (((\fBa\fP)<0) ? -(\fBa\fP) : (\fBa\fP))"
+.PP
+Definition at line 141 of file cdlmark.c.
+.PP
+Referenced by cdl_doLineMark(), cdl_drawDashVec(), cdl_drawVector(), cdl_findNearest(), cdl_markLine(), cdl_markPolygon(), cdl_markPolyline(), and doplot().
+.SS "#define CDL_LIBRARY_SOURCE"
+.PP
+Definition at line 6 of file cdlmark.c.
+.SS "#define CDL_NEED_LINESTYLES"
+.PP
+Definition at line 5 of file cdlmark.c.
+.SS "#define FONT_SCALE   0.4"
+.PP
+Definition at line 148 of file cdlmark.c.
+.PP
+Referenced by cdl_doTextMarker(), cdl_markPoint(), cdl_markText(), and cdl_strlen().
+.SS "#define FONT_SPACE   4"
+.PP
+Definition at line 149 of file cdlmark.c.
+.PP
+Referenced by cdl_doTextMarker(), cdl_markText(), and cdl_strlen().
+.SS "#define N_CIRCLE_PTS   48"
+.PP
+Definition at line 146 of file cdlmark.c.
+.PP
+Referenced by cdl_doCircleMark().
+.SS "#define N_ELLIPSE_PTS   64"
+.PP
+Definition at line 147 of file cdlmark.c.
+.PP
+Referenced by cdl_doEllipseMark(), and cdl_getEllipseCoords().
+.SS "#define SGN(\fBa\fP)   (((\fBa\fP)<0) ? -1 : 1)"
+.PP
+Definition at line 144 of file cdlmark.c.
+.PP
+Referenced by cdl_drawDashVec(), and cdl_drawVector().
+.SH "Function Documentation"
+.PP 
+.SS "int bitupk (unsigned int wordp, int offset, int nbits)\fC [static]\fP"
+.PP
+Definition at line 3818 of file cdlmark.c.
+.PP
+References bitmask.
+.SS "int bitupk ()"
+.PP
+Referenced by cdl_doTextMarker().
+.SS "void cdl_beginDList (int frame)"
+.PP
+Definition at line 1350 of file cdlmark.c.
+.PP
+References frame.
+.SS "void cdl_beginDList ()"
+.PP
+.SS "void cdl_clearDList (int frame)"
+.PP
+Definition at line 1394 of file cdlmark.c.
+.PP
+References frame.
+.SS "void cdl_clearDList ()"
+.PP
+.SS "int cdl_clearOverlay (\fBCDLPtr\fP cdl)"
+.PP
+Definition at line 1278 of file cdlmark.c.
+.PP
+References Marker::back, cdl_debug, cdl_removeMarker(), cdl_writeSubRaster(), CDLPtr, DLHead, DLTail, ERR, Marker::lx, Marker::ly, MarkerPtr, Marker::nx, Marker::ny, OK, and Marker::refpix.
+.SS "int cdl_deleteMark (\fBCDLPtr\fP cdl, int x, int y)"
+.PP
+Definition at line 1218 of file cdlmark.c.
+.PP
+References Marker::back, cdl_debug, cdl_findNearest(), cdl_removeMarker(), cdl_writeSubRaster(), CDLPtr, DLHead, ERR, Marker::lx, Marker::ly, MarkerPtr, MK_POINT, MK_TEXT, Marker::next, Marker::number, Marker::nx, Marker::ny, OK, Marker::refpix, Marker::type, x, and y.
+.SS "void cdl_doBoxMark (int color, int width, int style, int fill, \fBuchar\fP	* pix, int lx, int ly, int nx, int ny)\fC [static]\fP"
+.PP
+Definition at line 1649 of file cdlmark.c.
+.PP
+References cdl_doDashedLine(), color, dot(), fill, i, j, k, L_HOLLOW, L_SHADOW, L_SOLID, ly, nx, ny, pix, uchar, w, x, and y.
+.SS "void cdl_doBoxMark ()"
+.PP
+Referenced by cdl_doPointMark(), and cdl_markBox().
+.SS "void cdl_doCircAnnuliMark (int x, int y, int radius, int nannuli, int sep, int color, int width, int style, \fBuchar\fP	* pix, int lx, int ly, int nx, int ny)\fC [static]\fP"
+.PP
+Definition at line 1905 of file cdlmark.c.
+.PP
+References cdl_doCircleMark(), color, False, i, ly, nannuli, nx, ny, pix, radius, sep, uchar, x, and y.
+.SS "void cdl_doCircAnnuliMark ()"
+.PP
+Referenced by cdl_markCircAnnuli().
+.SS "void cdl_doCircleMark (int x, int y, int radius, int color, int width, int style, int fill, \fBuchar\fP	* pix, int lx, int ly, int nx, int ny)\fC [static]\fP"
+.PP
+Definition at line 1858 of file cdlmark.c.
+.PP
+References cdl_doPolygonMark(), cdl_getCircleCoords(), color, fill, ly, N_CIRCLE_PTS, nx, ny, pix, radius, True, uchar, x, xp(), y, and yp().
+.SS "void cdl_doCircleMark ()"
+.PP
+Referenced by cdl_doCircAnnuliMark(), cdl_doPointMark(), and cdl_markCircle().
+.SS "void cdl_doDashedLine (\fBuchar\fP	* pix, int color, int width, int style, int	* x, int * y, int npts, int lx, int ly, int nx, int ny)\fC [static]\fP"
+.PP
+Definition at line 3071 of file cdlmark.c.
+.PP
+References cdl_debug, cdl_drawDashVec(), cdl_drawThickDashVec(), color, dot(), i, ly, npts, nx, ny, pix, uchar, x, and y.
+.SS "void cdl_doDashedLine ()"
+.PP
+Referenced by cdl_doBoxMark(), cdl_doLineMark(), and cdl_doPolygonMark().
+.SS "void cdl_doEllipAnnuliMark (int x, int y, int xrad, int yrad, float ang, int nannuli, int sep, int color, int width, int style, \fBuchar\fP	* pix, int lx, int ly, int nx, int ny)\fC [static]\fP"
+.PP
+Definition at line 2002 of file cdlmark.c.
+.PP
+References ang, cdl_doEllipseMark(), color, False, i, ly, nannuli, nx, ny, pix, sep, uchar, x, xrad, y, and yrad.
+.SS "void cdl_doEllipAnnuliMark ()"
+.PP
+Referenced by cdl_markEllipAnnuli().
+.SS "void cdl_doEllipseMark (int color, int width, int style, int fill, int xc, int yc, int xrad, int yrad, float ang, \fBuchar\fP	* pix, int lx, int ly, int nx, int ny)\fC [static]\fP"
+.PP
+Definition at line 1952 of file cdlmark.c.
+.PP
+References ang, cdl_doPolygonMark(), cdl_getEllipseCoords(), color, fill, ly, N_ELLIPSE_PTS, nx, ny, pix, True, uchar, xp(), xrad, yp(), and yrad.
+.SS "void cdl_doEllipseMark ()\fC [static]\fP"
+.PP
+Referenced by cdl_doEllipAnnuliMark(), and cdl_markEllipse().
+.SS "void cdl_doLineInSubRas (\fBuchar\fP	* pix, int color, int width, int style, int x1, int x2, int y1, int y2, int lx, int ly, int nx, int ny)\fC [static]\fP"
+.PP
+Definition at line 3024 of file cdlmark.c.
+.PP
+References cdl_drawThickVector(), cdl_drawVector(), color, L_HOLLOW, L_SOLID, ly, nx, ny, pix, and uchar.
+.SS "void cdl_doLineInSubRas ()\fC [static]\fP"
+.PP
+Referenced by cdl_doLineMark(), cdl_doPolygonMark(), cdl_doTextMarker(), and cdl_markText().
+.SS "void cdl_doLineMark (int color, int width, int style, \fBuchar\fP	* pix, int xs, int ys, int xe, int ye)\fC [static]\fP"
+.PP
+Definition at line 1593 of file cdlmark.c.
+.PP
+References ABS, cdl_doDashedLine(), cdl_doLineInSubRas(), color, L_DASHED, L_DOTDASH, L_DOTTED, L_HOLLOW, L_SOLID, ly, min, nx, ny, pix, uchar, x, xe, y, ye, and ys.
+.SS "void cdl_doLineMark ()"
+.PP
+Referenced by cdl_markLine().
+.SS "void cdl_doPointMark (int color, int type, \fBuchar\fP	* pix, int sz)\fC [static]\fP"
+.PP
+Definition at line 1474 of file cdlmark.c.
+.PP
+References cdl_doBoxMark(), cdl_doCircleMark(), cdl_doPolygonMark(), color, fill, i, j, k, L_SOLID, M_BOX, M_CIRCLE, M_CROSS, M_DIAMOND, M_FILL, M_HBLINE, M_HLINE, M_PLUS, M_POINT, M_STAR, M_VBLINE, M_VLINE, npts, pix, True, type, uchar, x, xp(), y, and yp().
+.SS "void cdl_doPointMark ()\fC [static]\fP"
+.PP
+Referenced by cdl_markPoint(), and cdl_markPointLabel().
+.SS "void cdl_doPolygonMark (int color, int width, int style, int fill, int	* x, int * y, int npts, \fBuchar\fP	* pix, int lx, int ly, int nx, int ny, int close)\fC [static]\fP"
+.PP
+Definition at line 1753 of file cdlmark.c.
+.PP
+References cdl_debug, cdl_doDashedLine(), cdl_doLineInSubRas(), cdl_fillArea(), color, fill, i, L_DASHED, L_DOTDASH, L_DOTTED, L_HOLLOW, L_SOLID, ly, malloc(), npts, nx, ny, pix, uchar, x, xp(), y, and yp().
+.SS "void cdl_doPolygonMark ()\fC [static]\fP"
+.PP
+Referenced by cdl_doCircleMark(), cdl_doEllipseMark(), cdl_doPointMark(), cdl_markPolygon(), and cdl_markPolyline().
+.SS "int cdl_doTextMarker (int x, int y, char    * string, float txtsize, float angle, int color, int width, int txtfont, \fBuchar\fP   * pix, int lx, int ly, int nx, int ny)"
+.PP
+Definition at line 2053 of file cdlmark.c.
+.PP
+References angle, bitupk(), cdl_doLineInSubRas(), CHARACTER_END, CHARACTER_HEIGHT, CHARACTER_START, CHARACTER_WIDTH, chridx, chrtab, color, COORD_PEN_LEN, COORD_PEN_START, COORD_X_LEN, COORD_X_START, COORD_Y_LEN, COORD_Y_START, F_FUTURA, F_GREEK, F_ROMAN, F_TIMES, FONT_SCALE, FONT_SPACE, futidx, futtab, futwid, gchidx, gchtab, gchwid, i, j, L_SOLID, len, ly, mx, my, nx, ny, OK, pix, size, timidx, timtab, timwid, uchar, w, x, and y.
+.PP
+Referenced by cdl_markText().
+.SS "void cdl_drawDashVec (\fBuchar\fP	* pix, int color, int style, int x1, int x2, int y1, int y2, int lx, int ly, int nx, int ny)\fC [static]\fP"
+.PP
+Definition at line 3365 of file cdlmark.c.
+.PP
+References ABS, cdl_setpixel(), color, d, dx, dy, i, ly, max, min, nx, ny, pix, SGN, uchar, x, and y.
+.SS "void cdl_drawDashVec ()"
+.PP
+Referenced by cdl_doDashedLine(), and cdl_drawThickDashVec().
+.SS "void cdl_drawDList (int frame)"
+.PP
+Definition at line 1413 of file cdlmark.c.
+.PP
+References frame.
+.SS "void cdl_drawDList ()"
+.PP
+.SS "void cdl_drawThickDashVec (\fBuchar\fP	* pix, int color, int width, int style, int x1, int x2, int y1, int y2, int lx, int ly, int nx, int ny)\fC [static]\fP"
+.PP
+Definition at line 3277 of file cdlmark.c.
+.PP
+References abs, cdl_drawDashVec(), color, dot(), dx, dy, i, L_DASHED, L_DOTDASH, L_DOTTED, ly, n, nx, ny, pix, sign, and uchar.
+.SS "void cdl_drawThickDashVec ()\fC [static]\fP"
+.PP
+Referenced by cdl_doDashedLine().
+.SS "void cdl_drawThickVector (\fBuchar\fP	* pix, int color, int width, int style, int x1, int x2, int y1, int y2, int lx, int ly, int nx, int ny)\fC [static]\fP"
+.PP
+Definition at line 3129 of file cdlmark.c.
+.PP
+References abs, cdl_drawVector(), color, dx, dy, i, L_HOLLOW, L_SHADOW, ly, n, nx, ny, pix, sign, uchar, and w.
+.SS "void cdl_drawThickVector ()"
+.PP
+Referenced by cdl_doLineInSubRas().
+.SS "void cdl_drawVector (\fBuchar\fP	* pix, int color, int x1, int x2, int y1, int y2, int lx, int ly, int nx, int ny)\fC [static]\fP"
+.PP
+Definition at line 3211 of file cdlmark.c.
+.PP
+References ABS, color, d, dx, dy, i, ly, max, min, nx, ny, pix, SGN, uchar, x, and y.
+.SS "void cdl_drawVector ()"
+.PP
+Referenced by cdl_doLineInSubRas(), and cdl_drawThickVector().
+.SS "void cdl_endDList (int frame, int flush)"
+.PP
+Definition at line 1374 of file cdlmark.c.
+.PP
+References frame.
+.SS "void cdl_endDList ()"
+.PP
+.SS "void cdl_fillArea (\fBuchar\fP	* pix, int nx, int ny, int color)\fC [static]\fP"
+.PP
+Definition at line 3464 of file cdlmark.c.
+.PP
+References color, i, j, l, nx, ny, pix, r, and uchar.
+.SS "void cdl_fillArea ()\fC [static]\fP"
+.PP
+Referenced by cdl_doPolygonMark().
+.SS "\fBMarkerPtr\fP cdl_findNearest (\fBMarkerPtr\fP head, int x, int y)"
+.PP
+Definition at line 2381 of file cdlmark.c.
+.PP
+References A, ABS, C, cdl_debug, dist, dmin, i, MarkerPtr, min, MK_BOX, MK_CIRCANN, MK_CIRCLE, MK_ELLIPANN, MK_ELLIPSE, MK_LINE, MK_POINT, MK_POLYGON, MK_POLYLINE, MK_TEXT, Marker::next, Marker::npts, Marker::type, Marker::x, x, Marker::xp, Marker::y, y, and Marker::yp.
+.SS "\fBMarkerPtr\fP cdl_findNearest ()"
+.PP
+Referenced by cdl_deleteMark().
+.SS "int cdl_freeDisplayList (\fBCDLPtr\fP cdl, \fBMarkerPtr\fP head)"
+.PP
+Definition at line 2258 of file cdlmark.c.
+.PP
+References cdl_debug, cdl_removeMarker(), CDLPtr, MarkerPtr, Marker::next, and OK.
+.SS "int cdl_freeDisplayList ()"
+.PP
+Referenced by cdl_displayPix().
+.SS "void cdl_getCircleCoords (int xcen, int ycen, int radius, int	* x, int * y, int npts)\fC [static]\fP"
+.PP
+Definition at line 3513 of file cdlmark.c.
+.PP
+References a1, a2, a3, b1, b2, b3, b4, i, npts, radius, x, and y.
+.SS "void cdl_getCircleCoords ()\fC [static]\fP"
+.PP
+Referenced by cdl_doCircleMark().
+.SS "void cdl_getEllipseCoords (int xcen, int ycen, int xradius, int yradius, float rotang, int	* x, int * y)\fC [static]\fP"
+.PP
+Definition at line 3598 of file cdlmark.c.
+.PP
+References a2, b1, b3, i, N_ELLIPSE_PTS, x, and y.
+.SS "void cdl_getEllipseCoords ()"
+.PP
+Referenced by cdl_doEllipseMark().
+.SS "int cdl_getPixRegion (\fBCDLPtr\fP cdl, int lx, int ly, int nx, int ny, \fBuchar\fP	* ras)\fC [static]\fP"
+.PP
+Definition at line 1444 of file cdlmark.c.
+.PP
+References cdl_readSubRaster(), CDLPtr, ly, malloc(), nx, ny, and uchar.
+.SS "int cdl_getPixRegion ()\fC [static]\fP"
+.PP
+Referenced by cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), and cdl_markText().
+.SS "\fBMarkerPtr\fP cdl_initBoxMarker (int lx, int ly, int ux, int uy, int fill, int color, int width, int style)\fC [static]\fP"
+.PP
+Definition at line 2630 of file cdlmark.c.
+.PP
+References Marker::color, color, Marker::fill, fill, Marker::linestyle, Marker::linewidth, ly, malloc(), MarkerPtr, MK_BOX, Marker::type, ux, uy, Marker::x, Marker::xp, Marker::y, and Marker::yp.
+.SS "\fBMarkerPtr\fP cdl_initBoxMarker ()\fC [static]\fP"
+.PP
+Referenced by cdl_markBox().
+.SS "\fBMarkerPtr\fP cdl_initCircAnnMarker (int x, int y, int radius, int nannuli, int sep, int color, int width, int style)\fC [static]\fP"
+.PP
+Definition at line 2809 of file cdlmark.c.
+.PP
+References Marker::color, color, Marker::linestyle, Marker::linewidth, MarkerPtr, MK_CIRCANN, Marker::nannuli, nannuli, Marker::radius, radius, Marker::sep, sep, Marker::type, Marker::x, x, Marker::y, and y.
+.SS "\fBMarkerPtr\fP cdl_initCircAnnMarker ()\fC [static]\fP"
+.PP
+Referenced by cdl_markCircAnnuli().
+.SS "\fBMarkerPtr\fP cdl_initCircleMarker (int x, int y, int radius, int fill, int color, int width, int style)\fC [static]\fP"
+.PP
+Definition at line 2766 of file cdlmark.c.
+.PP
+References Marker::color, color, Marker::fill, fill, Marker::linestyle, Marker::linewidth, MarkerPtr, MK_CIRCLE, Marker::radius, radius, Marker::type, Marker::x, x, Marker::y, and y.
+.SS "\fBMarkerPtr\fP cdl_initCircleMarker ()"
+.PP
+Referenced by cdl_markCircle().
+.SS "\fBMarkerPtr\fP cdl_initEllAnnMarker (int x, int y, int xrad, int yrad, float ang, int nannuli, int sep, int color, int width, int style)\fC [static]\fP"
+.PP
+Definition at line 2903 of file cdlmark.c.
+.PP
+References Marker::ang, ang, Marker::color, color, Marker::linestyle, Marker::linewidth, MarkerPtr, MK_ELLIPANN, Marker::nannuli, nannuli, Marker::sep, sep, Marker::type, Marker::x, x, Marker::xrad, xrad, Marker::y, y, Marker::yrad, and yrad.
+.SS "\fBMarkerPtr\fP cdl_initEllAnnMarker ()\fC [static]\fP"
+.PP
+Referenced by cdl_markEllipAnnuli().
+.SS "\fBMarkerPtr\fP cdl_initEllipseMarker (int x, int y, int xrad, int yrad, float ang, int fill, int color, int width, int style)\fC [static]\fP"
+.PP
+Definition at line 2855 of file cdlmark.c.
+.PP
+References Marker::ang, ang, Marker::color, color, Marker::fill, fill, Marker::linestyle, Marker::linewidth, MarkerPtr, MK_ELLIPSE, Marker::type, Marker::x, x, Marker::xrad, xrad, Marker::y, y, Marker::yrad, and yrad.
+.SS "\fBMarkerPtr\fP cdl_initEllipseMarker ()"
+.PP
+Referenced by cdl_markEllipse().
+.SS "\fBMarkerPtr\fP cdl_initLineMarker (int x1, int y1, int x2, int y2, int color, int width, int style)\fC [static]\fP"
+.PP
+Definition at line 2585 of file cdlmark.c.
+.PP
+References Marker::color, color, Marker::linestyle, Marker::linewidth, malloc(), MarkerPtr, MK_LINE, Marker::type, Marker::x, Marker::xp, Marker::y, and Marker::yp.
+.SS "\fBMarkerPtr\fP cdl_initLineMarker ()"
+.PP
+Referenced by cdl_markLine().
+.SS "void cdl_initMarkPos (\fBMarkerPtr\fP mk, int nx, int ny, int lx, int ly)\fC [static]\fP"
+.PP
+Definition at line 2981 of file cdlmark.c.
+.PP
+References ly, MarkerPtr, nx, and ny.
+.SS "void cdl_initMarkPos ()"
+.PP
+Referenced by cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), and cdl_markText().
+.SS "\fBMarkerPtr\fP cdl_initPointLabelMarker (int x, int y, char    * label, int size, int type, int color, int font)\fC [static]\fP"
+.PP
+Definition at line 2543 of file cdlmark.c.
+.PP
+References Marker::color, color, Marker::font, label, malloc(), MarkerPtr, MK_POINT, Marker::pt_type, Marker::size, size, Marker::str, Marker::type, type, Marker::x, x, Marker::y, and y.
+.SS "\fBMarkerPtr\fP cdl_initPointLabelMarker ()"
+.PP
+Referenced by cdl_markPointLabel().
+.SS "\fBMarkerPtr\fP cdl_initPointMarker (int x, int y, int number, int size, int type, int color)\fC [static]\fP"
+.PP
+Definition at line 2502 of file cdlmark.c.
+.PP
+References Marker::color, color, MarkerPtr, MK_POINT, Marker::number, number, Marker::pt_type, Marker::size, size, Marker::type, type, Marker::x, x, Marker::y, and y.
+.SS "\fBMarkerPtr\fP cdl_initPointMarker ()\fC [static]\fP"
+.PP
+Referenced by cdl_markPoint().
+.SS "\fBMarkerPtr\fP cdl_initPolygonMarker (int     * x, int * y, int npts, int fill, int color, int width, int style)\fC [static]\fP"
+.PP
+Definition at line 2720 of file cdlmark.c.
+.PP
+References Marker::color, color, Marker::fill, fill, Marker::linestyle, Marker::linewidth, malloc(), MarkerPtr, MK_POLYGON, Marker::npts, npts, Marker::type, Marker::x, x, Marker::xp, Marker::y, y, and Marker::yp.
+.SS "\fBMarkerPtr\fP cdl_initPolygonMarker ()\fC [static]\fP"
+.PP
+Referenced by cdl_markPolygon().
+.SS "\fBMarkerPtr\fP cdl_initPolylineMarker (int     * x, int * y, int npts, int color, int width, int style)\fC [static]\fP"
+.PP
+Definition at line 2676 of file cdlmark.c.
+.PP
+References Marker::color, color, Marker::linestyle, Marker::linewidth, malloc(), MarkerPtr, MK_POLYLINE, Marker::npts, npts, Marker::type, Marker::x, x, Marker::xp, Marker::y, y, and Marker::yp.
+.SS "\fBMarkerPtr\fP cdl_initPolylineMarker ()"
+.PP
+Referenced by cdl_markPolyline().
+.SS "\fBMarkerPtr\fP cdl_initTextMarker (int x, int y, char    * string, float size, int color, int font, int width)\fC [static]\fP"
+.PP
+Definition at line 2949 of file cdlmark.c.
+.PP
+References Marker::color, color, Marker::font, malloc(), MarkerPtr, MK_TEXT, size, Marker::str, Marker::textwidth, Marker::txsize, Marker::type, Marker::x, x, Marker::y, and y.
+.SS "\fBMarkerPtr\fP cdl_initTextMarker ()\fC [static]\fP"
+.PP
+Referenced by cdl_markText().
+.SS "void cdl_insertMarker (\fBCDLPtr\fP cdl, \fBMarkerPtr\fP back, \fBMarkerPtr\fP new)\fC [static]\fP"
+.PP
+Definition at line 2291 of file cdlmark.c.
+.PP
+References Marker::back, CDLPtr, DLHead, DLTail, MarkerPtr, Marker::next, and tmp.
+.SS "void cdl_insertMarker ()\fC [static]\fP"
+.PP
+Referenced by cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), and cdl_markText().
+.SS "int cdl_mapFrame (\fBCDLPtr\fP cdl, int frame)"
+.PP
+Definition at line 173 of file cdlmark.c.
+.PP
+References a, b, c, cdl_getWCS(), CDL_LINEAR, cdl_setFrame(), cdl_setWCS(), CDLPtr, d, frame, malloc(), OK, SZ_NAME, title, tx, ty, xo, yo, z1, z2, and zt.
+.SS "int cdl_markBox (\fBCDLPtr\fP cdl, int lx, int ly, int ux, int uy, int fill, int color)"
+.PP
+Definition at line 533 of file cdlmark.c.
+.PP
+References cdl_debug, cdl_doBoxMark(), cdl_getPixRegion(), cdl_initBoxMarker(), cdl_initMarkPos(), cdl_insertMarker(), cdl_writeSubRaster(), CDLPtr, color, DLTail, ERR, fill, ly, malloc(), MarkerPtr, Marker::markpix, nx, ny, OK, pix, Marker::refpix, tmp, uchar, ux, and uy.
+.SS "int cdl_markCircAnnuli (\fBCDLPtr\fP cdl, int x, int y, int radius, int nannuli, int sep, int color)"
+.PP
+Definition at line 804 of file cdlmark.c.
+.PP
+References cdl_debug, cdl_doCircAnnuliMark(), cdl_getPixRegion(), cdl_initCircAnnMarker(), cdl_initMarkPos(), cdl_insertMarker(), cdl_writeSubRaster(), CDLPtr, color, DLTail, ERR, ly, malloc(), MarkerPtr, Marker::markpix, nannuli, nx, ny, OK, pix, radius, Marker::refpix, sep, uchar, x, and y.
+.SS "int cdl_markCircle (\fBCDLPtr\fP cdl, int x, int y, int radius, int fill, int color)"
+.PP
+Definition at line 739 of file cdlmark.c.
+.PP
+References cdl_debug, cdl_doCircleMark(), cdl_getPixRegion(), cdl_initCircleMarker(), cdl_initMarkPos(), cdl_insertMarker(), cdl_writeSubRaster(), CDLPtr, color, DLTail, ERR, fill, ly, malloc(), MarkerPtr, Marker::markpix, nx, ny, OK, pix, radius, Marker::refpix, uchar, x, and y.
+.SS "int cdl_markCoordsFile (\fBCDLPtr\fP cdl, char    * fname, int type, int size, int color, int label)"
+.PP
+Definition at line 401 of file cdlmark.c.
+.PP
+References cdl_markPoint(), CDLPtr, color, ERR, i, label, OK, size, type, x, and y.
+.SS "int cdl_markEllipAnnuli (\fBCDLPtr\fP cdl, int x, int y, int xrad, int yrad, float ang, int nannuli, int sep, int color)"
+.PP
+Definition at line 941 of file cdlmark.c.
+.PP
+References ang, cdl_debug, cdl_doEllipAnnuliMark(), cdl_getPixRegion(), cdl_initEllAnnMarker(), cdl_initMarkPos(), cdl_insertMarker(), cdl_writeSubRaster(), CDLPtr, color, DLTail, ERR, ly, malloc(), MarkerPtr, Marker::markpix, max, nannuli, nx, ny, OK, pix, Marker::refpix, sep, uchar, x, xrad, y, and yrad.
+.SS "int cdl_markEllipse (\fBCDLPtr\fP cdl, int x, int y, int xrad, int yrad, float rotang, int fill, int color)"
+.PP
+Definition at line 872 of file cdlmark.c.
+.PP
+References cdl_debug, cdl_doEllipseMark(), cdl_getPixRegion(), cdl_initEllipseMarker(), cdl_initMarkPos(), cdl_insertMarker(), cdl_writeSubRaster(), CDLPtr, color, DLTail, ERR, fill, ly, malloc(), MarkerPtr, Marker::markpix, max, nx, ny, OK, pix, Marker::refpix, uchar, x, xrad, y, and yrad.
+.SS "int cdl_markLine (\fBCDLPtr\fP cdl, int xs, int ys, int xe, int ye, int color)"
+.PP
+Definition at line 468 of file cdlmark.c.
+.PP
+References ABS, cdl_debug, cdl_doLineMark(), cdl_getPixRegion(), cdl_initLineMarker(), cdl_initMarkPos(), cdl_insertMarker(), cdl_writeSubRaster(), CDLPtr, color, DLTail, ERR, L_HOLLOW, ly, malloc(), MarkerPtr, Marker::markpix, min, nx, ny, OK, pix, Marker::refpix, uchar, xe, ye, and ys.
+.SS "int cdl_markPoint (\fBCDLPtr\fP cdl, int x, int y, int number, int size, int type, int color)"
+.PP
+Definition at line 239 of file cdlmark.c.
+.PP
+References cdl_debug, cdl_doPointMark(), cdl_getPixRegion(), cdl_initMarkPos(), cdl_initPointMarker(), cdl_insertMarker(), cdl_markText(), cdl_writeSubRaster(), CDLPtr, CHARACTER_WIDTH, color, DLTail, ERR, FONT_SCALE, ly, malloc(), MarkerPtr, Marker::markpix, max, number, OK, pix, Marker::refpix, size, type, uchar, x, and y.
+.SS "int cdl_markPointLabel (\fBCDLPtr\fP cdl, int x, int y, char 	* label, int size, int type, int color)"
+.PP
+Definition at line 321 of file cdlmark.c.
+.PP
+References cdl_debug, cdl_doPointMark(), cdl_getPixRegion(), cdl_initMarkPos(), cdl_initPointLabelMarker(), cdl_insertMarker(), cdl_markText(), cdl_strlen(), cdl_writeSubRaster(), CDLPtr, color, DLTail, ERR, Marker::font, label, ly, malloc(), MarkerPtr, Marker::markpix, max, OK, pix, Marker::refpix, size, Marker::txsize, type, uchar, x, and y.
+.SS "int cdl_markPolygon (\fBCDLPtr\fP cdl, xarray, \fByarray\fP, int npts, int fill, int color)"
+.PP
+Definition at line 601 of file cdlmark.c.
+.PP
+References ABS, cdl_debug, cdl_doPolygonMark(), cdl_getPixRegion(), cdl_initMarkPos(), cdl_initPolygonMarker(), cdl_insertMarker(), cdl_minmax(), cdl_writeSubRaster(), CDLPtr, color, DLTail, ERR, fill, ly, malloc(), MarkerPtr, Marker::markpix, min, npts, nx, ny, OK, pix, Marker::refpix, True, uchar, xmax, xmin, yarray, ymax, and ymin.
+.SS "int cdl_markPolyline (\fBCDLPtr\fP cdl, int	* xarray, int * yarray, int npts, int color)"
+.PP
+Definition at line 670 of file cdlmark.c.
+.PP
+References ABS, cdl_debug, cdl_doPolygonMark(), cdl_getPixRegion(), cdl_initMarkPos(), cdl_initPolylineMarker(), cdl_insertMarker(), cdl_minmax(), cdl_writeSubRaster(), CDLPtr, color, DLTail, ERR, False, ly, malloc(), MarkerPtr, Marker::markpix, min, npts, nx, ny, OK, pix, Marker::refpix, uchar, xmax, xmin, yarray, ymax, and ymin.
+.SS "int cdl_markText (\fBCDLPtr\fP cdl, int x, int y, char    * str, float size, float angle, int color)"
+.PP
+Definition at line 1010 of file cdlmark.c.
+.PP
+References angle, cdl_debug, cdl_doLineInSubRas(), cdl_doTextMarker(), cdl_getPixRegion(), cdl_initMarkPos(), cdl_initTextMarker(), cdl_insertMarker(), cdl_minmax(), cdl_strlen(), cdl_writeSubRaster(), CDLPtr, CHARACTER_HEIGHT, CHARACTER_WIDTH, color, DLTail, ERR, Marker::font, FONT_HEIGHT, FONT_SCALE, FONT_SPACE, len, ly, malloc(), MarkerPtr, Marker::markpix, nx, ny, OK, pix, Marker::refpix, size, str, uchar, w, x, xmax, xmin, y, ymax, and ymin.
+.SS "void cdl_minmax (int	* array, int npts, int	* amin, int * amax)\fC [static]\fP"
+.PP
+Definition at line 3683 of file cdlmark.c.
+.PP
+References i, and npts.
+.SS "void cdl_minmax ()"
+.PP
+Referenced by cdl_markPolygon(), cdl_markPolyline(), and cdl_markText().
+.SS "void cdl_printDisplayList (FILE		* fd, \fBMarkerPtr\fP head)\fC [static]\fP"
+.PP
+Definition at line 2459 of file cdlmark.c.
+.PP
+References Marker::back, MarkerPtr, MK_BOX, MK_CIRCANN, MK_CIRCLE, MK_ELLIPANN, MK_ELLIPSE, MK_LINE, MK_POINT, MK_POLYGON, MK_POLYLINE, MK_TEXT, Marker::next, and Marker::type.
+.SS "void cdl_printDisplayList ()\fC [static]\fP"
+.PP
+.SS "int cdl_redrawOverlay (\fBCDLPtr\fP cdl)"
+.PP
+Definition at line 1318 of file cdlmark.c.
+.PP
+References cdl_debug, cdl_writeSubRaster(), CDLPtr, DLHead, ERR, Marker::lx, Marker::ly, MarkerPtr, Marker::markpix, Marker::next, Marker::nx, Marker::ny, and OK.
+.SS "void cdl_removeMarker (\fBCDLPtr\fP cdl, \fBMarkerPtr\fP mk)\fC [static]\fP"
+.PP
+Definition at line 2335 of file cdlmark.c.
+.PP
+References Marker::back, CDLPtr, DLHead, DLTail, free(), MarkerPtr, Marker::markpix, Marker::next, Marker::refpix, Marker::str, uchar, Marker::xp, and Marker::yp.
+.SS "void cdl_removeMarker ()"
+.PP
+Referenced by cdl_clearOverlay(), cdl_deleteMark(), and cdl_freeDisplayList().
+.SS "void cdl_setFont (\fBCDLPtr\fP cdl, int font)"
+.PP
+Definition at line 1120 of file cdlmark.c.
+.PP
+References cdl_setTextWidth(), CDLPtr, F_BOLD, F_FUTURA, F_GREEK, F_ROMAN, and F_TIMES.
+.SS "void cdl_setFont ()"
+.PP
+.SS "void cdl_setLineStyle (\fBCDLPtr\fP cdl, int style)"
+.PP
+Definition at line 1194 of file cdlmark.c.
+.PP
+References CDLPtr.
+.SS "void cdl_setLineStyle ()"
+.PP
+.SS "void cdl_setLineWidth (\fBCDLPtr\fP cdl, int width)"
+.PP
+Definition at line 1172 of file cdlmark.c.
+.PP
+References CDLPtr.
+.SS "void cdl_setLineWidth ()"
+.PP
+.SS "\fBuchar\fP cdl_setpixel (\fBuchar\fP pix, int style, int color)\fC [static]\fP"
+.PP
+Definition at line 3421 of file cdlmark.c.
+.PP
+References color, L_DASHED, L_DOTDASH, L_DOTTED, pix, and uchar.
+.SS "\fBuchar\fP cdl_setpixel ()\fC [static]\fP"
+.PP
+Referenced by cdl_drawDashVec().
+.SS "void cdl_setTextWidth (\fBCDLPtr\fP cdl, int width)"
+.PP
+Definition at line 1149 of file cdlmark.c.
+.PP
+References CDLPtr.
+.SS "void cdl_setTextWidth ()"
+.PP
+.SS "int cdl_strlen (char	* str, float txtsize, int txtfont)\fC [static]\fP"
+.PP
+Definition at line 3712 of file cdlmark.c.
+.PP
+References CHARACTER_END, CHARACTER_HEIGHT, CHARACTER_START, CHARACTER_WIDTH, F_FUTURA, F_GREEK, F_ROMAN, F_TIMES, FONT_SCALE, FONT_SPACE, futwid, gchwid, i, len, size, str, and timwid.
+.SS "int cdl_strlen ()\fC [static]\fP"
+.PP
+Referenced by cdl_markPointLabel(), and cdl_markText().
+.SH "Variable Documentation"
+.PP 
+.SS "unsigned \fBbitmask\fP[]"
+.PP
+\fBInitial value:\fP.nf
+ {  0,                      
+        01,             03,             07,
+        017,            037,            077,
+        0177,           0377,           0777,
+        01777,          03777,          07777,
+        017777,         037777,         077777,
+        0177777,        0377777,        0777777,
+        01777777,       03777777,       07777777,
+        017777777,      037777777,      077777777,
+        0177777777,     0377777777,     0777777777,
+        01777777777,    03777777777,    07777777777,
+        017777777777,   037777777777
+}
+.fi
+.PP
+Definition at line 3793 of file cdlmark.c.
+.PP
+Referenced by bitupk().
+.SS "int \fBcdl_debug\fP"
+.PP
+Definition at line 152 of file cdlmark.c.
+.SS "\fBuchar\fP* \fBDLFBPix\fP[MAX_FRAMES]"
+.PP
+Definition at line 137 of file cdlmark.c.
+.SS "int \fBDLFlag\fP[]"
+.PP
+\fBInitial value:\fP.nf
+ {    
+        0, 0, 0, 0,   
+        0, 0, 0, 0    
+         }
+.fi
+.PP
+Definition at line 133 of file cdlmark.c.
+.SS "\fBMarkerPtr\fP \fBDLHead\fP[MAX_FRAMES]"
+.PP
+Definition at line 131 of file cdlmark.c.
+.PP
+Referenced by cdl_clearOverlay(), cdl_deleteMark(), cdl_displayPix(), cdl_insertMarker(), cdl_open(), cdl_redrawOverlay(), and cdl_removeMarker().
+.SS "\fBMarkerPtr\fP \fBDLTail\fP[MAX_FRAMES]"
+.PP
+Definition at line 132 of file cdlmark.c.
+.PP
+Referenced by cdl_clearOverlay(), cdl_insertMarker(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_open(), and cdl_removeMarker().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

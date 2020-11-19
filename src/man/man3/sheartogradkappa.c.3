@@ -1,0 +1,46 @@
+.TH "sheartogradkappa.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sheartogradkappa.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	sheartogradkappa --- calculate gradkappa image from shear image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	sheartogradkappa\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'sheartogradkappa' reads shear from \fBa\fP \fBfits\fP file on stdin and calculates\\\fBn\fP\\	grad - kappa which is sent to stdout\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	sheartogradkappa --- calculate gradkappa image from shear image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	sheartogradkappa\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'sheartogradkappa' reads shear from \fBa\fP \fBfits\fP file on stdin and calculates\\\fBn\fP\\	grad - kappa which is sent to stdout\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 5 of file sheartogradkappa.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 25 of file sheartogradkappa.c.
+.PP
+References add_comment(), allocFloatArray(), copyfitsheader(), exit(), gamma1(), gamma2(), i, j, fitsheader::n, N1, N2, readfitsheader(), readfitsline(), usage, writefitsheader(), writefitsline(), and writefitstail().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

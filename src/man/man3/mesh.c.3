@@ -1,0 +1,152 @@
+.TH "mesh.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+mesh.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include 'forms.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'utils/arrays.h'\fP
+.br
+\fC#include 'mesh.h'\fP
+.br
+\fC#include 'control_panel.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBReadNewFrame\fP (void)"
+.br
+.ti -1c
+.RI "void \fBDrawMesh\fP (void)"
+.br
+.ti -1c
+.RI "void \fBswapbytes\fP (void *addr, int nint)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float \fBzscale\fP"
+.br
+.ti -1c
+.RI "float ** \fBf\fP"
+.br
+.ti -1c
+.RI "int \fBopmode\fP"
+.br
+.ti -1c
+.RI "int \fBrecording\fP"
+.br
+.ti -1c
+.RI "int \fBframenumber\fP"
+.br
+.ti -1c
+.RI "int \fBnframes\fP"
+.br
+.ti -1c
+.RI "int \fBNx\fP"
+.br
+.ti -1c
+.RI "int \fBNy\fP"
+.br
+.ti -1c
+.RI "\fBFD_control_panel\fP * \fBthecontrolpanel\fP"
+.br
+.ti -1c
+.RI "\fBfitsheader\fP * \fBfits\fP"
+.br
+.ti -1c
+.RI "FILE * \fBipf\fP"
+.br
+.ti -1c
+.RI "char \fBframestring\fP [256]"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void DrawMesh (void)"
+.PP
+Definition at line 31 of file mesh.c.
+.PP
+References f, framenumber, i, j, Nx, Ny, recording, swapbytes(), and zscale.
+.PP
+Referenced by command_input_callback(), forwardstep_button_callback(), main(), rewind_button_callback(), and zscale_counter_callback().
+.SS "void ReadNewFrame (void)"
+.PP
+Definition at line 19 of file mesh.c.
+.PP
+References f, fits, FD_control_panel::frame_number_text, framenumber, framestring, nframes, readfitsplane(), and thecontrolpanel.
+.PP
+Referenced by command_input_callback(), forwardstep_button_callback(), main(), and rewind_button_callback().
+.SS "void swapbytes (void * addr, int nint)"
+.PP
+Definition at line 72 of file mesh.c.
+.PP
+References b, i, and nint.
+.PP
+Referenced by DrawMesh(), readitem(), and writeitem().
+.SH "Variable Documentation"
+.PP 
+.SS "float ** f"
+.PP
+Definition at line 12 of file mesh.c.
+.SS "\fBfitsheader\fP* \fBfits\fP"
+.PP
+Definition at line 15 of file mesh.c.
+.SS "int \fBframenumber\fP"
+.PP
+Definition at line 13 of file mesh.c.
+.PP
+Referenced by DrawMesh(), main(), ReadNewFrame(), and start_command().
+.SS "char \fBframestring\fP[256]\fC [static]\fP"
+.PP
+Definition at line 17 of file mesh.c.
+.PP
+Referenced by ReadNewFrame().
+.SS "FILE* \fBipf\fP"
+.PP
+Definition at line 16 of file mesh.c.
+.SS "int \fBnframes\fP"
+.PP
+Definition at line 13 of file mesh.c.
+.SS "int \fBNx\fP"
+.PP
+Definition at line 13 of file mesh.c.
+.PP
+Referenced by alloc_fft(), ccf(), cfilter(), copy_fft(), cycleimage(), DrawMesh(), fft_size(), filter(), fixedges(), fixholes(), forward_fft(), free_fft(), get_fft(), getpixcoords(), inverse_fft(), main(), outputframe(), painttriangle(), power(), set_fft(), start_command(), and substitute().
+.SS "int \fBNy\fP"
+.PP
+Definition at line 13 of file mesh.c.
+.PP
+Referenced by alloc_fft(), ccf(), cfilter(), copy_fft(), cycleimage(), DrawMesh(), fft_size(), filter(), fixedges(), fixholes(), fixpix(), forward_fft(), free_fft(), get_fft(), getpixcoords(), inverse_fft(), main(), outputframe(), painttriangle(), power(), set_fft(), start_command(), and substitute().
+.SS "int \fBopmode\fP"
+.PP
+Definition at line 13 of file mesh.c.
+.PP
+Referenced by avgpixstack(), forwardstep_button_callback(), go_button_callback(), main(), rewind_button_callback(), and stop_button_callback().
+.SS "int \fBrecording\fP"
+.PP
+Definition at line 13 of file mesh.c.
+.PP
+Referenced by DrawMesh(), main(), and rec_button_callback().
+.SS "\fBFD_control_panel\fP* \fBthecontrolpanel\fP"
+.PP
+Definition at line 14 of file mesh.c.
+.SS "float \fBzscale\fP"
+.PP
+Definition at line 12 of file mesh.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

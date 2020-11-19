@@ -1,0 +1,511 @@
+.TH "cdl_f77.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cdl_f77.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include 'cdl.h'\fP
+.br
+\fC#include 'cdl_f77.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCDL_LIBRARY_SOURCE\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBsstrip\fP ()"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBCDLPtr\fP \fBcdl_f\fP = (\fBCDLPtr\fP) NULL"
+.br
+.ti -1c
+.RI "void char * \fBimtdev\fP"
+.br
+.ti -1c
+.RI "int * \fBier\fP"
+.br
+.ti -1c
+.RI "int \fBlen\fP"
+.br
+.ti -1c
+.RI "int * \fBnx\fP"
+.br
+.ti -1c
+.RI "int * \fBny\fP"
+.br
+.ti -1c
+.RI "int * \fBbitpix\fP"
+.br
+.ti -1c
+.RI "int * \fBframe\fP"
+.br
+.ti -1c
+.RI "int * \fBfbconfig\fP"
+.br
+.ti -1c
+.RI "int * \fBzscale\fP"
+.br
+.ti -1c
+.RI "float * \fBx\fP"
+.br
+.ti -1c
+.RI "float * \fBy\fP"
+.br
+.ti -1c
+.RI "char * \fBkey\fP"
+.br
+.ti -1c
+.RI "int * \fBband\fP"
+.br
+.ti -1c
+.RI "int * \fBisiraf\fP"
+.br
+.ti -1c
+.RI "\fBuchar\fP * \fBpix\fP"
+.br
+.ti -1c
+.RI "char * \fBtitle\fP"
+.br
+.ti -1c
+.RI "int * \fBisfits\fP"
+.br
+.ti -1c
+.RI "int * \fBwcs\fP"
+.br
+.ti -1c
+.RI "float * \fBa\fP"
+.br
+.ti -1c
+.RI "float * \fBb\fP"
+.br
+.ti -1c
+.RI "float * \fBc\fP"
+.br
+.ti -1c
+.RI "float * \fBd\fP"
+.br
+.ti -1c
+.RI "float * \fBtx\fP"
+.br
+.ti -1c
+.RI "float * \fBty\fP"
+.br
+.ti -1c
+.RI "float * \fBz1\fP"
+.br
+.ti -1c
+.RI "float * \fBz2\fP"
+.br
+.ti -1c
+.RI "int * \fBzt\fP"
+.br
+.ti -1c
+.RI "int \fBnlen\fP"
+.br
+.ti -1c
+.RI "int \fBtlen\fP"
+.br
+.ti -1c
+.RI "int * \fBfb\fP"
+.br
+.ti -1c
+.RI "int * \fBw\fP"
+.br
+.ti -1c
+.RI "int * \fBh\fP"
+.br
+.ti -1c
+.RI "int * \fBnf\fP"
+.br
+.ti -1c
+.RI "int * \fBreset\fP"
+.br
+.ti -1c
+.RI "int * \fBannotate\fP"
+.br
+.ti -1c
+.RI "* \fBly\fP"
+.br
+.ti -1c
+.RI "int * \fBnframes\fP"
+.br
+.ti -1c
+.RI "int * \fBtype\fP"
+.br
+.ti -1c
+.RI "int * \fBsize\fP"
+.br
+.ti -1c
+.RI "int * \fBcolor\fP"
+.br
+.ti -1c
+.RI "int * \fBlabel\fP"
+.br
+.ti -1c
+.RI "int * \fBnumber\fP"
+.br
+.ti -1c
+.RI "* \fBys\fP"
+.br
+.ti -1c
+.RI "int * \fBxe\fP"
+.br
+.ti -1c
+.RI "int * \fBye\fP"
+.br
+.ti -1c
+.RI "int * \fBux\fP"
+.br
+.ti -1c
+.RI "int * \fBuy\fP"
+.br
+.ti -1c
+.RI "int * \fBfill\fP"
+.br
+.ti -1c
+.RI "* \fByarray\fP"
+.br
+.ti -1c
+.RI "int * \fBnpts\fP"
+.br
+.ti -1c
+.RI "int * \fBradius\fP"
+.br
+.ti -1c
+.RI "int * \fBnannuli\fP"
+.br
+.ti -1c
+.RI "int * \fBsep\fP"
+.br
+.ti -1c
+.RI "int * \fBxrad\fP"
+.br
+.ti -1c
+.RI "int * \fByrad\fP"
+.br
+.ti -1c
+.RI "float * \fBang\fP"
+.br
+.ti -1c
+.RI "char * \fBstr\fP"
+.br
+.ti -1c
+.RI "float * \fBangle\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CDL_LIBRARY_SOURCE"
+.PP
+Definition at line 3 of file cdl_f77.c.
+.SH "Function Documentation"
+.PP 
+.SS "void sstrip ()\fC [static]\fP"
+.PP
+.SH "Variable Documentation"
+.PP 
+.SS "float * \fBa\fP"
+.PP
+Definition at line 601 of file cdl_spp.c.
+.PP
+Referenced by allocatearrays(), aloop(), brent(), bswap2(), bswap4(), bswap8(), cartesiantokepler(), cdl_getWCS(), cdl_mapFrame(), cdl_setWCS(), com_readWCS(), com_writeWCS(), computeSigma(), convert_matrix(), cpgellipses(), cross(), dec2str(), det(), do_object_stats(), drawellipse(), ezfftb_(), ezfftf_(), fitdistortions(), fk425m(), fk524m(), func(), gaussfit(), gaussfitn(), getmodeamplitudes_lc(), getmodeamplitudes_txt(), Getshape(), halfx(), halfy(), imd_getWCS(), imd_setWCS(), inversedoit(), inverseinit(), invertmatrix(), invkx(), invky(), keplertocartesian(), keplertocartesian_shapiro(), lubksb(), ludcmp(), main(), MAIN__(), make_r(), make_re(), makemodel(), makeresiduals(), mgoplt3d_(), modelrms(), mylubksb(), myludcmp(), power(), printgradgrads(), printgrads(), printmatrix(), printoffsets(), ra2str(), recircdef(), rectkernel(), rflatten_a(), rmodel(), rotate(), rotate_(), runflatten_a(), set_shades(), slaDcc2s(), slaDcs2c(), submatrix(), subSample(), write2Dpolymodel(), zap(), zapellipse(), and zeromatrix().
+.SS "float * \fBang\fP"
+.PP
+Definition at line 1602 of file cdl_spp.c.
+.PP
+Referenced by cdl_doEllipAnnuliMark(), cdl_doEllipseMark(), cdl_initEllAnnMarker(), cdl_initEllipseMarker(), and cdl_markEllipAnnuli().
+.SS "float* \fBangle\fP"
+.PP
+Definition at line 1433 of file cdl_f77.c.
+.PP
+Referenced by cdl_doTextMarker(), cdl_markText(), decimaltoxms(), enqueuebadtri(), getangle(), main(), rotx(), roty(), rotz(), slaDeuler(), slaDranrm(), and testtriangle().
+.SS "int * \fBannotate\fP"
+.PP
+Definition at line 830 of file cdl_spp.c.
+.PP
+Referenced by cdl_printPix(), and cdl_printPixToFile().
+.SS "float * \fBb\fP"
+.PP
+Definition at line 601 of file cdl_spp.c.
+.PP
+Referenced by addmaskpoint(), brent(), bswap2(), bswap4(), bswap8(), byteswapline(), cdl_getWCS(), cdl_mapFrame(), cdl_setWCS(), com_readWCS(), com_writeWCS(), cpgellipses(), cross(), dec2str(), det(), do_object_stats(), drawellipse(), eps_setCmap(), ezfftb_(), ezfftf_(), findmode(), free_convert_matrix(), free_submatrix(), func(), gaussfit(), gaussfitn(), getcolormap(), getrgbfromcmap(), Getshape(), imd_getWCS(), imd_setWCS(), lubksb(), main(), MAIN__(), makemodel(), mylubksb(), power(), printmatrix(), ra2str(), rotate(), scale_expansion_zeroelim(), set_shades(), setblocksize(), slaDcc2s(), slaDcs2c(), subSample(), swapbytes(), swapint(), and zapellipse().
+.SS "int * \fBband\fP"
+.PP
+Definition at line 417 of file cdl_spp.c.
+.PP
+Referenced by cdl_displayIRAF(), cdl_getIRAFPixels(), and cdl_readIRAF().
+.SS "int * \fBbitpix\fP"
+.PP
+Definition at line 773 of file cdl_spp.c.
+.PP
+Referenced by cdl_applyZscale(), cdl_computeZscale(), cdl_displayFITS(), cdl_displayIRAF(), cdl_displayPix(), cdl_getFITSPixels(), cdl_getIRAFPixels(), cdl_openFITS(), cdl_readFITS(), cdl_readIRAF(), cdl_setBitpix(), cdl_zscale(), cdl_zscaleImage(), read_fits_head(), read_fits_head_ND(), and sampleImage().
+.SS "float * \fBc\fP"
+.PP
+Definition at line 601 of file cdl_spp.c.
+.PP
+Referenced by cdl_getWCS(), cdl_mapFrame(), cdl_setWCS(), com_readWCS(), com_writeWCS(), counterclockwiseadapt(), cpgellipses(), drawellipse(), forward_cfft(), func(), gaussfilter(), getcolormap(), getimageplane(), getword(), I(), If(), imd_getWCS(), imd_setWCS(), incircleadapt(), inverse_cfft(), main(), makecarray(), makemodel(), mean(), pointintriangle(), print_caption(), printimage(), readtabheader(), rotate(), scale_expansion_zeroelim(), slaDeuler(), and zapellipse().
+.SS "\fBCDLPtr\fP \fBcdl_f\fP = (\fBCDLPtr\fP) NULL\fC [static]\fP"
+.PP
+Definition at line 11 of file cdl_f77.c.
+.SS "int * \fBcolor\fP"
+.PP
+Definition at line 1635 of file cdl_spp.c.
+.PP
+Referenced by alloc_shades(), allocatedata(), cdl_doBoxMark(), cdl_doCircAnnuliMark(), cdl_doCircleMark(), cdl_doDashedLine(), cdl_doEllipAnnuliMark(), cdl_doEllipseMark(), cdl_doLineInSubRas(), cdl_doLineMark(), cdl_doPointMark(), cdl_doPolygonMark(), cdl_doTextMarker(), cdl_drawDashVec(), cdl_drawThickDashVec(), cdl_drawThickVector(), cdl_drawVector(), cdl_fillArea(), cdl_initBoxMarker(), cdl_initCircAnnMarker(), cdl_initCircleMarker(), cdl_initEllAnnMarker(), cdl_initEllipseMarker(), cdl_initLineMarker(), cdl_initPointLabelMarker(), cdl_initPointMarker(), cdl_initPolygonMarker(), cdl_initPolylineMarker(), cdl_initTextMarker(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markCoordsFile(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_setpixel(), color_index(), GetPixelValue(), gray(), main(), makecarray(), makepreview(), makescrunchedviews(), myworkproc1(), picclick(), print_im(), printimage(), readdata(), and readdataheader().
+.SS "float * \fBd\fP"
+.PP
+Definition at line 601 of file cdl_spp.c.
+.PP
+Referenced by allocatearrays(), brent(), cdl_drawDashVec(), cdl_drawVector(), cdl_getWCS(), cdl_mapFrame(), cdl_setWCS(), com_readWCS(), com_writeWCS(), deproject(), dFdd(), do_object_stats(), drawcollar(), drawcursor(), F(), fittranslations(), gaussfit(), getcoords(), getlimits(), getshape(), imd_getWCS(), imd_setWCS(), interp(), invertmatrix(), lmodelfunc(), ludcmp(), main(), make_r(), make_z(), makemodel(), myludcmp(), newlmodel(), newpolylmodel(), newtonraphson(), output(), outputframe(), printdistortions(), printtranslations(), process(), project(), readlmodel(), recircdef(), setgridsize(), writelmodel(), and zap().
+.SS "int* \fBfb\fP"
+.PP
+Definition at line 433 of file cdl_f77.c.
+.PP
+Referenced by cdl_displayPix(), cdl_selectFB(), iis_open(), linmin(), main(), mnbrak(), set_fbconfig(), vx_eraseFrame(), vx_iisclose(), vx_iisio(), and vx_initFrame().
+.SS "int * \fBfbconfig\fP"
+.PP
+Definition at line 449 of file cdl_spp.c.
+.PP
+Referenced by cdl_displayFITS(), cdl_displayIRAF(), cdl_displayPix(), com_eraseFrame(), com_setFBConfig(), com_writeWCS(), iis_display(), iis_open(), and imd_displayImage().
+.SS "int * \fBfill\fP"
+.PP
+Definition at line 1571 of file cdl_spp.c.
+.PP
+Referenced by cdl_doBoxMark(), cdl_doCircleMark(), cdl_doEllipseMark(), cdl_doPointMark(), cdl_doPolygonMark(), cdl_initBoxMarker(), cdl_initCircleMarker(), cdl_initEllipseMarker(), cdl_initPolygonMarker(), cdl_markBox(), cdl_markCircle(), cdl_markEllipse(), cdl_markPolygon(), and cpgellipses().
+.SS "int * \fBframe\fP"
+.PP
+Definition at line 448 of file cdl_spp.c.
+.PP
+Referenced by cdl_beginDList(), cdl_clearDList(), cdl_displayFITS(), cdl_displayIRAF(), cdl_displayPix(), cdl_drawDList(), cdl_endDList(), cdl_getFrame(), cdl_mapFrame(), cdl_setFrame(), com_eraseFrame(), com_readData(), com_setFrame(), com_writeData(), com_writeWCS(), g(), iis_chan(), iis_display(), iis_drawcirc(), imd_displayImage(), imd_setFrame(), main(), modelrms(), myworkproc1(), set_fbconfig(), vx_eraseFrame(), vx_iisio(), and vx_initFrame().
+.SS "int * \fBh\fP"
+.PP
+Definition at line 952 of file cdl_spp.c.
+.PP
+Referenced by cartesiantokepler(), cdl_displayPix(), cdl_getFBConfig(), cdl_lookupFBSize(), cdl_selectFB(), decimaltoxms(), fast_expansion_sum_zeroelim(), frprmn(), getimageplane(), main(), print_caption(), scale_expansion_zeroelim(), and xmstodecimal().
+.SS "int * \fBier\fP"
+.PP
+Definition at line 1735 of file cdl_spp.c.
+.PP
+Referenced by hgetc(), ksearch(), mgonxtvu_(), mgooutp_(), mgoplt3d_(), and wcscom().
+.SS "void char* \fBimtdev\fP"
+.PP
+Definition at line 36 of file cdl_f77.c.
+.PP
+Referenced by cdl_open(), iis_open(), imd_open(), and imd_parseImtdev().
+.SS "int* \fBisfits\fP"
+.PP
+Definition at line 246 of file cdl_f77.c.
+.SS "int* \fBisiraf\fP"
+.PP
+Definition at line 157 of file cdl_f77.c.
+.SS "char* \fBkey\fP"
+.PP
+Definition at line 102 of file cdl_f77.c.
+.PP
+Referenced by cdl_readCursor(), com_readCursor(), cursorfn(), imd_readCursor(), main(), smpopup(), vx_iisio(), and vx_retCursorVal().
+.SS "char * \fBlabel\fP"
+.PP
+Definition at line 1369 of file cdl_spp.c.
+.PP
+Referenced by cdl_initPointLabelMarker(), cdl_markCoordsFile(), cdl_markPointLabel(), eps_setLabel(), iis_drawcirc(), main(), setslider(), and writelabel().
+.SS "int \fBlen\fP"
+.PP
+Definition at line 1609 of file cdl_f77.c.
+.PP
+Referenced by addargscomment(), argsToString(), cdl_doTextMarker(), cdl_getPixfile(), cdl_markText(), cdl_strlen(), cdl_strpak(), getword(), main(), print_caption(), ps(), readitem(), and writeitem().
+.SS "* \fBly\fP"
+.PP
+Definition at line 1426 of file cdl_spp.c.
+.PP
+Referenced by cdl_doBoxMark(), cdl_doCircAnnuliMark(), cdl_doCircleMark(), cdl_doDashedLine(), cdl_doEllipAnnuliMark(), cdl_doEllipseMark(), cdl_doLineInSubRas(), cdl_doLineMark(), cdl_doPolygonMark(), cdl_doTextMarker(), cdl_drawDashVec(), cdl_drawThickDashVec(), cdl_drawThickVector(), cdl_drawVector(), cdl_getPixRegion(), cdl_initBoxMarker(), cdl_initMarkPos(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_readSubRaster(), cdl_writeSubRaster(), eps_getImagePos(), imd_displayImage(), imd_readSubRaster(), imd_writeImage(), and imd_writeSubRaster().
+.SS "int * \fBnannuli\fP"
+.PP
+Definition at line 1603 of file cdl_spp.c.
+.PP
+Referenced by cdl_doCircAnnuliMark(), cdl_doEllipAnnuliMark(), cdl_initCircAnnMarker(), cdl_initEllAnnMarker(), cdl_markCircAnnuli(), and cdl_markEllipAnnuli().
+.SS "int * \fBnf\fP"
+.PP
+Definition at line 953 of file cdl_spp.c.
+.PP
+Referenced by cdl_lookupFBSize(), cdl_selectFB(), cfftb1_(), cfftf1_(), cffti1_(), ezfft1_(), main(), rfftb1_(), rfftf1_(), and rffti1_().
+.SS "int* \fBnframes\fP"
+.PP
+Definition at line 713 of file cdl_f77.c.
+.PP
+Referenced by cdl_displayPix(), cdl_getFBConfig(), g(), get_fbconfig(), imd_getFBConfig(), imd_loadImtoolrc(), main(), modelrms(), printgradgrads(), printgrads(), printoffsets(), readamplitudes(), readimheader(), ReadNewFrame(), setnframes(), start_command(), vx_initFrame(), vx_initialize(), and writeamplitudes().
+.SS "int \fBnlen\fP"
+.PP
+Definition at line 386 of file cdl_f77.c.
+.SS "int * \fBnpts\fP"
+.PP
+Definition at line 1482 of file cdl_spp.c.
+.PP
+Referenced by cdl_doDashedLine(), cdl_doPointMark(), cdl_doPolygonMark(), cdl_getCircleCoords(), cdl_initPolygonMarker(), cdl_initPolylineMarker(), cdl_markPolygon(), cdl_markPolyline(), cdl_minmax(), getrange(), and main().
+.SS "int* \fBnumber\fP"
+.PP
+Definition at line 1132 of file cdl_f77.c.
+.PP
+Referenced by cdl_initPointMarker(), cdl_markPoint(), getop(), getpoint(), main(), and push().
+.SS "int * \fBnx\fP"
+.PP
+Definition at line 884 of file cdl_spp.c.
+.PP
+Referenced by assigncharge(), assigncharge_cic(), cdl_applyZscale(), cdl_computeZscale(), cdl_displayFITS(), cdl_displayIRAF(), cdl_displayPix(), cdl_doBoxMark(), cdl_doCircAnnuliMark(), cdl_doCircleMark(), cdl_doDashedLine(), cdl_doEllipAnnuliMark(), cdl_doEllipseMark(), cdl_doLineInSubRas(), cdl_doLineMark(), cdl_doPolygonMark(), cdl_doTextMarker(), cdl_drawDashVec(), cdl_drawThickDashVec(), cdl_drawThickVector(), cdl_drawVector(), cdl_fillArea(), cdl_flip(), cdl_getFITSPixels(), cdl_getIRAFPixels(), cdl_getPixRegion(), cdl_initMarkPos(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_openFITS(), cdl_printPix(), cdl_printPixToFile(), cdl_readFITS(), cdl_readFrameBuffer(), cdl_readImage(), cdl_readImageHdr(), cdl_readIRAF(), cdl_readSubRaster(), cdl_selectFB(), cdl_swapPixels(), cdl_writeSubRaster(), cdl_zscale(), cdl_zscaleImage(), forward_cfft(), forward_fft(), iis_display(), imd_displayImage(), imd_readFrameBuffer(), imd_readImage(), imd_readSubRaster(), imd_writeImage(), imd_writeSubRaster(), inverse_cfft(), inverse_fft(), main(), myfftwcfft(), and sampleImage().
+.SS "int * \fBny\fP"
+.PP
+Definition at line 884 of file cdl_spp.c.
+.PP
+Referenced by cdl_applyZscale(), cdl_computeZscale(), cdl_displayFITS(), cdl_displayIRAF(), cdl_displayPix(), cdl_doBoxMark(), cdl_doCircAnnuliMark(), cdl_doCircleMark(), cdl_doDashedLine(), cdl_doEllipAnnuliMark(), cdl_doEllipseMark(), cdl_doLineInSubRas(), cdl_doLineMark(), cdl_doPolygonMark(), cdl_doTextMarker(), cdl_drawDashVec(), cdl_drawThickDashVec(), cdl_drawThickVector(), cdl_drawVector(), cdl_fillArea(), cdl_flip(), cdl_getFITSPixels(), cdl_getIRAFPixels(), cdl_getPixRegion(), cdl_initMarkPos(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_openFITS(), cdl_printPix(), cdl_printPixToFile(), cdl_readFITS(), cdl_readFrameBuffer(), cdl_readImage(), cdl_readImageHdr(), cdl_readIRAF(), cdl_readSubRaster(), cdl_selectFB(), cdl_swapPixels(), cdl_writeSubRaster(), cdl_zscale(), cdl_zscaleImage(), forward_cfft(), forward_fft(), iis_display(), imd_displayImage(), imd_readFrameBuffer(), imd_readImage(), imd_readSubRaster(), imd_writeImage(), imd_writeSubRaster(), inverse_cfft(), inverse_fft(), main(), myfftwcfft(), and sampleImage().
+.SS "\fBuchar\fP * \fBpix\fP"
+.PP
+Definition at line 885 of file cdl_spp.c.
+.PP
+Referenced by apphot(), cdl_applyZscale(), cdl_computeZscale(), cdl_displayFITS(), cdl_displayIRAF(), cdl_displayPix(), cdl_doBoxMark(), cdl_doCircAnnuliMark(), cdl_doCircleMark(), cdl_doDashedLine(), cdl_doEllipAnnuliMark(), cdl_doEllipseMark(), cdl_doLineInSubRas(), cdl_doLineMark(), cdl_doPointMark(), cdl_doPolygonMark(), cdl_doTextMarker(), cdl_drawDashVec(), cdl_drawThickDashVec(), cdl_drawThickVector(), cdl_drawVector(), cdl_fillArea(), cdl_getFITSPixels(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_printPix(), cdl_printPixToFile(), cdl_readFITS(), cdl_readFrameBuffer(), cdl_readImage(), cdl_readIRAF(), cdl_readSubRaster(), cdl_setpixel(), cdl_writeSubRaster(), cdl_zscaleImage(), com_readData(), com_writeData(), eps_print(), eps_writeMono(), eps_writeMonoRGB(), eps_writePix(), eps_writeRGB(), fixholes(), fixpix(), getpixcoords(), getsky(), imd_displayImage(), imd_minmax(), imd_readFrameBuffer(), imd_readImage(), imd_readLine(), imd_readSubRaster(), imd_writeImage(), imd_writeLine(), imd_writeSubRaster(), main(), and vx_iisio().
+.SS "int * \fBradius\fP"
+.PP
+Definition at line 1538 of file cdl_spp.c.
+.PP
+Referenced by cdl_doCircAnnuliMark(), cdl_doCircleMark(), cdl_getCircleCoords(), cdl_initCircAnnMarker(), cdl_initCircleMarker(), cdl_markCircAnnuli(), cdl_markCircle(), iis_drawcirc(), and main().
+.SS "int* \fBreset\fP"
+.PP
+Definition at line 436 of file cdl_f77.c.
+.PP
+Referenced by cdl_selectFB(), and vx_initialize().
+.SS "int * \fBsep\fP"
+.PP
+Definition at line 1604 of file cdl_spp.c.
+.PP
+Referenced by cdl_doCircAnnuliMark(), cdl_doEllipAnnuliMark(), cdl_initCircAnnMarker(), cdl_initEllAnnMarker(), cdl_markCircAnnuli(), and cdl_markEllipAnnuli().
+.SS "float * size"
+.PP
+Definition at line 1633 of file cdl_spp.c.
+.PP
+Referenced by alloc3Darray(), allocitemcontents(), cdl_doTextMarker(), cdl_initPointLabelMarker(), cdl_initPointMarker(), cdl_initTextMarker(), cdl_markCoordsFile(), cdl_markPoint(), cdl_markPointLabel(), cdl_markText(), cdl_strlen(), checkalloc(), getsize(), getvars(), iis_read(), iis_write(), and print_caption().
+.SS "char* \fBstr\fP"
+.PP
+Definition at line 1431 of file cdl_f77.c.
+.PP
+Referenced by cdl_markText(), cdl_strlen(), hgets(), wcsinit(), and wcsset().
+.SS "char * \fBtitle\fP"
+.PP
+Definition at line 600 of file cdl_spp.c.
+.PP
+Referenced by cdl_displayIRAF(), cdl_getIRAFPixels(), cdl_getWCS(), cdl_mapFrame(), cdl_readFITS(), cdl_readImageHdr(), cdl_readIRAF(), imd_getWCS(), imd_setTitle(), imd_setWCS(), jpl_init_ephemeris(), main(), and makewidgetdatabase().
+.SS "int \fBtlen\fP"
+.PP
+Definition at line 386 of file cdl_f77.c.
+.SS "float * \fBtx\fP"
+.PP
+Definition at line 602 of file cdl_spp.c.
+.PP
+Referenced by cdl_getWCS(), cdl_mapFrame(), cdl_setWCS(), com_readWCS(), com_writeWCS(), imd_getWCS(), imd_setWCS(), and segmentintersection().
+.SS "float * \fBty\fP"
+.PP
+Definition at line 602 of file cdl_spp.c.
+.PP
+Referenced by cdl_getWCS(), cdl_mapFrame(), cdl_setWCS(), com_readWCS(), com_writeWCS(), imd_getWCS(), imd_setWCS(), and segmentintersection().
+.SS "int * \fBtype\fP"
+.PP
+Definition at line 1371 of file cdl_spp.c.
+.PP
+Referenced by add_population(), cdl_doPointMark(), cdl_initPointLabelMarker(), cdl_initPointMarker(), cdl_markCoordsFile(), cdl_markPoint(), cdl_markPointLabel(), getangle(), getdec(), getra(), and main().
+.SS "int* \fBux\fP"
+.PP
+Definition at line 1222 of file cdl_f77.c.
+.PP
+Referenced by cdl_initBoxMarker(), and cdl_markBox().
+.SS "int * \fBuy\fP"
+.PP
+Definition at line 1222 of file cdl_f77.c.
+.PP
+Referenced by cdl_initBoxMarker(), and cdl_markBox().
+.SS "int * \fBw\fP"
+.PP
+Definition at line 952 of file cdl_spp.c.
+.PP
+Referenced by brent(), cdl_displayPix(), cdl_doBoxMark(), cdl_doTextMarker(), cdl_drawThickVector(), cdl_getFBConfig(), cdl_lookupFBSize(), cdl_markText(), cdl_selectFB(), cosqb1_(), cosqf1_(), fk425m(), fk524m(), getimageplane(), getshape2(), getshape3(), main(), MAIN__(), mprecfk4(), mprecfk5(), outputrcat(), setlabelnumber(), setlabelstring(), slaDeuler(), slaDmxv(), slaDranrm(), sliderChanged(), Title(), and wcsdist().
+.SS "int* \fBwcs\fP"
+.PP
+Definition at line 304 of file cdl_f77.c.
+.PP
+Referenced by cdl_setCursor(), com_readCursor(), com_setCursor(), iis_cur(), imd_setCursor(), iswcs(), main(), nowcs(), pix2wcs(), pix2wcst(), platepix(), platepos(), vx_iisio(), vx_retCursorVal(), wcs2pix(), wcscent(), wcscom(), wcscominit(), wcseq(), wcsfull(), wcsinit(), wcsout(), wcsoutinit(), wcsset(), wcsshift(), wcssize(), worldpix(), and worldpos().
+.SS "float* x"
+.PP
+Definition at line 101 of file cdl_f77.c.
+.PP
+Referenced by addgalaxy(), and(), apphot(), assigncharge(), assigncharge_cic(), brent(), cdl_deleteMark(), cdl_doBoxMark(), cdl_doCircAnnuliMark(), cdl_doCircleMark(), cdl_doDashedLine(), cdl_doEllipAnnuliMark(), cdl_doLineMark(), cdl_doPointMark(), cdl_doPolygonMark(), cdl_doTextMarker(), cdl_drawDashVec(), cdl_drawVector(), cdl_findNearest(), cdl_getCircleCoords(), cdl_getEllipseCoords(), cdl_initCircAnnMarker(), cdl_initCircleMarker(), cdl_initEllAnnMarker(), cdl_initEllipseMarker(), cdl_initPointLabelMarker(), cdl_initPointMarker(), cdl_initPolygonMarker(), cdl_initPolylineMarker(), cdl_initTextMarker(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markCoordsFile(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markPoint(), cdl_markPointLabel(), cdl_markText(), cdl_readCursor(), cdl_setCursor(), chisquared(), circkernel(), com_readCursor(), com_readData(), com_setCursor(), com_whdr(), com_writeData(), contourplot(), copy_fft(), cosqb1_(), cosqb_(), cosqf1_(), cosqf_(), cost_(), cpgellipses(), cursorfn(), cutoff(), cycleimage(), deactivate(), divide(), dotdoit(), dotinit(), drawcircle(), drawcursor(), drawellipse(), eq(), f(), f1dim(), fastmap(), fill_pixmap(), fillarrays(), fillzoompixmap(), findmin(), findpeak(), fitdistortions(), fitLine(), fixedges(), fixholes(), fixpix(), fk425m(), fk524m(), flattenData(), forward_cfft(), forward_fft(), func(), g(), gammln(), gaussfitn(), ge(), getcentroid(), getgridcoords(), getimageplane(), getlimits(), getneighbours(), getobjects(), getpixcoords(), getplane(), Getshape(), getshape(), getshape2(), getshape3(), getsky(), getstamp(), getxcoords(), goodindex(), gradx(), gt(), iis_abs(), iis_cur(), iis_display(), iisdisplay(), imd_readCursor(), imd_readLine(), imd_setCursor(), imd_writeLine(), install(), inverse_cfft(), inverse_fft(), inversegetxcoords(), jpcon(), le(), linmin(), lmodelfunc(), lt(), madddoit(), maddinit(), magicinit(), main(), MAIN__(), make_pop(), make_r(), make_re(), make_z(), makemodel(), makepopup(), makeresiduals(), makevertex(), map(), max(), mgoalin_(), mgonxtvu_(), mgooutp_(), min(), minus(), modelrms(), mscaledoit(), mscaleinit(), msubdoit(), msubinit(), mult(), myfftwcfft(), myfunc(), ne(), not(), num0funcarray(), or(), outputframe(), outputrcat(), painttriangle(), platepix(), platepos(), plus(), pointintriangle(), power(), print(), readmergedcat(), readnodes(), recircdef(), rectkernel(), rejectPixels(), rmodel(), rotx(), roty(), rotz(), rpetrosian(), setorigin(), shiftandadd(), sinqb_(), sinqf_(), sint1_(), sint_(), slaDcc2s(), smpopup(), stp_(), substitute(), times(), ultrafastmap(), vadddoit(), vaddinit(), vdot_(), vlen_(), vscaledoit(), vscaleinit(), vshiftdoit(), vshiftinit(), vsub_(), vsubdoit(), vsubinit(), vsum_(), vx_iisio(), vxp_(), vzero_(), writehotpixel(), writeimage(), zap(), zapcircle(), zapellipse(), and zero().
+.SS "int* \fBxe\fP"
+.PP
+Definition at line 1194 of file cdl_f77.c.
+.PP
+Referenced by cdl_doLineMark(), cdl_markLine(), and deflect().
+.SS "int * \fBxrad\fP"
+.PP
+Definition at line 1601 of file cdl_spp.c.
+.PP
+Referenced by cdl_doEllipAnnuliMark(), cdl_doEllipseMark(), cdl_initEllAnnMarker(), cdl_initEllipseMarker(), cdl_markEllipAnnuli(), and cdl_markEllipse().
+.SS "* y"
+.PP
+Definition at line 1734 of file cdl_spp.c.
+.PP
+Referenced by addgalaxy(), alloc_fft(), amoeba(), amotry(), and(), cdl_deleteMark(), cdl_doBoxMark(), cdl_doCircAnnuliMark(), cdl_doCircleMark(), cdl_doDashedLine(), cdl_doEllipAnnuliMark(), cdl_doLineMark(), cdl_doPointMark(), cdl_doPolygonMark(), cdl_doTextMarker(), cdl_drawDashVec(), cdl_drawVector(), cdl_findNearest(), cdl_getCircleCoords(), cdl_getEllipseCoords(), cdl_initCircAnnMarker(), cdl_initCircleMarker(), cdl_initEllAnnMarker(), cdl_initEllipseMarker(), cdl_initPointLabelMarker(), cdl_initPointMarker(), cdl_initPolygonMarker(), cdl_initPolylineMarker(), cdl_initTextMarker(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markCoordsFile(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markPoint(), cdl_markPointLabel(), cdl_markText(), cdl_readCursor(), cdl_setCursor(), circkernel(), com_readCursor(), com_readData(), com_setCursor(), com_whdr(), com_writeData(), contourplot(), copy_fft(), cpgellipses(), cursorfn(), cycleimage(), deactivate(), divide(), dotdoit(), dotinit(), drawcircle(), drawcursor(), drawellipse(), eq(), fastmap(), fill_pixmap(), fillzoompixmap(), findpeak(), fixedges(), fixholes(), fixpix(), fk425m(), fk524m(), forward_cfft(), forward_fft(), func(), gammln(), gaussfitn(), ge(), getcentroid(), getimageplane(), getpixcoords(), getplane(), getstamp(), gradx(), gt(), iis_cur(), iis_display(), iis_drawcirc(), iisdisplay(), imd_readCursor(), imd_readLine(), imd_readSubRaster(), imd_setCursor(), imd_writeImage(), imd_writeLine(), imd_writeSubRaster(), inverse_cfft(), inverse_fft(), jpcon(), le(), lt(), madddoit(), maddinit(), magicinit(), main(), MAIN__(), make_pop(), makemodel(), makepopup(), makevertex(), map(), max(), mean(), median(), mgonxtvu_(), mgooutp_(), min(), minus(), mscaledoit(), mscaleinit(), msubdoit(), msubinit(), mult(), myfftwcfft(), ne(), num0funcarray(), or(), outputframe(), painttriangle(), platepix(), platepos(), plus(), poidev(), pointintriangle(), power(), print(), read2Dfloatimage(), readnodes(), rectkernel(), rotx(), roty(), rotz(), shiftandadd(), slaDcc2s(), smpopup(), stp_(), substitute(), times(), ultrafastmap(), vadddoit(), vaddinit(), vdot_(), vscaledoit(), vscaleinit(), vshiftdoit(), vshiftinit(), vsub_(), vsubdoit(), vsubinit(), vsum_(), vx_iisio(), vxp_(), write2Dfloatimage(), writehotpixel(), zapcircle(), zapellipse(), and zero().
+.SS "* \fByarray\fP"
+.PP
+Definition at line 1481 of file cdl_spp.c.
+.PP
+Referenced by cdl_markPolygon(), and cdl_markPolyline().
+.SS "int * \fBye\fP"
+.PP
+Definition at line 1194 of file cdl_f77.c.
+.PP
+Referenced by cdl_doLineMark(), cdl_markLine(), and deflect().
+.SS "int * \fByrad\fP"
+.PP
+Definition at line 1601 of file cdl_spp.c.
+.PP
+Referenced by cdl_doEllipAnnuliMark(), cdl_doEllipseMark(), cdl_initEllAnnMarker(), cdl_initEllipseMarker(), cdl_markEllipAnnuli(), and cdl_markEllipse().
+.SS "* \fBys\fP"
+.PP
+Definition at line 1193 of file cdl_f77.c.
+.PP
+Referenced by cdl_doLineMark(), cdl_markLine(), fastmap(), main(), and ultrafastmap().
+.SS "float * \fBz1\fP"
+.PP
+Definition at line 774 of file cdl_spp.c.
+.PP
+Referenced by cdl_applyZscale(), cdl_computeZscale(), cdl_displayFITS(), cdl_displayIRAF(), cdl_displayPix(), cdl_getWCS(), cdl_getZScale(), cdl_mapFrame(), cdl_setWCS(), cdl_setZScale(), cdl_zscale(), cdl_zscaleImage(), com_readWCS(), com_writeWCS(), eps_setTransform(), imd_getWCS(), imd_setWCS(), thefilterfunction(), and wcs_update().
+.SS "* \fBz2\fP"
+.PP
+Definition at line 1166 of file cdl_spp.c.
+.PP
+Referenced by cdl_applyZscale(), cdl_computeZscale(), cdl_displayFITS(), cdl_displayIRAF(), cdl_displayPix(), cdl_getWCS(), cdl_getZScale(), cdl_mapFrame(), cdl_setWCS(), cdl_setZScale(), cdl_zscale(), cdl_zscaleImage(), com_readWCS(), com_writeWCS(), eps_setTransform(), imd_getWCS(), imd_setWCS(), jpcon(), thefilterfunction(), and wcs_update().
+.SS "int * \fBzscale\fP"
+.PP
+Definition at line 450 of file cdl_spp.c.
+.PP
+Referenced by cdl_displayFITS(), cdl_displayIRAF(), cdl_displayPix(), DrawMesh(), main(), and zscale_counter_callback().
+.SS "int * \fBzt\fP"
+.PP
+Definition at line 604 of file cdl_spp.c.
+.PP
+Referenced by cdl_applyZscale(), cdl_getWCS(), cdl_mapFrame(), cdl_setWCS(), com_readWCS(), com_writeWCS(), imd_getWCS(), and imd_setWCS().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

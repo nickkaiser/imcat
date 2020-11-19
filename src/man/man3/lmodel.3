@@ -1,0 +1,284 @@
+.TH "lmodel" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+lmodel \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <lmodel.h>\fP
+.PP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "int \fBmodeltype\fP"
+.br
+.ti -1c
+.RI "\fBcathead\fP * \fBcat\fP"
+.br
+.ti -1c
+.RI "\fBitem\fP * \fBxitem\fP"
+.br
+.ti -1c
+.RI "\fBitem\fP * \fBaitem\fP"
+.br
+.ti -1c
+.RI "int \fBxdim\fP"
+.br
+.ti -1c
+.RI "char * \fBxname\fP"
+.br
+.ti -1c
+.RI "char * \fBaname\fP"
+.br
+.ti -1c
+.RI "int \fBnmodes\fP"
+.br
+.ti -1c
+.RI "int \fBasize\fP"
+.br
+.ti -1c
+.RI "int \fBj\fP"
+.br
+.ti -1c
+.RI "int \fBhasxorigin\fP"
+.br
+.ti -1c
+.RI "double * \fBxorigin\fP"
+.br
+.ti -1c
+.RI "void ** \fBa\fP"
+.br
+.ti -1c
+.RI "double ** \fBaflat\fP"
+.br
+.ti -1c
+.RI "double \fBhascovar\fP"
+.br
+.ti -1c
+.RI "double ** \fBcovar\fP"
+.br
+.ti -1c
+.RI "int \fBlmin\fP"
+.br
+.ti -1c
+.RI "int \fBlmax\fP"
+.br
+.ti -1c
+.RI "int * \fBpp\fP"
+.br
+.ti -1c
+.RI "double ** \fBp\fP"
+.br
+.ti -1c
+.RI "double ** \fBl\fP"
+.br
+.ti -1c
+.RI "int \fBnmin\fP"
+.br
+.ti -1c
+.RI "int \fBnmax\fP"
+.br
+.ti -1c
+.RI "double * \fBn\fP"
+.br
+.ti -1c
+.RI "double * \fBm\fP"
+.br
+.ti -1c
+.RI "double ** \fBR\fP"
+.br
+.ti -1c
+.RI "int \fBkmin\fP"
+.br
+.ti -1c
+.RI "int \fBkmax\fP"
+.br
+.ti -1c
+.RI "int \fBboxlimits\fP"
+.br
+.ti -1c
+.RI "int * \fBkk\fP"
+.br
+.ti -1c
+.RI "double ** \fBk\fP"
+.br
+.ti -1c
+.RI "double * \fBi\fP"
+.br
+.ti -1c
+.RI "double \fBlbox\fP"
+.br
+.in -1c
+.SH "Field Documentation"
+.PP 
+.SS "void** \fBlmodel::a\fP"
+.PP
+Definition at line 15 of file lmodel.h.
+.PP
+Referenced by flatten_a(), main(), newfourierlmodel(), newpolylmodel(), newzernikelmodel(), readlmodel(), unflatten_a(), and writelmodel().
+.SS "double** \fBlmodel::aflat\fP"
+.PP
+Definition at line 16 of file lmodel.h.
+.PP
+Referenced by difflmodel(), flatten_a(), main(), rflatten_a(), and runflatten_a().
+.SS "\fBitem\fP * \fBlmodel::aitem\fP"
+.PP
+Definition at line 9 of file lmodel.h.
+.PP
+Referenced by difflmodel(), main(), newfourierlmodel(), newlmodel(), newpolylmodel(), newzernikelmodel(), rflatten_a(), runflatten_a(), and writelmodel().
+.SS "char * \fBlmodel::aname\fP"
+.PP
+Definition at line 11 of file lmodel.h.
+.PP
+Referenced by main(), newlmodel(), and writelmodel().
+.SS "int \fBlmodel::asize\fP"
+.PP
+Definition at line 12 of file lmodel.h.
+.PP
+Referenced by difflmodel(), flatten_a(), main(), and newlmodel().
+.SS "int \fBlmodel::boxlimits\fP"
+.PP
+Definition at line 27 of file lmodel.h.
+.PP
+Referenced by difflmodel(), fourierloop(), newfourierlmodel(), readlmodel(), and writelmodel().
+.SS "\fBcathead\fP* \fBlmodel::cat\fP"
+.PP
+Definition at line 8 of file lmodel.h.
+.PP
+Referenced by main(), newlmodel(), readlmodel(), and writelmodel().
+.SS "double** \fBlmodel::covar\fP"
+.PP
+Definition at line 18 of file lmodel.h.
+.PP
+Referenced by main(), readlmodel(), and writelmodel().
+.SS "double \fBlmodel::hascovar\fP"
+.PP
+Definition at line 17 of file lmodel.h.
+.PP
+Referenced by main(), readlmodel(), and writelmodel().
+.SS "int \fBlmodel::hasxorigin\fP"
+.PP
+Definition at line 13 of file lmodel.h.
+.PP
+Referenced by readlmodel(), and writelmodel().
+.SS "double * \fBlmodel::i\fP"
+.PP
+Definition at line 29 of file lmodel.h.
+.PP
+Referenced by difflmodel(), fourierloop(), lmodelfunc(), newfourierlmodel(), readlmodel(), and writelmodel().
+.SS "int \fBlmodel::j\fP"
+.PP
+Definition at line 12 of file lmodel.h.
+.PP
+Referenced by flatten_a(), rflatten_a(), runflatten_a(), and unflatten_a().
+.SS "double** \fBlmodel::k\fP"
+.PP
+Definition at line 29 of file lmodel.h.
+.PP
+Referenced by difflmodel(), fourierloop(), lmodelfunc(), newfourierlmodel(), readlmodel(), and writelmodel().
+.SS "int* \fBlmodel::kk\fP"
+.PP
+Definition at line 28 of file lmodel.h.
+.PP
+Referenced by fourierloop(), and newfourierlmodel().
+.SS "int \fBlmodel::kmax\fP"
+.PP
+Definition at line 27 of file lmodel.h.
+.PP
+Referenced by difflmodel(), fourierloop(), newfourierlmodel(), readlmodel(), and writelmodel().
+.SS "int \fBlmodel::kmin\fP"
+.PP
+Definition at line 27 of file lmodel.h.
+.PP
+Referenced by difflmodel(), fourierloop(), newfourierlmodel(), readlmodel(), and writelmodel().
+.SS "double ** \fBlmodel::l\fP"
+.PP
+Definition at line 22 of file lmodel.h.
+.PP
+Referenced by newpolylmodel(), polyloop(), readlmodel(), and writelmodel().
+.SS "double \fBlmodel::lbox\fP"
+.PP
+Definition at line 29 of file lmodel.h.
+.PP
+Referenced by difflmodel(), lmodelfunc(), newfourierlmodel(), readlmodel(), and writelmodel().
+.SS "int \fBlmodel::lmax\fP"
+.PP
+Definition at line 20 of file lmodel.h.
+.PP
+Referenced by difflmodel(), newpolylmodel(), readlmodel(), and writelmodel().
+.SS "int \fBlmodel::lmin\fP"
+.PP
+Definition at line 20 of file lmodel.h.
+.PP
+Referenced by difflmodel(), newpolylmodel(), readlmodel(), and writelmodel().
+.SS "double * \fBlmodel::m\fP"
+.PP
+Definition at line 25 of file lmodel.h.
+.PP
+Referenced by lmodelfunc(), makezernikeR(), newzernikelmodel(), readlmodel(), and writelmodel().
+.SS "int \fBlmodel::modeltype\fP"
+.PP
+Definition at line 7 of file lmodel.h.
+.PP
+Referenced by difflmodel(), lmodelfunc(), newfourierlmodel(), newpolylmodel(), newzernikelmodel(), readlmodel(), and writelmodel().
+.SS "double* \fBlmodel::n\fP"
+.PP
+Definition at line 25 of file lmodel.h.
+.PP
+Referenced by lmodelfunc(), makezernikeR(), newzernikelmodel(), readlmodel(), and writelmodel().
+.SS "int \fBlmodel::nmax\fP"
+.PP
+Definition at line 24 of file lmodel.h.
+.PP
+Referenced by newzernikelmodel(), readlmodel(), and writelmodel().
+.SS "int \fBlmodel::nmin\fP"
+.PP
+Definition at line 24 of file lmodel.h.
+.PP
+Referenced by newzernikelmodel(), readlmodel(), and writelmodel().
+.SS "int \fBlmodel::nmodes\fP"
+.PP
+Definition at line 12 of file lmodel.h.
+.PP
+Referenced by difflmodel(), flatten_a(), fourierloop(), main(), makezernikeR(), newfourierlmodel(), newpolylmodel(), newzernikelmodel(), polyloop(), readlmodel(), unflatten_a(), and writelmodel().
+.SS "double** \fBlmodel::p\fP"
+.PP
+Definition at line 22 of file lmodel.h.
+.PP
+Referenced by difflmodel(), lmodelfunc(), newpolylmodel(), polyloop(), readlmodel(), and writelmodel().
+.SS "int* \fBlmodel::pp\fP"
+.PP
+Definition at line 21 of file lmodel.h.
+.PP
+Referenced by difflmodel(), newpolylmodel(), and polyloop().
+.SS "double ** \fBlmodel::R\fP"
+.PP
+Definition at line 25 of file lmodel.h.
+.PP
+Referenced by lmodelfunc(), and makezernikeR().
+.SS "int \fBlmodel::xdim\fP"
+.PP
+Definition at line 10 of file lmodel.h.
+.PP
+Referenced by difflmodel(), fourierloop(), lmodelfunc(), main(), newfourierlmodel(), newlmodel(), newpolylmodel(), polyloop(), and writelmodel().
+.SS "\fBitem\fP* \fBlmodel::xitem\fP"
+.PP
+Definition at line 9 of file lmodel.h.
+.PP
+Referenced by difflmodel(), and newlmodel().
+.SS "char* \fBlmodel::xname\fP"
+.PP
+Definition at line 11 of file lmodel.h.
+.PP
+Referenced by main(), newlmodel(), and writelmodel().
+.SS "double* \fBlmodel::xorigin\fP"
+.PP
+Definition at line 14 of file lmodel.h.
+.PP
+Referenced by newlmodel(), readlmodel(), and writelmodel().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

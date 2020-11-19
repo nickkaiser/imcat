@@ -1,0 +1,202 @@
+.TH "mosaicmap.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+mosaicmap.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../imlib/map.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	mosaicmap --- maps \fBfits\fP file - called by makemosaicstack\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	mosaicmap \fBalpha\fP \fBPhi00\fP \fBPhi01\fP \fBPhi10\fP \fBPhi11\fP \fBdX\fP \fBdY\fP \fBphi\fP \fBdx\fP \fBdy\fP \fBDX\fP \fBDY\fP \fBX0\fP \fBY0\fP \fBscalefac\fP NX NY target.\fBfits\fP [mapmode]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'mosaicmap' maps \fBa\fP source \fBfits\fP file to \fBa\fP target file using transformation defined by\\\fBn\fP\\	parameters \fBalpha\fP Phi_ij \fBdX\fP \fBdY\fP \fBphi\fP \fBdx\fP \fBdy\fP (see mosaicfitting.tex for more details)\\\fBn\fP\\	\fBDX\fP, \fBDY\fP are the nominal coords of the bottom left corner of the chip,\\\fBn\fP\\	\fBX0\fP, \fBY0\fP are the coords of the bottom left corner of the sub-image we are making, and\\\fBn\fP\\	NX, NY are nominal dimensions of chips (as defined in nominal.db).\\\fBn\fP\\	All above dimensions are given in source \fBpixel\fP size units.\\\fBn\fP\\	'\fBscalefac\fP' is the target \fBpixel\fP size in units of source \fBpixel\fP size.\\\fBn\fP\\	'mapmode' is 0,1,2 for nearest \fBpixel\fP, linear interpolation and triangular\\\fBn\fP\\	tesselation mapping modes respctively. Default is linear interpolation.\\\fBn\fP\\	Mosiacmap is usually invoked by the script 'makemosaicstack' or somesuch.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBdeflect\fP (float ri, float rj, float *\fBdi\fP, float *\fBdj\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double \fBalpha\fP"
+.br
+.ti -1c
+.RI "double \fBPhi00\fP"
+.br
+.ti -1c
+.RI "double \fBPhi01\fP"
+.br
+.ti -1c
+.RI "double \fBPhi10\fP"
+.br
+.ti -1c
+.RI "double \fBPhi11\fP"
+.br
+.ti -1c
+.RI "double \fBdX\fP"
+.br
+.ti -1c
+.RI "double \fBdY\fP"
+.br
+.ti -1c
+.RI "double \fBphi\fP"
+.br
+.ti -1c
+.RI "double \fBdx\fP"
+.br
+.ti -1c
+.RI "double \fBdy\fP"
+.br
+.ti -1c
+.RI "double \fBDX\fP"
+.br
+.ti -1c
+.RI "double \fBDY\fP"
+.br
+.ti -1c
+.RI "double \fBX0\fP"
+.br
+.ti -1c
+.RI "double \fBY0\fP"
+.br
+.ti -1c
+.RI "double \fBscalefac\fP"
+.br
+.ti -1c
+.RI "int \fBNXnom\fP"
+.br
+.ti -1c
+.RI "int \fBNYnom\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	mosaicmap --- maps \fBfits\fP file - called by makemosaicstack\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	mosaicmap \fBalpha\fP \fBPhi00\fP \fBPhi01\fP \fBPhi10\fP \fBPhi11\fP \fBdX\fP \fBdY\fP \fBphi\fP \fBdx\fP \fBdy\fP \fBDX\fP \fBDY\fP \fBX0\fP \fBY0\fP \fBscalefac\fP NX NY target.\fBfits\fP [mapmode]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'mosaicmap' maps \fBa\fP source \fBfits\fP file to \fBa\fP target file using transformation defined by\\\fBn\fP\\	parameters \fBalpha\fP Phi_ij \fBdX\fP \fBdY\fP \fBphi\fP \fBdx\fP \fBdy\fP (see mosaicfitting.tex for more details)\\\fBn\fP\\	\fBDX\fP, \fBDY\fP are the nominal coords of the bottom left corner of the chip,\\\fBn\fP\\	\fBX0\fP, \fBY0\fP are the coords of the bottom left corner of the sub-image we are making, and\\\fBn\fP\\	NX, NY are nominal dimensions of chips (as defined in nominal.db).\\\fBn\fP\\	All above dimensions are given in source \fBpixel\fP size units.\\\fBn\fP\\	'\fBscalefac\fP' is the target \fBpixel\fP size in units of source \fBpixel\fP size.\\\fBn\fP\\	'mapmode' is 0,1,2 for nearest \fBpixel\fP, linear interpolation and triangular\\\fBn\fP\\	tesselation mapping modes respctively. Default is linear interpolation.\\\fBn\fP\\	Mosiacmap is usually invoked by the script 'makemosaicstack' or somesuch.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 15 of file mosaicmap.c.
+.SH "Function Documentation"
+.PP 
+.SS "void deflect (float ri, float rj, float * di, float * dj)"
+.PP
+Definition at line 124 of file mosaicmap.c.
+.PP
+References alpha, di, dj, DX, dx, dX, DY, dy, dY, i, j, phi, Phi00, Phi01, Phi10, Phi11, scalefac, X, X0, xe, Y, Y0, and ye.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 44 of file mosaicmap.c.
+.PP
+References add_comment(), alpha, deflect(), DX, dx, dX, DY, dy, dY, exit(), FAST_MAP_MODE, fastmap(), fread_fits(), fwrite_fits(), i, ipf, j, map(), NX, NXnom, NY, NYnom, phi, Phi00, Phi01, Phi10, Phi11, scalefac, set_fits_ipf(), set_fits_opf(), TRIANGLE_MAP_MODE, ULTRAFAST_MAP_MODE, ultrafastmap(), usage, X0, and Y0.
+.SH "Variable Documentation"
+.PP 
+.SS "double \fBalpha\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by deflect(), deltam(), do_object_stats(), gaussfit(), getC(), main(), powerlawfilter(), rectkernel(), and schecterfilter().
+.SS "double \fBDX\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by deflect(), and main().
+.SS "double \fBdx\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by accumulate(), addgalaxy(), apphot(), assigncharge(), assigncharge_cic(), cdl_drawDashVec(), cdl_drawThickDashVec(), cdl_drawThickVector(), cdl_drawVector(), deflect(), do_object_stats(), fastmap(), findcircumcenter(), Getshape(), getshape(), getshape2(), getshape3(), getsky(), getstamp(), grad3D(), main(), platepix(), quality_statistics(), rpetrosian(), sep2(), shiftandadd(), worldpix(), worldpos(), zapcircle(), and zapellipse().
+.SS "double \fBdX\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by deflect(), and main().
+.SS "double \fBDY\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by deflect(), and main().
+.SS "double \fBdy\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by addgalaxy(), apphot(), cdl_drawDashVec(), cdl_drawThickDashVec(), cdl_drawThickVector(), cdl_drawVector(), deflect(), do_object_stats(), fastmap(), findcircumcenter(), getshape(), getshape2(), getshape3(), getsky(), getstamp(), main(), platepix(), quality_statistics(), rpetrosian(), sep2(), shiftandadd(), worldpix(), worldpos(), zapcircle(), and zapellipse().
+.SS "double \fBdY\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by deflect(), and main().
+.SS "int \fBNXnom\fP"
+.PP
+Definition at line 40 of file mosaicmap.c.
+.PP
+Referenced by main().
+.SS "int \fBNYnom\fP"
+.PP
+Definition at line 40 of file mosaicmap.c.
+.PP
+Referenced by main().
+.SS "double \fBphi\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by addgalaxy(), airmassmin(), allocatearrays(), ccf(), cpgellipses(), deflect(), deltam(), do_object_stats(), drawcircle(), drawellipse(), fitdistortions(), fittranslations(), func(), gaussfilter(), gaussfit(), gaussfitn(), getbasis(), getxcoords(), inversegetxcoords(), lintransdoit(), lintransinit(), lmodelfunc(), main(), make_pop(), make_r(), make_z(), makemodel(), print(), printtranslations(), recircdef(), rotate(), slaDeuler(), and zapellipse().
+.SS "double \fBPhi00\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by deflect(), and main().
+.SS "double \fBPhi01\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by deflect(), and main().
+.SS "double \fBPhi10\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by deflect(), and main().
+.SS "double \fBPhi11\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by deflect(), and main().
+.SS "double \fBscalefac\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by deflect(), and main().
+.SS "double \fBX0\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by deflect(), and main().
+.SS "double \fBY0\fP"
+.PP
+Definition at line 39 of file mosaicmap.c.
+.PP
+Referenced by deflect(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

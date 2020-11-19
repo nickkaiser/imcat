@@ -1,0 +1,126 @@
+.TH "nfw.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+nfw.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	nfw - compute Navarro-Frenk-White profile\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	nfw [-u] [-\fBv\fP v200] [-x \fBx1\fP \fBx2\fP \fBnx\fP] [-\fBz\fP z0] [-\fBc\fP \fBc\fP] [-\fBl\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	nfw computes nfw density profile. It outputs \fBa\fP table\\\fBn\fP\\	(in lc format if IMCAT is installed) containing:\\\fBn\fP\\		x	# dimensionless \fBradius\fP = \fBr\fP/r200\\\fBn\fP\\		\fBv\fP	# circular velocity\\\fBn\fP\\		\fBr\fP	# physical \fBradius\fP in cm\\\fBn\fP\\		\fBdr\fP	# physical delta-\fBradius\fP in cm\\\fBn\fP\\		\fBm\fP	# mass in M_solar\\\fBn\fP\\		\fBrho\fP	# physical density in g/cm^3\\\fBn\fP\\		\fBsigma\fP	# physical projected density in g/cm^2\\\fBn\fP\\		theta	# \fBangle\fP in arcseconds\\\fBn\fP\\		kappa	# dimensionless surface density\\\fBn\fP\\\\\fBn\fP\\	Options are:\\\fBn\fP\\		-u	# print this message\\\fBn\fP\\		-\fBv\fP v200	# circular velocity at r_200 in km/s (200)\\\fBn\fP\\		-x \fBx1\fP \fBx2\fP	# min and max dimensionless radii (0.01, 100)\\\fBn\fP\\		-\fBz\fP z0	# lens redshift (0.2)\\\fBn\fP\\		-\fBc\fP \fBc\fP	# compactness parameter (10.0)\\\fBn\fP\\		-\fBl\fP	# use pure lambda cosmology (otherwise use EdeS)\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBEDS\fP   0"
+.br
+.ti -1c
+.RI "#define \fBLAMBDA\fP   1"
+.br
+.ti -1c
+.RI "#define \fBG\fP   6.67\fBe\fP-8"
+.br
+.ti -1c
+.RI "#define \fBPC\fP   3.086e18"
+.br
+.ti -1c
+.RI "#define \fBKPC\fP   3.086e21"
+.br
+.ti -1c
+.RI "#define \fBH0\fP   (10.0/PC)"
+.br
+.ti -1c
+.RI "#define \fBC\fP   3.e10"
+.br
+.ti -1c
+.RI "#define \fBARCSEC\fP   (M_PI/(180*60*60))"
+.br
+.ti -1c
+.RI "#define \fBKM\fP   1.e5"
+.br
+.ti -1c
+.RI "#define \fBMSUN\fP   1.99e33"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define ARCSEC   (M_PI/(180*60*60))"
+.PP
+Definition at line 50 of file nfw.c.
+.PP
+Referenced by main().
+.SS "#define \fBC\fP   3.e10"
+.PP
+Definition at line 49 of file nfw.c.
+.PP
+Referenced by cdl_findNearest(), getC(), main(), and outputrcat().
+.SS "#define EDS   0"
+.PP
+Definition at line 41 of file nfw.c.
+.PP
+Referenced by main().
+.SS "#define G   6.67\fBe\fP-8"
+.PP
+Definition at line 45 of file nfw.c.
+.PP
+Referenced by deltam(), and main().
+.SS "#define H0   (10.0/PC)"
+.PP
+Definition at line 48 of file nfw.c.
+.PP
+Referenced by main().
+.SS "#define KM   1.e5"
+.PP
+Definition at line 51 of file nfw.c.
+.PP
+Referenced by main().
+.SS "#define KPC   3.086e21"
+.PP
+Definition at line 47 of file nfw.c.
+.PP
+Referenced by main().
+.SS "#define LAMBDA   1"
+.PP
+Definition at line 42 of file nfw.c.
+.PP
+Referenced by main().
+.SS "#define MSUN   1.99e33"
+.PP
+Definition at line 52 of file nfw.c.
+.PP
+Referenced by main().
+.SS "#define PC   3.086e18"
+.PP
+Definition at line 46 of file nfw.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	nfw - compute Navarro-Frenk-White profile\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	nfw [-u] [-\fBv\fP v200] [-x \fBx1\fP \fBx2\fP \fBnx\fP] [-\fBz\fP z0] [-\fBc\fP \fBc\fP] [-\fBl\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	nfw computes nfw density profile. It outputs \fBa\fP table\\\fBn\fP\\	(in lc format if IMCAT is installed) containing:\\\fBn\fP\\		x	# dimensionless \fBradius\fP = \fBr\fP/r200\\\fBn\fP\\		\fBv\fP	# circular velocity\\\fBn\fP\\		\fBr\fP	# physical \fBradius\fP in cm\\\fBn\fP\\		\fBdr\fP	# physical delta-\fBradius\fP in cm\\\fBn\fP\\		\fBm\fP	# mass in M_solar\\\fBn\fP\\		\fBrho\fP	# physical density in g/cm^3\\\fBn\fP\\		\fBsigma\fP	# physical projected density in g/cm^2\\\fBn\fP\\		theta	# \fBangle\fP in arcseconds\\\fBn\fP\\		kappa	# dimensionless surface density\\\fBn\fP\\\\\fBn\fP\\	Options are:\\\fBn\fP\\		-u	# print this message\\\fBn\fP\\		-\fBv\fP v200	# circular velocity at r_200 in km/s (200)\\\fBn\fP\\		-x \fBx1\fP \fBx2\fP	# min and max dimensionless radii (0.01, 100)\\\fBn\fP\\		-\fBz\fP z0	# lens redshift (0.2)\\\fBn\fP\\		-\fBc\fP \fBc\fP	# compactness parameter (10.0)\\\fBn\fP\\		-\fBl\fP	# use pure lambda cosmology (otherwise use EdeS)\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 11 of file nfw.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 54 of file nfw.c.
+.PP
+References ARCSEC, argsinit(), b, C, c, dr, EDS, error_exit, exit(), flag, G, getargd(), getargi(), getflag(), H0, i, j, KM, KPC, LAMBDA, m, MSUN, nx, r, rho, sigma, usage, v, and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

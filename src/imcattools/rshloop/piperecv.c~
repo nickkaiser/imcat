@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+
+#define usage "usage : piperecv\n"
+#define usage "\nNAME\n\
+        command - send dummy data to a pipe\n\
+\n\
+SYNOPSIS\n\
+        piperecv\n\
+\n\
+DESCRIPTION\n\
+        Reads blocks of dummy data sent by pipsend from its stdin.\n\
+	It reports to stderr the number of bytes received and the\n\
+	elapsed time.\n\
+\n\
+	It may be useful for testing network performance.\n\
+\n\
+SEE ALSO\n\
+        pipesend\n\
+\n\
+AUTHOR\n\
+        Nick Kaiser --- kaiser@hawaii.edu\n\n"
+
+main (int argc, char *argv[]) {
+	int 	nblocks, blocksize, i, j;
+	long	nbytes;
+	char	*buff, line[1024];
+	double	starttime, endtime, elapsedtime, Mbps;
+	struct timeval	tv;
+	struct timezone	tz;
+
+	if (argc != 1) {
+		fprintf(stderr, usage);
+		exit(-1);
+	}
+
+	fgets(line, 1024, stdin);
+	sscanf(line, "%d %d", &nblocks, &blocksize);
+	nbytes = nblocks * blocksize;
+
+	buff = (char *) calloc(blocksize, sizeof(char));
+	gettimeofday(&tv, &tz);
+	starttime = tv.tv_sec + 1.e-6 * tv.tv_usec;
+	for (i = 0; i < nblocks; i++) {
+		fread(buff, sizeof(char), blocksize, stdin);
+	}
+	gettimeofday(&tv, &tz);
+	endtime = tv.tv_sec + 1.e-6 * tv.tv_usec;
+	elapsedtime = endtime - starttime;
+	Mbps = 8.e-6 * nbytes / elapsedtime;
+
+	fprintf(stderr, "# piperecv : %ld bytes transferred in %14.8lf seconds: rate = %14.8lf Mbps\n", 
+		nbytes, elapsedtime, Mbps);
+	
+	free(buff);
+	exit(0);
+}

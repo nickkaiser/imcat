@@ -1,0 +1,100 @@
+.TH "apphot.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+apphot.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include 'apphot.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBGC_MAX\fP   32"
+.br
+.ti -1c
+.RI "#define \fBR_AP_MIN\fP   1"
+.br
+.ti -1c
+.RI "#define \fBR_SOFTEN\fP   0.3"
+.br
+.ti -1c
+.RI "#define \fBP_MIN\fP   5"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBapphot\fP (double *flux, double *\fBrh\fP, double *rql, double *rqu, double *rp, double *nbad, double *\fBfmax\fP, double *x, double rap, double *fb0, double *dfb, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "double \fBrpetrosian\fP (double *x, float **f, int \fBN1\fP, int \fBN2\fP, double *fb0, double *dfb)"
+.br
+.ti -1c
+.RI "int \fBpixcmp\fP (\fBpixel\fP *pix1, \fBpixel\fP *pix2)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define GC_MAX   32"
+.PP
+Definition at line 12 of file apphot.c.
+.PP
+Referenced by do_object_stats(), and rpetrosian().
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 17 of file apphot.c.
+.SS "#define P_MIN   5"
+.PP
+Definition at line 15 of file apphot.c.
+.PP
+Referenced by apphot().
+.SS "#define R_AP_MIN   1"
+.PP
+Definition at line 13 of file apphot.c.
+.SS "#define R_SOFTEN   0.3"
+.PP
+Definition at line 14 of file apphot.c.
+.PP
+Referenced by apphot().
+.SH "Function Documentation"
+.PP 
+.SS "int apphot (double * flux, double * rh, double * rql, double * rqu, double * rp, double * nbad, double * fmax, double * x, double rap, double * fb0, double * dfb, float ** f, int N1, int N2)"
+.PP
+Definition at line 19 of file apphot.c.
+.PP
+References dr, dx, dy, f, ff, free(), i, ix, MAGIC, N1, N2, P_MIN, pix, pixcmp(), r, R_SOFTEN, rh, and x.
+.PP
+Referenced by main().
+.SS "int pixcmp (\fBpixel\fP * pix1, \fBpixel\fP * pix2)"
+.PP
+Definition at line 187 of file apphot.c.
+.PP
+References pixel::r.
+.PP
+Referenced by apphot().
+.SS "double rpetrosian (double * x, float ** f, int N1, int N2, double * fb0, double * dfb)"
+.PP
+Definition at line 140 of file apphot.c.
+.PP
+References dx, dy, f, ff, GC_MAX, ix, MAGIC, N1, N2, and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

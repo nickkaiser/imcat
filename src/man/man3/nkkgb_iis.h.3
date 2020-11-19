@@ -1,0 +1,335 @@
+.TH "iis.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+iis.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBTRANSFER_ID\fP   0"
+.br
+.ti -1c
+.RI "#define \fBTHING_COUNT\fP   1"
+.br
+.ti -1c
+.RI "#define \fBSUB_UNIT\fP   2"
+.br
+.ti -1c
+.RI "#define \fBCHECK_SUM\fP   3"
+.br
+.ti -1c
+.RI "#define \fBX_REGISTER\fP   4"
+.br
+.ti -1c
+.RI "#define \fBY_REGISTER\fP   5"
+.br
+.ti -1c
+.RI "#define \fBZ_REGISTER\fP   6"
+.br
+.ti -1c
+.RI "#define \fBT_REGISTER\fP   7"
+.br
+.ti -1c
+.RI "#define \fBIREAD\fP   0100000"
+.br
+.ti -1c
+.RI "#define \fBIWRITE\fP   00"
+.br
+.ti -1c
+.RI "#define \fBPACKED\fP   040000"
+.br
+.ti -1c
+.RI "#define \fBBYPASSIFM\fP   020000"
+.br
+.ti -1c
+.RI "#define \fBBYTE\fP   010000"
+.br
+.ti -1c
+.RI "#define \fBADDWRITE\fP   04000"
+.br
+.ti -1c
+.RI "#define \fBACCUM\fP   02000"
+.br
+.ti -1c
+.RI "#define \fBBLOCKXFER\fP   01000"
+.br
+.ti -1c
+.RI "#define \fBVRETRACE\fP   0400"
+.br
+.ti -1c
+.RI "#define \fBMUX32\fP   0200"
+.br
+.ti -1c
+.RI "#define \fBIMT800\fP   0100"
+.br
+.ti -1c
+.RI "#define \fBREFRESH\fP   01"
+.br
+.ti -1c
+.RI "#define \fBLUT\fP   02"
+.br
+.ti -1c
+.RI "#define \fBOFM\fP   03"
+.br
+.ti -1c
+.RI "#define \fBIFM\fP   04"
+.br
+.ti -1c
+.RI "#define \fBFEEDBACK\fP   05"
+.br
+.ti -1c
+.RI "#define \fBSCROLL\fP   06"
+.br
+.ti -1c
+.RI "#define \fBVIDEOM\fP   07"
+.br
+.ti -1c
+.RI "#define \fBSUMPROC\fP   010"
+.br
+.ti -1c
+.RI "#define \fBGRAPHICS\fP   011"
+.br
+.ti -1c
+.RI "#define \fBCURSOR\fP   012"
+.br
+.ti -1c
+.RI "#define \fBALU\fP   013"
+.br
+.ti -1c
+.RI "#define \fBZOOM\fP   014"
+.br
+.ti -1c
+.RI "#define \fBIPB\fP   017"
+.br
+.ti -1c
+.RI "#define \fBIMCURSOR\fP   015"
+.br
+.ti -1c
+.RI "#define \fBWCS\fP   021"
+.br
+.ti -1c
+.RI "#define \fBCHECKSUMVAL\fP   0177777"
+.br
+.ti -1c
+.RI "#define \fBADVXONTC\fP   0100000"
+.br
+.ti -1c
+.RI "#define \fBADVXONYOV\fP   040000"
+.br
+.ti -1c
+.RI "#define \fBADVYONXOV\fP   0100000"
+.br
+.ti -1c
+.RI "#define \fBADVYONTC\fP   040000"
+.br
+.ti -1c
+.RI "#define \fBCHAN1\fP   01"
+.br
+.ti -1c
+.RI "#define \fBCHAN2\fP   02"
+.br
+.ti -1c
+.RI "#define \fBCHAN3\fP   04"
+.br
+.ti -1c
+.RI "#define \fBCHAN4\fP   010"
+.br
+.ti -1c
+.RI "#define \fBGRCHAN\fP   0100000"
+.br
+.ti -1c
+.RI "#define \fBBITPL0\fP   01"
+.br
+.ti -1c
+.RI "#define \fBBITPL1\fP   02"
+.br
+.ti -1c
+.RI "#define \fBBITPL2\fP   04"
+.br
+.ti -1c
+.RI "#define \fBBITPL3\fP   010"
+.br
+.ti -1c
+.RI "#define \fBBITPL4\fP   020"
+.br
+.ti -1c
+.RI "#define \fBBITPL5\fP   040"
+.br
+.ti -1c
+.RI "#define \fBBITPL6\fP   0100"
+.br
+.ti -1c
+.RI "#define \fBBITPL7\fP   0200"
+.br
+.ti -1c
+.RI "#define \fBALLBITPL\fP   0377"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define ACCUM   02000"
+.PP
+Definition at line 24 of file nkkgb/iis.h.
+.SS "#define ADDWRITE   04000"
+.PP
+Definition at line 23 of file nkkgb/iis.h.
+.SS "#define ADVXONTC   0100000"
+.PP
+Definition at line 57 of file nkkgb/iis.h.
+.SS "#define ADVXONYOV   040000"
+.PP
+Definition at line 58 of file nkkgb/iis.h.
+.SS "#define ADVYONTC   040000"
+.PP
+Definition at line 62 of file nkkgb/iis.h.
+.SS "#define ADVYONXOV   0100000"
+.PP
+Definition at line 61 of file nkkgb/iis.h.
+.SS "#define ALLBITPL   0377"
+.PP
+Definition at line 91 of file nkkgb/iis.h.
+.SS "#define ALU   013"
+.PP
+Definition at line 41 of file nkkgb/iis.h.
+.SS "#define BITPL0   01"
+.PP
+Definition at line 83 of file nkkgb/iis.h.
+.SS "#define BITPL1   02"
+.PP
+Definition at line 84 of file nkkgb/iis.h.
+.SS "#define BITPL2   04"
+.PP
+Definition at line 85 of file nkkgb/iis.h.
+.SS "#define BITPL3   010"
+.PP
+Definition at line 86 of file nkkgb/iis.h.
+.SS "#define BITPL4   020"
+.PP
+Definition at line 87 of file nkkgb/iis.h.
+.SS "#define BITPL5   040"
+.PP
+Definition at line 88 of file nkkgb/iis.h.
+.SS "#define BITPL6   0100"
+.PP
+Definition at line 89 of file nkkgb/iis.h.
+.SS "#define BITPL7   0200"
+.PP
+Definition at line 90 of file nkkgb/iis.h.
+.SS "#define BLOCKXFER   01000"
+.PP
+Definition at line 25 of file nkkgb/iis.h.
+.SS "#define BYPASSIFM   020000"
+.PP
+Definition at line 21 of file nkkgb/iis.h.
+.SS "#define BYTE   010000"
+.PP
+Definition at line 22 of file nkkgb/iis.h.
+.SS "#define CHAN1   01"
+.PP
+Definition at line 76 of file nkkgb/iis.h.
+.SS "#define CHAN2   02"
+.PP
+Definition at line 77 of file nkkgb/iis.h.
+.SS "#define CHAN3   04"
+.PP
+Definition at line 78 of file nkkgb/iis.h.
+.SS "#define CHAN4   010"
+.PP
+Definition at line 79 of file nkkgb/iis.h.
+.SS "#define CHECK_SUM   3"
+.PP
+Definition at line 11 of file nkkgb/iis.h.
+.SS "#define CHECKSUMVAL   0177777"
+.PP
+Definition at line 49 of file nkkgb/iis.h.
+.SS "#define CURSOR   012"
+.PP
+Definition at line 40 of file nkkgb/iis.h.
+.SS "#define FEEDBACK   05"
+.PP
+Definition at line 35 of file nkkgb/iis.h.
+.SS "#define GRAPHICS   011"
+.PP
+Definition at line 39 of file nkkgb/iis.h.
+.SS "#define GRCHAN   0100000"
+.PP
+Definition at line 80 of file nkkgb/iis.h.
+.SS "#define IFM   04"
+.PP
+Definition at line 34 of file nkkgb/iis.h.
+.SS "#define IMCURSOR   015"
+.PP
+Definition at line 45 of file nkkgb/iis.h.
+.SS "#define IMT800   0100"
+.PP
+Definition at line 28 of file nkkgb/iis.h.
+.SS "#define IPB   017"
+.PP
+Definition at line 43 of file nkkgb/iis.h.
+.SS "#define IREAD   0100000"
+.PP
+Definition at line 18 of file nkkgb/iis.h.
+.SS "#define IWRITE   00"
+.PP
+Definition at line 19 of file nkkgb/iis.h.
+.SS "#define LUT   02"
+.PP
+Definition at line 32 of file nkkgb/iis.h.
+.SS "#define MUX32   0200"
+.PP
+Definition at line 27 of file nkkgb/iis.h.
+.SS "#define OFM   03"
+.PP
+Definition at line 33 of file nkkgb/iis.h.
+.SS "#define PACKED   040000"
+.PP
+Definition at line 20 of file nkkgb/iis.h.
+.SS "#define REFRESH   01"
+.PP
+Definition at line 31 of file nkkgb/iis.h.
+.SS "#define SCROLL   06"
+.PP
+Definition at line 36 of file nkkgb/iis.h.
+.SS "#define SUB_UNIT   2"
+.PP
+Definition at line 10 of file nkkgb/iis.h.
+.SS "#define SUMPROC   010"
+.PP
+Definition at line 38 of file nkkgb/iis.h.
+.SS "#define T_REGISTER   7"
+.PP
+Definition at line 15 of file nkkgb/iis.h.
+.SS "#define THING_COUNT   1"
+.PP
+Definition at line 9 of file nkkgb/iis.h.
+.SS "#define TRANSFER_ID   0"
+.PP
+Definition at line 8 of file nkkgb/iis.h.
+.SS "#define VIDEOM   07"
+.PP
+Definition at line 37 of file nkkgb/iis.h.
+.SS "#define VRETRACE   0400"
+.PP
+Definition at line 26 of file nkkgb/iis.h.
+.SS "#define WCS   021"
+.PP
+Definition at line 46 of file nkkgb/iis.h.
+.SS "#define X_REGISTER   4"
+.PP
+Definition at line 12 of file nkkgb/iis.h.
+.SS "#define Y_REGISTER   5"
+.PP
+Definition at line 13 of file nkkgb/iis.h.
+.SS "#define Z_REGISTER   6"
+.PP
+Definition at line 14 of file nkkgb/iis.h.
+.SS "#define ZOOM   014"
+.PP
+Definition at line 42 of file nkkgb/iis.h.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

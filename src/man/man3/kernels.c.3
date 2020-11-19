@@ -1,0 +1,76 @@
+.TH "kernels.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+kernels.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'kernels.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBEPS\fP   1.\fBe\fP-10"
+.br
+.ti -1c
+.RI "#define \fBsign\fP(x)   ((x) > 0 ? 1 : -1)"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBcirckernel\fP (double *K, double \fBx0\fP, double y0, double x, double y, double R, double eps)"
+.br
+.ti -1c
+.RI "void \fBrectkernel\fP (double *K, double *\fBalpha\fP, double \fBx0\fP, double y0, double x, double y, double LX, double LY, double eps)"
+.br
+.ti -1c
+.RI "double \fBcutoff\fP (double \fBr\fP, double p, double eps)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define EPS   1.\fBe\fP-10"
+.PP
+Definition at line 14 of file kernels.c.
+.PP
+Referenced by chi1(), chi2(), circkernel(), cutoff(), frprmn(), main(), and rectkernel().
+.SS "#define sign(x)   ((x) > 0 ? 1 : -1)"
+.PP
+Definition at line 74 of file kernels.c.
+.PP
+Referenced by cdl_drawThickDashVec(), cdl_drawThickVector(), dec2str(), decimaltoxms(), rectkernel(), str2dec(), and xmstodecimal().
+.SH "Function Documentation"
+.PP 
+.SS "void circkernel (double * K, double x0, double y0, double x, double y, double R, double eps)"
+.PP
+Definition at line 20 of file kernels.c.
+.PP
+References a1, a2, cutoff(), EPS, K, r, W, x, Y, y, and z.
+.SS "double cutoff (double r, double p, double eps)"
+.PP
+Definition at line 161 of file kernels.c.
+.PP
+References EPS, r, and x.
+.PP
+Referenced by circkernel(), and rectkernel().
+.SS "void rectkernel (double * K, double * alpha, double x0, double y0, double x, double y, double LX, double LY, double eps)"
+.PP
+Definition at line 81 of file kernels.c.
+.PP
+References a, alpha, cutoff(), EPS, i, j, K, L, r, sign, W, x, and y.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

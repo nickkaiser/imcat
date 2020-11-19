@@ -1,0 +1,20 @@
+# text format catalogue file --- do not edit manually, use 'lc'
+# header:
+# text     1 1         model_type                  2Dpoly
+# number   1 1         ndim                             2
+# number   1 1         nmodes                           7
+# number   1 2         x0                               0             0
+# comment: spatial polynomial parameter file
+# comment: history: fitdistortion 4 -d test 
+# contents: 3
+# number   1 1         l                   
+# number   1 1         m                   
+# number   1 2         a                   
+#             l             m          a[0]          a[1]
+              2             0  -9.63889e-07  -3.85394e-06
+              2             1  -7.31199e-06   7.19701e-07
+              2             2   1.54686e-06  -9.91606e-06
+              3             0  -9.44867e-09  -3.59983e-12
+              3             1  -6.56583e-12   -9.4304e-09
+              3             2  -9.40927e-09  -2.95503e-11
+              3             3  -3.64519e-12  -9.48465e-09

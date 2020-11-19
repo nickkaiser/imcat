@@ -1,0 +1,202 @@
+.TH "wcs.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+wcs.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <string.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'wcs.h'\fP
+.br
+\fC#include 'fitshead.h'\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBwcseq\fP ()"
+.br
+.ti -1c
+.RI "\fBWorldCoor\fP * \fBwcsninit\fP (char *hstring, int lhstring)"
+.br
+.ti -1c
+.RI "\fBWorldCoor\fP * \fBwcsinit\fP (char *hstring)"
+.br
+.ti -1c
+.RI "void \fBwcseq\fP (char *hstring, struct \fBWorldCoor\fP *\fBwcs\fP)"
+.br
+.ti -1c
+.RI "\fBWorldCoor\fP * \fBwcsset\fP (double cra, double cdec, double secpix, double xrpix, double yrpix, int nxpix, int nypix, double rotate, int equinox, double epoch, char *proj)"
+.br
+.ti -1c
+.RI "int \fBiswcs\fP (struct \fBWorldCoor\fP *\fBwcs\fP)"
+.br
+.ti -1c
+.RI "int \fBnowcs\fP (struct \fBWorldCoor\fP *\fBwcs\fP)"
+.br
+.ti -1c
+.RI "void \fBwcsshift\fP (struct \fBWorldCoor\fP *\fBwcs\fP, double cra, double cdec, char *coorsys)"
+.br
+.ti -1c
+.RI "void \fBwcscent\fP (struct \fBWorldCoor\fP *\fBwcs\fP)"
+.br
+.ti -1c
+.RI "void \fBwcssize\fP (struct \fBWorldCoor\fP *\fBwcs\fP, double *cra, double *cdec, double *dra, double *ddec)"
+.br
+.ti -1c
+.RI "void \fBwcsfull\fP (struct \fBWorldCoor\fP *\fBwcs\fP, double *cra, double *cdec, double *width, double *height)"
+.br
+.ti -1c
+.RI "double \fBwcsdist\fP (double \fBx1\fP, double y1, double \fBx2\fP, double y2)"
+.br
+.ti -1c
+.RI "void \fBwcscominit\fP (struct \fBWorldCoor\fP *\fBwcs\fP, char *command)"
+.br
+.ti -1c
+.RI "void \fBwcscom\fP (struct \fBWorldCoor\fP *\fBwcs\fP, char *\fBfilename\fP, double xfile, double yfile)"
+.br
+.ti -1c
+.RI "void \fBwcsoutinit\fP (struct \fBWorldCoor\fP *\fBwcs\fP, char *coorsys)"
+.br
+.ti -1c
+.RI "char * \fBwcsout\fP (struct \fBWorldCoor\fP *\fBwcs\fP)"
+.br
+.ti -1c
+.RI "int \fBpix2wcst\fP (struct \fBWorldCoor\fP *\fBwcs\fP, double xpix, double ypix, char *wcstring, int lstr)"
+.br
+.ti -1c
+.RI "void \fBpix2wcs\fP (struct \fBWorldCoor\fP *\fBwcs\fP, double xpix, double ypix, double *xpos, double *ypos)"
+.br
+.ti -1c
+.RI "void \fBwcs2pix\fP (struct \fBWorldCoor\fP *\fBwcs\fP, double xpos, double ypos, double *xpix, double *ypix, int *offscl)"
+.br
+.ti -1c
+.RI "void \fBwcserr\fP ()"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "char \fBwcserrmsg\fP [80]"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int iswcs (struct \fBWorldCoor\fP * wcs)"
+.PP
+Definition at line 628 of file wcs.c.
+.PP
+References wcs.
+.SS "int nowcs (struct \fBWorldCoor\fP * wcs)"
+.PP
+Definition at line 643 of file wcs.c.
+.PP
+References wcs.
+.SS "void pix2wcs (struct \fBWorldCoor\fP * wcs, double xpix, double ypix, double	* xpos, double* ypos)"
+.PP
+Definition at line 1142 of file wcs.c.
+.PP
+References fk425e(), fk42gal(), fk4prec(), fk524e(), fk52gal(), fk5prec(), iswcs(), platepos(), wcs, worldpos(), xp(), and yp().
+.SS "int pix2wcst (struct	\fBWorldCoor\fP * wcs, double xpix, double ypix, char	* wcstring, int lstr)"
+.PP
+Definition at line 1031 of file wcs.c.
+.PP
+References dec2str(), deg2str(), iswcs(), pix2wcs(), ra2str(), and wcs.
+.SS "void wcs2pix (struct \fBWorldCoor\fP * wcs, double xpos, double ypos, double	* xpix, double* ypix, int	* offscl)"
+.PP
+Definition at line 1204 of file wcs.c.
+.PP
+References fk425e(), fk4prec(), fk524e(), fk5prec(), iswcs(), platepix(), wcs, worldpix(), xp(), and yp().
+.SS "void wcscent (struct \fBWorldCoor\fP * wcs)"
+.PP
+Definition at line 688 of file wcs.c.
+.PP
+References pix2wcs(), pix2wcst(), wcs, and wcsdist().
+.SS "void wcscom (struct \fBWorldCoor\fP * wcs, char	* filename, double xfile, double yfile)"
+.PP
+Definition at line 915 of file wcs.c.
+.PP
+References ier, iswcs(), pix2wcst(), strsrch(), and wcs.
+.SS "void wcscominit (struct \fBWorldCoor\fP * wcs, char * command)"
+.PP
+Definition at line 888 of file wcs.c.
+.PP
+References iswcs(), and wcs.
+.SS "double wcsdist (double x1, double y1, double x2, double y2)"
+.PP
+Definition at line 845 of file wcs.c.
+.PP
+References degrad, diff(), i, raddeg, and w.
+.SS "void wcseq (char	* hstring, struct \fBWorldCoor\fP * wcs)\fC [static]\fP"
+.PP
+Definition at line 450 of file wcs.c.
+.PP
+References hgetdate(), hgeti4(), hgetr8(), hgets(), and wcs.
+.SS "void wcseq ()\fC [static]\fP"
+.PP
+Referenced by wcsinit().
+.SS "void wcserr ()"
+.PP
+Definition at line 1262 of file wcs.c.
+.PP
+References wcserrmsg.
+.SS "void wcsfull (struct \fBWorldCoor\fP * wcs, double	* cra, double	* cdec, double	* width, double	* height)"
+.PP
+Definition at line 798 of file wcs.c.
+.PP
+References iswcs(), pix2wcs(), wcs, and wcsdist().
+.SS "struct \fBWorldCoor\fP* wcsinit (char * hstring)"
+.PP
+Definition at line 63 of file wcs.c.
+.PP
+References degrad, free(), hgetdate(), hgetdec(), hgeti4(), hgetr8(), hgetra(), hgets(), hrrad, i, ksearch(), str, wcs, wcseq(), and wcserrmsg.
+.SS "struct \fBWorldCoor\fP* wcsninit (char	* hstring, int lhstring)"
+.PP
+Definition at line 50 of file wcs.c.
+.PP
+References hlength(), and wcsinit().
+.SS "char* wcsout (struct	\fBWorldCoor\fP * wcs)"
+.PP
+Definition at line 1019 of file wcs.c.
+.PP
+References wcs.
+.SS "void wcsoutinit (struct \fBWorldCoor\fP * wcs, char * coorsys)"
+.PP
+Definition at line 962 of file wcs.c.
+.PP
+References iswcs(), and wcs.
+.SS "struct \fBWorldCoor\fP* wcsset (double cra, double cdec, double secpix, double xrpix, double yrpix, int nxpix, int nypix, double rotate, int equinox, double epoch, char	* proj)"
+.PP
+Definition at line 542 of file wcs.c.
+.PP
+References degrad, rotate(), str, and wcs.
+.SS "void wcsshift (struct \fBWorldCoor\fP * wcs, double cra, double cdec, char	* coorsys)"
+.PP
+Definition at line 658 of file wcs.c.
+.PP
+References nowcs(), and wcs.
+.SS "void wcssize (struct \fBWorldCoor\fP * wcs, double	* cra, double	* cdec, double	* dra, double	* ddec)"
+.PP
+Definition at line 746 of file wcs.c.
+.PP
+References degrad, iswcs(), pix2wcs(), wcs, and wcsdist().
+.SH "Variable Documentation"
+.PP 
+.SS "char \fBwcserrmsg\fP[80]\fC [static]\fP"
+.PP
+Definition at line 45 of file wcs.c.
+.PP
+Referenced by wcserr(), and wcsinit().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

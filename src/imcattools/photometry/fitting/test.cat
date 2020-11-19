@@ -1,0 +1,13 @@
+# text format catalogue file --- do not edit manually, use 'lc'
+# header:
+# comment: history: lc -C -n f0 -N '1 2 x' -n a -n b -n phi
+# contents: 5
+# number   1 1         f0                  
+# number   1 2         x                   
+# number   1 1         a                   
+# number   1 1         b                   
+# number   1 1         phi                 
+#            f0          x[0]          x[1]             a             b           phi
+       1249.467     2.1347172     9.1118627     4.8141983     4.9850269     3.0399737
+      1649.9228     13.286966     5.2123752     4.5464465     4.7439311    0.26465845
+      2487.0091     8.4115384     17.181822      3.689817     3.0015508    0.22276354

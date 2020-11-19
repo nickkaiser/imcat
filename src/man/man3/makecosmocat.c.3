@@ -1,0 +1,199 @@
+.TH "makecosmocat.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makecosmocat.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusagehead\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\        makecosmocat - generate catalogue of mock galaxies \\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\        makecosmocat [-Magmin Magmin] [-Magmax Magmax] [-nM nM]\\\fBn\fP\\		[-Mstar Mstar] [-phistar phistar] [-\fBalpha\fP \fBalpha\fP]\\\fBn\fP\\		[-zmin zmin] [-zmax zmax] [-zstar zstar] [-omega omega]\\\fBn\fP\\		[-\fBseed\fP \fBseed\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Makecosmicat generates \fBa\fP lc-format catalogue containing mock.\\\fBn\fP\\	galaxies.  It assumes that galaxies are drawn from \fBa\fP Schechter\\\fBn\fP\\	style luminosity function, are non-evolving, and are randomly placed\\\fBn\fP\\	in comoving coordinates.  The cosmology is Einstein - de Sitter.\\\fBn\fP\\\\\fBn\fP\\	Default parameters are:\\\fBn\fP\\\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBusagetail\fP   '\\n\\OUTPUT\\\fBn\fP\\	Output variables are:\\\fBn\fP\\\\\fBn\fP\\		\fBr\fP	# comoving distance [Mpc]\\\fBn\fP\\		\fBz\fP	# redshift\\\fBn\fP\\		\fBM\fP	# absolute magnitude\\\fBn\fP\\		\fBm\fP	# apparent magnitude\\\fBn\fP\\		theta	# angular size\\\fBn\fP\\		csb	# central surface brightness   \\\fBn\fP\\\\\fBn\fP\\	The csb is just (1 + \fBz\fP)^-4.\\\fBn\fP\\	The angular size assumes that the luminosity scales\\\fBn\fP\\	as the area and, for an L_star galaxy, is the \fBangle\fP\\\fBn\fP\\	subtended by 3kpc in arc seconds.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	makemockimage\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\        Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBLSTARSIZEINKPC\fP   3.0"
+.br
+.ti -1c
+.RI "#define \fBHINV\fP   3000.0"
+.br
+.ti -1c
+.RI "#define \fBNITEMS\fP   6"
+.br
+.ti -1c
+.RI "#define \fBNPARAMS\fP   11"
+.br
+.ti -1c
+.RI "#define \fBIMagmin\fP   0"
+.br
+.ti -1c
+.RI "#define \fBIMagmax\fP   1"
+.br
+.ti -1c
+.RI "#define \fBInM\fP   2"
+.br
+.ti -1c
+.RI "#define \fBIMstar\fP   3"
+.br
+.ti -1c
+.RI "#define \fBIphistar\fP   4"
+.br
+.ti -1c
+.RI "#define \fBIalpha\fP   5"
+.br
+.ti -1c
+.RI "#define \fBIzmin\fP   6"
+.br
+.ti -1c
+.RI "#define \fBIzmax\fP   7"
+.br
+.ti -1c
+.RI "#define \fBIzstar\fP   8"
+.br
+.ti -1c
+.RI "#define \fBIomega\fP   9"
+.br
+.ti -1c
+.RI "#define \fBIseed\fP   10"
+.br
+.ti -1c
+.RI "#define \fBZEROPOINT\fP   25"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBdrand48\fP ()"
+.br
+.ti -1c
+.RI "double \fBexpvar\fP (void)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define HINV   3000.0"
+.PP
+Definition at line 57 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define Ialpha   5"
+.PP
+Definition at line 67 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define IMagmax   1"
+.PP
+Definition at line 63 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define IMagmin   0"
+.PP
+Definition at line 62 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define IMstar   3"
+.PP
+Definition at line 65 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define InM   2"
+.PP
+Definition at line 64 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define Iomega   9"
+.PP
+Definition at line 71 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define Iphistar   4"
+.PP
+Definition at line 66 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define Iseed   10"
+.PP
+Definition at line 72 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define Izmax   7"
+.PP
+Definition at line 69 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define Izmin   6"
+.PP
+Definition at line 68 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define Izstar   8"
+.PP
+Definition at line 70 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define LSTARSIZEINKPC   3.0"
+.PP
+Definition at line 56 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define NITEMS   6"
+.PP
+Definition at line 58 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define NPARAMS   11"
+.PP
+Definition at line 61 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define usagehead   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\        makecosmocat - generate catalogue of mock galaxies \\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\        makecosmocat [-Magmin Magmin] [-Magmax Magmax] [-nM nM]\\\fBn\fP\\		[-Mstar Mstar] [-phistar phistar] [-\fBalpha\fP \fBalpha\fP]\\\fBn\fP\\		[-zmin zmin] [-zmax zmax] [-zstar zstar] [-omega omega]\\\fBn\fP\\		[-\fBseed\fP \fBseed\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Makecosmicat generates \fBa\fP lc-format catalogue containing mock.\\\fBn\fP\\	galaxies.  It assumes that galaxies are drawn from \fBa\fP Schechter\\\fBn\fP\\	style luminosity function, are non-evolving, and are randomly placed\\\fBn\fP\\	in comoving coordinates.  The cosmology is Einstein - de Sitter.\\\fBn\fP\\\\\fBn\fP\\	Default parameters are:\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 11 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define usagetail   '\\n\\OUTPUT\\\fBn\fP\\	Output variables are:\\\fBn\fP\\\\\fBn\fP\\		\fBr\fP	# comoving distance [Mpc]\\\fBn\fP\\		\fBz\fP	# redshift\\\fBn\fP\\		\fBM\fP	# absolute magnitude\\\fBn\fP\\		\fBm\fP	# apparent magnitude\\\fBn\fP\\		theta	# angular size\\\fBn\fP\\		csb	# central surface brightness   \\\fBn\fP\\\\\fBn\fP\\	The csb is just (1 + \fBz\fP)^-4.\\\fBn\fP\\	The angular size assumes that the luminosity scales\\\fBn\fP\\	as the area and, for an L_star galaxy, is the \fBangle\fP\\\fBn\fP\\	subtended by 3kpc in arc seconds.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	makemockimage\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\        Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 30 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SS "#define ZEROPOINT   25"
+.PP
+Definition at line 74 of file makecosmocat.c.
+.PP
+Referenced by main().
+.SH "Function Documentation"
+.PP 
+.SS "double drand48 ()"
+.PP
+.SS "double expvar (void)"
+.PP
+Definition at line 319 of file makecosmocat.c.
+.PP
+References drand48().
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 77 of file makecosmocat.c.
+.PP
+References alpha, drand48(), error_exit, exit(), expvar(), HINV, Ialpha, IMagmax, IMagmin, IMstar, InM, Iomega, Iphistar, Iseed, Izmax, Izmin, Izstar, L, lcpipe, line, LSTARSIZEINKPC, m, M, NITEMS, NPARAMS, omega(), r, usage, usagehead, usagetail, z, and ZEROPOINT.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

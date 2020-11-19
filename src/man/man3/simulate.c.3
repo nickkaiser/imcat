@@ -1,0 +1,123 @@
+.TH "simulate.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+simulate.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'simulate.h'\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/arrays.h'\fP
+.br
+\fC#include '../imlib/filters.h'\fP
+.br
+\fC#include '../utils/ran1.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	simulate --- generate mock \fBfits\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	simulate [option...]\\\fBn\fP\\		-\fBn\fP \fBN1\fP \fBN2\fP		# size of image (256, 256)\\\fBn\fP\\		-S As gs		# amp and slope of stellar lum fun (As = 3\fBe\fP-4; gs = -1.5)\\\fBn\fP\\		-G Ag gg		# amp and slope of galaxy lum fun (Ag = 1\fBe\fP-2; gg = -2)\\\fBn\fP\\		-R \fBrbar\fP lnrsig		# av and SD log-normal distn of galaxy sizes (\fBrbar\fP = 2.0; lnrsig = 0.3)\\\fBn\fP\\		-s \fBsigma\fP		# rms sky fluctuation (0)\\\fBn\fP\\		-\fBi\fP \fBseed\fP			# for ran num generator (1)\\\fBn\fP\\		-\fBl\fP \fBlmin\fP			# min luminosity (50)\\\fBn\fP\\		-\fBe\fP \fBe\fP			# global ellipticity (0.0)\\\fBn\fP\\		-\fBm\fP mumin		# min cos theta for galaxy inclination (0.5)\\\fBn\fP\\		-\fBc\fP \fBcatfile\fP		# output \fBobject\fP positions to an lc-format catalogue\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'simulate\\' generates \fBa\fP mock \fBfits\fP image\\\fBn\fP\\	Galaxies and stars have power law lum funs\\\fBn\fP\\	Galaxies lave log normal distn of sizes.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBLN_L_MAX\fP   16"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBdrand48\fP ()"
+.br
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "void \fBadd_noise\fP (float **f, int \fBN1\fP, int \fBN2\fP, float \fBsigma\fP)"
+.br
+.ti -1c
+.RI "float \fBgasdev\fP (void)"
+.br
+.ti -1c
+.RI "int \fBmake_pop\fP (float \fBA\fP, float g, float \fBlmin\fP, float lnrbar, float lnrsig, float \fBe\fP, float mumin, int \fBN1\fP, int \fBN2\fP, float **f)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "FILE * \fBcatfile\fP"
+.br
+.ti -1c
+.RI "int \fBoutputcat\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define LN_L_MAX   16"
+.PP
+Definition at line 189 of file simulate.c.
+.PP
+Referenced by make_pop().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	simulate --- generate mock \fBfits\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	simulate [option...]\\\fBn\fP\\		-\fBn\fP \fBN1\fP \fBN2\fP		# size of image (256, 256)\\\fBn\fP\\		-S As gs		# amp and slope of stellar lum fun (As = 3\fBe\fP-4; gs = -1.5)\\\fBn\fP\\		-G Ag gg		# amp and slope of galaxy lum fun (Ag = 1\fBe\fP-2; gg = -2)\\\fBn\fP\\		-R \fBrbar\fP lnrsig		# av and SD log-normal distn of galaxy sizes (\fBrbar\fP = 2.0; lnrsig = 0.3)\\\fBn\fP\\		-s \fBsigma\fP		# rms sky fluctuation (0)\\\fBn\fP\\		-\fBi\fP \fBseed\fP			# for ran num generator (1)\\\fBn\fP\\		-\fBl\fP \fBlmin\fP			# min luminosity (50)\\\fBn\fP\\		-\fBe\fP \fBe\fP			# global ellipticity (0.0)\\\fBn\fP\\		-\fBm\fP mumin		# min cos theta for galaxy inclination (0.5)\\\fBn\fP\\		-\fBc\fP \fBcatfile\fP		# output \fBobject\fP positions to an lc-format catalogue\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'simulate\\' generates \fBa\fP mock \fBfits\fP image\\\fBn\fP\\	Galaxies and stars have power law lum funs\\\fBn\fP\\	Galaxies lave log normal distn of sizes.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file simulate.c.
+.SH "Function Documentation"
+.PP 
+.SS "void add_noise (float ** f, int N1, int N2, float sigma)"
+.PP
+Definition at line 154 of file simulate.c.
+.PP
+References f, gasdev(), i, j, N1, N2, and sigma.
+.PP
+Referenced by main().
+.SS "double drand48 ()"
+.PP
+.SS "float gasdev (void)"
+.PP
+Definition at line 167 of file simulate.c.
+.PP
+References drand48(), r, and ran0().
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 51 of file simulate.c.
+.PP
+References add_comment(), add_noise(), allocFloatArray(), catfile, e, error_exit, exit(), f, fits, FLOAT_PIXTYPE, make_pop(), N1, N2, new2Dfitsheader(), nstars, outputcat, rbar, sigma, usage, and write2Dfloatimage().
+.SS "int make_pop (float A, float g, float lmin, float lnrbar, float lnrsig, float e, float mumin, int N1, int N2, float ** f)"
+.PP
+Definition at line 198 of file simulate.c.
+.PP
+References A, catfile, di, dj, drand48(), e, f, g(), gasdev(), i, j, l, LN_L_MAX, n, N1, N2, outputcat, phi, PI, r, x, and y.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "FILE* \fBcatfile\fP"
+.PP
+Definition at line 48 of file simulate.c.
+.PP
+Referenced by getobjects(), main(), and make_pop().
+.SS "int \fBoutputcat\fP"
+.PP
+Definition at line 49 of file simulate.c.
+.PP
+Referenced by main(), and make_pop().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,50 @@
+.TH "convertcoords.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+convertcoords.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'radecio.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	convertcoords --- \fBtransform\fP between different sky coordinate systems\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	convertcoords convtype angle1 angle2\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	convertcoords invokes Doug Mink's utilities for conversion\\\fBn\fP\\	between different sky coordinate systems.\\\fBn\fP\\\\\fBn\fP\\	Angles can be expressed in either decimal or [hd]:m:s format.\\\fBn\fP\\\\\fBn\fP\\	The string 'convtype' specifies the \fBtype\fP of conversion and can be\\\fBn\fP\\	one of\\\fBn\fP\\		fk524 		# Convert J2000(FK5) to B1950(FK4) coordinates\\\fBn\fP\\		fk425		# Convert B1950(FK4) to J2000(FK5) coordinates\\\fBn\fP\\		fk42gal		# Convert B1950(FK4) to galactic coordinates\\\fBn\fP\\		fk52gal		# Convert J2000(FK5) to galactic coordinates\\\fBn\fP\\		gal2fk4		# Convert galactic coordinates to B1950(FK4)\\\fBn\fP\\		gal2fk5		# Convert galactic coordinates to J2000<FK5)   \\\fBn\fP\\\\\fBn\fP\\	Output angles are expressed in decimal degrees.\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser	kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	convertcoords --- \fBtransform\fP between different sky coordinate systems\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	convertcoords convtype angle1 angle2\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	convertcoords invokes Doug Mink's utilities for conversion\\\fBn\fP\\	between different sky coordinate systems.\\\fBn\fP\\\\\fBn\fP\\	Angles can be expressed in either decimal or [hd]:m:s format.\\\fBn\fP\\\\\fBn\fP\\	The string 'convtype' specifies the \fBtype\fP of conversion and can be\\\fBn\fP\\	one of\\\fBn\fP\\		fk524 		# Convert J2000(FK5) to B1950(FK4) coordinates\\\fBn\fP\\		fk425		# Convert B1950(FK4) to J2000(FK5) coordinates\\\fBn\fP\\		fk42gal		# Convert B1950(FK4) to galactic coordinates\\\fBn\fP\\		fk52gal		# Convert J2000(FK5) to galactic coordinates\\\fBn\fP\\		gal2fk4		# Convert galactic coordinates to B1950(FK4)\\\fBn\fP\\		gal2fk5		# Convert galactic coordinates to J2000<FK5)   \\\fBn\fP\\\\\fBn\fP\\	Output angles are expressed in decimal degrees.\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser	kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file convertcoords.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 42 of file convertcoords.c.
+.PP
+References error_exit, fk425(), fk42gal(), fk524(), fk52gal(), gal2fk4(), gal2fk5(), getangle(), HMS_ANGLE_TYPE, and usage.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

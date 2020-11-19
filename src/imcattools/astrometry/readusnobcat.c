@@ -1,0 +1,284 @@
+/*
+ * readusnobcat.c
+ */
+
+#define usage "\n\
+NAME\n\
+	readusnobcat --- extract lc-format sub-catalogue from USNO-B database\n\
+\n\
+SYNOPSIS\n\
+	readusnobcat ra dec dr [-all]\n\
+\n\
+DESCRIPTION\n\
+	Readusnobcat extracts a lc-format catalogue from the\n\
+	US Naval Observatory all-sky astrometric catalogue (version B).\n\
+\n\
+	Objects are selected if they lie within stereographic distance\n\
+	dr (in degrees) of the tangent point ra dec.\n\
+\n\
+	Arguments ra, dec may be given in decimal notation, in\n\
+	which case they are interpreted as degrees, or as\n\
+	colon separated triplets, in which case they are interpreted\n\
+	as h:m:s (for ra, dra) and d:m:s (dec, ddec)\n\
+\n\
+	Readusnobcat expects to find an environment variable\n\
+	USNOBDIR telling it the directory containing the source\n\
+	catalogue files.\n\
+\n\
+	We do not output objects that are flagged as likely false\n\
+	unless the optional argument -all is provided.\n\
+\n\
+	The output catalogue contains the following entries:\n\
+		x[2]		# stereographic sky coords\n\
+		RA		# right ascension [deg]\n\
+		DEC		# declination [deg]\n\
+		muRA		# proper motion in RA [arcsec/yr]\n\
+		muDEC		# proper motion in DEC [arcsec/yr]\n\
+		sigmaRA		# uncertainty in RA [deg]\n\
+		sigmaDEC	# uncertainty in DEC [deg]\n\
+		sigmamuRA	# uncertainty in proper motion in RA [arcsec/yr]\n\
+		sigmamuDEC	# uncertainty in proper motion in DEC [arcsec/yr]\n\
+		ndet		# number of detections\n\
+		mag[5]		# magnitudes, [B1, R1, B2, R2, N]\n\
+		stargal[5]	# star/galaxy classifier (0=galaxy, 11=star)\n\
+	See the USNO-B readme files for more information on the\n\
+	meaning of the flags.\n\
+\n\
+	x[2] is a stereographic projection (in units of degrees).\n\
+\n\
+AUTHOR\n\
+	Nick Kaiser	kaiser@hawaii.edu\n\
+\n\n"
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <math.h>
+
+#include "utils/error.h"
+#include "imlib/fits.h"
+#include "getxfromradecfunc.h"
+#include "radecio.h"
+
+#define	SPDBANDWIDTH 1.0
+
+#define swap_word(a) ( ((a) << 24) | \
+                      (((a) << 8) & 0x00ff0000) | \
+                      (((a) >> 8) & 0x0000ff00) | \
+        ((unsigned int)(a) >>24) )
+
+int 	getobjects(char *basefilename, double ra0, double ra1, double dec0, double dec1, double rao, double deco, double dr);
+
+static int outputallobjects;
+
+main(int argc, char *argv[])
+{
+	int	count, arg;
+	double	ra, dec, dr;
+	double	dl, fabsdecmax;
+	double	ra0, ra1, dec0, dec1, spd0, spd1, spdmin, spdmax;
+	char	*usnobdatadir, basefilename[1024];
+	int	ispd, i, ndet;
+	char	lcstring[64], argstring[512];
+	int	type;
+
+	/* defaults */
+	outputallobjects = 0;
+
+	/* parse args */
+	if (argc < 4) {
+		error_exit(usage);
+	}
+	arg = 1;
+	/* get the tangent point */
+	ra = getra(argv[arg++], &type);
+	dec = getdec(argv[arg++], &type);
+	/* and the range of stereographic coords */
+	if (1 != sscanf(argv[arg++], "%lf", &dr)) {
+		error_exit(usage);
+	} 
+	if (argc == 5) {
+		if (!strcmp(argv[4], "-all")) {
+			outputallobjects = 1;
+		} else {
+			error_exit(usage);
+		}
+	}
+
+	/* now we need to calculate a generous box in ra, dec that contains the range */
+	dec0 = dec - dr;
+	dec1 = dec + dr;
+	fabsdecmax = (fabs(dec0) > fabs(dec1) ? fabs(dec0) : fabs(dec1));
+	if (fabsdecmax >= 90.0) {
+		ra0 = 0.0;
+		ra1 = 360.0;
+	} else {
+		dl = fabs(dr / cos(M_PI * fabsdecmax / 180.0));
+		dl = (dl > 180.0 ? 180.0 : dl);
+		ra0 = ra - dl;
+		ra1 = ra + dl;
+	}
+	/* to handle the wrap around we keep add 2 pi to ra0, ra1 if ra0 is negative */
+	if (ra0 < 0.0) {
+		ra0 += 360.0;
+		ra1 += 360.0;
+	}
+
+	/* get the data directory env variable */
+	usnobdatadir = getenv("USNOBDIR");
+	if (!usnobdatadir) {
+		error_exit("readusnobcat: can't source catalogue; please define env variable USNOBDIR\n");
+	}
+
+	/* open the output pipe */
+	argsToString(argc, argv, argstring);
+	sprintf(lcstring, "lc -C -b -x -a \"history: %s\" -N '1 2 x' -n RA -n DEC -n muRA -n muDEC ", argstring);
+	strcat(lcstring, "-n sigmaRA -n sigmaDEC -n sigmamuRA -n sigmamuDEC -n ndet -N '1 5 mag' -N '1 5 stargal' < /dev/null");
+	system(lcstring);
+
+	/* figure out which source catalogues we need and extract objects*/
+	count = 0;
+	spdmax = dec1 + 90;
+	spdmin = dec0 + 90; 
+	for (ispd = 0; ispd < 180; ispd++) {
+		for (i = 0; i < 10; i++) {
+			spd0 = (ispd + 0.1 * i)* SPDBANDWIDTH;
+			spd1 = (ispd + 0.1 * (i + 1)) * SPDBANDWIDTH;
+			if ((spdmin < spd1) && (spdmax > spd0)) {
+				sprintf(basefilename, "%s/%.3d/b%.3d%1d", usnobdatadir, ispd, ispd, i);
+				count +=getobjects(basefilename, ra0, ra1, dec0, dec1, ra, dec, dr);
+			}
+		} 
+	}
+	
+	fprintf(stderr, "# readusnobcat : read %d objects\n", count);
+	exit(0);
+}
+
+
+int 	getobjects(char *basefilename, double ra0, double ra1, double dec0, double dec1, double rao, double deco, double dr)
+{
+	FILE	*catfile, *accfile;
+	char	catfilename[1024], accfilename[1024], accelrec[512];
+	int	count = 0;
+	double	ramin, ramax, ra, dec, x[2];
+	long	offset;
+	int	catfileisopen;
+	int	i, rec[20], iRA, iDEC, iDAT, doit, n1, nobj, iobj, diffspikeobj;
+	static double *opbuff = NULL;
+
+	if (!opbuff) {
+		opbuff = (double *) calloc(21, sizeof(double));
+	}
+
+	/* open the accelerator file */	
+	sprintf(accfilename, "%s.acc", basefilename);
+	accfile = fopen(accfilename, "r");
+	if (!accfile) {
+		fprintf(stderr, "readusnobcat: unable to open accelerator file %s\n", accfilename);
+		exit(-1);
+	}
+
+	/* find segments we need */
+	catfileisopen = 0;
+	while(fgets(accelrec, 512, accfile)) {
+		sscanf(accelrec, "%lf %d %d", &ramin, &n1, &nobj);
+		/* calculate offset in bytes from start of file */
+		offset = 80 * (n1 - 1);
+		ramax = ramin + 0.25;
+		/* convert ramax, ramin to degrees */
+		ramin *= 15.0;
+		ramax *= 15.0;
+		if (ra1 < 360.0) {
+			doit = (ra0 < ramax) && (ra1 > ramin);
+		} else {
+			/* we have a wrap around */
+			doit = ((ramax > ra0) || (ramin < (ra1 - 360.0)));
+		}
+		if (doit) {
+			/* open cat file  */
+			if (!catfileisopen) {
+				sprintf(catfilename, "%s.cat", basefilename);
+				catfile = fopen(catfilename, "r");
+				if (!catfile) {
+					fprintf(stderr, "readusnobcat: unable to open catalogue file %s\n", catfilename);
+					exit(-1);
+				}
+				catfileisopen = 1;
+			}
+			fseek(catfile, offset, SEEK_SET);
+			for (iobj = 0; iobj < nobj; iobj++) {
+				if (20 != fread(rec, sizeof(int), 20, catfile)) {
+					fprintf(stderr, "readusnobcat: failed to read from catalog file %s\n", catfilename);
+					exit(-1);
+				}
+#ifndef LITTLEENDIAN
+				/* swap byte order for big-endian machines */
+				for (i = 0; i < 20; i++) {
+					swap_word(rec[i]);
+				}
+#endif
+				count++;
+				iDEC = rec[1];
+				dec = iDEC / (3600 * 100.0) - 90;
+				if ((dec < dec1) &&  (dec > dec0)) {
+				  iRA  = rec[0];
+				  ra = iRA / (3600 * 100.0);
+				  if (ra1 < 360) {
+				    doit = ((ra < ra1) && (ra > ra0));
+				  } else {
+				    doit = ((ra < ra0) || (ra > (ra1 - 360)));
+				  }
+				  if (doit) {
+				    getxcoords(ra, dec, rao, deco, x);
+				    if ((x[0] * x[0] + x[1] * x[1]) < (dr * dr)) {
+					opbuff[0] = x[0];
+					opbuff[1] = x[1];
+					opbuff[2] = ra;
+					opbuff[3] = dec;
+					/* decode the velocity */
+					opbuff[4] = 0.002 * (double) (rec[2] % 10000 - 5000);
+					rec[2] -= rec[2] % 10000;
+					rec[2] /= 10000;
+					opbuff[5] = 0.002 * (double) (rec[2] % 10000 - 5000);
+					/* uncertainty in velocity */
+					opbuff[8] = 0.001 * (double) (rec[3] % 1000);
+					rec[3] -= rec[3] % 1000;
+					rec[3] /= 1000;
+					opbuff[9] = 0.001 * (double) (rec[3] % 1000);
+					rec[3] -= rec[3] % 100000;
+					rec[3] /= 100000;
+					/* number of detections */
+					opbuff[10] = (double) (rec[3] % 10);
+					rec[3] -= rec[3] % 10;
+					diffspikeobj = rec[3] / 10;
+					if ((!diffspikeobj) || (outputallobjects)) {
+						/* uncertainty in position */
+						opbuff[6] = 0.001 * (double) (rec[4] % 1000) / 3600.0;
+						rec[4] -= rec[4] % 1000;
+						rec[4] /= 1000;
+						opbuff[7] = 0.001 * (double) (rec[4] % 1000) / 3600.0;
+						/* magnitudes and star/gal classifiers */
+						for (i = 0; i < 5; i++) {
+							opbuff[11 + i] = 0.01 * (double) (rec[5 + i] % 10000);
+							rec[5 + i] -= rec[5 + i] % 100000000;
+							rec[5 + i] /= 100000000;
+							opbuff[16 + i] = (double) (rec[5 + i] % 100);
+						}
+						fwrite(opbuff, 21, sizeof(double), stdout);
+					}
+				    }
+				  }
+				}
+		 	}
+		}
+	}
+
+	fclose(catfile);
+	fclose(accfile);
+
+	return (count);
+}
+
+

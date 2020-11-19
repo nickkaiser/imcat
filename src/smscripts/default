@@ -1,0 +1,4 @@
+imcat
+	macro read "/hare/kaiser/imcat/scripts/plotcats.sm"
+	macro read "/hare/kaiser/imcat/scripts/eplot.sm"
+	macro read "/hare/kaiser/imcat/scripts/stplot.sm"

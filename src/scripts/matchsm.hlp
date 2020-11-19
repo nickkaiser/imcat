@@ -1,0 +1,37 @@
+Subject: superposing sm output over print_image or xim generated stuff
+I have managed a workaround to superpose e.g. sm contour plot
+over a fits image printed with print_image (or from in xim).
+
+1) make sm send the output to a postscript file, say sm.ps
+2) generate the image file, say fits.ps
+3) pass sm.ps through /juniper/kaiser/imcat/scripts/matchsm
+        this will translate and scale the image so the standard sm
+        box is printed in exacxtly same place as the fits image.
+        If you used "location" to change the box position you'll
+        have to customise matchsm
+3) pscat fits.ps sm.ps >combined.ps
+        this combines the two images: first fits.ps gets drawn,
+        then sm.ps
+
+Almost there, but not quite.  If you drew scales on the box, the
+y-scale numbers will be cropped.  To fix this do
+
+pscat fits.ps sm.ps | translateps 0.3 0.0 >combined.ps
+
+or, if you're really trusting,
+
+pscat fits.ps sm.ps | translateps 0.3 0.0 | lpr
+
+
+The awk scripts pscat and translateps (also rotateps) are in
+/juniper/kaiser/bin/
+
+I don;t guarantee these will work for general ps files:  If you
+have problems you might want to modify pscat so that it does
+a "grestore" after the 1st file.  All well behaved postscript
+files end with          
+
+grestore
+showpage
+
+but sm postscript output for instance doesn't; tut-tut!

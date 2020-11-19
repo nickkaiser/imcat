@@ -1,0 +1,66 @@
+#! /usr/bin/perl
+$| = 1;
+
+# this script generates a catalogue of objects "dist1.cat", one per star in the reference mosaiccat
+# which contains
+# n 		a count of the number of matched detections in the other exposures
+# x  		position in nominal coords in reference image
+# chip		chip number
+# M		sum_n D_i D_j
+# P		sum_n d_i D_j
+#
+# the idea is that one can compute the distortion field
+#	partial_i d_j = M_il^{-1} P_lj - delta_ij   (see dist2.scr)
+# and model this....
+
+$names = `cat test.names`;
+@fieldname = split("\n", $names);
+
+$mergetol = 30.0;
+
+$srcdir = "./";
+$catsfx = ".cat2";
+
+$refname = shift @fieldname;
+$refcat = $srcdir.$refname.$catsfx;
+
+echosys("lc x 'M = 0 0 2 vector 0 0 2 vector 2 vector' < $refcat | lc +all 'P = %M' 'r = %x' 'n = 0' > a.cat");
+
+foreach $name (@fieldname) {
+	$thecat = $srcdir.$name.$catsfx;
+	echosys("lc x 'M = 0 0 2 vector 0 0 2 vector 2 vector' < $thecat | lc +all 'P = %M' 'r = %x' 'n = 1' > b.cat");
+	print "# getting registration parameters...\n";
+	chop($params = `registercats b.cat a.cat`);
+	($D[0], $D[1], $junk) = split(" ", $params);
+	print "D = $D[0] $D[1] \n";
+	echosys("doto b.cat scalerottrans $params");	
+	echosys("mergecats -n 1 -m $mergetol a.cat b.cat | lc -i '%mask 1 >' > temp.merge");
+	open(MERGEIN, "lc -o 'x = %x[0]' 'dx = %r[1] %r[0] vsub' n 'M = %M[0]' 'P = %P[0]' < temp.merge |");
+	open(CATOUT, "| lc -C -N '1 2 x' -N '2 2 2 M' -N '2 2 2 P' -N '1 2 r' -n n > a.cat");
+	while (<MERGEIN>) {
+		chop;
+		($x[0], $x[1], $d[0], $d[1], $n[0], $n[1], $M00, $M01, $M10, $M11, $P00, $P01, $P10, $P11) = split " ";
+		if ($n[1]) {
+			$M00 += $D[0] * $D[0];
+			$M01 += $D[0] * $D[1];
+			$M10 += $D[1] * $D[0];
+			$M11 += $D[1] * $D[1];
+			$P00 -= $D[0] * $d[0];
+			$P01 -= $D[0] * $d[1];
+			$P10 -= $D[1] * $d[0];
+			$P11 -= $D[1] * $d[1];
+			$n[0]++;
+		}
+		print CATOUT "$x[0] $x[1] $M00 $M01 $M10 $M11 $P00 $P01 $P10 $P11 $x[0] $x[1] $n[0]\n";
+	}
+	close MERGEIN;
+	close CATOUT;
+}
+echosys("mv a.cat dist1.cat");
+echosys("rm b.cat temp.merge");
+
+
+sub echosys {
+        print @_, "\n";
+        system(@_) && die "$0: System call $_[0] failed!\n";
+}

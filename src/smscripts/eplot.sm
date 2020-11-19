@@ -1,0 +1,17 @@
+eplot
+	data e12.dat
+	read {i 1 j 2 e1 3 e2 4}
+	limits i j
+	set e = sqrt(e1 * e1 + e2 * e2)
+        set phi = 0.5 * atan2(e2, e1)
+	set len = 0.01
+ 	set x1 = j - len * e * sin(phi)
+	set y1 = i - len * e * cos(phi)
+	set x2 = j + len * e * sin(phi)
+	set y2 = i + len * e * cos(phi)
+	do i = 0, dimen(i) - 1 {
+		rel x1[$i] y1[$i]
+		dra x2[$i] y2[$i]
+	}
+	limits -7 7 -7 7
+	box

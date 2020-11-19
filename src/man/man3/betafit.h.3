@@ -1,0 +1,43 @@
+.TH "betafit.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+betafit.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "float \fBfunc\fP (float *p)"
+.br
+.ti -1c
+.RI "int \fBfitall\fP (float **\fBn\fP, int \fBN1\fP, int \fBN2\fP, float *\fBf0\fP, float *\fBx0\fP, float *y0, float *rc2, float beta, float *loglhood, float \fBN\fP)"
+.br
+.ti -1c
+.RI "void \fBmakebetamodel\fP (float **nmodel, int \fBN1\fP, int \fBN2\fP, float \fBf0\fP, float \fBx0\fP, float y0, float rc2, float beta, float \fBN\fP)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int fitall (float ** n, int N1, int N2, float * f0, float * x0, float * y0, float * rc2, float beta, float * loglhood, float N)"
+.PP
+Definition at line 23 of file betafit.c.
+.PP
+References free_matrix(), free_vector(), func(), gbeta, gN, gn, i, j, matrix(), N, n, N1, n1, N2, n2, powell(), and vector().
+.PP
+Referenced by main().
+.SS "float func (float * p)"
+.PP
+Definition at line 67 of file betafit.c.
+.SS "void makebetamodel (float ** nmodel, int N1, int N2, float f0, float x0, float y0, float rc2, float beta, float N)"
+.PP
+Definition at line 91 of file betafit.c.
+.PP
+References ix, N, N1, and N2.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

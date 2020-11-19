@@ -1,0 +1,111 @@
+.TH "rshloop.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+rshloop.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	rshloop - execute shell commands in parallel.\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	rshloop [-u] [-\fBd\fP] [-\fBv\fP] [-q] [-s slavelist] [-f ifmt] [-\fBi\fP initcom] ni commandformatstring\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'rshloop' executes shell commands in parallel across \fBa\fP network.\\\fBn\fP\\	It is currently functionally equivalent, and has identical arguments,\\\fBn\fP\\	to 'pvmloop'.\\\fBn\fP\\\\\fBn\fP\\	'rshloop' first reads \fBa\fP table of slaves from 'rshloopslaves.lst' (or\\\fBn\fP\\	from 'slavelist' with the -s option). The first \fBline\fP of\\\fBn\fP\\	this table should contain ns, the \fBnumber\fP of slaves to be used,\\\fBn\fP\\	followed by ns lines containing two strings: nodetag and nodename.\\\fBn\fP\\	For example:\\\fBn\fP\\\\\fBn\fP\\		3\\\fBn\fP\\		01	node01\\\fBn\fP\\		02	node02\\\fBn\fP\\		03	node03\\\fBn\fP\\\\\fBn\fP\\	You may specify any node, including the local node, multiple times.  This will\\\fBn\fP\\	result in multiple processes running on each physical node.\\\fBn\fP\\\\\fBn\fP\\	'rshloop' then creates \fBa\fP set of temporary FIFO pipes /\fBtmp\fP/pid.s.fifo, one per slave.\\\fBn\fP\\\\\fBn\fP\\	'rshloop' then initiates \fBa\fP sequence of nb batches of nc <= ns commands until\\\fBn\fP\\	all of the ni commands have been exhausted.\\\fBn\fP\\	The form of the command executed is\\\fBn\fP\\\\\fBn\fP\\		rsh -\fBn\fP remotenode 'runcom command s' > /\fBtmp\fP/pid.s.fifo &\\\fBn\fP\\\\\fBn\fP\\	where 'command' is generated from the 'commandformatstring' as\\\fBn\fP\\	described below and s is the the slave \fBnumber\fP.\\\fBn\fP\\\\\fBn\fP\\	If the environment variable 'RSHLOOP_RSH' is defined then it will\\\fBn\fP\\	be used in place of 'rsh -\fBn\fP', so you can use \fBe\fP.g. ssh if you like.\\\fBn\fP\\\\\fBn\fP\\	The command 'runcom' executes the command given as its first argument\\\fBn\fP\\	and saves the stdout and stderr, if not already redirected elsewhere to\\\fBn\fP\\	temporary files. Once the command has terminated, it sends \fBa\fP message to\\\fBn\fP\\	its stdout containing any stderr and stdout from the command and then\\\fBn\fP\\	cleans up after itself.\\\fBn\fP\\\\\fBn\fP\\	Once \fBa\fP batch of commands has been initiated, rshloop opens all of the\\\fBn\fP\\	FIFOs for reading (otherwise the commands will block).  It then loops\\\fBn\fP\\	over the nc processes and collects the output.\\\fBn\fP\\\\\fBn\fP\\	The commandformatstring has \fBa\fP syntax similar to \fBa\fP printf format\\\fBn\fP\\	string. On each iteration it is processed and each occurence\\\fBn\fP\\	of %%\fBi\fP is replaced by the iteration \fBnumber\fP \fBi\fP = 0...ni-1,\\\fBn\fP\\	%%I is replaced by \fBa\fP fixed length textual representation of \fBi\fP\\\fBn\fP\\	%%Jn.\fBm\fP is replaced by \fBa\fP representation of \fBi\fP in base \fBm\fP with \fBn\fP digits\\\fBn\fP\\	(\fBn\fP and \fBm\fP must both be single digit integers).\\\fBn\fP\\	%%\fBn\fP is replaced by the node \fBnumber\fP, and %%\fBN\fP is replaced by the\\\fBn\fP\\	nodetag, and %%%% is replaced by %%.  The result\\\fBn\fP\\	may be \fBa\fP compound command of subprocesses linked by the\\\fBn\fP\\	pipe symbol '|', and the output of the command may be\\\fBn\fP\\	redirected into \fBa\fP disk file on the slave (in which case the master process\\\fBn\fP\\	will receive, and generate, no standard output).\\\fBn\fP\\\\\fBn\fP\\EXAMPLES\\\fBn\fP\\	These examples assume the rshloopslaves.lst file above, and that each\\\fBn\fP\\	slave has \fBa\fP disk named /dnn, where \fBnn\fP is the nodetag.\\\fBn\fP\\\\\fBn\fP\\	To check on the status of the slaves:\\\fBn\fP\\		rshloop 3 \fBw\fP\\\fBn\fP\\\\\fBn\fP\\	To clear \fBa\fP scratch directory on each slave:\\\fBn\fP\\		rshloop 3 'rm /\fBd\fP%%\fBN\fP/\fBtmp\fP/*'\\\fBn\fP\\\\\fBn\fP\\	To generate \fBa\fP set of 1000 Monte Carlo simulations with some command 'monty'\\\fBn\fP\\	which takes as an argument \fBa\fP \fBseed\fP (given here by the iteration \fBnumber\fP):\\\fBn\fP\\		rshloop 1000 \\'monty -\fBseed\fP %%\fBi\fP > /\fBd\fP%%\fBN\fP/\fBtmp\fP/monty%%I.dat\\'\\n\\	This would cause the following commands to be executed:\\\fBn\fP\\		monty -\fBseed\fP 0   > /d01/\fBtmp\fP/monty000.dat   (on node01)\\\fBn\fP\\		monty -\fBseed\fP 1   > /d02/\fBtmp\fP/monty001.dat   (on node02)\\\fBn\fP\\		monty -\fBseed\fP 2   > /d03/\fBtmp\fP/monty002.dat   (on node03)\\\fBn\fP\\		monty -\fBseed\fP 3   > /d01/\fBtmp\fP/monty003.dat   (on node01)\\\fBn\fP\\		......\\\fBn\fP\\		monty -\fBseed\fP 998 > /d01/\fBtmp\fP/monty998.dat   (on node03)\\\fBn\fP\\		monty -\fBseed\fP 999 > /d01/\fBtmp\fP/monty999.dat   (on node01)\\\fBn\fP\\\\\fBn\fP\\OPTIONS\\\fBn\fP\\	With -u \fBflag\fP we output this man page and exit.\\\fBn\fP\\	With -\fBd\fP \fBflag\fP we just output the series of commands that would otherwise be executed\\\fBn\fP\\	and exit. This is highly recommended with commands that delete files etc.\\\fBn\fP\\	Use -\fBv\fP \fBflag\fP to invoke \fBverbose\fP \fBmode\fP, or -q to run quietly.\\\fBn\fP\\	Use -f ifmt to specify \fBa\fP format string for the iteration \fBnumber\fP,\\\fBn\fP\\	otherwise we use '%%.nd' specification where \fBn\fP is just large\\\fBn\fP\\	enough to hold the \fBnumber\fP ni-1.\\\fBn\fP\\	With '-\fBi\fP inticom' option the shell command string 'initcom' is executed\\\fBn\fP\\	on the master node using system(initcom) before any other output is collected.\\\fBn\fP\\	This allows you to generate \fBa\fP header, to which the output\\\fBn\fP\\	of the slave processes can be prepended.  For example,\\\fBn\fP\\	rshloop -q -\fBi\fP 'lc -\fBC\fP -\fBn\fP x < /dev/null' 10 'makerandcat 1000 -\fBseed\fP 2 -\fBdim\fP 1 | lc -o'\\\fBn\fP\\	generates \fBa\fP catalogue containing 10 x 1000 random numbers.  The effect of the 'lc -o'\\\fBn\fP\\	call is to chop the headers off the slave output.\\\fBn\fP\\	Similarly you can use 'imhead -g ....' to generate \fBa\fP \fBfits\fP header and pipe\\\fBn\fP\\	the output of the slaves through 'imhead -\fBd\fP'.\\\fBn\fP\\\\\fBn\fP\\BUGS\\\fBn\fP\\	'rshloop' does not die if the remote shell commands fail.\\\fBn\fP\\\\\fBn\fP\\	'rshloop' does not do any load balancing.\\\fBn\fP\\\\\fBn\fP\\FILES\\\fBn\fP\\	rshloopslaves.lst\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	pvmloop, pvmserver, topvm.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAX_SLAVES\fP   10000"
+.br
+.ti -1c
+.RI "#define \fBMAX_COMMAND_LEN\fP   100000"
+.br
+.ti -1c
+.RI "#define \fBMAX_NODENAME_LEN\fP   1024"
+.br
+.ti -1c
+.RI "#define \fBMAX_LINE_LEN\fP   100000"
+.br
+.ti -1c
+.RI "#define \fBOP_NULL\fP   0"
+.br
+.ti -1c
+.RI "#define \fBOP_STDERR\fP   1"
+.br
+.ti -1c
+.RI "#define \fBOP_STDOUT\fP   2"
+.br
+.ti -1c
+.RI "#define \fBOP_FAILED\fP   3"
+.br
+.ti -1c
+.RI "#define \fBOP_SUCCESS\fP   4"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBmakecommand\fP (char *srccom, char *dstcom, int \fBi\fP, char *ifmt, int s, char *nodetag)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX_COMMAND_LEN   100000"
+.PP
+Definition at line 135 of file rshloop.c.
+.SS "#define MAX_LINE_LEN   100000"
+.PP
+Definition at line 137 of file rshloop.c.
+.SS "#define MAX_NODENAME_LEN   1024"
+.PP
+Definition at line 136 of file rshloop.c.
+.SS "#define MAX_SLAVES   10000"
+.PP
+Definition at line 134 of file rshloop.c.
+.SS "#define OP_FAILED   3"
+.PP
+Definition at line 142 of file rshloop.c.
+.SS "#define OP_NULL   0"
+.PP
+Definition at line 139 of file rshloop.c.
+.SS "#define OP_STDERR   1"
+.PP
+Definition at line 140 of file rshloop.c.
+.SS "#define OP_STDOUT   2"
+.PP
+Definition at line 141 of file rshloop.c.
+.SS "#define OP_SUCCESS   4"
+.PP
+Definition at line 143 of file rshloop.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	rshloop - execute shell commands in parallel.\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	rshloop [-u] [-\fBd\fP] [-\fBv\fP] [-q] [-s slavelist] [-f ifmt] [-\fBi\fP initcom] ni commandformatstring\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'rshloop' executes shell commands in parallel across \fBa\fP network.\\\fBn\fP\\	It is currently functionally equivalent, and has identical arguments,\\\fBn\fP\\	to 'pvmloop'.\\\fBn\fP\\\\\fBn\fP\\	'rshloop' first reads \fBa\fP table of slaves from 'rshloopslaves.lst' (or\\\fBn\fP\\	from 'slavelist' with the -s option). The first \fBline\fP of\\\fBn\fP\\	this table should contain ns, the \fBnumber\fP of slaves to be used,\\\fBn\fP\\	followed by ns lines containing two strings: nodetag and nodename.\\\fBn\fP\\	For example:\\\fBn\fP\\\\\fBn\fP\\		3\\\fBn\fP\\		01	node01\\\fBn\fP\\		02	node02\\\fBn\fP\\		03	node03\\\fBn\fP\\\\\fBn\fP\\	You may specify any node, including the local node, multiple times.  This will\\\fBn\fP\\	result in multiple processes running on each physical node.\\\fBn\fP\\\\\fBn\fP\\	'rshloop' then creates \fBa\fP set of temporary FIFO pipes /\fBtmp\fP/pid.s.fifo, one per slave.\\\fBn\fP\\\\\fBn\fP\\	'rshloop' then initiates \fBa\fP sequence of nb batches of nc <= ns commands until\\\fBn\fP\\	all of the ni commands have been exhausted.\\\fBn\fP\\	The form of the command executed is\\\fBn\fP\\\\\fBn\fP\\		rsh -\fBn\fP remotenode 'runcom command s' > /\fBtmp\fP/pid.s.fifo &\\\fBn\fP\\\\\fBn\fP\\	where 'command' is generated from the 'commandformatstring' as\\\fBn\fP\\	described below and s is the the slave \fBnumber\fP.\\\fBn\fP\\\\\fBn\fP\\	If the environment variable 'RSHLOOP_RSH' is defined then it will\\\fBn\fP\\	be used in place of 'rsh -\fBn\fP', so you can use \fBe\fP.g. ssh if you like.\\\fBn\fP\\\\\fBn\fP\\	The command 'runcom' executes the command given as its first argument\\\fBn\fP\\	and saves the stdout and stderr, if not already redirected elsewhere to\\\fBn\fP\\	temporary files. Once the command has terminated, it sends \fBa\fP message to\\\fBn\fP\\	its stdout containing any stderr and stdout from the command and then\\\fBn\fP\\	cleans up after itself.\\\fBn\fP\\\\\fBn\fP\\	Once \fBa\fP batch of commands has been initiated, rshloop opens all of the\\\fBn\fP\\	FIFOs for reading (otherwise the commands will block).  It then loops\\\fBn\fP\\	over the nc processes and collects the output.\\\fBn\fP\\\\\fBn\fP\\	The commandformatstring has \fBa\fP syntax similar to \fBa\fP printf format\\\fBn\fP\\	string. On each iteration it is processed and each occurence\\\fBn\fP\\	of %%\fBi\fP is replaced by the iteration \fBnumber\fP \fBi\fP = 0...ni-1,\\\fBn\fP\\	%%I is replaced by \fBa\fP fixed length textual representation of \fBi\fP\\\fBn\fP\\	%%Jn.\fBm\fP is replaced by \fBa\fP representation of \fBi\fP in base \fBm\fP with \fBn\fP digits\\\fBn\fP\\	(\fBn\fP and \fBm\fP must both be single digit integers).\\\fBn\fP\\	%%\fBn\fP is replaced by the node \fBnumber\fP, and %%\fBN\fP is replaced by the\\\fBn\fP\\	nodetag, and %%%% is replaced by %%.  The result\\\fBn\fP\\	may be \fBa\fP compound command of subprocesses linked by the\\\fBn\fP\\	pipe symbol '|', and the output of the command may be\\\fBn\fP\\	redirected into \fBa\fP disk file on the slave (in which case the master process\\\fBn\fP\\	will receive, and generate, no standard output).\\\fBn\fP\\\\\fBn\fP\\EXAMPLES\\\fBn\fP\\	These examples assume the rshloopslaves.lst file above, and that each\\\fBn\fP\\	slave has \fBa\fP disk named /dnn, where \fBnn\fP is the nodetag.\\\fBn\fP\\\\\fBn\fP\\	To check on the status of the slaves:\\\fBn\fP\\		rshloop 3 \fBw\fP\\\fBn\fP\\\\\fBn\fP\\	To clear \fBa\fP scratch directory on each slave:\\\fBn\fP\\		rshloop 3 'rm /\fBd\fP%%\fBN\fP/\fBtmp\fP/*'\\\fBn\fP\\\\\fBn\fP\\	To generate \fBa\fP set of 1000 Monte Carlo simulations with some command 'monty'\\\fBn\fP\\	which takes as an argument \fBa\fP \fBseed\fP (given here by the iteration \fBnumber\fP):\\\fBn\fP\\		rshloop 1000 \\'monty -\fBseed\fP %%\fBi\fP > /\fBd\fP%%\fBN\fP/\fBtmp\fP/monty%%I.dat\\'\\n\\	This would cause the following commands to be executed:\\\fBn\fP\\		monty -\fBseed\fP 0   > /d01/\fBtmp\fP/monty000.dat   (on node01)\\\fBn\fP\\		monty -\fBseed\fP 1   > /d02/\fBtmp\fP/monty001.dat   (on node02)\\\fBn\fP\\		monty -\fBseed\fP 2   > /d03/\fBtmp\fP/monty002.dat   (on node03)\\\fBn\fP\\		monty -\fBseed\fP 3   > /d01/\fBtmp\fP/monty003.dat   (on node01)\\\fBn\fP\\		......\\\fBn\fP\\		monty -\fBseed\fP 998 > /d01/\fBtmp\fP/monty998.dat   (on node03)\\\fBn\fP\\		monty -\fBseed\fP 999 > /d01/\fBtmp\fP/monty999.dat   (on node01)\\\fBn\fP\\\\\fBn\fP\\OPTIONS\\\fBn\fP\\	With -u \fBflag\fP we output this man page and exit.\\\fBn\fP\\	With -\fBd\fP \fBflag\fP we just output the series of commands that would otherwise be executed\\\fBn\fP\\	and exit. This is highly recommended with commands that delete files etc.\\\fBn\fP\\	Use -\fBv\fP \fBflag\fP to invoke \fBverbose\fP \fBmode\fP, or -q to run quietly.\\\fBn\fP\\	Use -f ifmt to specify \fBa\fP format string for the iteration \fBnumber\fP,\\\fBn\fP\\	otherwise we use '%%.nd' specification where \fBn\fP is just large\\\fBn\fP\\	enough to hold the \fBnumber\fP ni-1.\\\fBn\fP\\	With '-\fBi\fP inticom' option the shell command string 'initcom' is executed\\\fBn\fP\\	on the master node using system(initcom) before any other output is collected.\\\fBn\fP\\	This allows you to generate \fBa\fP header, to which the output\\\fBn\fP\\	of the slave processes can be prepended.  For example,\\\fBn\fP\\	rshloop -q -\fBi\fP 'lc -\fBC\fP -\fBn\fP x < /dev/null' 10 'makerandcat 1000 -\fBseed\fP 2 -\fBdim\fP 1 | lc -o'\\\fBn\fP\\	generates \fBa\fP catalogue containing 10 x 1000 random numbers.  The effect of the 'lc -o'\\\fBn\fP\\	call is to chop the headers off the slave output.\\\fBn\fP\\	Similarly you can use 'imhead -g ....' to generate \fBa\fP \fBfits\fP header and pipe\\\fBn\fP\\	the output of the slaves through 'imhead -\fBd\fP'.\\\fBn\fP\\\\\fBn\fP\\BUGS\\\fBn\fP\\	'rshloop' does not die if the remote shell commands fail.\\\fBn\fP\\\\\fBn\fP\\	'rshloop' does not do any load balancing.\\\fBn\fP\\\\\fBn\fP\\FILES\\\fBn\fP\\	rshloopslaves.lst\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	pvmloop, pvmserver, topvm.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 14 of file rshloop.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 145 of file rshloop.c.
+.SS "void makecommand (char * srccom, char * dstcom, int i, char * ifmt, int s, char * nodetag)"
+.PP
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

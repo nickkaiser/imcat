@@ -1,0 +1,36 @@
+/apphot.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/apphot.h/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/deproject.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/getfitsval.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/getshape.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/getshape.h/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/getshape2.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/getshape2.h/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/getshape3.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/getshape3.h/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/getshapes2.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/getshapes3.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/getsky.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/getsky.h/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/getskymain.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/makedensity.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/makegausskernel.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/makekernel.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/modelpsf.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/readme.html/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/readme.man/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/test.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/testgetshapes.pl/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/zap.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/zap.h/1.1.1.1/Sun Apr 13 22:54:13 2003//
+D/fitting////
+D/oldstuff////
+/Makefile/1.2/Sat Jun 21 22:13:34 2003//
+/getshape1.c/1.1/Sun Apr 13 22:54:13 2003//
+/getshape1.h/1.1/Sun Apr 13 22:54:13 2003//
+/getshapes1main.c/1.1/Sat Jun 21 22:16:22 2003//
+/makepeff.c/1.2/Sat Jun 21 22:33:24 2003//
+/makepeff2.c/1.2/Sat Jun 21 22:33:41 2003//
+/getshapesmain.c/1.2/Sun Jul 13 18:35:31 2003//
+/apphotmain.c/1.5/Fri Aug 15 19:36:15 2003//
+/profile.c/1.3/Fri Nov 14 01:46:50 2003//

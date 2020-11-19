@@ -1,0 +1,160 @@
+.TH "getsky.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getsky.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include 'getsky.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX_PIX\fP   100000"
+.br
+.ti -1c
+.RI "#define \fBMIN_PIX\fP   16"
+.br
+.ti -1c
+.RI "#define \fBX_POS\fP   2"
+.br
+.ti -1c
+.RI "#define \fBX_NEG\fP   1"
+.br
+.ti -1c
+.RI "#define \fBY_POS\fP   3"
+.br
+.ti -1c
+.RI "#define \fBY_NEG\fP   0"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBgetsky\fP (double *fb0, double *dfb, double r1, double r2, double *x, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBpruneextreme\fP (void)"
+.br
+.ti -1c
+.RI "int \fBgetplane\fP (double *fb0, double *dfb)"
+.br
+.ti -1c
+.RI "int \fBfmodecmp\fP (const void *ptr1, const void *ptr2)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBqlist\fP [4]"
+.br
+.ti -1c
+.RI "double \fBxbar\fP [4]"
+.br
+.ti -1c
+.RI "double \fBybar\fP [4]"
+.br
+.ti -1c
+.RI "float \fBfmode\fP [4]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 20 of file getsky.c.
+.SS "#define MAX_PIX   100000"
+.PP
+Definition at line 12 of file getsky.c.
+.PP
+Referenced by getsky().
+.SS "#define MIN_PIX   16"
+.PP
+Definition at line 13 of file getsky.c.
+.PP
+Referenced by getsky().
+.SS "#define X_NEG   1"
+.PP
+Definition at line 16 of file getsky.c.
+.SS "#define X_POS   2"
+.PP
+Definition at line 15 of file getsky.c.
+.SS "#define Y_NEG   0"
+.PP
+Definition at line 18 of file getsky.c.
+.SS "#define Y_POS   3"
+.PP
+Definition at line 17 of file getsky.c.
+.SH "Function Documentation"
+.PP 
+.SS "int fmodecmp (const void * ptr1, const void * ptr2)"
+.PP
+Definition at line 163 of file getsky.c.
+.PP
+References fmode.
+.PP
+Referenced by pruneextreme().
+.SS "int getplane (double * fb0, double * dfb)"
+.PP
+Definition at line 131 of file getsky.c.
+.PP
+References det(), f, fmode, i, qlist, x, xbar, y, and ybar.
+.PP
+Referenced by getsky().
+.SS "int getsky (double * fb0, double * dfb, double r1, double r2, double * x, float ** f, int N1, int N2)"
+.PP
+Definition at line 26 of file getsky.c.
+.PP
+References dx, dy, error_exit, f, ff, fmode, getplane(), ix, liststats(), MAGIC, MAX_PIX, median(), MIN_PIX, N1, N2, pix, pruneextreme(), qlist, r, sigma, x, xbar, and ybar.
+.PP
+Referenced by main().
+.SS "void pruneextreme (void)"
+.PP
+Definition at line 117 of file getsky.c.
+.PP
+References fmode, fmodecmp(), i, median(), and qlist.
+.PP
+Referenced by getsky().
+.SH "Variable Documentation"
+.PP 
+.SS "float \fBfmode\fP[4]\fC [static]\fP"
+.PP
+Definition at line 24 of file getsky.c.
+.PP
+Referenced by fmodecmp(), getplane(), getsky(), and pruneextreme().
+.SS "int \fBqlist\fP[4]\fC [static]\fP"
+.PP
+Definition at line 22 of file getsky.c.
+.PP
+Referenced by getplane(), getsky(), and pruneextreme().
+.SS "double \fBxbar\fP[4]\fC [static]\fP"
+.PP
+Definition at line 23 of file getsky.c.
+.PP
+Referenced by getplane(), and getsky().
+.SS "double \fBybar\fP[4]\fC [static]\fP"
+.PP
+Definition at line 23 of file getsky.c.
+.PP
+Referenced by getplane(), and getsky().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

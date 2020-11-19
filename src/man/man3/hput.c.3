@@ -1,0 +1,171 @@
+.TH "hput.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+hput.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <string.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include 'fitshead.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBhputc\fP ()"
+.br
+.ti -1c
+.RI "void \fBhputi4\fP (char *hstring, char *keyword, int ival)"
+.br
+.ti -1c
+.RI "void \fBhputi2\fP (char *hstring, char *keyword, short ival)"
+.br
+.ti -1c
+.RI "void \fBhputr4\fP (char *hstring, char *keyword, float rval)"
+.br
+.ti -1c
+.RI "void \fBhputr8\fP (char *hstring, char *keyword, double dval)"
+.br
+.ti -1c
+.RI "void \fBhputnr8\fP (char *hstring, char *keyword, int ndec, double dval)"
+.br
+.ti -1c
+.RI "void \fBhputra\fP (char *hstring, char *keyword, double \fBra\fP)"
+.br
+.ti -1c
+.RI "void \fBhputdec\fP (char *hstring, char *keyword, double dec)"
+.br
+.ti -1c
+.RI "void \fBhputl\fP (char *hstring, char *keyword, int lval)"
+.br
+.ti -1c
+.RI "void \fBhputs\fP (char *hstring, char *keyword, char *cval)"
+.br
+.ti -1c
+.RI "void \fBhputc\fP (char *hstring, char *keyword, char *value)"
+.br
+.ti -1c
+.RI "void \fBhputcom\fP (char *hstring, char *keyword, char *\fBcomment\fP)"
+.br
+.ti -1c
+.RI "int \fBhdel\fP (char *hstring, char *keyword)"
+.br
+.ti -1c
+.RI "int \fBhchange\fP (char *hstring, char *keyword1, char *keyword2)"
+.br
+.ti -1c
+.RI "void \fBra2str\fP (char *string, double \fBra\fP, int ndec)"
+.br
+.ti -1c
+.RI "void \fBdec2str\fP (char *string, double dec, int ndec)"
+.br
+.ti -1c
+.RI "void \fBdeg2str\fP (char *string, double deg, int ndec)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBverbose\fP = 0"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void dec2str (char	* string, double dec, int ndec)"
+.PP
+Definition at line 694 of file hput.c.
+.PP
+References a, b, and sign.
+.SS "void deg2str (char	* string, double deg, int ndec)"
+.PP
+Definition at line 813 of file hput.c.
+.SS "int hchange (char * hstring, char * keyword1, char * keyword2)"
+.PP
+Definition at line 534 of file hput.c.
+.PP
+References i, ksearch(), and v.
+.SS "int hdel (char * hstring, char * keyword)"
+.PP
+Definition at line 494 of file hput.c.
+.PP
+References ksearch(), and v.
+.SS "void hputc (char * hstring, char * keyword, char * value)"
+.PP
+Definition at line 272 of file hput.c.
+.PP
+References ksearch(), line, v, and verbose.
+.SS "void hputc ()"
+.PP
+.SS "void hputcom (char * hstring, char * keyword, char * comment)"
+.PP
+Definition at line 411 of file hput.c.
+.PP
+References comment, ksearch(), line, and verbose.
+.SS "void hputdec (char * hstring, char * keyword, double dec)"
+.PP
+Definition at line 190 of file hput.c.
+.PP
+References dec2str(), and hputs().
+.SS "void hputi2 (char * hstring, char * keyword, short ival)"
+.PP
+Definition at line 72 of file hput.c.
+.PP
+References hputc().
+.SS "void hputi4 (char * hstring, char * keyword, int ival)"
+.PP
+Definition at line 43 of file hput.c.
+.PP
+References hputc().
+.SS "void hputl (char * hstring, char * keyword, int lval)"
+.PP
+Definition at line 213 of file hput.c.
+.PP
+References hputc().
+.SS "void hputnr8 (char	* hstring, char	* keyword, int ndec, double dval)"
+.PP
+Definition at line 139 of file hput.c.
+.PP
+References hputc().
+.SS "void hputr4 (char * hstring, char * keyword, float rval)"
+.PP
+Definition at line 95 of file hput.c.
+.PP
+References hputc().
+.SS "void hputr8 (char	* hstring, char	* keyword, double dval)"
+.PP
+Definition at line 117 of file hput.c.
+.PP
+References hputc().
+.SS "void hputra (char * hstring, char * keyword, double ra)"
+.PP
+Definition at line 168 of file hput.c.
+.PP
+References hputs(), ra, and ra2str().
+.SS "void hputs (char * hstring, char * keyword, char * cval)"
+.PP
+Definition at line 238 of file hput.c.
+.PP
+References hputc().
+.SS "void ra2str (char	* string, double ra, int ndec)"
+.PP
+Definition at line 570 of file hput.c.
+.PP
+References a, b, and ra.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBverbose\fP = 0\fC [static]\fP"
+.PP
+Definition at line 36 of file hput.c.
+.PP
+Referenced by hputc(), and hputcom().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

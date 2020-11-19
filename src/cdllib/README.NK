@@ -1,0 +1,4 @@
+I changed the makefile a bit.
+Also made cdl_findNearest global in cdlmark.c and declared it in cdl.h
+Also included an lc-object pointer in MarkerPtr structure in cdl.h
+

@@ -1,0 +1,47 @@
+.TH "mesh.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+mesh.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBReadNewFrame\fP (void)"
+.br
+.ti -1c
+.RI "void \fBDrawMesh\fP (void)"
+.br
+.ti -1c
+.RI "void \fBswapbytes\fP (void *addr, int nint)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void DrawMesh (void)"
+.PP
+Definition at line 31 of file mesh.c.
+.PP
+References f, framenumber, i, j, Nx, Ny, recording, swapbytes(), and zscale.
+.PP
+Referenced by command_input_callback(), forwardstep_button_callback(), main(), rewind_button_callback(), and zscale_counter_callback().
+.SS "void ReadNewFrame (void)"
+.PP
+Definition at line 19 of file mesh.c.
+.PP
+References f, fits, FD_control_panel::frame_number_text, framenumber, framestring, nframes, readfitsplane(), and thecontrolpanel.
+.PP
+Referenced by command_input_callback(), forwardstep_button_callback(), main(), and rewind_button_callback().
+.SS "void swapbytes (void * addr, int nint)"
+.PP
+Definition at line 1212 of file cat.c.
+.PP
+References b, i, and nint.
+.PP
+Referenced by DrawMesh(), readitem(), and writeitem().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

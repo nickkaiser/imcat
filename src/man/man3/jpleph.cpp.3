@@ -1,0 +1,140 @@
+.TH "jpleph.cpp" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+jpleph.cpp \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include 'jpleph.h'\fP
+.br
+\fC#include 'jpl_int.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBTRUE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBFALSE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBSWAP_MACRO\fP(\fBA\fP, \fBB\fP, TEMP)   { TEMP = \fBA\fP;  \fBA\fP = \fBB\fP;  \fBB\fP = TEMP; }"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double DLL_FUNC \fBjpl_get_double\fP (const void *ephem, const int value)"
+.br
+.ti -1c
+.RI "double DLL_FUNC \fBjpl_get_long\fP (const void *ephem, const int value)"
+.br
+.ti -1c
+.RI "int DLL_FUNC \fBjpl_pleph\fP (void *ephem, const double et, const int ntarg, const int ncent, double rrd[], const int calc_velocity)"
+.br
+.ti -1c
+.RI "void \fBinterp\fP (struct \fBinterpolation_info\fP *iinfo, const double coef[], const double \fBt\fP[2], const int ncf, const int ncm, const int na, const int ifl, double posvel[])"
+.br
+.ti -1c
+.RI "void \fBswap_long_integer\fP (void *ptr)"
+.br
+.ti -1c
+.RI "void \fBswap_double\fP (void *ptr, long count)"
+.br
+.ti -1c
+.RI "int DLL_FUNC \fBjpl_state\fP (void *ephem, const double et, const int list[12], double pv[][6], double nut[4], const int bary)"
+.br
+.ti -1c
+.RI "void *DLL_FUNC \fBjpl_init_ephemeris\fP (const char *ephemeris_filename, char nam[][6], double *\fBval\fP)"
+.br
+.ti -1c
+.RI "void DLL_FUNC \fBjpl_close_ephemeris\fP (void *ephem)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define FALSE   0"
+.PP
+Definition at line 40 of file jpleph.cpp.
+.SS "#define SWAP_MACRO(\fBA\fP, \fBB\fP, TEMP)   { TEMP = \fBA\fP;  \fBA\fP = \fBB\fP;  \fBB\fP = TEMP; }"
+.PP
+Definition at line 342 of file jpleph.cpp.
+.PP
+Referenced by swap_double(), and swap_long_integer().
+.SS "#define TRUE   1"
+.PP
+Definition at line 39 of file jpleph.cpp.
+.SH "Function Documentation"
+.PP 
+.SS "void interp (struct \fBinterpolation_info\fP * iinfo, const double coef[], const double t[2], const int ncf, const int ncm, const int na, const int ifl, double posvel[])\fC [static]\fP"
+.PP
+Definition at line 247 of file jpleph.cpp.
+.PP
+References i, j, l, interpolation_info::np, interpolation_info::nv, interpolation_info::pc, t, interpolation_info::twot, and interpolation_info::vc.
+.PP
+Referenced by jpl_state(), output(), and process().
+.SS "void DLL_FUNC jpl_close_ephemeris (void * ephem)"
+.PP
+Definition at line 663 of file jpleph.cpp.
+.PP
+References DLL_FUNC, and free().
+.SS "double DLL_FUNC jpl_get_double (const void * ephem, const int value)"
+.PP
+Definition at line 42 of file jpleph.cpp.
+.PP
+References DLL_FUNC.
+.SS "double DLL_FUNC jpl_get_long (const void * ephem, const int value)"
+.PP
+Definition at line 47 of file jpleph.cpp.
+.PP
+References DLL_FUNC.
+.SS "void* DLL_FUNC jpl_init_ephemeris (const char * ephemeris_filename, char nam[][6], double * val)"
+.PP
+Definition at line 546 of file jpleph.cpp.
+.PP
+References DLL_FUNC, i, j, JPL_HEADER_SIZE, L, MAX_KERNEL_SIZE, swap_double(), swap_long_integer(), title, and val.
+.PP
+Referenced by main().
+.SS "int DLL_FUNC jpl_pleph (void * ephem, const double et, const int ntarg, const int ncent, double rrd[], const int calc_velocity)"
+.PP
+Definition at line 98 of file jpleph.cpp.
+.PP
+References DLL_FUNC, i, jpl_state(), and k.
+.PP
+Referenced by main().
+.SS "int DLL_FUNC jpl_state (void * ephem, const double et, const int list[12], double pv[][6], double nut[4], const int bary)"
+.PP
+Definition at line 443 of file jpleph.cpp.
+.PP
+References buf, dest, DLL_FUNC, flag, i, interp(), j, swap_double(), and t.
+.PP
+Referenced by jpl_pleph().
+.SS "void swap_double (void * ptr, long count)\fC [static]\fP"
+.PP
+Definition at line 352 of file jpleph.cpp.
+.PP
+References SWAP_MACRO.
+.PP
+Referenced by jpl_init_ephemeris(), and jpl_state().
+.SS "void swap_long_integer (void * ptr)\fC [static]\fP"
+.PP
+Definition at line 344 of file jpleph.cpp.
+.PP
+References SWAP_MACRO.
+.PP
+Referenced by jpl_init_ephemeris().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

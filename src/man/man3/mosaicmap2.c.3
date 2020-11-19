@@ -1,0 +1,145 @@
+.TH "mosaicmap2.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+mosaicmap2.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../imlib/map.h'\fP
+.br
+\fC#include '../../utils/modefunc.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	mosaicmap2 --- maps \fBfits\fP file using transformations computed by mosaicfit2\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	mosaicmap2 \fBalpha\fP \fBMx\fP \fBMy\fP \fBx0\fP y0 \fBmx\fP \fBmy\fP \fBN1\fP \fBN2\fP parfile srcfits dstfits mapmode\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'mosaicmap2' maps \fBa\fP source \fBfits\fP file to \fBa\fP target file using transformation computed by\\\fBn\fP\\	'mosaicfit2'. Alpha is the assumed distortion model parameter,\\\fBn\fP\\	\fBMx\fP, \fBMy\fP define the margins by which the target image overlaps the source image,\\\fBn\fP\\	\fBx0\fP, y0 is the location of pottom left \fBpixel\fP in nominal coords,\\\fBn\fP\\	\fBmx\fP, \fBmy\fP are the margin parameters as defined in 'nominal.db',\\\fBn\fP\\	\fBN1\fP, \fBN2\fP are such that the target image size is \fBN1\fP + 2 * \fBMx\fP, \fBN2\fP + 2 * \fBMy\fP\\\fBn\fP\\	(these would normally be the dimensions of the source image)\\\fBn\fP\\	and 'parfile' contains the transformation parameters.\\\fBn\fP\\	Srcfits, dstfits are the source and target image files.\\\fBn\fP\\	If mapmode is 0, 1, or 2, then mosaicmap2 will actually map the source image\\\fBn\fP\\	using nearest \fBpixel\fP, linear interpolation and triangular\\\fBn\fP\\	tesselation mapping modes respctively.\\\fBn\fP\\	If mapmode is \fBa\fP negative \fBinteger\fP -\fBn\fP, then it generates \fBa\fP 2^(\fBn\fP-1) times\\\fBn\fP\\	scrunched deflection image, which can then be fed to 'mapbynumericdef'\\\fBn\fP\\	to actually do the mapping. In this \fBmode\fP srcfits is ignored.\\\fBn\fP\\	Thus, for \fBn\fP = -1 we generate \fBa\fP full size deflection image, \fBn\fP = -4\\\fBn\fP\\	gives factor 8 linear size compression etc. In this \fBmode\fP, the\\\fBn\fP\\	source image name is ignorred.\\\fBn\fP\\	'mosaicmap2' is meant to be invoked by ''mosaicfit2'.\\\fBn\fP\\	Give parfile = 'NULL' to map the reference image.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBdeflect\fP (float ri, float rj, float *\fBdi\fP, float *\fBdj\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double \fBalpha\fP"
+.br
+.ti -1c
+.RI "double \fBMx\fP"
+.br
+.ti -1c
+.RI "double \fBMy\fP"
+.br
+.ti -1c
+.RI "double \fBxo\fP"
+.br
+.ti -1c
+.RI "double \fByo\fP"
+.br
+.ti -1c
+.RI "double \fBmx\fP"
+.br
+.ti -1c
+.RI "double \fBmy\fP"
+.br
+.ti -1c
+.RI "int \fBnmodes\fP"
+.br
+.ti -1c
+.RI "int * \fBl\fP"
+.br
+.ti -1c
+.RI "int * \fBm\fP"
+.br
+.ti -1c
+.RI "double ** \fBa\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	mosaicmap2 --- maps \fBfits\fP file using transformations computed by mosaicfit2\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	mosaicmap2 \fBalpha\fP \fBMx\fP \fBMy\fP \fBx0\fP y0 \fBmx\fP \fBmy\fP \fBN1\fP \fBN2\fP parfile srcfits dstfits mapmode\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'mosaicmap2' maps \fBa\fP source \fBfits\fP file to \fBa\fP target file using transformation computed by\\\fBn\fP\\	'mosaicfit2'. Alpha is the assumed distortion model parameter,\\\fBn\fP\\	\fBMx\fP, \fBMy\fP define the margins by which the target image overlaps the source image,\\\fBn\fP\\	\fBx0\fP, y0 is the location of pottom left \fBpixel\fP in nominal coords,\\\fBn\fP\\	\fBmx\fP, \fBmy\fP are the margin parameters as defined in 'nominal.db',\\\fBn\fP\\	\fBN1\fP, \fBN2\fP are such that the target image size is \fBN1\fP + 2 * \fBMx\fP, \fBN2\fP + 2 * \fBMy\fP\\\fBn\fP\\	(these would normally be the dimensions of the source image)\\\fBn\fP\\	and 'parfile' contains the transformation parameters.\\\fBn\fP\\	Srcfits, dstfits are the source and target image files.\\\fBn\fP\\	If mapmode is 0, 1, or 2, then mosaicmap2 will actually map the source image\\\fBn\fP\\	using nearest \fBpixel\fP, linear interpolation and triangular\\\fBn\fP\\	tesselation mapping modes respctively.\\\fBn\fP\\	If mapmode is \fBa\fP negative \fBinteger\fP -\fBn\fP, then it generates \fBa\fP 2^(\fBn\fP-1) times\\\fBn\fP\\	scrunched deflection image, which can then be fed to 'mapbynumericdef'\\\fBn\fP\\	to actually do the mapping. In this \fBmode\fP srcfits is ignored.\\\fBn\fP\\	Thus, for \fBn\fP = -1 we generate \fBa\fP full size deflection image, \fBn\fP = -4\\\fBn\fP\\	gives factor 8 linear size compression etc. In this \fBmode\fP, the\\\fBn\fP\\	source image name is ignorred.\\\fBn\fP\\	'mosaicmap2' is meant to be invoked by ''mosaicfit2'.\\\fBn\fP\\	Give parfile = 'NULL' to map the reference image.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 16 of file mosaicmap2.c.
+.SH "Function Documentation"
+.PP 
+.SS "void deflect (float ri, float rj, float * di, float * dj)"
+.PP
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 56 of file mosaicmap2.c.
+.PP
+References a, add_comment(), allocFloatArray(), alpha, deflect(), error_exit, exit(), FAST_MAP_MODE, fastmap(), FLOAT_PIXTYPE, fread_fits(), fwrite_fits(), get2Dpolymodel(), i, ipf, ix, l, m, map(), MODEFUNC_MAX_VARS, mx, Mx, my, My, N1, N2, nmodes, NX, NY, scalefac, set_fits_ipf(), set_fits_opf(), set_output_pixtype(), TRIANGLE_MAP_MODE, ULTRAFAST_MAP_MODE, ultrafastmap(), usage, xo, and yo.
+.SH "Variable Documentation"
+.PP 
+.SS "double** \fBa\fP"
+.PP
+Definition at line 52 of file mosaicmap2.c.
+.SS "double \fBalpha\fP"
+.PP
+Definition at line 50 of file mosaicmap2.c.
+.SS "int * \fBl\fP"
+.PP
+Definition at line 51 of file mosaicmap2.c.
+.PP
+Referenced by addmaskpoint(), cdl_fillArea(), cdl_fixData(), color_index(), deltam(), f(), getcolormap(), getmodeamplitudes_lc(), getmodeamplitudes_txt(), getrgbfromcmap(), Getshape(), getshape(), getshape2(), getshape3(), gray(), interp(), main(), make_pop(), newpolylmodel(), passb_(), passf_(), polyloop(), printgradgrads(), printgrads(), printoffsets(), radbg_(), radfg_(), randomnation(), recircdef(), removebox(), rmodel(), set_shades(), slaDeuler(), triangleinit(), worldpix(), worldpos(), and write2Dpolymodel().
+.SS "int * \fBm\fP"
+.PP
+Definition at line 51 of file mosaicmap2.c.
+.SS "double \fBmx\fP"
+.PP
+Definition at line 50 of file mosaicmap2.c.
+.PP
+Referenced by cdl_doTextMarker(), and main().
+.SS "double \fBMx\fP"
+.PP
+Definition at line 50 of file mosaicmap2.c.
+.PP
+Referenced by main().
+.SS "double \fBmy\fP"
+.PP
+Definition at line 50 of file mosaicmap2.c.
+.PP
+Referenced by cdl_doTextMarker(), and main().
+.SS "double \fBMy\fP"
+.PP
+Definition at line 50 of file mosaicmap2.c.
+.PP
+Referenced by main().
+.SS "int \fBnmodes\fP"
+.PP
+Definition at line 51 of file mosaicmap2.c.
+.PP
+Referenced by allocatearrays(), fillarrays(), fitdistortions(), getmodeamplitudes_lc(), getmodeamplitudes_txt(), main(), make_r(), make_re(), makeresiduals(), readamplitudes(), readlmodel(), recircdef(), rmodel(), write2Dpolymodel(), and writeamplitudes().
+.SS "double \fBxo\fP"
+.PP
+Definition at line 50 of file mosaicmap2.c.
+.PP
+Referenced by cdl_mapFrame(), getxcoords(), iis_display(), iis_drawcirc(), inversegetxcoords(), and main().
+.SS "double \fByo\fP"
+.PP
+Definition at line 50 of file mosaicmap2.c.
+.PP
+Referenced by cdl_mapFrame(), iis_display(), iis_drawcirc(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

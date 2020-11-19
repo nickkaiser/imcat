@@ -1,0 +1,60 @@
+.TH "surfdens.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+surfdens.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	surfdens --- generate \fBa\fP \fBfits\fP image from \fBa\fP catalogue\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	surfdens [option...]\\\fBn\fP\\		-x \fBxname\fP		# name for position vector ('x')\\\fBn\fP\\		-\fBr\fP \fBx1\fP \fBx2\fP y1 y2		# range of coordinates\\\fBn\fP\\		-\fBn\fP \fBN1\fP \fBN2\fP		# image size in pixels\\\fBn\fP\\		-\fBw\fP weight		# weight \fBpoints\fP by this value\\\fBn\fP\\		-s 			# generate 16 bit image\\\fBn\fP\\		-\fBd\fP 			# print input lc filter string an quit\\\fBn\fP\\		-\fBm\fP			# set \fBpoints\fP to MAGIC value\\\fBn\fP\\		-f fitsfile		# supply source image\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'surfdens\\' reads \fBa\fP catalogue from stdin and calculates\\\fBn\fP\\	\fBa\fP surface density map by binning counts onto an image.\\\fBn\fP\\	By default it looks for 2-vector entry 'x', gets the image size\\\fBn\fP\\	from the catalogue header, sets the range of\\\fBn\fP\\	coordinates to be 0-\fBN1\fP, 0-\fBN2\fP, and uses unit weight per \fBobject\fP.\\\fBn\fP\\	Specify name for weight with -\fBw\fP option.\\\fBn\fP\\	Fits image is output to stdout.\\\fBn\fP\\\\\fBn\fP\\	With the -\fBm\fP option, occupied pixels are set to MAGIC value and\\\fBn\fP\\	-\fBw\fP option, if present, is ignored.\\\fBn\fP\\\\\fBn\fP\\	With the -f option we initialise the image to 'fitsfile' and\\\fBn\fP\\	the -\fBn\fP and -s \fBoptions\fP, if present, are ignored (the output image\\\fBn\fP\\	inheriting the \fBpixel\fP \fBtype\fP of the source image.\\\fBn\fP\\\\\fBn\fP\\NOTES\\\fBn\fP\\	If you want to use an rpn expression in the input lc filter\\\fBn\fP\\	you will need to double quote it.  E.g.:\\\fBn\fP\\		surfdens -\fBw\fP \\''w = %%x[0]'\\'\\n\\	to get \fBa\fP weight proportional to x-position.\\\fBn\fP\\	To use \fBa\fP \fBpair\fP of scalar catalogue \fBobject\fP values do \fBe\fP.g.:\\\fBn\fP\\		surfdens -x 'fs nu'.\\\fBn\fP\\\\\fBn\fP\\	See also 'makedensity' which can handle arbitrary dimension\\\fBn\fP\\	\fBFITS\fP file and position variables.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 57 of file surfdens.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	surfdens --- generate \fBa\fP \fBfits\fP image from \fBa\fP catalogue\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	surfdens [option...]\\\fBn\fP\\		-x \fBxname\fP		# name for position vector ('x')\\\fBn\fP\\		-\fBr\fP \fBx1\fP \fBx2\fP y1 y2		# range of coordinates\\\fBn\fP\\		-\fBn\fP \fBN1\fP \fBN2\fP		# image size in pixels\\\fBn\fP\\		-\fBw\fP weight		# weight \fBpoints\fP by this value\\\fBn\fP\\		-s 			# generate 16 bit image\\\fBn\fP\\		-\fBd\fP 			# print input lc filter string an quit\\\fBn\fP\\		-\fBm\fP			# set \fBpoints\fP to MAGIC value\\\fBn\fP\\		-f fitsfile		# supply source image\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'surfdens\\' reads \fBa\fP catalogue from stdin and calculates\\\fBn\fP\\	\fBa\fP surface density map by binning counts onto an image.\\\fBn\fP\\	By default it looks for 2-vector entry 'x', gets the image size\\\fBn\fP\\	from the catalogue header, sets the range of\\\fBn\fP\\	coordinates to be 0-\fBN1\fP, 0-\fBN2\fP, and uses unit weight per \fBobject\fP.\\\fBn\fP\\	Specify name for weight with -\fBw\fP option.\\\fBn\fP\\	Fits image is output to stdout.\\\fBn\fP\\\\\fBn\fP\\	With the -\fBm\fP option, occupied pixels are set to MAGIC value and\\\fBn\fP\\	-\fBw\fP option, if present, is ignored.\\\fBn\fP\\\\\fBn\fP\\	With the -f option we initialise the image to 'fitsfile' and\\\fBn\fP\\	the -\fBn\fP and -s \fBoptions\fP, if present, are ignored (the output image\\\fBn\fP\\	inheriting the \fBpixel\fP \fBtype\fP of the source image.\\\fBn\fP\\\\\fBn\fP\\NOTES\\\fBn\fP\\	If you want to use an rpn expression in the input lc filter\\\fBn\fP\\	you will need to double quote it.  E.g.:\\\fBn\fP\\		surfdens -\fBw\fP \\''w = %%x[0]'\\'\\n\\	to get \fBa\fP weight proportional to x-position.\\\fBn\fP\\	To use \fBa\fP \fBpair\fP of scalar catalogue \fBobject\fP values do \fBe\fP.g.:\\\fBn\fP\\		surfdens -x 'fs nu'.\\\fBn\fP\\\\\fBn\fP\\	See also 'makedensity' which can handle arbitrary dimension\\\fBn\fP\\	\fBFITS\fP file and position variables.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file surfdens.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 60 of file surfdens.c.
+.PP
+References add_comment(), allocFloatArray(), error_exit, exit(), f, fits, FLOAT_PIXTYPE, ix, lcpipe, line, MAGIC, N1, N2, new2Dfitsheader(), read2Dfloatimage(), SHORT_PIXTYPE, usage, w, write2Dfloatimage(), x, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,48 @@
+.TH "dmstodecimal.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+dmstodecimal.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'radecio.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	dmstodecimal --- convert an \fBangle\fP from d:m:s to decimal degrees format\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	dmstodecimal \fBangle\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	dmstodecimal takes \fBa\fP string as argument; decipers it\\\fBn\fP\\	using \\'%%d:%%d:%%lf\\' format specification to \fBd\fP, \fBm\fP, s;\\\fBn\fP\\	checks that \fBm\fP, s lie in range 0-60 and writes the \\\fBn\fP\\	\fBangle\fP\\\fBn\fP\\		theta = (sign(\fBd\fP)) * (fabs(\fBd\fP) + \fBm\fP / 60.0 + s / 3600.0)\\\fBn\fP\\	to standard output.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser	kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	dmstodecimal --- convert an \fBangle\fP from d:m:s to decimal degrees format\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	dmstodecimal \fBangle\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	dmstodecimal takes \fBa\fP string as argument; decipers it\\\fBn\fP\\	using \\'%%d:%%d:%%lf\\' format specification to \fBd\fP, \fBm\fP, s;\\\fBn\fP\\	checks that \fBm\fP, s lie in range 0-60 and writes the \\\fBn\fP\\	\fBangle\fP\\\fBn\fP\\		theta = (sign(\fBd\fP)) * (fabs(\fBd\fP) + \fBm\fP / 60.0 + s / 3600.0)\\\fBn\fP\\	to standard output.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser	kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file dmstodecimal.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 33 of file dmstodecimal.c.
+.PP
+References angle, error_exit, exit(), usage, and xmstodecimal().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

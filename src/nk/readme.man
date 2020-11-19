@@ -1,0 +1,48 @@
+This section contains a number of simple utilities.
+
+Some scripts with no man page:
+
+bundle			# - simple 'shar' type archiver to bundle text files
+
+getbundle		# - extract text files from a bundle
+
+echoeval		# - 'echo' a command line and then 'eval' it --- useful to make scripts generate a log
+
+fixpgplotps 		# - fix bounding box in pgplot postscript files 
+
+notabs			# - replace tabs with spaces
+
+overwrite		# - copy standard input to output after EOF
+
+pscat			# - concatentate two or more postscript files
+
+remote			# - rsh a command in current directory on remote machine
+
+replace			# - replace str1 in files with str2, in place
+
+reverse			# - list file in reverse order
+
+rotateps		# - rotate a postscript file
+
+translateps		# - translate a postscript file
+
+stree			# - list directories...
+
+swap			# - swap two files
+
+tfilter			# - awk script to filter table of numbers
+
+tfilter			# - awk script to generate histogram from table
+
+Top			# - mimics 'top'
+
+tproc			# - awk script to process table ignorring comments
+
+travesty		# - my favourite perl script
+
+truepath		# - Report true full pathname of file(s)
+
+tsort			# - sort a table of numbers ignorring comments
+
+thist			# - generate histogram   
+

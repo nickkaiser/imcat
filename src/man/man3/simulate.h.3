@@ -1,0 +1,51 @@
+.TH "simulate.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+simulate.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBadd_noise\fP (float **f, int \fBN1\fP, int \fBN2\fP, float \fBsigma\fP)"
+.br
+.ti -1c
+.RI "float \fBgasdev\fP (void)"
+.br
+.ti -1c
+.RI "float \fBran0\fP (void)"
+.br
+.ti -1c
+.RI "int \fBmake_pop\fP (float \fBA\fP, float g, float \fBlmin\fP, float lnrbar, float lnrsig, float \fBe\fP, float mumin, int \fBN1\fP, int \fBN2\fP, float **f)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void add_noise (float ** f, int N1, int N2, float sigma)"
+.PP
+Definition at line 154 of file simulate.c.
+.PP
+References f, gasdev(), i, j, N1, N2, and sigma.
+.PP
+Referenced by main().
+.SS "float gasdev (void)"
+.PP
+Definition at line 607 of file ic.c.
+.PP
+References drand48(), r, and ran0().
+.SS "int make_pop (float A, float g, float lmin, float lnrbar, float lnrsig, float e, float mumin, int N1, int N2, float ** f)"
+.PP
+Definition at line 198 of file simulate.c.
+.PP
+References A, catfile, di, dj, drand48(), e, f, g(), gasdev(), i, j, l, LN_L_MAX, n, N1, N2, outputcat, phi, PI, r, x, and y.
+.PP
+Referenced by main().
+.SS "float ran0 (void)"
+.PP
+Referenced by gasdev().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

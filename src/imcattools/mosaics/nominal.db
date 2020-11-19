@@ -1,0 +1,12 @@
+# database for nominal chip layout
+# the actual size of the chips is
+$xsize = 2048;
+$ysize = 4096;
+# and our starting guess for their positions is that they
+# are regularly spaced blocks with surrounding margin
+$xmargin = 30;
+$ymargin = 10;
+# so the block size is
+$Xsize = $xsize + 2 * $xmargin;
+$Ysize = $ysize + 2 * $ymargin;
+1;

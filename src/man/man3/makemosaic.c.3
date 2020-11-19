@@ -1,0 +1,97 @@
+.TH "makemosaic.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makemosaic.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAXOBJS\fP   10000"
+.br
+.ti -1c
+.RI "#define \fBNX\fP   4"
+.br
+.ti -1c
+.RI "#define \fBNY\fP   2"
+.br
+.ti -1c
+.RI "#define \fBN1\fP   2048"
+.br
+.ti -1c
+.RI "#define \fBN2\fP   4096"
+.br
+.ti -1c
+.RI "#define \fBL\fP   10240"
+.br
+.ti -1c
+.RI "#define \fBGAP\fP   50"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBdrand48\fP ()"
+.br
+.ti -1c
+.RI "\fBmain\fP ()"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define GAP   50"
+.PP
+Definition at line 12 of file makemosaic.c.
+.PP
+Referenced by main().
+.SS "#define L   10240"
+.PP
+Definition at line 11 of file makemosaic.c.
+.PP
+Referenced by jpl_init_ephemeris(), main(), and rectkernel().
+.SS "#define MAXOBJS   10000"
+.PP
+Definition at line 6 of file makemosaic.c.
+.PP
+Referenced by main().
+.SS "#define \fBN1\fP   2048"
+.PP
+Definition at line 9 of file makemosaic.c.
+.PP
+Referenced by add_bad_col(), add_noise(), add_population(), addgalaxy(), alloc3Darray(), alloc3DFloatArray(), alloc_f(), allocatedata(), allocFloatArray(), allocShortArray(), apphot(), block_filter(), boxavg3D(), contourplot(), copyFloatToShort(), copyShortToFloat(), create_pixmap(), display(), do_object_stats(), doplot(), dosky(), drawcircle(), drawcollar(), drawcursor(), drawellipse(), exponentialfilter(), fastmap(), fdo_stats(), fill_pixmap(), fillzoompixmap(), findmode(), findpeak(), fitall(), fread_fits(), fread_fits_line(), fwrite_fits(), fwrite_fits_line(), gaussfilter(), gaussfit(), gaussfitn(), gaussian_kernel_filter(), getcentroid(), getop(), getpeaks(), GetPixelValue(), Getshape(), getshape(), getshape2(), getshape3(), getsky(), getstamp(), grad3D(), gradx(), gray(), halfx(), halfy(), iisdisplay(), invdeflection(), invkx(), kernel_filter(), kolmogorovfilter(), magicinit(), main(), make_pop(), makebetamodel(), makecarray(), makepreview(), makescrunchedviews(), makeXImage(), map(), mexicanfilter(), mult(), myworkproc1(), new2Dfitsheader(), powerlawfilter(), print_im(), printall(), printimage(), read2Dfloatimage(), read_fits(), read_fits_head(), read_fits_line(), readdataheader(), readfitsline(), readimheader(), rpetrosian(), schecterfilter(), set2Dimagesize(), set_getop_N1(), showpixmap(), smcontour(), smprofile(), tukey(), ultrafastmap(), updatelinebuffer(), write_fits(), write_fits_head(), write_fits_line(), write_fits_tail(), writefitsline(), x(), zap(), zapcircle(), zapellipse(), and zero().
+.SS "#define \fBN2\fP   4096"
+.PP
+Definition at line 10 of file makemosaic.c.
+.PP
+Referenced by add_bad_col(), add_noise(), add_population(), addgalaxy(), alloc3Darray(), alloc3DFloatArray(), alloc_f(), allocatedata(), allocFloatArray(), allocShortArray(), apphot(), block_filter(), boxavg3D(), contourplot(), copyFloatToShort(), copyShortToFloat(), create_pixmap(), display(), do_object_stats(), doplot(), dosky(), drawcollar(), drawcursor(), exponentialfilter(), fastmap(), fdo_stats(), fill_pixmap(), findmode(), findpeak(), fitall(), fread_fits(), freeFloatArray(), freeShortArray(), fwrite_fits(), gaussfilter(), gaussfit(), gaussfitn(), gaussian_kernel_filter(), getcentroid(), getpeaks(), GetPixelValue(), getshape2(), getshape3(), getsky(), getstamp(), grad3D(), gradx(), gray(), halfx(), halfy(), iisdisplay(), invdeflection(), invky(), kernel_filter(), kolmogorovfilter(), magicinit(), main(), make_pop(), makebetamodel(), makecarray(), makepreview(), makescrunchedviews(), makeXImage(), map(), mexicanfilter(), mult(), myworkproc1(), new2Dfitsheader(), powerlawfilter(), print_im(), printall(), printimage(), read2Dfloatimage(), read_fits(), read_fits_head(), readdata(), readdataheader(), readimheader(), rpetrosian(), schecterfilter(), set2Dimagesize(), showpixmap(), smcontour(), smprofile(), tukey(), ultrafastmap(), write_fits(), write_fits_head(), write_fits_tail(), y(), zap(), and zero().
+.SS "#define NX   4"
+.PP
+Definition at line 7 of file makemosaic.c.
+.PP
+Referenced by main().
+.SS "#define NY   2"
+.PP
+Definition at line 8 of file makemosaic.c.
+.PP
+Referenced by main().
+.SH "Function Documentation"
+.PP 
+.SS "double drand48 ()"
+.PP
+.SS "main ()"
+.PP
+Definition at line 14 of file makemosaic.c.
+.PP
+References c, dmax, drand48(), dx, dy, frame, GAP, i, ix, L, MAXOBJS, N1, N2, NX, NY, phi, x, X, xx, y, Y, and yy.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,63 @@
+# Makefile for rshloop tools
+
+TOOLS = rshloop runcom pipesend piperecv sleeper
+SCRIPTS = monitorslaves
+
+LIBS = -L$(IMCATDIR)/lib/$(ARCH) -lim -lutils -lm
+INCLUDES = -I$(IMCATDIR)/src
+
+BINDIR = $(IMCATDIR)/bin/$(ARCH)
+SCRIPTDIR = $(IMCATDIR)/bin/scripts
+DOCDIR = $(IMCATDIR)/doc/imcattools/rshloop
+
+SHELL = /bin/sh
+
+all : $(TOOLS)
+
+install : $(TOOLS)
+	@echo installing rshloop tools in $(BINDIR) ....
+	for i in $(SCRIPTS); do \
+		if test -h $(SCRIPTDIR)/$$i ; then rm -f $(SCRIPTDIR)/$$i ; fi ; \
+		ln -s ../../src/imcattools/rshloop/$$i $(SCRIPTDIR)/$$i ; \
+	done
+#	@ if test -d $(BINDIR) ; then \
+#		echo $(BINDIR) exists ; else mkdir $(BINDIR) ; fi
+	for i in $(TOOLS); do \
+		cp $$i $(BINDIR)/$$i ; \
+	done
+
+clean:
+	rm -f core *.o
+	for i in $(TOOLS); do rm -f $$i ; done
+
+docs :
+	@echo making Man Pages for imcattools_rshloop
+	@if test ! -d $(DOCDIR) ; then mkdir -p $(DOCDIR) ; fi
+	makemanpages imcattools_rshloop $(MANDIR) $(DOCDIR) $(TOOLS) $(SCRIPTS)
+
+
+##
+## the tools:
+##
+
+rshloop : rshloop.o
+	$(CC) rshloop.o $(LIBS) -o rshloop
+
+rshloop.o : rshloop.c
+	$(CC) -c rshloop.c $(INCLUDES) -o rshloop.o
+
+runcom : runcom.c
+	$(CC) runcom.c -o runcom
+
+pipesend : pipesend.c
+	$(CC) pipesend.c -o pipesend
+
+piperecv : piperecv.c
+	$(CC) piperecv.c -o piperecv
+
+sleeper : sleeper.c
+	$(CC) sleeper.c -o sleeper
+
+# for testing
+testrshloop : testrshloop.c
+	gcc testrshloop.c -o testrshloop

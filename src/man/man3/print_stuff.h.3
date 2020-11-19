@@ -1,0 +1,75 @@
+.TH "print_stuff.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+print_stuff.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBprint_im\fP (int \fBN1\fP, int \fBN2\fP, int Ncolors, double(*gray)(), char *\fBcaption\fP)"
+.br
+.ti -1c
+.RI "void \fBsetpagesize\fP (int pagewidth, int pageheight, int pagemargin, int dosetpagedevice)"
+.br
+.ti -1c
+.RI "void \fBprint_caption\fP (char *\fBcaption\fP)"
+.br
+.ti -1c
+.RI "void \fBpsDrawChar\fP (char aChar)"
+.br
+.ti -1c
+.RI "void \fBps\fP (char *string)"
+.br
+.ti -1c
+.RI "void \fBset_print_opf\fP (FILE *thefile)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void print_caption (char * caption)"
+.PP
+Definition at line 36 of file psutils.c.
+.PP
+References c, caption, h, len, ps(), psDrawChar(), psstring, size, and v.
+.PP
+Referenced by main(), and print_im().
+.SS "void print_im (int N1, int N2, int Ncolors, double(* gray)(), char * caption)"
+.PP
+Definition at line 47 of file print_stuff.c.
+.PP
+References caption, color, error_exit, gdosetpagedevice, gray(), i, j, N1, N2, page_height, page_margin, page_width, print_caption(), ps(), psstring, and psstringlen.
+.PP
+Referenced by printall(), and printselection().
+.SS "void ps (char * string)"
+.PP
+Definition at line 12 of file psutils.c.
+.PP
+References opf.
+.PP
+Referenced by main(), print_caption(), print_im(), printimage(), and psDrawChar().
+.SS "void psDrawChar (char aChar)"
+.PP
+Definition at line 18 of file psutils.c.
+.PP
+References ps(), and psstring.
+.PP
+Referenced by print_caption().
+.SS "void set_print_opf (FILE * thefile)"
+.PP
+Definition at line 57 of file psutils.c.
+.PP
+References opf.
+.PP
+Referenced by main(), printall(), and printselection().
+.SS "void setpagesize (int pagewidth, int pageheight, int pagemargin, int dosetpagedevice)"
+.PP
+Definition at line 209 of file print_stuff.c.
+.PP
+References gdosetpagedevice, page_height, page_margin, and page_width.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

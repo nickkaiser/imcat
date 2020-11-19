@@ -1,0 +1,3 @@
+Image calculator.  Also included are two earlier attempts (ic1, ic2)
+where we tried to be clever and avoid a switch by using an array
+of pointer to various math functions.  Result was v. slow.

@@ -1,0 +1,112 @@
+.TH "acfregister.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+acfregister.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'utils/arrays.h'\fP
+.br
+\fC#include 'fftlib/myfft.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/ipbuff.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'imlib/filters.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	acfregister - determine approximate transformation coefficients\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	acfregister [\fBoptions\fP...] \fBa\fP.cat \fBb\fP.cat\\\fBn\fP\\		-x \fBxname\fP	# name for spatial coords ('x')\\\fBn\fP\\		-\fBi\fP imsize	# internal image size (512)\\\fBn\fP\\		-p phi1 phi2	# range for \fBphi\fP wrapping (0, PI)\\\fBn\fP\\		-\fBa\fP \fBa1\fP \fBa2\fP	# die if solution has scale factor outside this range\\\fBn\fP\\		-\fBd\fP dlnr		# range of (natural) log(\fBr\fP) for wrapping (1.0)\\\fBn\fP\\		-\fBv\fP 		# pipe images to 'iis -p ~/dev/saopipe' for display\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'acfregister' reads 2 catalogues and determines\\\fBn\fP\\	scale, rotation and translation that maps (x_a,y_a) => (x_b,y_b)\\\fBn\fP\\\\\fBn\fP\\		x_b = \fBa\fP (x_a cos \fBphi\fP - y_a sin \fBphi\fP) + \fBx0\fP\\\fBt\fP\\\fBn\fP\\		y_b = \fBa\fP (x_a sin \fBphi\fP + y_a cos \fBphi\fP) + y0\\\fBt\fP\\\fBn\fP\\\\\fBn\fP\\	It works by cross-correlating images of wrapped lnr, \fBphi\fP\\\fBn\fP\\	values for pairs of objects and locating \fBpeak\fP to determine\\\fBn\fP\\	\fBa\fP, \fBphi\fP.  We then rotate and scale x_b y_b, generate images\\\fBn\fP\\	of x,y positions and cross correlate these to get \fBx0\fP, y0.\\\fBn\fP\\\\\fBn\fP\\	Outputs \fBx0\fP, y0, \fBa\fP, \fBphi\fP to stdout.\\\fBn\fP\\\\\fBn\fP\\	Use the -\fBv\fP option to get some visual feedback.  You must first\\\fBn\fP\\	have saoimage running and listening to the FIFO ~/dev/saopipe\\\fBn\fP\\	so make this pipe if necessary (using mknod) and then run the\\\fBn\fP\\	image display using 'saoimage -idev ~/dev/saopipe'.  Acfregister\\\fBn\fP\\	will then pipe the various images it generates internally to the viewer.\\\fBn\fP\\\\\fBn\fP\\	Acfregister will not work properly if the scale difference is\\\fBn\fP\\	very large (|log(\fBa\fP)| > dlnr/2) as the wrapping will cause it to\\\fBn\fP\\	return log(\fBa\fP) in range +- dlnr/2.  You can increase dlnr, but at\\\fBn\fP\\	the cost of reduced precision in log(\fBa\fP).  It is probably better to\\\fBn\fP\\	rescale one of the input cats to get roughly similar coordinate scales.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBPI\fP   M_PI"
+.br
+.ti -1c
+.RI "#define \fBBIG_NEG\fP   -1.e20"
+.br
+.ti -1c
+.RI "#define \fBBIG_POS\fP   1.e20;"
+.br
+.ti -1c
+.RI "#define \fBTINY\fP   1.\fBe\fP-20"
+.br
+.ti -1c
+.RI "#define \fBDISPLAY_COMMAND\fP   'iis -p ~/dev/saopipe'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "float \fBmexicanfilterfunction\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "void \fBdisplay\fP (float **f, int \fBN1\fP, int \fBN2\fP, char *name)"
+.br
+.ti -1c
+.RI "int \fBfindpeak\fP (float **f, int imsize, double *xpeak, double *ypeak, double *peakval)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define BIG_NEG   -1.e20"
+.PP
+Definition at line 60 of file acfregister.c.
+.SS "#define BIG_POS   1.e20;"
+.PP
+Definition at line 61 of file acfregister.c.
+.SS "#define DISPLAY_COMMAND   'iis -p ~/dev/saopipe'"
+.PP
+Definition at line 64 of file acfregister.c.
+.PP
+Referenced by display().
+.SS "#define PI   M_PI"
+.PP
+Definition at line 59 of file acfregister.c.
+.SS "#define TINY   1.\fBe\fP-20"
+.PP
+Definition at line 62 of file acfregister.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	acfregister - determine approximate transformation coefficients\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	acfregister [\fBoptions\fP...] \fBa\fP.cat \fBb\fP.cat\\\fBn\fP\\		-x \fBxname\fP	# name for spatial coords ('x')\\\fBn\fP\\		-\fBi\fP imsize	# internal image size (512)\\\fBn\fP\\		-p phi1 phi2	# range for \fBphi\fP wrapping (0, PI)\\\fBn\fP\\		-\fBa\fP \fBa1\fP \fBa2\fP	# die if solution has scale factor outside this range\\\fBn\fP\\		-\fBd\fP dlnr		# range of (natural) log(\fBr\fP) for wrapping (1.0)\\\fBn\fP\\		-\fBv\fP 		# pipe images to 'iis -p ~/dev/saopipe' for display\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'acfregister' reads 2 catalogues and determines\\\fBn\fP\\	scale, rotation and translation that maps (x_a,y_a) => (x_b,y_b)\\\fBn\fP\\\\\fBn\fP\\		x_b = \fBa\fP (x_a cos \fBphi\fP - y_a sin \fBphi\fP) + \fBx0\fP\\\fBt\fP\\\fBn\fP\\		y_b = \fBa\fP (x_a sin \fBphi\fP + y_a cos \fBphi\fP) + y0\\\fBt\fP\\\fBn\fP\\\\\fBn\fP\\	It works by cross-correlating images of wrapped lnr, \fBphi\fP\\\fBn\fP\\	values for pairs of objects and locating \fBpeak\fP to determine\\\fBn\fP\\	\fBa\fP, \fBphi\fP.  We then rotate and scale x_b y_b, generate images\\\fBn\fP\\	of x,y positions and cross correlate these to get \fBx0\fP, y0.\\\fBn\fP\\\\\fBn\fP\\	Outputs \fBx0\fP, y0, \fBa\fP, \fBphi\fP to stdout.\\\fBn\fP\\\\\fBn\fP\\	Use the -\fBv\fP option to get some visual feedback.  You must first\\\fBn\fP\\	have saoimage running and listening to the FIFO ~/dev/saopipe\\\fBn\fP\\	so make this pipe if necessary (using mknod) and then run the\\\fBn\fP\\	image display using 'saoimage -idev ~/dev/saopipe'.  Acfregister\\\fBn\fP\\	will then pipe the various images it generates internally to the viewer.\\\fBn\fP\\\\\fBn\fP\\	Acfregister will not work properly if the scale difference is\\\fBn\fP\\	very large (|log(\fBa\fP)| > dlnr/2) as the wrapping will cause it to\\\fBn\fP\\	return log(\fBa\fP) in range +- dlnr/2.  You can increase dlnr, but at\\\fBn\fP\\	the cost of reduced precision in log(\fBa\fP).  It is probably better to\\\fBn\fP\\	rescale one of the input cats to get roughly similar coordinate scales.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 17 of file acfregister.c.
+.SH "Function Documentation"
+.PP 
+.SS "void display (float ** f, int N1, int N2, char * name)"
+.PP
+Definition at line 288 of file acfregister.c.
+.PP
+References DISPLAY_COMMAND, error_exit, f, fits, FLOAT_PIXTYPE, N1, N2, new2Dfitsheader(), fitsheader::opstream, and write2Dfloatimage().
+.PP
+Referenced by main().
+.SS "int findpeak (float ** f, int imsize, double * xpeak, double * ypeak, double * peakval)"
+.PP
+Definition at line 303 of file acfregister.c.
+.PP
+References BIG_NEG, f, ff, i, j, and TINY.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 70 of file acfregister.c.
+.PP
+References a1, a2, alloc_fft(), allocFloatArray(), BIG_NEG, BIG_POS, c, ccf(), display(), dx, dy, error_exit, exit(), fft_type, findpeak(), forward_fft(), i, ipf, ix, mexicanfilter(), n, nobj, phi, PI, readdoublebuff(), usage, X, and x.
+.SS "float mexicanfilterfunction (float ki, float kj)"
+.PP
+Definition at line 498 of file filters.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

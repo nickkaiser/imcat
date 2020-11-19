@@ -1,0 +1,164 @@
+.TH "boxavg.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+boxavg.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/args.h'\fP
+.br
+\fC#include '../utils/fmedian.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	boxavg - boxcar smooth \fBFITS\fP image of arbitrary dimensionality\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	boxavg [-u] [-\fBm\fP] [-\fBd\fP d0 d1...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'boxavg\\' reads \fBa\fP \fBFITS\fP image of arbitrary dimensionality from\\\fBn\fP\\	stdin and applies \fBa\fP simple boxcar smoothing. By default the width\\\fBn\fP\\	of the boxcar is 3 in each dimension, but you can specify an array\\\fBn\fP\\	\fBd\fP[] with the -\fBd\fP option such that the width in the \fBi\fP'th direction\\\fBn\fP\\	is 1 + 2 * \fBd\fP[\fBi\fP].\\\fBn\fP\\\\\fBn\fP\\	Options:\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\		-\fBd\fP d0 d1...	# specify (width-1)/2 of box car (1,1,...)\\\fBn\fP\\		-\fBm\fP		# take median\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBgetpix\fP (int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "void \fBaccumulate\fP (int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float * \fBf0\fP"
+.br
+.ti -1c
+.RI "float * \fBf1\fP"
+.br
+.ti -1c
+.RI "float \fBfsum\fP"
+.br
+.ti -1c
+.RI "float * \fBflist\fP"
+.br
+.ti -1c
+.RI "int * \fBx0\fP"
+.br
+.ti -1c
+.RI "int * \fBx1\fP"
+.br
+.ti -1c
+.RI "int * \fBdx\fP"
+.br
+.ti -1c
+.RI "int * \fBfsize\fP"
+.br
+.ti -1c
+.RI "int \fBdomedian\fP"
+.br
+.ti -1c
+.RI "int \fBnsum\fP"
+.br
+.ti -1c
+.RI "\fBfitsheader\fP * \fBfits\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	boxavg - boxcar smooth \fBFITS\fP image of arbitrary dimensionality\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	boxavg [-u] [-\fBm\fP] [-\fBd\fP d0 d1...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'boxavg\\' reads \fBa\fP \fBFITS\fP image of arbitrary dimensionality from\\\fBn\fP\\	stdin and applies \fBa\fP simple boxcar smoothing. By default the width\\\fBn\fP\\	of the boxcar is 3 in each dimension, but you can specify an array\\\fBn\fP\\	\fBd\fP[] with the -\fBd\fP option such that the width in the \fBi\fP'th direction\\\fBn\fP\\	is 1 + 2 * \fBd\fP[\fBi\fP].\\\fBn\fP\\\\\fBn\fP\\	Options:\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\		-\fBd\fP d0 d1...	# specify (width-1)/2 of box car (1,1,...)\\\fBn\fP\\		-\fBm\fP		# take median\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file boxavg.c.
+.SH "Function Documentation"
+.PP 
+.SS "void accumulate (int level)"
+.PP
+Definition at line 165 of file boxavg.c.
+.PP
+References domedian, dx, f0, fits, flist, FLOAT_MAGIC, fsize, fsum, i, fitsheader::n, fitsheader::ndim, nsum, x0, and x1.
+.PP
+Referenced by getpix(), and main().
+.SS "void getpix (int level)"
+.PP
+Definition at line 137 of file boxavg.c.
+.PP
+References accumulate(), domedian, f1, fits, flist, fmedian(), fsize, fsum, getpix(), i, fitsheader::n, fitsheader::ndim, nsum, and x1.
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 44 of file boxavg.c.
+.PP
+References add_comment(), argsinit(), domedian, dx, error_exit, exit(), f0, f1, fits, flag, FLAG_ARG, flist, fsize, getargi(), getflag(), getpix(), i, fitsheader::n, fitsheader::ndim, nextargtype(), readfitsheader(), readfitsline(), usage, writefitsheader(), writefitsline(), writefitstail(), x0, and x1.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBdomedian\fP\fC [static]\fP"
+.PP
+Definition at line 38 of file boxavg.c.
+.PP
+Referenced by accumulate(), getpix(), and main().
+.SS "int * \fBdx\fP\fC [static]\fP"
+.PP
+Definition at line 38 of file boxavg.c.
+.SS "float* \fBf0\fP\fC [static]\fP"
+.PP
+Definition at line 37 of file boxavg.c.
+.PP
+Referenced by accumulate(), and main().
+.SS "float * \fBf1\fP\fC [static]\fP"
+.PP
+Definition at line 37 of file boxavg.c.
+.PP
+Referenced by getpix(), and main().
+.SS "\fBfitsheader\fP* \fBfits\fP\fC [static]\fP"
+.PP
+Definition at line 39 of file boxavg.c.
+.SS "float * \fBflist\fP\fC [static]\fP"
+.PP
+Definition at line 37 of file boxavg.c.
+.PP
+Referenced by accumulate(), getpix(), and main().
+.SS "int * \fBfsize\fP\fC [static]\fP"
+.PP
+Definition at line 38 of file boxavg.c.
+.PP
+Referenced by accumulate(), getpix(), and main().
+.SS "float \fBfsum\fP\fC [static]\fP"
+.PP
+Definition at line 37 of file boxavg.c.
+.PP
+Referenced by accumulate(), and getpix().
+.SS "int \fBnsum\fP\fC [static]\fP"
+.PP
+Definition at line 38 of file boxavg.c.
+.PP
+Referenced by accumulate(), and getpix().
+.SS "int* \fBx0\fP\fC [static]\fP"
+.PP
+Definition at line 38 of file boxavg.c.
+.PP
+Referenced by accumulate(), and main().
+.SS "int * \fBx1\fP\fC [static]\fP"
+.PP
+Definition at line 38 of file boxavg.c.
+.PP
+Referenced by accumulate(), getpix(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

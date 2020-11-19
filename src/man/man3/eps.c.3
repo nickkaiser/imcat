@@ -1,0 +1,510 @@
+.TH "eps.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+eps.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <time.h>\fP
+.br
+\fC#include <pwd.h>\fP
+.br
+\fC#include 'cdl.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBPSPageInfo\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCDL_LIBRARY_SOURCE\fP"
+.br
+.ti -1c
+.RI "#define \fBMAX_LENLABEL\fP   256"
+.br
+.ti -1c
+.RI "#define \fBSZ_EPSBUF\fP   8193"
+.br
+.ti -1c
+.RI "#define \fBPageXdim\fP(ps)   ( \fBPageInfo\fP[ps->page.page_type].npixx )"
+.br
+.ti -1c
+.RI "#define \fBPageYdim\fP(ps)   ( \fBPageInfo\fP[ps->page.page_type].npixy )"
+.br
+.ti -1c
+.RI "#define \fBPageWidth\fP(ps)   ( \fBPageInfo\fP[ps->page.page_type].sizex )"
+.br
+.ti -1c
+.RI "#define \fBPageHeight\fP(ps)   ( \fBPageInfo\fP[ps->page.page_type].sizey )"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBeps_simpleHeader\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_colorHeader\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_pageParams\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_simpleTrailer\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_writeCmap\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_writeTrailer\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_writeMono\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_writePix\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_writeMonoRGB\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_writeRGB\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_putPix\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_flushPix\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_annotate\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_portLabels\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_landLabels\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_doColorbar\fP ()"
+.br
+.ti -1c
+.RI "float \fBticstep\fP ()"
+.br
+.ti -1c
+.RI "char * \fBmake_label\fP ()"
+.br
+.ti -1c
+.RI "\fBPSImage\fP * \fBeps_init\fP ()"
+.br
+.ti -1c
+.RI "void \fBeps_print\fP (\fBPSImage\fP *psim, FILE *fp, \fBuchar\fP *\fBdata\fP, int \fBxdim\fP, int ydim, int \fBdepth\fP, int pad)"
+.br
+.ti -1c
+.RI "void \fBeps_close\fP (\fBPSImage\fP *psim)"
+.br
+.ti -1c
+.RI "void \fBeps_setPage\fP (\fBPSImage\fP *psim, int orientation, int paper_size, int scale, int flags)"
+.br
+.ti -1c
+.RI "void \fBeps_setCmap\fP (\fBPSImage\fP *psim, \fBuchar\fP *\fBr\fP, \fBuchar\fP *g, \fBuchar\fP *\fBb\fP, int \fBncolors\fP)"
+.br
+.ti -1c
+.RI "void \fBeps_setCompress\fP (\fBPSImage\fP *psim, int compress)"
+.br
+.ti -1c
+.RI "void \fBeps_setColorType\fP (\fBPSImage\fP *psim, int color_class)"
+.br
+.ti -1c
+.RI "void \fBeps_setLabel\fP (\fBPSImage\fP *psim, char *\fBlabel\fP)"
+.br
+.ti -1c
+.RI "void \fBeps_setTransform\fP (\fBPSImage\fP *psim, float \fBz1\fP, float \fBz2\fP, int ztype, float offset, float scale, char *cmap_name)"
+.br
+.ti -1c
+.RI "void \fBeps_setCorners\fP (\fBPSImage\fP *psim, int llx, int lly, int urx, int ury)"
+.br
+.ti -1c
+.RI "void \fBeps_getImageSize\fP (\fBPSImagePtr\fP psim, int \fBxdim\fP, int ydim, float *width, float *height)"
+.br
+.ti -1c
+.RI "void \fBeps_getImagePos\fP (\fBPSImagePtr\fP psim, int \fBxdim\fP, int ydim, int *llx, int *lly)"
+.br
+.ti -1c
+.RI "void \fBeps_pageParams\fP (\fBPSImagePtr\fP psim, float *llx, float *lly, int *icols, int *irows, int *scols, int *srows, int *turnflag)"
+.br
+.ti -1c
+.RI "void \fBeps_writePix\fP (FILE *fp, \fBuchar\fP *\fBpix\fP, \fBPSCmap\fP *\fBcmap\fP, int npix, int \fBxdim\fP, int pad)"
+.br
+.ti -1c
+.RI "void \fBeps_writeMono\fP (FILE *fp, \fBuchar\fP *\fBpix\fP, \fBPSCmap\fP *\fBcmap\fP, int npix, int \fBxdim\fP, int pad)"
+.br
+.ti -1c
+.RI "void \fBeps_writeMonoRGB\fP (FILE *fp, \fBuchar\fP *\fBpix\fP, int npix, int \fBxdim\fP, int \fBdepth\fP, int pad)"
+.br
+.ti -1c
+.RI "void \fBeps_writeRGB\fP (FILE *fp, \fBuchar\fP *\fBpix\fP, \fBPSCmap\fP *\fBcmap\fP, int npix, int \fBxdim\fP, int \fBdepth\fP, int pad)"
+.br
+.ti -1c
+.RI "void \fBeps_writeCmap\fP (\fBPSCmap\fP *\fBcmap\fP, FILE *fp)"
+.br
+.ti -1c
+.RI "void \fBeps_simpleHeader\fP (\fBPSImagePtr\fP psim, FILE *fp)"
+.br
+.ti -1c
+.RI "void \fBeps_annotate\fP (\fBPSImagePtr\fP psim, FILE *fp)"
+.br
+.ti -1c
+.RI "void \fBeps_portLabels\fP (FILE *fp, \fBPSImagePtr\fP psim, int scols, int srows, int icols, int irows, float llx, float lly)"
+.br
+.ti -1c
+.RI "void \fBeps_landLabels\fP (FILE *fp, \fBPSImagePtr\fP psim, int scols, int srows, int icols, int irows, float llx, float lly)"
+.br
+.ti -1c
+.RI "void \fBeps_doColorbar\fP (FILE *fp, \fBPSImagePtr\fP psim, int scols, int srows, float llx, float lly, int turnflag)"
+.br
+.ti -1c
+.RI "void \fBeps_colorHeader\fP (\fBPSImagePtr\fP psim, FILE *fp)"
+.br
+.ti -1c
+.RI "void \fBeps_writeTrailer\fP (FILE *fp)"
+.br
+.ti -1c
+.RI "void \fBeps_simpleTrailer\fP (FILE *fp)"
+.br
+.ti -1c
+.RI "void \fBeps_flushPix\fP (FILE *fp)"
+.br
+.ti -1c
+.RI "float \fBticstep\fP (float range, int nsteps)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "char * \fBhextab\fP = '0123456789abcdef'"
+.br
+.ti -1c
+.RI "int \fBpixnum\fP = 0 lpix = 0"
+.br
+.ti -1c
+.RI "\fBuchar\fP * \fBpixbuf\fP"
+.br
+.ti -1c
+.RI "\fBPSPageInfo\fP \fBPageInfo\fP []"
+.br
+.ti -1c
+.RI "int \fBdebug\fP = 0"
+.br
+.ti -1c
+.RI "char * \fBEPSSimpleRLEProlog\fP []"
+.br
+.ti -1c
+.RI "char * \fBEPSColorProlog\fP []"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CDL_LIBRARY_SOURCE"
+.PP
+Definition at line 5 of file eps.c.
+.SS "#define MAX_LENLABEL   256"
+.PP
+Definition at line 59 of file eps.c.
+.PP
+Referenced by eps_init(), and eps_setLabel().
+.SS "#define PageHeight(ps)   ( \fBPageInfo\fP[ps->page.page_type].sizey )"
+.PP
+Definition at line 72 of file eps.c.
+.SS "#define PageWidth(ps)   ( \fBPageInfo\fP[ps->page.page_type].sizex )"
+.PP
+Definition at line 71 of file eps.c.
+.SS "#define PageXdim(ps)   ( \fBPageInfo\fP[ps->page.page_type].npixx )"
+.PP
+Definition at line 69 of file eps.c.
+.PP
+Referenced by eps_pageParams().
+.SS "#define PageYdim(ps)   ( \fBPageInfo\fP[ps->page.page_type].npixy )"
+.PP
+Definition at line 70 of file eps.c.
+.PP
+Referenced by eps_pageParams().
+.SS "#define SZ_EPSBUF   8193"
+.PP
+Definition at line 60 of file eps.c.
+.PP
+Referenced by eps_init(), eps_writeMono(), eps_writeMonoRGB(), eps_writePix(), and eps_writeRGB().
+.SH "Function Documentation"
+.PP 
+.SS "void eps_annotate (\fBPSImagePtr\fP psim, FILE       * fp)\fC [static]\fP"
+.PP
+Definition at line 1210 of file eps.c.
+.PP
+References AXIS_IOFFSET, AXIS_IWIDTH, AXIS_OOFFSET, AXIS_OWIDTH, debug, eps_doColorbar(), eps_landLabels(), EPS_LINEAR, eps_pageParams(), eps_portLabels(), EPS_UNITARY, MAJOR_TICK_SIZE, MAJOR_TICK_WIDTH, make_label(), MAX, MIN, MINOR_TICK_SIZE, MINOR_TICK_WIDTH, PSImagePtr, and TITLE_OFFSET.
+.SS "void eps_annotate ()\fC [static]\fP"
+.PP
+Referenced by eps_print().
+.SS "void eps_close (\fBPSImage\fP * psim)"
+.PP
+Definition at line 323 of file eps.c.
+.PP
+References free(), and pixbuf.
+.SS "void eps_colorHeader (\fBPSImagePtr\fP psim, FILE	   * fp)\fC [static]\fP"
+.PP
+Definition at line 1965 of file eps.c.
+.PP
+References eps_pageParams(), EPS_PSEUDOCOLOR, EPSColorProlog, line, MAX, NoCompression, PSImagePtr, X_ANNOT_MARGIN, and Y_ANNOT_MARGIN.
+.SS "void eps_colorHeader ()"
+.PP
+Referenced by eps_print().
+.SS "void eps_doColorbar (FILE	* fp, \fBPSImagePtr\fP psim, int scols, int srows, float llx, float lly, int turnflag)\fC [static]\fP"
+.PP
+Definition at line 1578 of file eps.c.
+.PP
+References EPS_GRAYSCALE, EPS_LINEAR, i, j, MAX, MIN, MONO, pos, PSImagePtr, and val.
+.SS "void eps_doColorbar ()\fC [static]\fP"
+.PP
+Referenced by eps_annotate().
+.SS "void eps_flushPix (FILE	* fp)\fC [static]\fP"
+.PP
+Definition at line 2077 of file eps.c.
+.PP
+References pixbuf, and pixnum.
+.SS "void eps_flushPix ()"
+.PP
+Referenced by eps_writeMono(), eps_writeMonoRGB(), eps_writePix(), and eps_writeRGB().
+.SS "void eps_getImagePos (\fBPSImagePtr\fP psim, int xdim, int ydim, int	* llx, int * lly)"
+.PP
+Definition at line 642 of file eps.c.
+.PP
+References eps_pageParams(), ly, and PSImagePtr.
+.SS "void eps_getImageSize (\fBPSImagePtr\fP psim, int xdim, int ydim, float	* width, float * height)"
+.PP
+Definition at line 608 of file eps.c.
+.PP
+References eps_pageParams(), and PSImagePtr.
+.SS "\fBPSImage\fP* eps_init ()"
+.PP
+Definition at line 154 of file eps.c.
+.PP
+References EPS_AUTOSCALE, EPS_GRAYSCALE, EPS_LETTER, EPS_PORTRAIT, eps_setPage(), i, MAX_LENLABEL, NoCompression, pixbuf, ps(), SZ_EPSBUF, and uchar.
+.PP
+Referenced by cdl_printPix(), and cdl_printPixToFile().
+.SS "void eps_landLabels (FILE	* fp, \fBPSImagePtr\fP psim, int scols, int srows, int icols, int irows, float llx, float lly)\fC [static]\fP"
+.PP
+Definition at line 1475 of file eps.c.
+.PP
+References AXIS_OOFFSET, NTICMARKS, PSImagePtr, and ticstep().
+.SS "void eps_landLabels ()"
+.PP
+Referenced by eps_annotate().
+.SS "void eps_pageParams (\fBPSImagePtr\fP psim, float	* llx, float * lly, int	* icols, int * irows, int	* scols, int * srows, int	* turnflag)\fC [static]\fP"
+.PP
+Definition at line 683 of file eps.c.
+.PP
+References debug, DoAutoRotate, DoAutoScale, DoMaxAspect, EPS_LANDSCAPE, PageXdim, PageYdim, PSImagePtr, Scale, and scale.
+.SS "void eps_pageParams ()\fC [static]\fP"
+.PP
+Referenced by eps_annotate(), eps_colorHeader(), eps_getImagePos(), eps_getImageSize(), and eps_simpleHeader().
+.SS "void eps_portLabels (FILE	* fp, \fBPSImagePtr\fP psim, int scols, int srows, int icols, int irows, float llx, float lly)\fC [static]\fP"
+.PP
+Definition at line 1371 of file eps.c.
+.PP
+References AXIS_OOFFSET, NTICMARKS, PSImagePtr, and ticstep().
+.SS "void eps_portLabels ()"
+.PP
+Referenced by eps_annotate().
+.SS "void eps_print (\fBPSImage\fP * psim, FILE	* fp, \fBuchar\fP   * data, int xdim, int ydim, int depth, int pad)"
+.PP
+Definition at line 209 of file eps.c.
+.PP
+References debug, eps_annotate(), eps_colorHeader(), EPS_GRAYSCALE, EPS_PSEUDOCOLOR, eps_simpleHeader(), eps_simpleTrailer(), EPS_TRUECOLOR, eps_writeCmap(), eps_writeMono(), eps_writeMonoRGB(), eps_writePix(), eps_writeRGB(), eps_writeTrailer(), pix, and uchar.
+.SS "void eps_putPix ()\fC [static]\fP"
+.PP
+.SS "void eps_setCmap (\fBPSImage\fP * psim, \fBuchar\fP * r, \fBuchar\fP * g, \fBuchar\fP * b, int ncolors)"
+.PP
+Definition at line 407 of file eps.c.
+.PP
+References b, g(), i, r, and uchar.
+.SS "void eps_setColorType (\fBPSImage\fP * psim, int color_class)"
+.PP
+Definition at line 473 of file eps.c.
+.PP
+References EPS_GRAYSCALE, EPS_PSEUDOCOLOR, and EPS_TRUECOLOR.
+.SS "void eps_setCompress (\fBPSImage\fP * psim, int compress)"
+.PP
+Definition at line 440 of file eps.c.
+.PP
+References JPEGCompression, LZWCompression, NoCompression, and RLECompression.
+.SS "void eps_setCorners (\fBPSImage\fP * psim, int llx, int lly, int urx, int ury)"
+.PP
+Definition at line 580 of file eps.c.
+.SS "void eps_setLabel (\fBPSImage\fP * psim, char	* label)"
+.PP
+Definition at line 503 of file eps.c.
+.PP
+References label, malloc(), and MAX_LENLABEL.
+.SS "void eps_setPage (\fBPSImage\fP * psim, int orientation, int paper_size, int scale, int flags)"
+.PP
+Definition at line 350 of file eps.c.
+.PP
+References debug, DoAutoRotate, DoAutoScale, DoMaxAspect, EPS_LANDSCAPE, EPS_PORTRAIT, Orientation, PageInfo, PageType, Scale, and scale.
+.SS "void eps_setTransform (\fBPSImage\fP * psim, float z1, float z2, int ztype, float offset, float scale, char	* cmap_name)"
+.PP
+Definition at line 538 of file eps.c.
+.PP
+References debug, malloc(), scale, z1, and z2.
+.SS "void eps_simpleHeader (\fBPSImagePtr\fP psim, FILE	   * fp)\fC [static]\fP"
+.PP
+Definition at line 1122 of file eps.c.
+.PP
+References debug, eps_pageParams(), EPS_TRUECOLOR, EPSSimpleRLEProlog, line, MAX, PSImagePtr, RLECompression, X_ANNOT_MARGIN, and Y_ANNOT_MARGIN.
+.SS "void eps_simpleHeader ()\fC [static]\fP"
+.PP
+Referenced by eps_print().
+.SS "void eps_simpleTrailer (FILE	* fp)\fC [static]\fP"
+.PP
+Definition at line 2062 of file eps.c.
+.SS "void eps_simpleTrailer ()"
+.PP
+Referenced by eps_print().
+.SS "void eps_writeCmap (\fBPSCmap\fP 	* cmap, FILE	* fp)\fC [static]\fP"
+.PP
+Definition at line 1058 of file eps.c.
+.PP
+References cmap, i, and j.
+.SS "void eps_writeCmap ()\fC [static]\fP"
+.PP
+Referenced by eps_print().
+.SS "void eps_writeMono (FILE	* fp, \fBuchar\fP   * pix, \fBPSCmap\fP 	* cmap, int npix, int xdim, int pad)\fC [static]\fP"
+.PP
+Definition at line 880 of file eps.c.
+.PP
+References cmap, eps_flushPix(), hextab, i, max, min, MONO, pix, PIX_PER_LINE, pixbuf, pixnum, SZ_EPSBUF, and uchar.
+.SS "void eps_writeMono ()\fC [static]\fP"
+.PP
+Referenced by eps_print().
+.SS "void eps_writeMonoRGB (FILE    * fp, \fBuchar\fP   * pix, int npix, int xdim, int depth, int pad)\fC [static]\fP"
+.PP
+Definition at line 933 of file eps.c.
+.PP
+References eps_flushPix(), hextab, i, MONO, pix, PIX_PER_LINE, pixbuf, pixnum, SZ_EPSBUF, and uchar.
+.SS "void eps_writeMonoRGB ()\fC [static]\fP"
+.PP
+Referenced by eps_print().
+.SS "void eps_writePix (FILE    * fp, \fBuchar\fP   * pix, \fBPSCmap\fP 	* cmap, int npix, int xdim, int pad)\fC [static]\fP"
+.PP
+Definition at line 831 of file eps.c.
+.PP
+References cmap, eps_flushPix(), hextab, i, max, min, pix, PIX_PER_LINE, pixbuf, pixnum, SZ_EPSBUF, and uchar.
+.SS "void eps_writePix ()"
+.PP
+Referenced by eps_print().
+.SS "void eps_writeRGB (FILE    * fp, \fBuchar\fP   * pix, \fBPSCmap\fP 	* cmap, int npix, int xdim, int depth, int pad)\fC [static]\fP"
+.PP
+Definition at line 987 of file eps.c.
+.PP
+References cmap, eps_flushPix(), hextab, i, max, min, pix, PIX_PER_LINE, pixbuf, pixnum, SZ_EPSBUF, uchar, and val.
+.SS "void eps_writeRGB ()"
+.PP
+Referenced by eps_print().
+.SS "void eps_writeTrailer (FILE	* fp)\fC [static]\fP"
+.PP
+Definition at line 2039 of file eps.c.
+.SS "void eps_writeTrailer ()"
+.PP
+Referenced by eps_print().
+.SS "char * make_label ()\fC [static]\fP"
+.PP
+Definition at line 2150 of file eps.c.
+.PP
+References buf, and lt().
+.PP
+Referenced by eps_annotate().
+.SS "float ticstep (float range, int nsteps)\fC [static]\fP"
+.PP
+Definition at line 2100 of file eps.c.
+.PP
+References ticstep().
+.SS "float ticstep ()\fC [static]\fP"
+.PP
+Referenced by eps_landLabels(), eps_portLabels(), and ticstep().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBdebug\fP = 0\fC [static]\fP"
+.PP
+Definition at line 141 of file eps.c.
+.PP
+Referenced by eps_annotate(), eps_pageParams(), eps_print(), eps_setPage(), eps_setTransform(), and eps_simpleHeader().
+.SS "char* \fBEPSColorProlog\fP[]\fC [static]\fP"
+.PP
+Definition at line 1722 of file eps.c.
+.PP
+Referenced by eps_colorHeader().
+.SS "char* \fBEPSSimpleRLEProlog\fP[]\fC [static]\fP"
+.PP
+Definition at line 1079 of file eps.c.
+.PP
+Referenced by eps_simpleHeader().
+.SS "char* \fBhextab\fP = '0123456789abcdef'"
+.PP
+Definition at line 65 of file eps.c.
+.PP
+Referenced by eps_writeMono(), eps_writeMonoRGB(), eps_writePix(), and eps_writeRGB().
+.SS "\fBPSPageInfo\fP \fBPageInfo\fP[]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {       
+        { 8.500, 11.000,                
+          612, 762 
+        },   
+        { 8.500, 14.000,                
+          612, 1008
+        },
+        { 8.267, 11.811,                
+          595, 850
+        },
+        { 7.283, 10.630,                
+          524, 765
+        },
+        {11.000, 17.000,                
+          762, 1224
+        },
+        { 3.875,  4.875,                
+          279, 351
+        },
+        { 0.945,  1.417,                
+          68, 102
+        }
+}
+.fi
+.PP
+Definition at line 79 of file eps.c.
+.PP
+Referenced by eps_setPage().
+.SS "\fBuchar\fP* \fBpixbuf\fP"
+.PP
+Definition at line 67 of file eps.c.
+.PP
+Referenced by eps_close(), eps_flushPix(), eps_init(), eps_writeMono(), eps_writeMonoRGB(), eps_writePix(), and eps_writeRGB().
+.SS "int \fBpixnum\fP = 0 lpix = 0"
+.PP
+Definition at line 66 of file eps.c.
+.PP
+Referenced by eps_flushPix(), eps_writeMono(), eps_writeMonoRGB(), eps_writePix(), and eps_writeRGB().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

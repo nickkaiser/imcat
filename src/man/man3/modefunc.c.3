@@ -1,0 +1,128 @@
+.TH "modefunc.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+modefunc.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'error.h'\fP
+.br
+\fC#include 'modefunc.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBf\fP (int \fBl\fP, int \fBm\fP, double *x)"
+.br
+.ti -1c
+.RI "int \fBwrite2Dpolymodel\fP (char *parfile, int \fBnmodes\fP, int *\fBl\fP, int *\fBm\fP, int asize, double **\fBa\fP, int nvar, char *vardef[], char *xvar)"
+.br
+.ti -1c
+.RI "void \fBget2Dpolymodel\fP (char *\fBfilename\fP, int **lptr, int **mptr, int *asize, double ***aptr, int *nmodesptr, int *nvar, char *vardef[], char **\fBxname\fP)"
+.br
+.ti -1c
+.RI "void \fBgetmodeamplitudes_lc\fP (char *\fBfilename\fP, int **lptr, int **mptr, int *asize, double ***aptr, int *nmodesptr, int *nvar, char *vardef[], char **\fBxname\fP)"
+.br
+.ti -1c
+.RI "void \fBgetmodeamplitudes_txt\fP (char *\fBfilename\fP, int **lptr, int **mptr, double ***aptr, int *nmodesptr)"
+.br
+.ti -1c
+.RI "void \fBsetorigin\fP (double *x)"
+.br
+.ti -1c
+.RI "void \fBmodefunc_addargcomment\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "int \fBgetvars\fP (FILE *\fBlcpipe\fP, int *nvar, char *vardef[], int *thesize)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double \fBx0\fP [2]"
+.br
+.ti -1c
+.RI "char * \fBargstring\fP = NULL"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "double f (int l, int m, double * x)"
+.PP
+Definition at line 16 of file modefunc.c.
+.PP
+References i, l, m, x, x0, and xx.
+.PP
+Referenced by fitdistortions(), main(), make_r(), make_re(), recircdef(), and rmodel().
+.SS "void get2Dpolymodel (char * filename, int ** lptr, int ** mptr, int * asize, double *** aptr, int * nmodesptr, int * nvar, char * vardef[], char ** xname)"
+.PP
+Definition at line 75 of file modefunc.c.
+.PP
+References getmodeamplitudes_lc(), and getmodeamplitudes_txt().
+.PP
+Referenced by main().
+.SS "void getmodeamplitudes_lc (char * filename, int ** lptr, int ** mptr, int * asize, double *** aptr, int * nmodesptr, int * nvar, char * vardef[], char ** xname)"
+.PP
+Definition at line 98 of file modefunc.c.
+.PP
+References a, error_exit, getvars(), i, l, lcpipe, m, nmodes, and x0.
+.PP
+Referenced by get2Dpolymodel().
+.SS "void getmodeamplitudes_txt (char * filename, int ** lptr, int ** mptr, double *** aptr, int * nmodesptr)"
+.PP
+Definition at line 172 of file modefunc.c.
+.PP
+References a, error_exit, l, line, m, nmodes, and setorigin().
+.PP
+Referenced by get2Dpolymodel().
+.SS "int getvars (FILE * lcpipe, int * nvar, char * vardef[], int * thesize)"
+.PP
+Definition at line 237 of file modefunc.c.
+.PP
+References error_exit, i, lcpipe, line, MODEFUNC_MAX_VARS, pos, and size.
+.PP
+Referenced by getmodeamplitudes_lc(), and main().
+.SS "void modefunc_addargcomment (int argc, char * argv[])"
+.PP
+Definition at line 225 of file modefunc.c.
+.PP
+References argstring.
+.PP
+Referenced by main().
+.SS "void setorigin (double * x)"
+.PP
+Definition at line 219 of file modefunc.c.
+.PP
+References x, and x0.
+.PP
+Referenced by getmodeamplitudes_txt(), and main().
+.SS "int write2Dpolymodel (char * parfile, int nmodes, int * l, int * m, int asize, double ** a, int nvar, char * vardef[], char * xvar)"
+.PP
+Definition at line 32 of file modefunc.c.
+.PP
+References a, argstring, error_exit, i, l, M, m, nmodes, and x0.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "char* \fBargstring\fP = NULL\fC [static]\fP"
+.PP
+Definition at line 14 of file modefunc.c.
+.PP
+Referenced by modefunc_addargcomment(), and write2Dpolymodel().
+.SS "double \fBx0\fP[2]\fC [static]\fP"
+.PP
+Definition at line 11 of file modefunc.c.
+.PP
+Referenced by f(), getmodeamplitudes_lc(), setorigin(), and write2Dpolymodel().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

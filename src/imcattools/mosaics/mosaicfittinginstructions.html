@@ -1,0 +1,123 @@
+<html>
+<head>
+<title> mosaics instructions file </title>
+</head>
+<body bgcolor="#FFFFFF">
+<h2>mosaics instructions file</h2><hr>
+<pre>
+
+Instructions for using tools in imcattools/mosaics.
+
+These are tools for registering images taken with a multi-chip mosaic
+camera.
+
+The steps are as follows:
+
+1) organise your image files into directories so a typical image is
+	myimagedir/chip3/foo23.fits
+this image being chip number 3 and image name "foo23"
+
+1a) if (as in the UH8K) some of the chips are inverted, then uninvert them
+so that all chips have the same orientation.
+
+2) create 3 ".db" files as follows:
+	
+chips.db - this gives the numbering of the chips as a perl format
+arrays, as well as arrays ix and iy defining the layout.
+For a simple 2*2 array:
+
+		---------
+		| 1 | 2 |
+		---------
+		| 3 | 4 |
+		---------
+
+the "chips.db" file might look like
+	# database for chip names, positions and orientations
+	\$nchips = 4;
+	@chipname 	= ( 1,  2,  3,  4);
+	@ix		= (-1,  0, -1,  0);
+	@iy		= ( 0,  0, -1, -1);
+	1;
+which in this case sets the spatial origin at the centre of the array.
+i.e. the (ix, iy) = (0, 0) has its bottom left corner at the array centre.
+The "1;" on the final line is needed so we can "require" these database
+file in our perl script.
+
+nominal.db - this contains starting guess for the layout of chips
+on the grid.  The model is that each chip is laid on a tile with
+some margin, and that these tiles are then abutted.  For the 8K
+my "nominal.db" contains
+	# database for nominal chip layout
+	# the actual size of the chips is
+	\$xsize = 2048;
+	\$ysize = 4096;
+	# and our starting guess for their positions is that they
+	# are regularly spaced blocks with surrounding margin
+	\$xmargin = 30;
+	\$ymargin = 10;
+	# so the block size is
+	\$Xsize = \$xsize + 2 * \$xmargin;
+	\$Ysize = \$ysize + 2 * \$ymargin;
+	1;
+the idea is that this is sufficently accurate that we can constuct "mosaiccats"
+and run "mergecats" on these to link stars together, the merged cat being fed to
+"mosaicfit" (see below).
+
+fields.db - this simply an array of names "fieldname", which might look like
+	\$nfields = 3;
+	@fieldname	= ("foo1", "foo2", "foo126");
+	1;
+it being assumed images with these names (and some extension like ".fits")
+live in each of the image directories.  A similar naming scheme will be used for the
+catalogues etc which get created.
+
+3) Create catalogues of stars, stored in similar format to images, e.g.:
+	mycatdir/chip3/foo23.stars
+
+4) Run "makemosaiccats".  This uses the information in the data base files
+to create a "mosaiccat" for each exposure.  The coordinates should be
+good enough to link together stars which appear in different exposures.
+You might at this point want to pass these through "getisolatedobjects"
+which helps avoid bad pairs of stars in the merging process.
+
+5) Run "mergemosaiccats1".  This does the first pass at merging and generates
+a (possibly very large) catalogue of pairs of coordinates, expnums, chipnums for
+stars in the file "mergemosaiccats1.out".  
+You will need to use a large tolerance (because the positions are
+only crude) and so you will probably contain some bad pairs.
+You might therefore want to filter this catalogue be requiring that magnitudes
+agree for instance.
+
+6) Feed "mergemosaiccats1.out" to "mosaicfit" to generate "mosaicfit.par".  
+This generates a first approximation to the parameters for the layout of the
+chips and the pointings etc.
+
+7) Run "mergemosaiccats2".  This uses the information in "mosaicfit.par" to
+generate much more accurate sky coords for each object, which allows one
+to remerge the mosaiccats wth a much tighter tolerance.  This generates
+the file "mergemosaiccats1.out".  In addition to the nominal position "x",
+this also contains a pair of coords "r" which the computed sky coords.
+This allows one to filter yet again to remove any bad pairs (as outliers)
+and one can then feed this in turn to "mosaicfit" to generate even better
+parameters, and so on until you are happy with the residuals.
+
+8) With a final "mosaicfit.par" file in hand you are ready to actually
+map the images.  Rather than create a single big image, which would be
+cumbersome, we instead make a patchwork quilt of abutting images.
+This is done by calling "makemosaicstacks", which loops over x, y
+indices to generate a stack of images for each patch in turn by
+calling "makemosaicstack".  This maps the corner of each image we
+want to create (according to "mosaicfit.par") and figures out which
+images are going to contribute (thus, the size of the patches had
+better not be substantially larger than the original image size), grabs
+them and maps them into place with "mosaicmap".  
+The final pixel scale need not be equal to the original - this can
+help with badly undersampled images.
+
+</pre>
+<hr>
+<p><a href="../../mainindex.html">main index</a>
+<p><a href="aaaindex.html">section index</a>
+</body>
+</html>

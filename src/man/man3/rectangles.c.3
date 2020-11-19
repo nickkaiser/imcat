@@ -1,0 +1,116 @@
+.TH "rectangles.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+rectangles.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'rectangles.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBrectangle\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX_RECTS\fP   1000"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBrectangle\fP \fBrectangle\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBinstallrect\fP (float \fBx1\fP, float \fBx2\fP, float y1, float y2)"
+.br
+.ti -1c
+.RI "int \fBdeactivate\fP (float x, float y, float *\fBx1\fP, float *\fBx2\fP, float *y1, float *y2)"
+.br
+.ti -1c
+.RI "void \fBsetposfirst\fP (void)"
+.br
+.ti -1c
+.RI "int \fBgetrect\fP (float *\fBx1\fP, float *\fBx2\fP, float *y1, float *y2)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBrectangle\fP * \fBrectlis\fP [MAX_RECTS]"
+.br
+.ti -1c
+.RI "int \fBpos\fP = 0 lastpos"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX_RECTS   1000"
+.PP
+Definition at line 9 of file rectangles.c.
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBrectangle\fP  \fBrectangle\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "int deactivate (float x, float y, float * x1, float * x2, float * y1, float * y2)"
+.PP
+Definition at line 43 of file rectangles.c.
+.PP
+References pos, rectlis, x, and y.
+.PP
+Referenced by main().
+.SS "int getrect (float * x1, float * x2, float * y1, float * y2)"
+.PP
+Definition at line 79 of file rectangles.c.
+.PP
+References pos, and rectlis.
+.PP
+Referenced by main().
+.SS "int installrect (float x1, float x2, float y1, float y2)"
+.PP
+Definition at line 20 of file rectangles.c.
+.PP
+References pos, and rectlis.
+.PP
+Referenced by main().
+.SS "void setposfirst (void)"
+.PP
+Definition at line 73 of file rectangles.c.
+.PP
+References pos.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBpos\fP = 0 lastpos\fC [static]\fP"
+.PP
+Definition at line 17 of file rectangles.c.
+.PP
+Referenced by deactivate(), getrect(), installrect(), and setposfirst().
+.SS "\fBrectangle\fP* \fBrectlis\fP[MAX_RECTS]\fC [static]\fP"
+.PP
+Definition at line 16 of file rectangles.c.
+.PP
+Referenced by deactivate(), getrect(), and installrect().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

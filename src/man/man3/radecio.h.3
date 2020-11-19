@@ -1,0 +1,89 @@
+.TH "radecio.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+radecio.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBHMS_ANGLE_TYPE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBDECIMAL_ANGLE_TYPE\fP   1"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBdecimaltoxms\fP (double \fBangle\fP, char *hmsstring)"
+.br
+.ti -1c
+.RI "int \fBxmstodecimal\fP (char *hmsstring, double *result)"
+.br
+.ti -1c
+.RI "double \fBgetangle\fP (char *\fBargstring\fP, int *\fBtype\fP)"
+.br
+.ti -1c
+.RI "double \fBgetra\fP (char *\fBargstring\fP, int *\fBtype\fP)"
+.br
+.ti -1c
+.RI "double \fBgetdec\fP (char *\fBargstring\fP, int *\fBtype\fP)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define DECIMAL_ANGLE_TYPE   1"
+.PP
+Definition at line 6 of file radecio.h.
+.PP
+Referenced by getangle().
+.SS "#define HMS_ANGLE_TYPE   0"
+.PP
+Definition at line 5 of file radecio.h.
+.PP
+Referenced by getangle(), getra(), and main().
+.SH "Function Documentation"
+.PP 
+.SS "int decimaltoxms (double angle, char * hmsstring)"
+.PP
+Definition at line 10 of file radecio.c.
+.PP
+References angle, h, m, and sign.
+.PP
+Referenced by main().
+.SS "double getangle (char * argstring, int * type)"
+.PP
+Definition at line 49 of file radecio.c.
+.PP
+References angle, DECIMAL_ANGLE_TYPE, error_exit, HMS_ANGLE_TYPE, pos, type, and xmstodecimal().
+.PP
+Referenced by getdec(), getra(), and main().
+.SS "double getdec (char * argstring, int * type)"
+.PP
+Definition at line 84 of file radecio.c.
+.PP
+References error_exit, getangle(), and type.
+.PP
+Referenced by main().
+.SS "double getra (char * argstring, int * type)"
+.PP
+Definition at line 69 of file radecio.c.
+.PP
+References error_exit, getangle(), HMS_ANGLE_TYPE, ra, and type.
+.PP
+Referenced by main().
+.SS "int xmstodecimal (char * hmsstring, double * result)"
+.PP
+Definition at line 27 of file radecio.c.
+.PP
+References error_exit, h, m, and sign.
+.PP
+Referenced by getangle(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

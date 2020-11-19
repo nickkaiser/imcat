@@ -1,0 +1,46 @@
+.TH "makeshearimage.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makeshearimage.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	makeshearimage --- generate \fBa\fP shear image from catalogue\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makeshearimage [\fBoptions\fP...]\\\fBn\fP\\		-\fBN\fP \fBN1\fP \fBN2\fP	# size of image (128,128)\\\fBn\fP\\		-x \fBxname\fP	# name for spatial coordinate ('x')\\\fBn\fP\\		-\fBX\fP \fBdx\fP		# \fBpixel\fP size in x-coords (16.0)\\\fBn\fP\\		-o \fBx0\fP y0	# origin in x-space (0.0, 0.0)\\\fBn\fP\\		-\fBr\fP \fBx1\fP \fBx2\fP y1 y2	# box for calculating nbar\\\fBn\fP\\		-\fBe\fP ename	# name for polarisation ('\fBe\fP')\\\fBn\fP\\		-p psh		# polarisability (1.0)\\\fBn\fP\\		-\fBn\fP nbar		# density of \fBpoints\fP in x-space\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'makeshearimage' reads \fBa\fP catalogue which must contain \fBa\fP spatial\\\fBn\fP\\	2-vector coordinate ('x' by default) and \fBa\fP 2-vector\\\fBn\fP\\	polarisation ('\fBe\fP' by default), and creates \fBa\fP \fBN1\fP by (2 \fBN2\fP)\\\fBn\fP\\	\fBfits\fP image which is \fBa\fP simple binned average of the input\\\fBn\fP\\	shear values. The shear is defined as\\\fBn\fP\\		gamma_i = e_i / psh,\\\fBn\fP\\	and gamma_0 and gamma_1 are stored in the first and last \fBN2\fP lines\\\fBn\fP\\	of the output image respectively.\\\fBn\fP\\	By default the density of \fBpoints\fP is estimated as the \fBnumber\fP\\\fBn\fP\\	of objects divided by the area of the image (in x-coord units)\\\fBn\fP\\	but you can supply an alternative x-rectange with the -\fBr\fP\\\fBn\fP\\	option.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	makeshearimage --- generate \fBa\fP shear image from catalogue\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makeshearimage [\fBoptions\fP...]\\\fBn\fP\\		-\fBN\fP \fBN1\fP \fBN2\fP	# size of image (128,128)\\\fBn\fP\\		-x \fBxname\fP	# name for spatial coordinate ('x')\\\fBn\fP\\		-\fBX\fP \fBdx\fP		# \fBpixel\fP size in x-coords (16.0)\\\fBn\fP\\		-o \fBx0\fP y0	# origin in x-space (0.0, 0.0)\\\fBn\fP\\		-\fBr\fP \fBx1\fP \fBx2\fP y1 y2	# box for calculating nbar\\\fBn\fP\\		-\fBe\fP ename	# name for polarisation ('\fBe\fP')\\\fBn\fP\\		-p psh		# polarisability (1.0)\\\fBn\fP\\		-\fBn\fP nbar		# density of \fBpoints\fP in x-space\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'makeshearimage' reads \fBa\fP catalogue which must contain \fBa\fP spatial\\\fBn\fP\\	2-vector coordinate ('x' by default) and \fBa\fP 2-vector\\\fBn\fP\\	polarisation ('\fBe\fP' by default), and creates \fBa\fP \fBN1\fP by (2 \fBN2\fP)\\\fBn\fP\\	\fBfits\fP image which is \fBa\fP simple binned average of the input\\\fBn\fP\\	shear values. The shear is defined as\\\fBn\fP\\		gamma_i = e_i / psh,\\\fBn\fP\\	and gamma_0 and gamma_1 are stored in the first and last \fBN2\fP lines\\\fBn\fP\\	of the output image respectively.\\\fBn\fP\\	By default the density of \fBpoints\fP is estimated as the \fBnumber\fP\\\fBn\fP\\	of objects divided by the area of the image (in x-coord units)\\\fBn\fP\\	but you can supply an alternative x-rectange with the -\fBr\fP\\\fBn\fP\\	option.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file makeshearimage.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 43 of file makeshearimage.c.
+.PP
+References add_comment(), allocFloatArray(), dx, e, error_exit, exit(), fits, FLOAT_PIXTYPE, gamma1(), ix, lcpipe, fitsheader::n, N1, N2, fitsheader::ndim, new2Dfitsheader(), usage, writefitsheader(), writefitsline(), writefitstail(), and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

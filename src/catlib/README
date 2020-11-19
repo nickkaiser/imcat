@@ -1,0 +1,4 @@
+Wed Oct 25 09:59:13 EST 1995
+This directory cantains the stuff for generating libcat.a
+which contains functions for building catalogue manipulating tools.
+There is useful info re these tools in cat.h

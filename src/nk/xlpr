@@ -1,0 +1,3 @@
+#!/bin/sh
+
+notabs $1 | enscript -p- -2r | lpr -h

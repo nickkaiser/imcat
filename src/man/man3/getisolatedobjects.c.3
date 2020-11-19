@@ -1,0 +1,70 @@
+.TH "getisolatedobjects.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getisolatedobjects.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include 'grid.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	getisolatedobjects - find isolated objects\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getisolatedobjects [\fBoptions\fP....] dmax referencecat\\\fBn\fP\\		-u		# print this man page\\\fBn\fP\\		-x \fBxname\fP 	# specify name for coords (x)\\\fBn\fP\\		-\fBe\fP		# don'\fBt\fP exclude zero separation objects\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\        'getisolatedobjects' reads \fBa\fP source catalogue from stdin, \fBa\fP\\\fBn\fP\\	reference catalogue from 'referencecat' and writes to stdout\\\fBn\fP\\	\fBa\fP catalogue containing objects from the source cat which\\\fBn\fP\\	have no reference neighbour with |separation| < \fBd\fP.\\\fBn\fP\\	It works by installing the objects from the reference cat into\\\fBn\fP\\	\fBa\fP grid of linked lists, and it then processes the objects\\\fBn\fP\\	from the source cat sequentially.\\\fBn\fP\\	The -\fBe\fP option is useful if one wants to find the objects\\\fBn\fP\\	in \fBa\fP cat which have no close neighbours in the same catalogue.\\\fBn\fP\\	To do this simply use the source cat as reference cat.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBBIG_POS\fP   1.e100"
+.br
+.ti -1c
+.RI "#define \fBBIG_NEG\fP   -1.e100"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBsep2\fP (\fBobject\fP *ipobj, int ipxindex, \fBobject\fP *refobj, int refxindex)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define BIG_NEG   -1.e100"
+.PP
+Definition at line 42 of file getisolatedobjects.c.
+.SS "#define BIG_POS   1.e100"
+.PP
+Definition at line 41 of file getisolatedobjects.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	getisolatedobjects - find isolated objects\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getisolatedobjects [\fBoptions\fP....] dmax referencecat\\\fBn\fP\\		-u		# print this man page\\\fBn\fP\\		-x \fBxname\fP 	# specify name for coords (x)\\\fBn\fP\\		-\fBe\fP		# don'\fBt\fP exclude zero separation objects\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\        'getisolatedobjects' reads \fBa\fP source catalogue from stdin, \fBa\fP\\\fBn\fP\\	reference catalogue from 'referencecat' and writes to stdout\\\fBn\fP\\	\fBa\fP catalogue containing objects from the source cat which\\\fBn\fP\\	have no reference neighbour with |separation| < \fBd\fP.\\\fBn\fP\\	It works by installing the objects from the reference cat into\\\fBn\fP\\	\fBa\fP grid of linked lists, and it then processes the objects\\\fBn\fP\\	from the source cat sequentially.\\\fBn\fP\\	The -\fBe\fP option is useful if one wants to find the objects\\\fBn\fP\\	in \fBa\fP cat which have no close neighbours in the same catalogue.\\\fBn\fP\\	To do this simply use the source cat as reference cat.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file getisolatedobjects.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 44 of file getisolatedobjects.c.
+.PP
+References addargscomment(), object::addrlist, allocgrid(), allocobjectcontents(), BIG_NEG, BIG_POS, BINARY_FILE_TYPE, item::dim, dmax, error_exit, exit(), getcatipfiletype(), getgridcoords(), getneighbours(), getobjectitem(), getobjectitemindex(), i, item::itype, ix, j, MAX_NEIGHBOURS, item::ndim, newobject(), object::next, NUM_TYPE, readcathead(), readobject(), sep2(), setcatipf(), setcatipfiletype(), setcatopfiletype(), setgridsize(), usage, writecathead(), writeobject(), x, xmax, and xmin.
+.SS "double sep2 (\fBobject\fP * ipobj, int ipxindex, \fBobject\fP * refobj, int refxindex)"
+.PP
+Definition at line 188 of file getisolatedobjects.c.
+.PP
+References object::addrlist, dx, and dy.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

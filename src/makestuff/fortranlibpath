@@ -1,0 +1,15 @@
+#!/usr/local/bin/perl
+
+$fcomp = shift(@ARGV) || die "usage: fortranlibpath fortrancompiler\n";
+
+$stuff = `$fcomp -v makestuff/temp.f 2>&1`;
+
+@words = split(" ", $stuff);
+
+foreach $word (@words) {
+	if ($word =~ /^\-L/) {
+		print $word, " ";
+	}
+}
+system("rm a.out");
+exit;

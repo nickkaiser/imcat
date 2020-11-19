@@ -1,0 +1,2 @@
+This section contains some tools for doing basic operations on 'lc' format
+catalogues.

@@ -1,0 +1,35 @@
+.TH "fmedian.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fmedian.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "float \fBfmedian\fP (float *farray, int nel)"
+.br
+.ti -1c
+.RI "int \fBdescfloatcmp\fP (void *\fBf1\fP, void *f2)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int descfloatcmp (void * f1, void * f2)"
+.PP
+Definition at line 28 of file fmedian.c.
+.PP
+Referenced by fmedian().
+.SS "float fmedian (float * farray, int nel)"
+.PP
+Definition at line 13 of file fmedian.c.
+.PP
+References descfloatcmp(), error_exit, and f.
+.PP
+Referenced by average(), avsigclip2(), getpix(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

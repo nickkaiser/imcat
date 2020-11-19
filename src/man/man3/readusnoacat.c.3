@@ -1,0 +1,109 @@
+.TH "readusnoacat.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+readusnoacat.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'readusnoacat.h'\fP
+.br
+\fC#include 'getxfromradecfunc.h'\fP
+.br
+\fC#include 'radecio.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	readusnoacat --- extract catalogue from USNO-\fBA\fP database\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	readusnoacat \fBra\fP dl dec ddec\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Readusnoacat extracts \fBa\fP lc-format catalogue from the\\\fBn\fP\\	US Naval Observatory all-sky astrometric catalogue.\\\fBn\fP\\\\\fBn\fP\\	All objects with \fBra\fP lying in the range\\\fBn\fP\\	\fBra\fP +- (dl / cos(dec)) and dec in the range\\\fBn\fP\\	dec +- ddec (epoch 2000) are extracted. \\\fBn\fP\\	The parameterisation of the range in longitude dl\\\fBn\fP\\	is chosen so that in the small \fBangle\fP approximation\\\fBn\fP\\	one obtains \fBa\fP box of height ddec and width dl both in\\\fBn\fP\\	degrees.\\\fBn\fP\\\\\fBn\fP\\	Angle arguments may be given in decimal notation, in\\\fBn\fP\\	which case they are interpreted as degrees, or as\\\fBn\fP\\	colon separated triplets, in which case they are interpreted\\\fBn\fP\\	as h:m:s (for \fBra\fP, dra) and d:m:s (dec, ddec)\\\fBn\fP\\\\\fBn\fP\\	Readusnoacat expects to find an environment variable\\\fBn\fP\\	USNOADIR telling it the directory containing the source\\\fBn\fP\\	catalogue files.\\\fBn\fP\\\\\fBn\fP\\	The output catalogue contains the following entries:\\\fBn\fP\\		x[2]		# sterographic sky coords\\\fBn\fP\\		RA		# right ascension [deg]\\\fBn\fP\\		DEC		# declination [deg]\\\fBn\fP\\		rmag		# red magnitude\\\fBn\fP\\		bmag		# blue magnitude\\\fBn\fP\\		qflag		# indicates \fBmag\fP error if set\\\fBn\fP\\		gflag		# indicates \fBa\fP correlated GSC entry\\\fBn\fP\\		fieldno		# source image \fBnumber\fP\\\fBn\fP\\	See the USNO-\fBA\fP readme files for more information on the\\\fBn\fP\\	meaning of the flags.\\\fBn\fP\\\\\fBn\fP\\	x[2] is \fBa\fP stereographic projection (in units of degrees).\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser	kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBSPDBANDWIDTH10\fP   75"
+.br
+.ti -1c
+.RI "#define \fBSPDBANDWIDTH\fP   7.5"
+.br
+.ti -1c
+.RI "#define \fBswap_word\fP(\fBa\fP)"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "int \fBgetobjects\fP (char *basefilename, double ra0, double ra1, double dec0, double dec1, double rao, double deco)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "FILE * \fBlcpipe\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define SPDBANDWIDTH   7.5"
+.PP
+Definition at line 64 of file readusnoacat.c.
+.PP
+Referenced by main().
+.SS "#define SPDBANDWIDTH10   75"
+.PP
+Definition at line 63 of file readusnoacat.c.
+.PP
+Referenced by main().
+.SS "#define swap_word(\fBa\fP)"
+.PP
+\fBValue:\fP.nf
+( ((a) << 24) | \
+                      (((a) << 8) & 0x00ff0000) | \
+                      (((a) >> 8) & 0x0000ff00) | \
+        ((unsigned int)(a) >>24) )
+.fi
+.PP
+Definition at line 66 of file readusnoacat.c.
+.PP
+Referenced by getobjects().
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	readusnoacat --- extract catalogue from USNO-\fBA\fP database\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	readusnoacat \fBra\fP dl dec ddec\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Readusnoacat extracts \fBa\fP lc-format catalogue from the\\\fBn\fP\\	US Naval Observatory all-sky astrometric catalogue.\\\fBn\fP\\\\\fBn\fP\\	All objects with \fBra\fP lying in the range\\\fBn\fP\\	\fBra\fP +- (dl / cos(dec)) and dec in the range\\\fBn\fP\\	dec +- ddec (epoch 2000) are extracted. \\\fBn\fP\\	The parameterisation of the range in longitude dl\\\fBn\fP\\	is chosen so that in the small \fBangle\fP approximation\\\fBn\fP\\	one obtains \fBa\fP box of height ddec and width dl both in\\\fBn\fP\\	degrees.\\\fBn\fP\\\\\fBn\fP\\	Angle arguments may be given in decimal notation, in\\\fBn\fP\\	which case they are interpreted as degrees, or as\\\fBn\fP\\	colon separated triplets, in which case they are interpreted\\\fBn\fP\\	as h:m:s (for \fBra\fP, dra) and d:m:s (dec, ddec)\\\fBn\fP\\\\\fBn\fP\\	Readusnoacat expects to find an environment variable\\\fBn\fP\\	USNOADIR telling it the directory containing the source\\\fBn\fP\\	catalogue files.\\\fBn\fP\\\\\fBn\fP\\	The output catalogue contains the following entries:\\\fBn\fP\\		x[2]		# sterographic sky coords\\\fBn\fP\\		RA		# right ascension [deg]\\\fBn\fP\\		DEC		# declination [deg]\\\fBn\fP\\		rmag		# red magnitude\\\fBn\fP\\		bmag		# blue magnitude\\\fBn\fP\\		qflag		# indicates \fBmag\fP error if set\\\fBn\fP\\		gflag		# indicates \fBa\fP correlated GSC entry\\\fBn\fP\\		fieldno		# source image \fBnumber\fP\\\fBn\fP\\	See the USNO-\fBA\fP readme files for more information on the\\\fBn\fP\\	meaning of the flags.\\\fBn\fP\\\\\fBn\fP\\	x[2] is \fBa\fP stereographic projection (in units of degrees).\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser	kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file readusnoacat.c.
+.SH "Function Documentation"
+.PP 
+.SS "int getobjects (char * basefilename, double ra0, double ra1, double dec0, double dec1, double rao, double deco)"
+.PP
+Definition at line 137 of file readusnoacat.c.
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 73 of file readusnoacat.c.
+.PP
+References argsToString(), error_exit, exit(), getdec(), getobjects(), getra(), lcpipe, ra, SPDBANDWIDTH, SPDBANDWIDTH10, type, and usage.
+.SH "Variable Documentation"
+.PP 
+.SS "FILE* \fBlcpipe\fP"
+.PP
+Definition at line 71 of file readusnoacat.c.
+.PP
+Referenced by getmodeamplitudes_lc(), getobjects(), getvars(), main(), outputrcat(), and readmergedcat().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

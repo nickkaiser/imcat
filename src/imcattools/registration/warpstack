@@ -1,0 +1,98 @@
+#!/usr/bin/perl
+
+$| = 1;
+
+$usage = "\
+NAME\
+	warpstack --- perl script to merge a stack of images (or catalogues)\
+\
+SYNOPSIS\
+	warpstack distparfile transparfile [options...]\
+\
+DESCRIPTION\
+	Warpstack reads a distortion parameter and linear\
+	transformation parameter files created by\
+	fitstack and applies appropriate warping to a\
+	set of images (or catalogues).\
+	Options are:\
+		-c datadir	# directory for source and target files (images)\
+		-s srcsuffix	# suffix for source files ('.sub')\
+		-d dstsuffix	# suffix for target files ('.warp')\
+		-e expnames	# exposure names file (exp.names)\
+		-C		# warp catalogues\
+		-D		# just print the commands for a 'dry run'\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+";
+
+# defaults
+$datadir = "images/";
+$srcsuffix = ".isol";
+$dstsuffix = ".warp";
+$expnamesfile = "exp.names";
+$warpimages = 1;
+$active = 1;
+
+$distparfile = shift(@ARGV) || die $usage;
+$transparfile = shift(@ARGV) || die $usage;
+
+
+while ($_ = shift(@ARGV)) {
+	if (/^-c/) {
+		$datadir = shift(@ARGV) || die $usage;
+	} elsif (/^-s/) {
+		$srcsuffix = shift(@ARGV) || die $usage;
+	} elsif (/^-d/) {
+		$dstsuffix = shift(@ARGV) || die $usage;
+	} elsif (/^-e/) {
+		$expnamesfile = shift(@ARGV) || die $usage;
+	} elsif (/^-C/) {
+		$warpimages = 0;
+	} elsif (/^-D/) {
+		$active = 0;
+	} else {
+		die $usage;
+	}
+}
+
+
+		
+open(EXPNAMES, $expnamesfile) || die "warpstack: can't open $expnamesfile\n";
+$Nnames = 0;
+while (<EXPNAMES>) {
+	 chop($expname[$Nnames++] = $_);
+}
+
+open(TRANSPARFILE, $transparfile) || die "warpstack: can't open $transparfile\n";
+# skip the comment lines
+while (<TRANSPARFILE>) {
+	last unless (/^#/)
+}
+# get the number of exposures
+($Nexp, @rest) = split(" ");
+die "warpstack: Nexp != Nnames\n" if ($Nexp != $Nnames);
+# skip comment line
+$_ = <TRANSPARFILE>;
+for ($exp = 0; $exp < $Nexp; $exp++) {
+	$_ = <TRANSPARFILE>;
+	($dx[$exp], $dy[$exp], $phixx[$exp], $phixy[$exp], $phiyx[$exp], $phiyy[$exp], $dm[$exp]) = split(" ");
+}
+close(TRANSPARFILE);
+
+for ($exp = 0; $exp < $Nexp; $exp++) {
+	$src = $datadir.$expname[$exp].$srcsuffix;
+	$dst = $datadir.$expname[$exp].$dstsuffix;
+	if ($warpimages) {
+		echosys("# warpimage $dx[$exp] $dy[$exp] $phixx[$exp] $phixy[$exp] $phiyx[$exp] $phiyy[$exp] -d warpstack.tmp < $src > $dst");
+	} else {
+		echosys("warpcat -d $dx[$exp] $dy[$exp] -p $phixx[$exp] $phixy[$exp] $phiyx[$exp] $phiyy[$exp] $distparfile < $src > $dst");
+	}
+}
+
+sub echosys {
+        print @_, "\n";
+	if ($active) {
+        	system(@_) && die "System call failed!\n";
+	}
+}

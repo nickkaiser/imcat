@@ -1,0 +1,831 @@
+.TH "vximtool.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+vximtool.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <sys/times.h>\fP
+.br
+\fC#include <sys/types.h>\fP
+.br
+\fC#include <sys/socket.h>\fP
+.br
+\fC#include <netinet/in.h>\fP
+.br
+\fC#include <sys/un.h>\fP
+.br
+\fC#include <errno.h>\fP
+.br
+\fC#include <fcntl.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBCtran\fP"
+.br
+.ti -1c
+.RI "struct \fBFbConfig\fP"
+.br
+.ti -1c
+.RI "struct \fBFrameBuf\fP"
+.br
+.ti -1c
+.RI "struct \fBiism70\fP"
+.br
+.ti -1c
+.RI "struct \fBIoChan\fP"
+.br
+.ti -1c
+.RI "struct \fBVXimData\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX_FBCONFIG\fP   128"
+.br
+.ti -1c
+.RI "#define \fBMAX_FRAMES\fP   4"
+.br
+.ti -1c
+.RI "#define \fBMAX_CLIENTS\fP   8"
+.br
+.ti -1c
+.RI "#define \fBDEF_NFRAMES\fP   1"
+.br
+.ti -1c
+.RI "#define \fBDEF_FRAME_WIDTH\fP   512"
+.br
+.ti -1c
+.RI "#define \fBDEF_FRAME_HEIGHT\fP   512"
+.br
+.ti -1c
+.RI "#define \fBSZ_LABEL\fP   256"
+.br
+.ti -1c
+.RI "#define \fBSZ_IMTITLE\fP   128"
+.br
+.ti -1c
+.RI "#define \fBSZ_WCSBUF\fP   320"
+.br
+.ti -1c
+.RI "#define \fBSZ_FIFOBUF\fP   4000"
+.br
+.ti -1c
+.RI "#define \fBSZ_FNAME\fP   256"
+.br
+.ti -1c
+.RI "#define \fBSZ_LINE\fP   256"
+.br
+.ti -1c
+.RI "#define \fBDEF_PORT\fP   5137"
+.br
+.ti -1c
+.RI "#define \fBDEF_PROXY_PORT\fP   5136"
+.br
+.ti -1c
+.RI "#define \fBI_DEVNAME\fP   '/dev/imt1o'"
+.br
+.ti -1c
+.RI "#define \fBO_DEVNAME\fP   '/dev/imt1i'"
+.br
+.ti -1c
+.RI "#define \fBDEF_UNIXADDR\fP   '/tmp/.IMT%\fBd\fP'"
+.br
+.ti -1c
+.RI "#define \fBFBCONFIG_1\fP   '.imtoolrc'"
+.br
+.ti -1c
+.RI "#define \fBFBCONFIG_2\fP   '/usr/local/lib/imtoolrc'"
+.br
+.ti -1c
+.RI "#define \fBFBCONFIG_ENV1\fP   'imtoolrc'"
+.br
+.ti -1c
+.RI "#define \fBFBCONFIG_ENV2\fP   'IMTOOLRC'"
+.br
+.ti -1c
+.RI "#define \fBIO_TIMEOUT\fP   30"
+.br
+.ti -1c
+.RI "#define \fBMAXCONN\fP   5"
+.br
+.ti -1c
+.RI "#define \fBSZ_IOBUF\fP   65536"
+.br
+.ti -1c
+.RI "#define \fBSZ_FIFOBUF\fP   4000"
+.br
+.ti -1c
+.RI "#define \fBSZ_WCSBUF\fP   320"
+.br
+.ti -1c
+.RI "#define \fBSZ_FNAME\fP   256"
+.br
+.ti -1c
+.RI "#define \fBSZ_IMCURVAL\fP   160"
+.br
+.ti -1c
+.RI "#define \fBMEMORY\fP   01"
+.br
+.ti -1c
+.RI "#define \fBLUT\fP   02"
+.br
+.ti -1c
+.RI "#define \fBFEEDBACK\fP   05"
+.br
+.ti -1c
+.RI "#define \fBIMCURSOR\fP   020"
+.br
+.ti -1c
+.RI "#define \fBWCS\fP   021"
+.br
+.ti -1c
+.RI "#define \fBPACKED\fP   0040000"
+.br
+.ti -1c
+.RI "#define \fBCOMMAND\fP   0100000"
+.br
+.ti -1c
+.RI "#define \fBIIS_READ\fP   0100000"
+.br
+.ti -1c
+.RI "#define \fBIMC_SAMPLE\fP   0040000"
+.br
+.ti -1c
+.RI "#define \fBIMT_FBCONFIG\fP   077"
+.br
+.ti -1c
+.RI "#define \fBXYMASK\fP   077777"
+.br
+.ti -1c
+.RI "#define \fBCMS_DATASTART\fP   1"
+.br
+.ti -1c
+.RI "#define \fBCMS_DATAEND\fP   200"
+.br
+.ti -1c
+.RI "#define \fBCMS_DATARANGE\fP   200"
+.br
+.ti -1c
+.RI "#define \fBW_UNITARY\fP   0"
+.br
+.ti -1c
+.RI "#define \fBW_LINEAR\fP   1"
+.br
+.ti -1c
+.RI "#define \fBW_LOG\fP   2"
+.br
+.ti -1c
+.RI "#define \fBW_DEFFORMAT\fP   ' %7.2f %7.2f %7.1f%\fBc\fP'"
+.br
+.ti -1c
+.RI "#define \fBIO_FIFO\fP   1"
+.br
+.ti -1c
+.RI "#define \fBIO_INET\fP   2"
+.br
+.ti -1c
+.RI "#define \fBIO_UNIX\fP   3"
+.br
+.ti -1c
+.RI "#define \fBabs\fP(\fBa\fP)   (((\fBa\fP)<0)?(-(\fBa\fP)):(\fBa\fP))"
+.br
+.ti -1c
+.RI "#define \fBmin\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP)<(\fBb\fP)?(\fBa\fP):(\fBb\fP))"
+.br
+.ti -1c
+.RI "#define \fBmax\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP)<(\fBb\fP)?(\fBb\fP):(\fBa\fP))"
+.br
+.ti -1c
+.RI "#define \fBSELWIDTH\fP   32"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef * \fBCtranPtr\fP"
+.br
+.ti -1c
+.RI "typedef * \fBFrameBufPtr\fP"
+.br
+.ti -1c
+.RI "typedef * \fBFbConfigPtr\fP"
+.br
+.ti -1c
+.RI "typedef * \fBIoChanPtr\fP"
+.br
+.ti -1c
+.RI "typedef * \fBVXimDataPtr\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBvx_iisclose\fP ()"
+.br
+.ti -1c
+.RI "void \fBvx_connectClient\fP ()"
+.br
+.ti -1c
+.RI "void \fBvx_disconnectClient\fP ()"
+.br
+.ti -1c
+.RI "void \fBvx_iisio\fP ()"
+.br
+.ti -1c
+.RI "void \fBset_fbconfig\fP ()"
+.br
+.ti -1c
+.RI "void \fBvx_retCursorVal\fP ()"
+.br
+.ti -1c
+.RI "void \fBvx_initialize\fP ()"
+.br
+.ti -1c
+.RI "void \fBvx_initFrame\fP ()"
+.br
+.ti -1c
+.RI "void \fBvx_eraseFrame\fP ()"
+.br
+.ti -1c
+.RI "void \fBget_fbconfig\fP ()"
+.br
+.ti -1c
+.RI "void \fBUsage\fP ()"
+.br
+.ti -1c
+.RI "void \fBprintoption\fP ()"
+.br
+.ti -1c
+.RI "int \fBvx_iisopen\fP ()"
+.br
+.ti -1c
+.RI "int \fBdecode_frameno\fP ()"
+.br
+.ti -1c
+.RI "void \fBbswap2\fP ()"
+.br
+.ti -1c
+.RI "\fBIoChanPtr\fP \fBopen_fifo\fP ()"
+.br
+.ti -1c
+.RI "\fBIoChanPtr\fP \fBopen_inet\fP ()"
+.br
+.ti -1c
+.RI "\fBIoChanPtr\fP \fBopen_unix\fP ()"
+.br
+.ti -1c
+.RI "\fBIoChanPtr\fP \fBget_iochan\fP ()"
+.br
+.ti -1c
+.RI "\fBCtranPtr\fP \fBwcs_update\fP ()"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char **argv)"
+.br
+.ti -1c
+.RI "int \fBvx_iisopen\fP (\fBVXimDataPtr\fP vxim)"
+.br
+.ti -1c
+.RI "void \fBvx_iisclose\fP (\fBVXimDataPtr\fP vxim)"
+.br
+.ti -1c
+.RI "\fBIoChanPtr\fP \fBopen_fifo\fP (\fBVXimDataPtr\fP vxim)"
+.br
+.ti -1c
+.RI "\fBIoChanPtr\fP \fBopen_inet\fP (\fBVXimDataPtr\fP vxim)"
+.br
+.ti -1c
+.RI "\fBIoChanPtr\fP \fBopen_unix\fP (\fBVXimDataPtr\fP vxim)"
+.br
+.ti -1c
+.RI "void \fBvx_connectClient\fP (\fBIoChanPtr\fP chan, int *source)"
+.br
+.ti -1c
+.RI "void \fBvx_disconnectClient\fP (\fBIoChanPtr\fP chan)"
+.br
+.ti -1c
+.RI "\fBIoChanPtr\fP \fBget_iochan\fP (\fBVXimDataPtr\fP vxim)"
+.br
+.ti -1c
+.RI "void \fBvx_iisio\fP (\fBIoChanPtr\fP chan, int *fd_addr, int source)"
+.br
+.ti -1c
+.RI "void \fBset_fbconfig\fP (\fBIoChanPtr\fP chan, int config, int \fBframe\fP)"
+.br
+.ti -1c
+.RI "int \fBdecode_frameno\fP (int \fBz\fP)"
+.br
+.ti -1c
+.RI "void \fBbswap2\fP (char *\fBa\fP, char *\fBb\fP, int nbytes)"
+.br
+.ti -1c
+.RI "void \fBvx_retCursorVal\fP (int dataout, float sx, float sy, int \fBwcs\fP, int \fBkey\fP, char *strval)"
+.br
+.ti -1c
+.RI "\fBCtranPtr\fP \fBwcs_update\fP (\fBVXimDataPtr\fP vxim, \fBFrameBufPtr\fP fr)"
+.br
+.ti -1c
+.RI "void \fBvx_initialize\fP (\fBVXimDataPtr\fP vxim, int config, int \fBnframes\fP, int \fBreset\fP)"
+.br
+.ti -1c
+.RI "void \fBvx_initFrame\fP (\fBVXimDataPtr\fP vxim, int \fBframe\fP, int \fBnframes\fP, \fBFbConfigPtr\fP config)"
+.br
+.ti -1c
+.RI "void \fBvx_eraseFrame\fP (\fBVXimDataPtr\fP vxim, int \fBframe\fP)"
+.br
+.ti -1c
+.RI "void \fBget_fbconfig\fP (\fBVXimDataPtr\fP vxim)"
+.br
+.ti -1c
+.RI "void \fBprintoption\fP (char *\fBst\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBVXimData\fP \fBserver_data\fP"
+.br
+.ti -1c
+.RI "int \fBkeep_raster\fP = 1"
+.br
+.ti -1c
+.RI "int \fBerrno\fP"
+.br
+.ti -1c
+.RI "int \fBbackground\fP = 0"
+.br
+.ti -1c
+.RI "int \fBverbose\fP = 0"
+.br
+.ti -1c
+.RI "int \fBinteractive\fP = 0"
+.br
+.ti -1c
+.RI "float \fBcursor_x\fP = 1.0 cursor_y = 1.0"
+.br
+.ti -1c
+.RI "fd_set \fBfds\fP"
+.br
+.ti -1c
+.RI "fd_set \fBallset\fP"
+.br
+.ti -1c
+.RI "int \fBcpos\fP = 0"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define abs(\fBa\fP)   (((\fBa\fP)<0)?(-(\fBa\fP)):(\fBa\fP))"
+.PP
+Definition at line 217 of file vximtool.c.
+.PP
+Referenced by cdl_drawThickDashVec(), cdl_drawThickVector(), kepler_(), lmodelfunc(), makezernikeR(), mgoplt3d_(), readlmodel(), vx_iisio(), and wcs_update().
+.SS "#define CMS_DATAEND   200"
+.PP
+Definition at line 115 of file vximtool.c.
+.SS "#define CMS_DATARANGE   200"
+.PP
+Definition at line 116 of file vximtool.c.
+.SS "#define CMS_DATASTART   1"
+.PP
+Definition at line 114 of file vximtool.c.
+.SS "#define COMMAND   0100000"
+.PP
+Definition at line 98 of file vximtool.c.
+.SS "#define DEF_FRAME_HEIGHT   512"
+.PP
+Definition at line 62 of file vximtool.c.
+.SS "#define DEF_FRAME_WIDTH   512"
+.PP
+Definition at line 61 of file vximtool.c.
+.SS "#define DEF_NFRAMES   1"
+.PP
+Definition at line 60 of file vximtool.c.
+.SS "#define DEF_PORT   5137"
+.PP
+Definition at line 72 of file vximtool.c.
+.SS "#define DEF_PROXY_PORT   5136"
+.PP
+Definition at line 73 of file vximtool.c.
+.PP
+Referenced by main().
+.SS "#define DEF_UNIXADDR   '/tmp/.IMT%\fBd\fP'"
+.PP
+Definition at line 76 of file vximtool.c.
+.SS "#define FBCONFIG_1   '.imtoolrc'"
+.PP
+Definition at line 77 of file vximtool.c.
+.SS "#define FBCONFIG_2   '/usr/local/lib/imtoolrc'"
+.PP
+Definition at line 78 of file vximtool.c.
+.SS "#define FBCONFIG_ENV1   'imtoolrc'"
+.PP
+Definition at line 79 of file vximtool.c.
+.SS "#define FBCONFIG_ENV2   'IMTOOLRC'"
+.PP
+Definition at line 80 of file vximtool.c.
+.SS "#define FEEDBACK   05"
+.PP
+Definition at line 93 of file vximtool.c.
+.SS "#define I_DEVNAME   '/dev/imt1o'"
+.PP
+Definition at line 74 of file vximtool.c.
+.SS "#define IIS_READ   0100000"
+.PP
+Definition at line 99 of file vximtool.c.
+.SS "#define IMC_SAMPLE   0040000"
+.PP
+Definition at line 100 of file vximtool.c.
+.SS "#define IMCURSOR   020"
+.PP
+Definition at line 94 of file vximtool.c.
+.SS "#define IMT_FBCONFIG   077"
+.PP
+Definition at line 101 of file vximtool.c.
+.SS "#define IO_FIFO   1"
+.PP
+Definition at line 167 of file vximtool.c.
+.PP
+Referenced by open_fifo(), vx_iisclose(), and vx_iisio().
+.SS "#define IO_INET   2"
+.PP
+Definition at line 168 of file vximtool.c.
+.PP
+Referenced by main(), open_inet(), vx_disconnectClient(), vx_iisclose(), and vx_iisio().
+.SS "#define IO_TIMEOUT   30"
+.PP
+Definition at line 83 of file vximtool.c.
+.PP
+Referenced by vx_iisio().
+.SS "#define IO_UNIX   3"
+.PP
+Definition at line 169 of file vximtool.c.
+.PP
+Referenced by main(), open_unix(), vx_disconnectClient(), and vx_iisclose().
+.SS "#define LUT   02"
+.PP
+Definition at line 92 of file vximtool.c.
+.SS "#define max(\fBa\fP, \fBb\fP)   ((\fBa\fP)<(\fBb\fP)?(\fBb\fP):(\fBa\fP))"
+.PP
+Definition at line 223 of file vximtool.c.
+.SS "#define MAX_CLIENTS   8"
+.PP
+Definition at line 59 of file vximtool.c.
+.PP
+Referenced by get_iochan().
+.SS "#define MAX_FBCONFIG   128"
+.PP
+Definition at line 55 of file vximtool.c.
+.SS "#define MAX_FRAMES   4"
+.PP
+Definition at line 57 of file vximtool.c.
+.SS "#define MAXCONN   5"
+.PP
+Definition at line 84 of file vximtool.c.
+.PP
+Referenced by open_inet(), and open_unix().
+.SS "#define MEMORY   01"
+.PP
+Definition at line 91 of file vximtool.c.
+.SS "#define min(\fBa\fP, \fBb\fP)   ((\fBa\fP)<(\fBb\fP)?(\fBa\fP):(\fBb\fP))"
+.PP
+Definition at line 220 of file vximtool.c.
+.SS "#define O_DEVNAME   '/dev/imt1i'"
+.PP
+Definition at line 75 of file vximtool.c.
+.SS "#define PACKED   0040000"
+.PP
+Definition at line 97 of file vximtool.c.
+.SS "#define SELWIDTH   32"
+.PP
+Definition at line 231 of file vximtool.c.
+.PP
+Referenced by main().
+.SS "#define SZ_FIFOBUF   4000"
+.PP
+Definition at line 86 of file vximtool.c.
+.SS "#define SZ_FIFOBUF   4000"
+.PP
+Definition at line 86 of file vximtool.c.
+.PP
+Referenced by vx_iisio().
+.SS "#define SZ_FNAME   256"
+.PP
+Definition at line 88 of file vximtool.c.
+.SS "#define SZ_FNAME   256"
+.PP
+Definition at line 88 of file vximtool.c.
+.SS "#define SZ_IMCURVAL   160"
+.PP
+Definition at line 89 of file vximtool.c.
+.SS "#define SZ_IMTITLE   128"
+.PP
+Definition at line 65 of file vximtool.c.
+.PP
+Referenced by wcs_update().
+.SS "#define SZ_IOBUF   65536"
+.PP
+Definition at line 85 of file vximtool.c.
+.PP
+Referenced by vx_iisio().
+.SS "#define SZ_LABEL   256"
+.PP
+Definition at line 64 of file vximtool.c.
+.SS "#define SZ_LINE   256"
+.PP
+Definition at line 69 of file vximtool.c.
+.SS "#define SZ_WCSBUF   320"
+.PP
+Definition at line 87 of file vximtool.c.
+.SS "#define SZ_WCSBUF   320"
+.PP
+Definition at line 87 of file vximtool.c.
+.SS "#define W_DEFFORMAT   ' %7.2f %7.2f %7.1f%\fBc\fP'"
+.PP
+Definition at line 122 of file vximtool.c.
+.PP
+Referenced by vx_iisio(), and wcs_update().
+.SS "#define W_LINEAR   1"
+.PP
+Definition at line 120 of file vximtool.c.
+.SS "#define W_LOG   2"
+.PP
+Definition at line 121 of file vximtool.c.
+.SS "#define W_UNITARY   0"
+.PP
+Definition at line 119 of file vximtool.c.
+.SS "#define WCS   021"
+.PP
+Definition at line 95 of file vximtool.c.
+.SS "#define XYMASK   077777"
+.PP
+Definition at line 102 of file vximtool.c.
+.PP
+Referenced by vx_iisio().
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef   * \fBCtranPtr\fP"
+.PP
+Referenced by vx_iisio(), and wcs_update().
+.SS "typedef   * \fBFbConfigPtr\fP"
+.PP
+Referenced by vx_initFrame().
+.SS "typedef   * \fBFrameBufPtr\fP"
+.PP
+Referenced by set_fbconfig(), vx_eraseFrame(), vx_iisclose(), vx_iisio(), vx_initFrame(), and wcs_update().
+.SS "typedef   * \fBIoChanPtr\fP"
+.PP
+Referenced by main(), open_fifo(), open_inet(), open_unix(), set_fbconfig(), vx_connectClient(), vx_disconnectClient(), vx_iisclose(), and vx_iisio().
+.SS "typedef   * \fBVXimDataPtr\fP"
+.PP
+Referenced by get_fbconfig(), get_iochan(), main(), open_fifo(), open_inet(), open_unix(), set_fbconfig(), vx_connectClient(), vx_eraseFrame(), vx_iisclose(), vx_iisio(), vx_iisopen(), vx_initFrame(), vx_initialize(), and wcs_update().
+.SH "Function Documentation"
+.PP 
+.SS "void bswap2 (char 	* a, char * b, int nbytes)\fC [static]\fP"
+.PP
+Definition at line 1433 of file vximtool.c.
+.PP
+References a, b, and op.
+.SS "void bswap2 ()\fC [static]\fP"
+.PP
+.SS "int decode_frameno (int z)\fC [static]\fP"
+.PP
+Definition at line 1401 of file vximtool.c.
+.PP
+References max, n, and z.
+.SS "int decode_frameno ()"
+.PP
+Referenced by vx_iisio().
+.SS "void get_fbconfig (\fBVXimDataPtr\fP vxim)\fC [static]\fP"
+.PP
+Definition at line 1685 of file vximtool.c.
+.PP
+References DEF_FRAME_HEIGHT, DEF_FRAME_WIDTH, FBCONFIG_1, FBCONFIG_ENV1, FBCONFIG_ENV2, i, max, MAX_FBCONFIG, min, nframes, SZ_LINE, and VXimDataPtr.
+.SS "void get_fbconfig ()\fC [static]\fP"
+.PP
+Referenced by vx_initialize().
+.SS "\fBIoChanPtr\fP get_iochan (\fBVXimDataPtr\fP vxim)\fC [static]\fP"
+.PP
+Definition at line 844 of file vximtool.c.
+.PP
+References i, MAX_CLIENTS, and VXimDataPtr.
+.SS "\fBIoChanPtr\fP get_iochan ()"
+.PP
+Referenced by open_fifo(), open_inet(), and open_unix().
+.SS "main (int argc, char	** argv)"
+.PP
+Definition at line 310 of file vximtool.c.
+.PP
+References allset, background, buf, cdl_open(), CDLPtr, DEF_PROXY_PORT, exit(), fds, i, interactive, IO_INET, IO_UNIX, IoChanPtr, keep_raster, MAX_FRAMES, min, n, SELWIDTH, server_data, SZ_FNAME, Usage(), verbose, vx_connectClient(), vx_iisclose(), vx_iisio(), vx_iisopen(), vx_initialize(), and VXimDataPtr.
+.SS "\fBIoChanPtr\fP open_fifo (\fBVXimDataPtr\fP vxim)\fC [static]\fP"
+.PP
+Definition at line 562 of file vximtool.c.
+.PP
+References get_iochan(), IO_FIFO, IoChanPtr, verbose, and VXimDataPtr.
+.SS "\fBIoChanPtr\fP open_fifo ()\fC [static]\fP"
+.PP
+Referenced by vx_iisopen().
+.SS "\fBIoChanPtr\fP open_inet (\fBVXimDataPtr\fP vxim)\fC [static]\fP"
+.PP
+Definition at line 646 of file vximtool.c.
+.PP
+References errno, get_iochan(), IO_INET, IoChanPtr, MAXCONN, verbose, and VXimDataPtr.
+.SS "\fBIoChanPtr\fP open_inet ()"
+.PP
+Referenced by vx_iisopen().
+.SS "\fBIoChanPtr\fP open_unix (\fBVXimDataPtr\fP vxim)\fC [static]\fP"
+.PP
+Definition at line 707 of file vximtool.c.
+.PP
+References errno, get_iochan(), IO_UNIX, IoChanPtr, MAXCONN, SZ_FNAME, verbose, and VXimDataPtr.
+.SS "\fBIoChanPtr\fP open_unix ()"
+.PP
+Referenced by vx_iisopen().
+.SS "void printoption (char    * st)\fC [static]\fP"
+.PP
+Definition at line 1805 of file vximtool.c.
+.PP
+References cpos, and st.
+.SS "void printoption ()"
+.PP
+Referenced by Usage().
+.SS "void set_fbconfig (\fBIoChanPtr\fP chan, int config, int frame)\fC [static]\fP"
+.PP
+Definition at line 1364 of file vximtool.c.
+.PP
+References fb, frame, FrameBufPtr, i, IoChanPtr, max, vx_initFrame(), vx_initialize(), and VXimDataPtr.
+.SS "void set_fbconfig ()"
+.PP
+Referenced by vx_iisio().
+.SS "void Usage ()"
+.PP
+Definition at line 1771 of file vximtool.c.
+.PP
+References printoption().
+.PP
+Referenced by main().
+.SS "void vx_connectClient (\fBIoChanPtr\fP chan, int * source)\fC [static]\fP"
+.PP
+Definition at line 774 of file vximtool.c.
+.PP
+References allset, IoChanPtr, and VXimDataPtr.
+.SS "void vx_connectClient ()"
+.PP
+Referenced by main().
+.SS "void vx_disconnectClient (\fBIoChanPtr\fP chan)\fC [static]\fP"
+.PP
+Definition at line 811 of file vximtool.c.
+.PP
+References allset, IO_INET, IO_UNIX, IoChanPtr, and verbose.
+.SS "void vx_disconnectClient ()"
+.PP
+Referenced by vx_iisio().
+.SS "void vx_eraseFrame (\fBVXimDataPtr\fP vxim, int frame)\fC [static]\fP"
+.PP
+Definition at line 1658 of file vximtool.c.
+.PP
+References fb, frame, FrameBufPtr, keep_raster, and VXimDataPtr.
+.SS "void vx_eraseFrame ()"
+.PP
+Referenced by vx_iisio().
+.SS "void vx_iisclose (\fBVXimDataPtr\fP vxim)\fC [static]\fP"
+.PP
+Definition at line 506 of file vximtool.c.
+.PP
+References fb, FrameBufPtr, free(), i, IO_FIFO, IO_INET, IO_UNIX, IoChanPtr, j, keep_raster, and VXimDataPtr.
+.SS "void vx_iisclose ()\fC [static]\fP"
+.PP
+Referenced by main().
+.SS "void vx_iisio (\fBIoChanPtr\fP chan, int * fd_addr, int source)\fC [static]\fP"
+.PP
+Definition at line 868 of file vximtool.c.
+.PP
+References abs, bswap2(), buf, cdl_clearFrame(), cdl_readCursor(), cdl_readSubRaster(), cdl_setCursor(), cdl_setFBConfig(), cdl_setFrame(), cdl_setWCS(), cdl_writeSubRaster(), COMMAND, CtranPtr, cursor_x, decode_frameno(), fb, FEEDBACK, frame, FrameBufPtr, free(), i, IIS_READ, IMC_SAMPLE, IMCURSOR, IO_FIFO, IO_INET, IO_TIMEOUT, IoChanPtr, keep_raster, key, LUT, malloc(), max, MAX_FRAMES, MEMORY, min, n, op, PACKED, pix, set_fbconfig(), SZ_FIFOBUF, SZ_FNAME, SZ_IMCURVAL, SZ_IOBUF, SZ_WCSBUF, verbose, vx_disconnectClient(), vx_eraseFrame(), vx_retCursorVal(), VXimDataPtr, W_DEFFORMAT, wcs, WCS, wcs_update(), x, XYMASK, y, and z.
+.SS "void vx_iisio ()\fC [static]\fP"
+.PP
+Referenced by main().
+.SS "int vx_iisopen (\fBVXimDataPtr\fP vxim)\fC [static]\fP"
+.PP
+Definition at line 480 of file vximtool.c.
+.PP
+References open_fifo(), open_inet(), open_unix(), and VXimDataPtr.
+.SS "int vx_iisopen ()\fC [static]\fP"
+.PP
+Referenced by main().
+.SS "void vx_initFrame (\fBVXimDataPtr\fP vxim, int frame, int nframes, \fBFbConfigPtr\fP config)\fC [static]\fP"
+.PP
+Definition at line 1626 of file vximtool.c.
+.PP
+References fb, FbConfigPtr, frame, FrameBufPtr, free(), keep_raster, malloc(), MAX_FRAMES, nframes, and VXimDataPtr.
+.SS "void vx_initFrame ()"
+.PP
+Referenced by set_fbconfig(), and vx_initialize().
+.SS "void vx_initialize (\fBVXimDataPtr\fP vxim, int config, int nframes, int reset)\fC [static]\fP"
+.PP
+Definition at line 1598 of file vximtool.c.
+.PP
+References get_fbconfig(), nframes, reset, vx_initFrame(), and VXimDataPtr.
+.SS "void vx_initialize ()\fC [static]\fP"
+.PP
+Referenced by main(), and set_fbconfig().
+.SS "void vx_retCursorVal (int dataout, float sx, float sy, int wcs, int key, char	* strval)\fC [static]\fP"
+.PP
+Definition at line 1473 of file vximtool.c.
+.PP
+References interactive, key, SZ_IMCURVAL, and wcs.
+.SS "void vx_retCursorVal ()"
+.PP
+Referenced by vx_iisio().
+.SS "\fBCtranPtr\fP wcs_update (\fBVXimDataPtr\fP vxim, \fBFrameBufPtr\fP fr)\fC [static]\fP"
+.PP
+Definition at line 1533 of file vximtool.c.
+.PP
+References abs, buf, CtranPtr, FrameBufPtr, SZ_IMTITLE, VXimDataPtr, W_DEFFORMAT, W_LINEAR, W_UNITARY, z1, and z2.
+.SS "\fBCtranPtr\fP wcs_update ()\fC [static]\fP"
+.PP
+Referenced by vx_iisio().
+.SH "Variable Documentation"
+.PP 
+.SS "fd_set \fBallset\fP\fC [static]\fP"
+.PP
+Definition at line 244 of file vximtool.c.
+.PP
+Referenced by main(), vx_connectClient(), and vx_disconnectClient().
+.SS "int \fBbackground\fP = 0\fC [static]\fP"
+.PP
+Definition at line 240 of file vximtool.c.
+.PP
+Referenced by main().
+.SS "int \fBcpos\fP = 0\fC [static]\fP"
+.PP
+Definition at line 1797 of file vximtool.c.
+.PP
+Referenced by printoption().
+.SS "float \fBcursor_x\fP = 1.0 cursor_y = 1.0\fC [static]\fP"
+.PP
+Definition at line 243 of file vximtool.c.
+.PP
+Referenced by vx_iisio().
+.SS "int \fBerrno\fP"
+.PP
+Definition at line 239 of file vximtool.c.
+.PP
+Referenced by open_inet(), and open_unix().
+.SS "fd_set \fBfds\fP\fC [static]\fP"
+.PP
+Definition at line 244 of file vximtool.c.
+.PP
+Referenced by main().
+.SS "int \fBinteractive\fP = 0\fC [static]\fP"
+.PP
+Definition at line 242 of file vximtool.c.
+.PP
+Referenced by main(), and vx_retCursorVal().
+.SS "int \fBkeep_raster\fP = 1\fC [static]\fP"
+.PP
+Definition at line 238 of file vximtool.c.
+.PP
+Referenced by main(), vx_eraseFrame(), vx_iisclose(), vx_iisio(), and vx_initFrame().
+.SS "\fBVXimData\fP \fBserver_data\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+  1,            
+  DEF_NFRAMES,          
+  FBCONFIG_2,         
+  O_DEVNAME,          
+  I_DEVNAME,          
+  DEF_UNIXADDR,         
+  DEF_PORT,         
+  1,            
+  1,            
+  2,            
+  512, 512          
+}
+.fi
+.PP
+Definition at line 200 of file vximtool.c.
+.PP
+Referenced by main().
+.SS "int \fBverbose\fP = 0\fC [static]\fP"
+.PP
+Definition at line 241 of file vximtool.c.
+.PP
+Referenced by main(), open_fifo(), open_inet(), open_unix(), vx_disconnectClient(), and vx_iisio().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

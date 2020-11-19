@@ -1,0 +1,464 @@
+.TH "imd.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+imd.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <sys/stat.h>\fP
+.br
+\fC#include <sys/file.h>\fP
+.br
+\fC#include <sys/types.h>\fP
+.br
+\fC#include <sys/socket.h>\fP
+.br
+\fC#include <netinet/in.h>\fP
+.br
+\fC#include <sys/un.h>\fP
+.br
+\fC#include <netdb.h>\fP
+.br
+\fC#include <fcntl.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include 'cdl.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCDL_LIBRARY_SOURCE\fP"
+.br
+.ti -1c
+.RI "#define \fBSZ_BLOCK\fP   16384"
+.br
+.ti -1c
+.RI "#define \fBW_UNITARY\fP   0"
+.br
+.ti -1c
+.RI "#define \fBW_LINEAR\fP   1"
+.br
+.ti -1c
+.RI "#define \fBW_LOG\fP   2"
+.br
+.ti -1c
+.RI "#define \fBW_USER\fP   3"
+.br
+.ti -1c
+.RI "#define \fBUNIX\fP   10"
+.br
+.ti -1c
+.RI "#define \fBINET\fP   11"
+.br
+.ti -1c
+.RI "#define \fBFIFO\fP   12"
+.br
+.ti -1c
+.RI "#define \fBDEF_FBCONFIG\fP   1"
+.br
+.ti -1c
+.RI "#define \fBDEF_OSDEV_1\fP   'unix:/\fBtmp\fP/.IMT%\fBd\fP'"
+.br
+.ti -1c
+.RI "#define \fBDEF_OSDEV_2\fP   'fifo:/dev/imt1i:/dev/imt1o'"
+.br
+.ti -1c
+.RI "#define \fBFBCONFIG_1\fP   '.imtoolrc'"
+.br
+.ti -1c
+.RI "#define \fBFBCONFIG_2\fP   '/usr/local/lib/imtoolrc'"
+.br
+.ti -1c
+.RI "#define \fBFBCONFIG_ENV1\fP   'imtoolrc'"
+.br
+.ti -1c
+.RI "#define \fBFBCONFIG_ENV2\fP   'IMTOOLRC'"
+.br
+.ti -1c
+.RI "#define \fBDEF_FRAME_WIDTH\fP   512"
+.br
+.ti -1c
+.RI "#define \fBDEF_FRAME_HEIGHT\fP   512"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBIMDPtr\fP \fBimd_initialize\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_parseImtdev\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_loadImtoolrc\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_getstr\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_writeLine\fP ()"
+.br
+.ti -1c
+.RI "int \fBimd_readLine\fP ()"
+.br
+.ti -1c
+.RI "void \fBimd_minmax\fP ()"
+.br
+.ti -1c
+.RI "\fBIMDPtr\fP \fBimd_open\fP (char *\fBimtdev\fP)"
+.br
+.ti -1c
+.RI "int \fBimd_displayImage\fP (\fBIMDPtr\fP imd, \fBuchar\fP *\fBpix\fP, int \fBnx\fP, int \fBny\fP, int \fBframe\fP, int \fBfbconfig\fP, int comp_wcs)"
+.br
+.ti -1c
+.RI "int \fBimd_readCursor\fP (\fBIMDPtr\fP imd, int sample, float *x, float *y, char *\fBkey\fP)"
+.br
+.ti -1c
+.RI "int \fBimd_setWCS\fP (\fBIMDPtr\fP imd, char *name, char *\fBtitle\fP, float \fBa\fP, float \fBb\fP, float \fBc\fP, float \fBd\fP, float \fBtx\fP, float \fBty\fP, float \fBz1\fP, float \fBz2\fP, int \fBzt\fP)"
+.br
+.ti -1c
+.RI "int \fBimd_getWCS\fP (\fBIMDPtr\fP imd, char *name, char *\fBtitle\fP, float *\fBa\fP, float *\fBb\fP, float *\fBc\fP, float *\fBd\fP, float *\fBtx\fP, float *\fBty\fP, float *\fBz1\fP, float *\fBz2\fP, int *\fBzt\fP)"
+.br
+.ti -1c
+.RI "int \fBimd_close\fP (\fBIMDPtr\fP imd)"
+.br
+.ti -1c
+.RI "int \fBimd_writeImage\fP (\fBIMDPtr\fP imd, \fBuchar\fP *\fBpix\fP, int \fBnx\fP, int \fBny\fP, int llx, int lly)"
+.br
+.ti -1c
+.RI "int \fBimd_readImage\fP (\fBIMDPtr\fP imd, \fBuchar\fP *\fBpix\fP, int *\fBnx\fP, int *\fBny\fP)"
+.br
+.ti -1c
+.RI "int \fBimd_readFrameBuffer\fP (\fBIMDPtr\fP imd, \fBuchar\fP *\fBpix\fP, int *\fBnx\fP, int *\fBny\fP)"
+.br
+.ti -1c
+.RI "int \fBimd_setFrame\fP (\fBIMDPtr\fP imd, int \fBframe\fP)"
+.br
+.ti -1c
+.RI "int \fBimd_setFBConfig\fP (\fBIMDPtr\fP imd, int configno)"
+.br
+.ti -1c
+.RI "int \fBimd_getFBConfig\fP (\fBIMDPtr\fP imd, int *configno, int *width, int *height, int *\fBnframes\fP)"
+.br
+.ti -1c
+.RI "int \fBimd_setName\fP (\fBIMDPtr\fP imd, char *name)"
+.br
+.ti -1c
+.RI "int \fBimd_setTitle\fP (\fBIMDPtr\fP imd, char *\fBtitle\fP)"
+.br
+.ti -1c
+.RI "int \fBimd_setCursor\fP (\fBIMDPtr\fP imd, int x, int y, int \fBwcs\fP)"
+.br
+.ti -1c
+.RI "int \fBimd_clearFrame\fP (\fBIMDPtr\fP imd)"
+.br
+.ti -1c
+.RI "int \fBimd_readSubRaster\fP (\fBIMDPtr\fP imd, int llx, int lly, int \fBnx\fP, int \fBny\fP, \fBuchar\fP *\fBpix\fP)"
+.br
+.ti -1c
+.RI "int \fBimd_writeSubRaster\fP (\fBIMDPtr\fP imd, int llx, int lly, int \fBnx\fP, int \fBny\fP, \fBuchar\fP *\fBpix\fP)"
+.br
+.ti -1c
+.RI "int \fBimd_setDebug\fP (int state)"
+.br
+.ti -1c
+.RI "int \fBimd_writeLine\fP (\fBIMDPtr\fP imd, \fBuchar\fP *\fBpix\fP, int nbytes, int x, int y)"
+.br
+.ti -1c
+.RI "int \fBimd_readLine\fP (\fBIMDPtr\fP imd, \fBuchar\fP *\fBpix\fP, int nbytes, int x, int y)"
+.br
+.ti -1c
+.RI "\fBIMDPtr\fP \fBimd_initialize\fP (int fdin, int fdout, int domain)"
+.br
+.ti -1c
+.RI "int \fBimd_parseImtdev\fP (char *\fBimtdev\fP, char *unixaddr, unsigned short *host_port, unsigned long *host_addr, char *ififo, char *ofifo)"
+.br
+.ti -1c
+.RI "int \fBimd_loadImtoolrc\fP (\fBIMDPtr\fP imd)"
+.br
+.ti -1c
+.RI "int \fBimd_getstr\fP (char **ipp, char *obuf, int \fBmaxch\fP)"
+.br
+.ti -1c
+.RI "void \fBimd_minmax\fP (\fBuchar\fP *\fBpix\fP, int nbytes, int *pmin, int *pmax)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBimd_debug\fP = 0"
+.br
+.ti -1c
+.RI "char \fBbuf\fP [SZ_LINE]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CDL_LIBRARY_SOURCE"
+.PP
+Definition at line 10 of file imd.c.
+.SS "#define DEF_FBCONFIG   1"
+.PP
+Definition at line 67 of file imd.c.
+.SS "#define DEF_FRAME_HEIGHT   512"
+.PP
+Definition at line 77 of file imd.c.
+.PP
+Referenced by get_fbconfig(), and imd_loadImtoolrc().
+.SS "#define DEF_FRAME_WIDTH   512"
+.PP
+Definition at line 76 of file imd.c.
+.PP
+Referenced by get_fbconfig(), and imd_loadImtoolrc().
+.SS "#define DEF_OSDEV_1   'unix:/\fBtmp\fP/.IMT%\fBd\fP'"
+.PP
+Definition at line 68 of file imd.c.
+.SS "#define DEF_OSDEV_2   'fifo:/dev/imt1i:/dev/imt1o'"
+.PP
+Definition at line 69 of file imd.c.
+.PP
+Referenced by imd_open().
+.SS "#define FBCONFIG_1   '.imtoolrc'"
+.PP
+Definition at line 72 of file imd.c.
+.PP
+Referenced by get_fbconfig(), and imd_loadImtoolrc().
+.SS "#define FBCONFIG_2   '/usr/local/lib/imtoolrc'"
+.PP
+Definition at line 73 of file imd.c.
+.PP
+Referenced by imd_loadImtoolrc().
+.SS "#define FBCONFIG_ENV1   'imtoolrc'"
+.PP
+Definition at line 74 of file imd.c.
+.PP
+Referenced by get_fbconfig(), and imd_loadImtoolrc().
+.SS "#define FBCONFIG_ENV2   'IMTOOLRC'"
+.PP
+Definition at line 75 of file imd.c.
+.PP
+Referenced by get_fbconfig(), and imd_loadImtoolrc().
+.SS "#define FIFO   12"
+.PP
+Definition at line 64 of file imd.c.
+.PP
+Referenced by imd_open(), and imd_parseImtdev().
+.SS "#define INET   11"
+.PP
+Definition at line 63 of file imd.c.
+.PP
+Referenced by imd_open(), and imd_parseImtdev().
+.SS "#define SZ_BLOCK   16384"
+.PP
+Definition at line 53 of file imd.c.
+.PP
+Referenced by imd_readSubRaster(), imd_writeImage(), and imd_writeSubRaster().
+.SS "#define UNIX   10"
+.PP
+Definition at line 62 of file imd.c.
+.PP
+Referenced by imd_open(), and imd_parseImtdev().
+.SS "#define W_LINEAR   1"
+.PP
+Definition at line 57 of file imd.c.
+.PP
+Referenced by imd_displayImage(), imd_initialize(), and wcs_update().
+.SS "#define W_LOG   2"
+.PP
+Definition at line 58 of file imd.c.
+.SS "#define W_UNITARY   0"
+.PP
+Definition at line 56 of file imd.c.
+.PP
+Referenced by wcs_update().
+.SS "#define W_USER   3"
+.PP
+Definition at line 59 of file imd.c.
+.SH "Function Documentation"
+.PP 
+.SS "int imd_clearFrame (\fBIMDPtr\fP imd)"
+.PP
+Definition at line 932 of file imd.c.
+.PP
+References com_eraseFrame(), imd_debug, and IMDPtr.
+.SS "int imd_close (\fBIMDPtr\fP imd)"
+.PP
+Definition at line 527 of file imd.c.
+.PP
+References free(), imd_debug, IMDPtr, and OK.
+.SS "int imd_displayImage (\fBIMDPtr\fP imd, \fBuchar\fP 	* pix, int nx, int ny, int frame, int fbconfig, int comp_wcs)"
+.PP
+Definition at line 292 of file imd.c.
+.PP
+References ERR, fbconfig, frame, free(), i, imd_clearFrame(), imd_debug, imd_minmax(), imd_setFBConfig(), imd_setFrame(), imd_setWCS(), imd_writeImage(), IMDPtr, INDEF, ly, malloc(), min, nx, ny, pix, SZ_NAME, uchar, and W_LINEAR.
+.PP
+Referenced by cdl_displayPix().
+.SS "int imd_getFBConfig (\fBIMDPtr\fP imd, int	* configno, int	* width, int * height, int	* nframes)"
+.PP
+Definition at line 819 of file imd.c.
+.PP
+References com_setFBConfig(), imd_debug, IMDPtr, and nframes.
+.SS "int imd_getstr (char ** ipp, char * obuf, int maxch)\fC [static]\fP"
+.PP
+Definition at line 1534 of file imd.c.
+.PP
+References maxch, and op.
+.SS "int imd_getstr ()"
+.PP
+Referenced by imd_parseImtdev().
+.SS "int imd_getWCS (\fBIMDPtr\fP imd, char	* name, char	* title, float	* a, float * b, float * c, float * d, float	* tx, float * ty, float	* z1, float * z2, int	* zt)"
+.PP
+Definition at line 488 of file imd.c.
+.PP
+References a, b, buf, c, com_readWCS(), d, ERR, imd_debug, IMDPtr, OK, title, tx, ty, z1, z2, and zt.
+.SS "\fBIMDPtr\fP imd_initialize (int fdin, int fdout, int domain)\fC [static]\fP"
+.PP
+Definition at line 1280 of file imd.c.
+.PP
+References IMD::a, IMD::b, IMD::c, IMD::d, IMD::datain, IMD::dataout, IMD::domain, IMD::fbconfig, IMD::frame, imd_loadImtoolrc(), IMDPtr, IMD::name, SZ_NAME, IMD::title, IMD::tx, IMD::ty, W_LINEAR, IMD::z1, IMD::z2, and IMD::ztrans.
+.SS "\fBIMDPtr\fP imd_initialize ()\fC [static]\fP"
+.PP
+Referenced by imd_open().
+.SS "int imd_loadImtoolrc (\fBIMDPtr\fP imd)\fC [static]\fP"
+.PP
+Definition at line 1429 of file imd.c.
+.PP
+References buf, DEF_FRAME_HEIGHT, DEF_FRAME_WIDTH, ERR, FBCONFIG_1, FBCONFIG_2, FBCONFIG_ENV1, FBCONFIG_ENV2, i, imd_debug, IMDPtr, malloc(), max, MAX_FBCONFIG, min, nframes, OK, and SZ_LINE.
+.SS "int imd_loadImtoolrc ()"
+.PP
+Referenced by imd_initialize().
+.SS "void imd_minmax (\fBuchar\fP 	* pix, int nbytes, int	* pmin, int * pmax)\fC [static]\fP"
+.PP
+Definition at line 1566 of file imd.c.
+.PP
+References i, max, min, pix, and uchar.
+.SS "void imd_minmax ()\fC [static]\fP"
+.PP
+Referenced by imd_displayImage().
+.SS "\fBIMDPtr\fP imd_open (char 	* imtdev)"
+.PP
+Definition at line 152 of file imd.c.
+.PP
+References DEF_OSDEV_2, ERR, FIFO, imd_debug, imd_initialize(), imd_parseImtdev(), IMDPtr, imtdev, INET, malloc(), SZ_IMTDEV, SZ_NAME, and UNIX.
+.SS "int imd_parseImtdev (char		* imtdev, char		* unixaddr, unsigned short	* host_port, unsigned long	* host_addr, char		* ififo, char * ofifo)\fC [static]\fP"
+.PP
+Definition at line 1335 of file imd.c.
+.PP
+References ERR, FIFO, imd_getstr(), imtdev, INET, SZ_LINE, SZ_NAME, and UNIX.
+.SS "int imd_parseImtdev ()\fC [static]\fP"
+.PP
+Referenced by imd_open().
+.SS "int imd_readCursor (\fBIMDPtr\fP imd, int sample, float	* x, float * y, char	* key)"
+.PP
+Definition at line 399 of file imd.c.
+.PP
+References com_readCursor(), imd_debug, IMDPtr, key, x, and y.
+.SS "int imd_readFrameBuffer (\fBIMDPtr\fP imd, \fBuchar\fP	* pix, int	* nx, int * ny)"
+.PP
+Definition at line 728 of file imd.c.
+.PP
+References imd_debug, imd_readSubRaster(), IMDPtr, malloc(), nx, ny, pix, and uchar.
+.PP
+Referenced by cdl_readFrameBuffer().
+.SS "int imd_readImage (\fBIMDPtr\fP imd, \fBuchar\fP	* pix, int	* nx, int * ny)"
+.PP
+Definition at line 704 of file imd.c.
+.PP
+References imd_debug, imd_readSubRaster(), IMDPtr, malloc(), nx, ny, pix, and uchar.
+.PP
+Referenced by cdl_readImage().
+.SS "int imd_readLine (\fBIMDPtr\fP imd, \fBuchar\fP	* pix, int nbytes, int x, int y)\fC [static]\fP"
+.PP
+Definition at line 1251 of file imd.c.
+.PP
+References com_readData(), imd_debug, IMDPtr, pix, uchar, x, and y.
+.SS "int imd_readLine ()"
+.PP
+Referenced by imd_readSubRaster(), and imd_writeSubRaster().
+.SS "int imd_readSubRaster (\fBIMDPtr\fP imd, int llx, int lly, int nx, int ny, \fBuchar\fP	* pix)"
+.PP
+Definition at line 947 of file imd.c.
+.PP
+References ERR, free(), i, imd_debug, imd_readLine(), IMDPtr, j, ly, malloc(), max, min, nx, ny, OK, pix, SZ_BLOCK, uchar, and y.
+.SS "int imd_setCursor (\fBIMDPtr\fP imd, int x, int y, int wcs)"
+.PP
+Definition at line 905 of file imd.c.
+.PP
+References com_setCursor(), imd_debug, IMDPtr, wcs, x, and y.
+.SS "int imd_setDebug (int state)"
+.PP
+Definition at line 1210 of file imd.c.
+.PP
+References imd_debug, and OK.
+.PP
+Referenced by cdl_setDebug().
+.SS "int imd_setFBConfig (\fBIMDPtr\fP imd, int configno)"
+.PP
+Definition at line 789 of file imd.c.
+.PP
+References com_setFBConfig(), imd_debug, and IMDPtr.
+.SS "int imd_setFrame (\fBIMDPtr\fP imd, int frame)"
+.PP
+Definition at line 763 of file imd.c.
+.PP
+References com_setFrame(), frame, imd_debug, and IMDPtr.
+.SS "int imd_setName (\fBIMDPtr\fP imd, char	* name)"
+.PP
+Definition at line 851 of file imd.c.
+.PP
+References imd_debug, IMDPtr, and OK.
+.PP
+Referenced by cdl_setName().
+.SS "int imd_setTitle (\fBIMDPtr\fP imd, char	* title)"
+.PP
+Definition at line 877 of file imd.c.
+.PP
+References imd_debug, IMDPtr, OK, and title.
+.PP
+Referenced by cdl_setTitle().
+.SS "int imd_setWCS (\fBIMDPtr\fP imd, char	* name, char	* title, float a, float b, float c, float d, float tx, float ty, float z1, float z2, int zt)"
+.PP
+Definition at line 444 of file imd.c.
+.PP
+References a, b, buf, c, com_writeWCS(), d, imd_debug, IMDPtr, title, tx, ty, z1, z2, and zt.
+.SS "int imd_writeImage (\fBIMDPtr\fP imd, \fBuchar\fP 	* pix, int nx, int ny, int llx, int lly)"
+.PP
+Definition at line 557 of file imd.c.
+.PP
+References ERR, free(), i, imd_debug, imd_writeLine(), IMDPtr, j, k, ly, malloc(), max, min, nx, ny, OK, pix, SZ_BLOCK, uchar, and y.
+.PP
+Referenced by imd_displayImage().
+.SS "int imd_writeLine (\fBIMDPtr\fP imd, \fBuchar\fP	* pix, int nbytes, int x, int y)\fC [static]\fP"
+.PP
+Definition at line 1231 of file imd.c.
+.PP
+References com_writeData(), imd_debug, IMDPtr, pix, uchar, x, and y.
+.SS "int imd_writeLine ()\fC [static]\fP"
+.PP
+Referenced by imd_writeImage(), and imd_writeSubRaster().
+.SS "int imd_writeSubRaster (\fBIMDPtr\fP imd, int llx, int lly, int nx, int ny, \fBuchar\fP	* pix)"
+.PP
+Definition at line 1076 of file imd.c.
+.PP
+References ERR, free(), i, imd_debug, imd_readLine(), imd_writeLine(), IMDPtr, j, ly, malloc(), max, min, nx, ny, OK, pix, SZ_BLOCK, uchar, and y.
+.SH "Variable Documentation"
+.PP 
+.SS "char \fBbuf\fP[SZ_LINE]"
+.PP
+Definition at line 81 of file imd.c.
+.PP
+Referenced by cdl_getFITSPixels(), com_read(), com_readCursor(), com_write(), counter_filter(), iis_cur(), iis_read(), iis_write(), imd_getWCS(), imd_loadImtoolrc(), imd_setWCS(), jpl_state(), main(), make_label(), vx_iisio(), and wcs_update().
+.SS "int \fBimd_debug\fP = 0"
+.PP
+Definition at line 80 of file imd.c.
+.PP
+Referenced by imd_clearFrame(), imd_close(), imd_displayImage(), imd_getFBConfig(), imd_getWCS(), imd_loadImtoolrc(), imd_open(), imd_readCursor(), imd_readFrameBuffer(), imd_readImage(), imd_readLine(), imd_readSubRaster(), imd_setCursor(), imd_setDebug(), imd_setFBConfig(), imd_setFrame(), imd_setName(), imd_setTitle(), imd_setWCS(), imd_writeImage(), imd_writeLine(), and imd_writeSubRaster().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

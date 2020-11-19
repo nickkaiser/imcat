@@ -1,0 +1,80 @@
+.TH "kepler.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+kepler.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+\fC#include 'kepler.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBKEPLER_TINY\fP   1.\fBe\fP-15"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBassignkeplerorbitfrombuffer\fP (\fBkeplerorbit\fP *orbit, double *buffer)"
+.br
+.ti -1c
+.RI "void \fBfillbufferfromkeplerorbit\fP (\fBkeplerorbit\fP *orbit, double *buffer)"
+.br
+.ti -1c
+.RI "void \fBkeplertocartesian\fP (\fBkeplerorbit\fP *\fBtheorbit\fP, double *\fBr\fP, double *\fBv\fP)"
+.br
+.ti -1c
+.RI "void \fBkeplertocartesian_shapiro\fP (\fBkeplerorbit\fP *\fBtheorbit\fP, double *\fBr\fP, double *\fBv\fP)"
+.br
+.ti -1c
+.RI "void \fBcartesiantokepler\fP (double *\fBr\fP, double *\fBv\fP, \fBkeplerorbit\fP *\fBtheorbit\fP)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define KEPLER_TINY   1.\fBe\fP-15"
+.PP
+Definition at line 16 of file kepler_sneeuw/kepler.c.
+.PP
+Referenced by keplertocartesian(), and keplertocartesian_shapiro().
+.SH "Function Documentation"
+.PP 
+.SS "void assignkeplerorbitfrombuffer (\fBkeplerorbit\fP * orbit, double * buffer)"
+.PP
+Definition at line 18 of file kepler_sneeuw/kepler.c.
+.PP
+References keplerorbit::a, keplerorbit::e, keplerorbit::i, keplerorbit::M, keplerorbit::Omega, and keplerorbit::omega.
+.SS "void cartesiantokepler (double * r, double * v, \fBkeplerorbit\fP * theorbit)"
+.PP
+Definition at line 125 of file kepler_sneeuw/kepler.c.
+.PP
+References keplerorbit::a, a, assign(), copy(), cross(), dot(), keplerorbit::e, E, e, free(), h, keplerorbit::i, i, j, k, length(), keplerorbit::M, M, n, keplerorbit::Omega, keplerorbit::omega, omega(), r, scale(), theorbit, and v.
+.SS "void fillbufferfromkeplerorbit (\fBkeplerorbit\fP * orbit, double * buffer)"
+.PP
+Definition at line 28 of file kepler_sneeuw/kepler.c.
+.PP
+References keplerorbit::a, keplerorbit::e, keplerorbit::i, keplerorbit::M, keplerorbit::Omega, and keplerorbit::omega.
+.SS "void keplertocartesian (\fBkeplerorbit\fP * theorbit, double * r, double * v)"
+.PP
+Definition at line 39 of file kepler_sneeuw/kepler.c.
+.PP
+References keplerorbit::a, a, assign(), keplerorbit::e, e, E, keplerorbit::i, i, KEPLER_TINY, keplerorbit::M, M, keplerorbit::Omega, keplerorbit::omega, omega(), r, rotx(), rotz(), scale(), theorbit, and v.
+.SS "void keplertocartesian_shapiro (\fBkeplerorbit\fP * theorbit, double * r, double * v)"
+.PP
+Definition at line 79 of file kepler_sneeuw/kepler.c.
+.PP
+References keplerorbit::a, A, a, assign(), B, keplerorbit::e, e, E, keplerorbit::i, i, j, KEPLER_TINY, keplerorbit::M, M, keplerorbit::Omega, keplerorbit::omega, omega(), r, theorbit, and v.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,102 @@
+#! /usr/bin/perl
+
+# perl script to calibrate shear estimates:
+# technique is to make a copy of the original image and .cat and .stars
+# with a boundary.
+# We then make sheared copies of the images, and shear the cats.
+# We then run 'getshapes' on each of stretched cats, run 'efit'
+# and 'ecorrect' and then calculate the shear polarizability from
+# the four shear cats => psh.cat which can then be 'pastecat'ed
+# back onto the original cat
+
+# force flushing
+$| = 1;
+
+$gamma = 0.15;
+
+$numin = 0;
+
+$origfits = "../summed_6_12.fits";
+$origcat = "../summed_6_12.cat";
+$origstars = "../summed_6_12.stars";
+
+$needimages = 1;
+
+$boxsize = 2048;
+$imsize = 2400;
+$margin = ($imsize - $boxsize) / 2;
+$srcfits = "s.fits";
+$srccat = "s.cat";
+$srcstars = "s.stars";
+$d = $imsize / 2;
+
+
+$A = 1 + $gamma;
+$B = 1 / $A;
+$a = ($A + $B) / 2;
+$b = ($A - $B) / 2;
+
+$active = 1;
+
+# create s.cat, s.stars and s.fits
+$string = sprintf("lc -i '%%nu $numin >' +all 'x = %%x %d %d 2 vector vadd' < %s  > %s",
+	$margin, $margin, $origcat, $srccat);
+&sys($string);
+$string = sprintf("lc +all 'x = %%x %d %d 2 vector vadd' < %s  > %s",
+	$margin, $margin, $origstars, $srcstars);
+&sys($string);
+if ($needimages) {
+	$string = sprintf("makesubimage %d %d %d %d -o < %s > %s", 
+ 		-$margin, -$margin, $imsize, $imsize, $origfits, $srcfits);
+	&sys($string);
+}
+
+# shear the images and cats
+&shear($A, 0.0, 0.0, $B, "s0p");
+&shear($B, 0.0, 0.0, $A, "s0m");
+&shear($a, $b, $b, $a, "s1p");
+&shear($a, -$b, -$b, $a, "s1m");
+
+$active = 1;
+
+# get the shapes for stars and all objects and correct them
+# we use -R for 'rambo-mode' as we need the cats to stay in synch...
+foreach $prefix ("s", "s0p", "s0m", "s1p", "s1m") {
+        &sys("doto  $prefix.cat getshapes -R -Z rg 3 -f $prefix.fits"); 
+        &sys("doto  $prefix.stars getshapes -R -Z rg 3 -f $prefix.fits"); 
+        &sys("efit -m 1.0 -n 2400 -x 10 $prefix.stars > $prefix.efit");
+        &sys("ecorrect -f $prefix.efit $prefix.cat");
+}
+
+# extract the polarisation from each sheared cat...
+&sys("doto s0p.cat.x lc \"'e0p = %e[0]'\"");
+&sys("doto s0m.cat.x lc \"'e0m = %e[0]'\"");
+&sys("doto s1p.cat.x lc \"'e1p = %e[1]'\"");
+&sys("doto s1m.cat.x lc \"'e1m = %e[1]'\"");
+
+&sys("pastecats s??.cat.x | lc 'psh = %e0p %e0m - %e1p %e1m - + 4 / $gamma /' > psh.cat");
+&sys("pastecats s.cat psh.cat > temp.cat");
+
+sub shear {
+	local($phi00, $phi01, $phi10, $phi11,  $prefix) = @_;
+	$string = sprintf("lc +all 'x = %%x %d %d 2 vector vsub %f %f %f %f lintrans %d %d 2 vector vadd' < %s > %s",
+		$d, $d, $phi00, $phi01, $phi10, $phi11, $d, $d, $srccat, $prefix.".cat");
+	&sys($string);
+	$string = sprintf("lc +all 'x = %%x %d %d 2 vector vsub %f %f %f %f lintrans %d %d 2 vector vadd' < %s > %s",
+		$d, $d, $phi00, $phi01, $phi10, $phi11, $d, $d, $srcstars, $prefix.".stars");
+	&sys($string);
+	if ($needimages) {
+		$string = sprintf("transformimage -c -i -p %f %f %f %f < %s > %s",
+			$phi00, $phi01, $phi10, $phi11, $srcfits, $prefix.".fits");
+ 		&sys($string);
+	}
+}
+
+
+sub sys {
+        print ($_[0], "\n");
+	if ($active) {
+        	system($_[0]) && die "getpsh: system call ($_[0]) failed\n";
+	}
+}
+

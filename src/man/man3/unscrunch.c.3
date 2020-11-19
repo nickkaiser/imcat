@@ -1,0 +1,52 @@
+.TH "unscrunch.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+unscrunch.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	unscrunch - expand \fBa\fP \fBFITS\fP image by \fBa\fP factor 2\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	unscrunch\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	expands \fBa\fP \fBfits\fP image by \fBa\fP factor 2.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	unscrunch - expand \fBa\fP \fBFITS\fP image by \fBa\fP factor 2\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	unscrunch\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	expands \fBa\fP \fBfits\fP image by \fBa\fP factor 2.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file unscrunch.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 25 of file unscrunch.c.
+.PP
+References add_comment(), copyfitsheader(), error_exit, exit(), i, j, fitsheader::n, readfitsheader(), readfitsline(), usage, writefitsheader(), writefitsline(), and writefitstail().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

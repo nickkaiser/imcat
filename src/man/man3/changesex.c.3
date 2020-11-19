@@ -1,0 +1,56 @@
+.TH "changesex.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+changesex.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/args.h'\fP
+.br
+\fC#include 'changesex.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	changesex - switch byte \fBorder\fP of \fBa\fP \fBFITS\fP file\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	changesex [-u] [-\fBn\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	The filter \\'changesex\\' swaps the byte \fBorder\fP in \fBa\fP \fBfits\fP image.\\\fBn\fP\\\\\fBn\fP\\	Imcat commands can work with either big- or little-endian images.\\\fBn\fP\\	Since 2/99 imcat written images contain \fBa\fP header value\\\fBn\fP\\	with keyword BYTEORDR whose value can be either BIG_ENDIAN or\\\fBn\fP\\	LITTLE_ENDIAN, and the value of which is set by the presence\\\fBn\fP\\	or absence of the environment variable IMCATSWAPFITSBYTES.\\\fBn\fP\\	If IMCATSWAPFITSBYTES is set then the image is stored in\\\fBn\fP\\	non-native byte \fBorder\fP.\\\fBn\fP\\\\\fBn\fP\\	Non-imcat images are assumed to be BIG_ENDIAN, while pre 2/99\\\fBn\fP\\	imcat images are assumed to be in the native byte \fBorder\fP.\\\fBn\fP\\	If you have set IMCATSWAPFITSBYTES then you will need to filter\\\fBn\fP\\	old style images through 'changesex' to bring them into non-native \fBorder\fP.\\\fBn\fP\\\\\fBn\fP\\	Use 'changesex -\fBn\fP' to force images with BYTEORDR=LITTLE_ENDIAN\\\fBn\fP\\	to BIG_ENDIAN format for compatibility with non-imcat software.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	changesex - switch byte \fBorder\fP of \fBa\fP \fBFITS\fP file\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	changesex [-u] [-\fBn\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	The filter \\'changesex\\' swaps the byte \fBorder\fP in \fBa\fP \fBfits\fP image.\\\fBn\fP\\\\\fBn\fP\\	Imcat commands can work with either big- or little-endian images.\\\fBn\fP\\	Since 2/99 imcat written images contain \fBa\fP header value\\\fBn\fP\\	with keyword BYTEORDR whose value can be either BIG_ENDIAN or\\\fBn\fP\\	LITTLE_ENDIAN, and the value of which is set by the presence\\\fBn\fP\\	or absence of the environment variable IMCATSWAPFITSBYTES.\\\fBn\fP\\	If IMCATSWAPFITSBYTES is set then the image is stored in\\\fBn\fP\\	non-native byte \fBorder\fP.\\\fBn\fP\\\\\fBn\fP\\	Non-imcat images are assumed to be BIG_ENDIAN, while pre 2/99\\\fBn\fP\\	imcat images are assumed to be in the native byte \fBorder\fP.\\\fBn\fP\\	If you have set IMCATSWAPFITSBYTES then you will need to filter\\\fBn\fP\\	old style images through 'changesex' to bring them into non-native \fBorder\fP.\\\fBn\fP\\\\\fBn\fP\\	Use 'changesex -\fBn\fP' to force images with BYTEORDR=LITTLE_ENDIAN\\\fBn\fP\\	to BIG_ENDIAN format for compatibility with non-imcat software.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file changesex.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 44 of file changesex.c.
+.PP
+References add_comment(), argsinit(), byteswapline(), error_exit, exit(), fitsheader::extpixtype, f, fits, flag, getflag(), i, fitsheader::n, N1, N2, fitsheader::ndim, pixsize(), readfitsheader(), usage, writefitsheader(), and writefitstail().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

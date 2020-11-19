@@ -1,0 +1,21 @@
+epower 
+		data epower.out
+		read {k 1 pt 3 pp 4 px 5 p 6 ep 7}
+		limits k -0.0001 0.0001
+		erase
+		box
+		lweight 3
+		connect k p
+		errorbar k p ep 2
+		errorbar k p ep 4
+		lweight 1
+		relocate -100 0
+		draw 100 0
+		ltype 2
+		connect k pt
+		connect k pp
+		connect k px
+		ltype 0
+		xlabel k
+		ylabel P(k)
+

@@ -1,0 +1,56 @@
+.TH "fft.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fft.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/arrays.h'\fP
+.br
+\fC#include '../fftlib/myfft.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	fft --- take the fast fourier \fBtransform\fP of \fBa\fP \fBfits\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fft [\fBoptions\fP...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fft' creates \fBa\fP three dimensional image with dimensions\\\fBn\fP\\	\fBN1\fP = \fBNx\fP, \fBN2\fP = \fBNy\fP, N3 = 2 whose zeroth and first planes\\\fBn\fP\\	contain the \fBreal\fP/imaginary parts of the discrete fft of the\\\fBn\fP\\	input image. Zero spatial fequency lives at \fBNx\fP/2, \fBNy\fP/2.\\\fBn\fP\\	Options are:\\\fBn\fP\\		-s		# output 16 bit image\\\fBn\fP\\		-\fBi\fP		# output 32 bit int format image\\\fBn\fP\\		-\fBn\fP		# no MAGIC substitution\\\fBn\fP\\		-\fBm\fP \fBmagicval\fP	# replacement for MAGIC pixels (0)\\\fBn\fP\\		-\fBc\fP		# don'\fBt\fP cycle input image.\\\fBn\fP\\		-I		# perform inverse \fBtransform\fP.\\\fBn\fP\\		-\fBC\fP		# \fBcomplex\fP fft   \\\fBn\fP\\	Default output image format is BITPIX = -32 (\fBi\fP.\fBe\fP. 4-byte \fBreal\fP).\\\fBn\fP\\\\\fBn\fP\\	With the numerical-recipes fft package this only works for\\\fBn\fP\\	image dimensions 2^\fBN\fP.\\\fBn\fP\\\\\fBn\fP\\	This may be useful for `psf-surgery':\\\fBn\fP\\	You could 'fft' \fBa\fP composite psf image; modify the fft \fBe\fP.g.\\\fBn\fP\\	by dividing it into some desired circular psf, and then apply\\\fBn\fP\\	the fft as \fBa\fP filter to your original image using 'smooth -F'\\\fBn\fP\\	and --- hey presto! --- your psf is now circular.\\\fBn\fP\\\\\fBn\fP\\	By default, and when doing \fBa\fP forward \fBtransform\fP\\\fBn\fP\\	the input image will be cycled by \fBN1\fP/2, \fBN2\fP/2, but\\\fBn\fP\\	you can override this with -\fBc\fP option.\\\fBn\fP\\\\\fBn\fP\\	There is redundancy in the fft image created from \fBreal\fP input since\\\fBn\fP\\	f(-\fBk\fP) = f^*(-\fBk\fP).\\\fBn\fP\\\\\fBn\fP\\	Use -\fBC\fP option to take tranform of \fBa\fP \fBcomplex\fP function.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	fft --- take the fast fourier \fBtransform\fP of \fBa\fP \fBfits\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fft [\fBoptions\fP...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fft' creates \fBa\fP three dimensional image with dimensions\\\fBn\fP\\	\fBN1\fP = \fBNx\fP, \fBN2\fP = \fBNy\fP, N3 = 2 whose zeroth and first planes\\\fBn\fP\\	contain the \fBreal\fP/imaginary parts of the discrete fft of the\\\fBn\fP\\	input image. Zero spatial fequency lives at \fBNx\fP/2, \fBNy\fP/2.\\\fBn\fP\\	Options are:\\\fBn\fP\\		-s		# output 16 bit image\\\fBn\fP\\		-\fBi\fP		# output 32 bit int format image\\\fBn\fP\\		-\fBn\fP		# no MAGIC substitution\\\fBn\fP\\		-\fBm\fP \fBmagicval\fP	# replacement for MAGIC pixels (0)\\\fBn\fP\\		-\fBc\fP		# don'\fBt\fP cycle input image.\\\fBn\fP\\		-I		# perform inverse \fBtransform\fP.\\\fBn\fP\\		-\fBC\fP		# \fBcomplex\fP fft   \\\fBn\fP\\	Default output image format is BITPIX = -32 (\fBi\fP.\fBe\fP. 4-byte \fBreal\fP).\\\fBn\fP\\\\\fBn\fP\\	With the numerical-recipes fft package this only works for\\\fBn\fP\\	image dimensions 2^\fBN\fP.\\\fBn\fP\\\\\fBn\fP\\	This may be useful for `psf-surgery':\\\fBn\fP\\	You could 'fft' \fBa\fP composite psf image; modify the fft \fBe\fP.g.\\\fBn\fP\\	by dividing it into some desired circular psf, and then apply\\\fBn\fP\\	the fft as \fBa\fP filter to your original image using 'smooth -F'\\\fBn\fP\\	and --- hey presto! --- your psf is now circular.\\\fBn\fP\\\\\fBn\fP\\	By default, and when doing \fBa\fP forward \fBtransform\fP\\\fBn\fP\\	the input image will be cycled by \fBN1\fP/2, \fBN2\fP/2, but\\\fBn\fP\\	you can override this with -\fBc\fP option.\\\fBn\fP\\\\\fBn\fP\\	There is redundancy in the fft image created from \fBreal\fP input since\\\fBn\fP\\	f(-\fBk\fP) = f^*(-\fBk\fP).\\\fBn\fP\\\\\fBn\fP\\	Use -\fBC\fP option to take tranform of \fBa\fP \fBcomplex\fP function.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file fft.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 56 of file fft.c.
+.PP
+References add_comment(), alloc_fft(), allocFloatArray(), cycleimage(), error_exit, exit(), fitsheader::extpixtype, fft_type, fits, FLOAT_PIXTYPE, forward_cfft(), forward_fft(), freeFloatArray(), get_fft(), INT_PIXTYPE, inverse_cfft(), inverse_fft(), fitsheader::n, N1, N2, fitsheader::ndim, read2Dfloatimage(), readfitsheader(), readfitsline(), set_fft(), SHORT_PIXTYPE, substitute(), usage, write2Dfloatimage(), writefitsheader(), writefitsline(), writefitstail(), x, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,122 @@
+.TH "getfitsval.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getfitsval.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../utils/args.h'\fP
+.br
+\fC#include '../../utils/stats_stuff.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	getfitsval --- add values from \fBa\fP \fBfits\fP file to \fBa\fP catalogue\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getfitsval fitsfile valname [\fBoptions\fP...]\\\fBn\fP\\		-x \fBxname\fP	# spatial coordinate ('x')\\\fBn\fP\\		-\fBm\fP \fBmagicval\fP	# magic value (-32768)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'getfitsval' reads \fBa\fP catalogue from stdin, which must\\\fBn\fP\\	contain at least some coordinate 'x' and adds an entry\\\fBn\fP\\	named 'valname' with value derived from the \fBFITS\fP file\\\fBn\fP\\	'fitsfile' and writes result to stdout.\\\fBn\fP\\\\\fBn\fP\\	The dimensionality of the new entry depends on the dimensionality\\\fBn\fP\\	of the x-coordinate and the image f.  If these match then the new\\\fBn\fP\\	entry is \fBa\fP scalar; for \fBa\fP two dimensional coordinate and \fBa\fP two\\\fBn\fP\\	dimensional image for example, the output value is \fBv\fP = f[\fBiy\fP][\fBix\fP] where\\\fBn\fP\\		\fBiy\fP = (int) floor(x[1])\\\fBn\fP\\		\fBix\fP = (int) floor(x[0])\\\fBn\fP\\	If the \fBFITS\fP image is of higher dimension, then the new value will\\\fBn\fP\\	be \fBa\fP vector or matrix.  For example, with \fBa\fP 2-vector x and 3D image\\\fBn\fP\\	f[iz][\fBiy\fP][\fBix\fP] with dimensions Nz, \fBNy\fP, \fBNx\fP, the output value \fBv\fP will be \fBa\fP\\\fBn\fP\\	vector of size \fBv\fP[Nz], with values\\\fBn\fP\\		\fBv\fP[iz] = f[iz][\fBiy\fP][\fBix\fP]\\\fBn\fP\\	Similarly, if f has five dimensions say, and x is \fBa\fP 3-vector, then\\\fBn\fP\\	\fBv\fP is \fBa\fP matrix of dimensions \fBv\fP[N5][N4].\\\fBn\fP\\\\\fBn\fP\\	By default, getfitsval looks for \fBa\fP spatial coordinate named 'x' but\\\fBn\fP\\	you can substitute another name with the '-x' option.\\\fBn\fP\\\\\fBn\fP\\	Points which lie in pixels with MAGIC value or which\\\fBn\fP\\	fall outside the image are assigned the value '\fBmagicval\fP'.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBsetv\fP (int \fBlevel\fP, int xoff, void *\fBv\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double \fBmagicval\fP"
+.br
+.ti -1c
+.RI "int \fBvndim\fP"
+.br
+.ti -1c
+.RI "int \fBvdim\fP [MAX_DIMS]"
+.br
+.ti -1c
+.RI "int \fBfsize\fP [MAX_DIMS+1]"
+.br
+.ti -1c
+.RI "int \fBxdim\fP"
+.br
+.ti -1c
+.RI "char * \fBf\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	getfitsval --- add values from \fBa\fP \fBfits\fP file to \fBa\fP catalogue\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getfitsval fitsfile valname [\fBoptions\fP...]\\\fBn\fP\\		-x \fBxname\fP	# spatial coordinate ('x')\\\fBn\fP\\		-\fBm\fP \fBmagicval\fP	# magic value (-32768)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'getfitsval' reads \fBa\fP catalogue from stdin, which must\\\fBn\fP\\	contain at least some coordinate 'x' and adds an entry\\\fBn\fP\\	named 'valname' with value derived from the \fBFITS\fP file\\\fBn\fP\\	'fitsfile' and writes result to stdout.\\\fBn\fP\\\\\fBn\fP\\	The dimensionality of the new entry depends on the dimensionality\\\fBn\fP\\	of the x-coordinate and the image f.  If these match then the new\\\fBn\fP\\	entry is \fBa\fP scalar; for \fBa\fP two dimensional coordinate and \fBa\fP two\\\fBn\fP\\	dimensional image for example, the output value is \fBv\fP = f[\fBiy\fP][\fBix\fP] where\\\fBn\fP\\		\fBiy\fP = (int) floor(x[1])\\\fBn\fP\\		\fBix\fP = (int) floor(x[0])\\\fBn\fP\\	If the \fBFITS\fP image is of higher dimension, then the new value will\\\fBn\fP\\	be \fBa\fP vector or matrix.  For example, with \fBa\fP 2-vector x and 3D image\\\fBn\fP\\	f[iz][\fBiy\fP][\fBix\fP] with dimensions Nz, \fBNy\fP, \fBNx\fP, the output value \fBv\fP will be \fBa\fP\\\fBn\fP\\	vector of size \fBv\fP[Nz], with values\\\fBn\fP\\		\fBv\fP[iz] = f[iz][\fBiy\fP][\fBix\fP]\\\fBn\fP\\	Similarly, if f has five dimensions say, and x is \fBa\fP 3-vector, then\\\fBn\fP\\	\fBv\fP is \fBa\fP matrix of dimensions \fBv\fP[N5][N4].\\\fBn\fP\\\\\fBn\fP\\	By default, getfitsval looks for \fBa\fP spatial coordinate named 'x' but\\\fBn\fP\\	you can substitute another name with the '-x' option.\\\fBn\fP\\\\\fBn\fP\\	Points which lie in pixels with MAGIC value or which\\\fBn\fP\\	fall outside the image are assigned the value '\fBmagicval\fP'.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file getfitsval.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 60 of file getfitsval.c.
+.PP
+References addargscomment(), addobjectitem(), object::addrlist, allocitemcontents(), allocobjectcontents(), argsinit(), connectobjecttocathead(), copycontentinfo(), copyheaderinfo(), item::dim, error_exit, exit(), f, fits, flag, fsize, getargf(), getargs(), getcatipfiletype(), getflag(), getobjectitem(), getobjectitemindex(), i, inheritcontents(), fitsheader::intpixtype, item::itype, ix, magicval, MAX_DIMS, fitsheader::n, fitsheader::ndim, item::ndim, newitembydimarray(), newobject(), NUM_TYPE, pixsize(), readcathead(), readfitsheader(), readfitsline(), readobject(), setcatopfiletype(), setv(), SHORT_MAGIC, usage, v, vdim, vndim, writecathead(), writeobject(), x, and xdim.
+.SS "void setv (int level, int xoff, void * v)"
+.PP
+Definition at line 196 of file getfitsval.c.
+.PP
+References f, FLOAT_MAGIC, fsize, i, magicval, v, vdim, vndim, and xdim.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "char* f\fC [static]\fP"
+.PP
+Definition at line 57 of file getfitsval.c.
+.SS "int \fBfsize\fP[MAX_DIMS + 1]\fC [static]\fP"
+.PP
+Definition at line 56 of file getfitsval.c.
+.PP
+Referenced by main(), and setv().
+.SS "double \fBmagicval\fP\fC [static]\fP"
+.PP
+Definition at line 55 of file getfitsval.c.
+.PP
+Referenced by main(), and setv().
+.SS "int \fBvdim\fP[MAX_DIMS]\fC [static]\fP"
+.PP
+Definition at line 56 of file getfitsval.c.
+.PP
+Referenced by main(), and setv().
+.SS "int \fBvndim\fP\fC [static]\fP"
+.PP
+Definition at line 56 of file getfitsval.c.
+.PP
+Referenced by main(), and setv().
+.SS "int \fBxdim\fP\fC [static]\fP"
+.PP
+Definition at line 56 of file getfitsval.c.
+.PP
+Referenced by main(), and setv().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,82 @@
+.TH "translate_fft.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+translate_fft.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/arrays.h'\fP
+.br
+\fC#include '../fftlib/myfft.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	translate_fft --- translate an image using 'sinc-interpolation'\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	translate_fft \fBdy\fP \fBdx\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'translate_fft' uses the FFT to translate an image.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "float \fBrfunc\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "float \fBifunc\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float \fBdi\fP"
+.br
+.ti -1c
+.RI "float \fBdj\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	translate_fft --- translate an image using 'sinc-interpolation'\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	translate_fft \fBdy\fP \fBdx\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'translate_fft' uses the FFT to translate an image.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file translate_fft.c.
+.SH "Function Documentation"
+.PP 
+.SS "float ifunc (float ki, float kj)"
+.PP
+Referenced by cfilter().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 30 of file translate_fft.c.
+.PP
+References add_comment(), alloc_fft(), cfilter(), di, dj, exit(), f, fft_type, fits, forward_fft(), i, ifunc(), inverse_fft(), j, N1, N2, read2Dfloatimage(), rfunc(), usage, and write2Dfloatimage().
+.SS "float rfunc (float ki, float kj)"
+.PP
+Referenced by cfilter().
+.SH "Variable Documentation"
+.PP 
+.SS "float \fBdi\fP"
+.PP
+Definition at line 28 of file translate_fft.c.
+.PP
+Referenced by accumulate(), deflect(), deflection(), do_object_stats(), doplot(), fsky(), Getshape(), getshape(), invdeflection(), main(), make_pop(), map(), neighbours(), and recircdef().
+.SS "float \fBdj\fP"
+.PP
+Definition at line 28 of file translate_fft.c.
+.PP
+Referenced by accumulate(), deflect(), deflection(), do_object_stats(), doplot(), fsky(), Getshape(), getshape(), invdeflection(), main(), make_pop(), map(), neighbours(), and recircdef().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

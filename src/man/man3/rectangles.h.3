@@ -1,0 +1,57 @@
+.TH "rectangles.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+rectangles.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBinstallrect\fP (float \fBx1\fP, float \fBx2\fP, float y1, float y2)"
+.br
+.ti -1c
+.RI "int \fBdeactivate\fP (float x, float y, float *\fBx1\fP, float *\fBx2\fP, float *y1, float *y2)"
+.br
+.ti -1c
+.RI "void \fBsetposfirst\fP (void)"
+.br
+.ti -1c
+.RI "int \fBgetrect\fP (float *\fBx1\fP, float *\fBx2\fP, float *y1, float *y2)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int deactivate (float x, float y, float * x1, float * x2, float * y1, float * y2)"
+.PP
+Definition at line 43 of file rectangles.c.
+.PP
+References pos, rectlis, x, and y.
+.PP
+Referenced by main().
+.SS "int getrect (float * x1, float * x2, float * y1, float * y2)"
+.PP
+Definition at line 79 of file rectangles.c.
+.PP
+References pos, and rectlis.
+.PP
+Referenced by main().
+.SS "int installrect (float x1, float x2, float y1, float y2)"
+.PP
+Definition at line 20 of file rectangles.c.
+.PP
+References pos, and rectlis.
+.PP
+Referenced by main().
+.SS "void setposfirst (void)"
+.PP
+Definition at line 73 of file rectangles.c.
+.PP
+References pos.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,16 @@
+all : liborbitutils.a
+
+OBJECTS = kepler.o airmassmin.o vectors.o Ffunc.o makedddotr.o tcl.o deltam.o powell_dbl.o linmin_dbl.o\
+	mnbrak_dbl.o brent_dbl.o f1dim_dbl.o nrutil.o gaussdev.o lu.o extravars.o amoeba_dbl.o amotry_dbl.o\
+	jpleph.o
+
+liborbitutils.a : $(OBJECTS)
+	ar r liborbitutils.a $(OBJECTS)
+	ranlib liborbitutils.a
+
+clean :
+	rm -f *.o
+
+empty :
+	rm -f liborbitutils.a
+

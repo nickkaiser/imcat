@@ -1,0 +1,112 @@
+.TH "fastmap.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fastmap.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'map.h'\fP
+.br
+\fC#include 'fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.ti -1c
+.RI "#define \fBW\fP   0"
+.br
+.ti -1c
+.RI "#define \fBS\fP   1"
+.br
+.ti -1c
+.RI "#define \fBN\fP   2"
+.br
+.ti -1c
+.RI "#define \fBE\fP   3"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBultrafastmap\fP (float **ftarget, int \fBN1\fP, int \fBN2\fP, float **fsource, int \fBM1\fP, int \fBM2\fP, int(*deflection)(float ri, float rj, float *\fBdi\fP, float *\fBdj\fP))"
+.br
+.ti -1c
+.RI "void \fBfastmap\fP (float **ftarget, int \fBN1\fP, int \fBN2\fP, float **f, int \fBM1\fP, int \fBM2\fP, int(*deflection)(float ri, float rj, float *\fBdi\fP, float *\fBdj\fP))"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBix\fP [8] = {0,0,0,1,0,1,1,1}"
+.br
+.ti -1c
+.RI "int \fBiy\fP [8] = {0,1,0,0,1,1,0,1}"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define E   3"
+.PP
+Definition at line 16 of file fastmap.c.
+.PP
+Referenced by cartesiantokepler(), fastmap(), keplertocartesian(), keplertocartesian_shapiro(), and main().
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 11 of file fastmap.c.
+.SS "#define \fBN\fP   2"
+.PP
+Definition at line 15 of file fastmap.c.
+.SS "#define S   1"
+.PP
+Definition at line 14 of file fastmap.c.
+.PP
+Referenced by fastmap(), and main().
+.SS "#define W   0"
+.PP
+Definition at line 13 of file fastmap.c.
+.PP
+Referenced by circkernel(), do_object_stats(), fastmap(), Getshape(), getshape(), getshape2(), getshape3(), main(), and rectkernel().
+.SH "Function Documentation"
+.PP 
+.SS "void fastmap (float ** ftarget, int N1, int N2, float ** f, int M1, int M2, int(* deflection)(float ri, float rj, float *\fBdi\fP, float *\fBdj\fP))"
+.PP
+Definition at line 58 of file fastmap.c.
+.PP
+References deflection(), dx, dy, E, exit(), f, i, ix, iy, j, M1, M2, MAGIC, N, N1, N2, S, W, x, y, and ys.
+.PP
+Referenced by main().
+.SS "void ultrafastmap (float ** ftarget, int N1, int N2, float ** fsource, int M1, int M2, int(* deflection)(float ri, float rj, float *\fBdi\fP, float *\fBdj\fP))"
+.PP
+Definition at line 28 of file fastmap.c.
+.PP
+References deflection(), i, j, M1, M2, N1, N2, x, y, and ys.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBix\fP[8] = {0,0,0,1,0,1,1,1}\fC [static]\fP"
+.PP
+Definition at line 18 of file fastmap.c.
+.PP
+Referenced by fastmap().
+.SS "int \fBiy\fP[8] = {0,1,0,0,1,1,0,1}\fC [static]\fP"
+.PP
+Definition at line 19 of file fastmap.c.
+.PP
+Referenced by fastmap().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

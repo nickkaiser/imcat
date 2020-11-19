@@ -1,0 +1,94 @@
+.TH "minisky.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+minisky.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../imlib/filters.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	minisky --- make \fBa\fP smooth local sky flat from cat of minima\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	minisky [option...] <catalogue >\fBfits\fP \\\fBn\fP\\		-s \fBn\fP		# work with scrunch^\fBn\fP-ed image (2)\\\fBn\fP\\		-\fBr\fP rf		# gaussian filter \fBradius\fP in \fBreal\fP pixels (64)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'minisky\\' reads minima from \fBa\fP catalogue on stdin\\\fBn\fP\\	It then creates two coarsely sampled images (chunky \fBpixel\fP side\\\fBn\fP\\	= 2^\fBn\fP \fBreal\fP pixels); \fBf1\fP is \fBnumber\fP of minima falling in \fBpixel\fP\\\fBn\fP\\	and f2 is sum of their fs values.  These are smoothed with\\\fBn\fP\\	gaussian \fBradius\fP rf and then fsky = f2 / \fBf1\fP.\\\fBn\fP\\	This will find low-frequency sky variations (as well as any\\\fBn\fP\\	\fBv\fP low frequency and low surface brightness \fBreal\fP objects.\\\fBn\fP\\	Output image needs unscrunching to full resolution\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.ti -1c
+.RI "#define \fBSIGMA1\fP   0.0"
+.br
+.ti -1c
+.RI "#define \fBALPHA\fP   1.0"
+.br
+.ti -1c
+.RI "#define \fBMAGICSUBSTITUTE\fP   0.0"
+.br
+.ti -1c
+.RI "#define \fBTINYVALUE\fP   1.0\fBe\fP-6"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define ALPHA   1.0"
+.PP
+Definition at line 38 of file minisky.c.
+.PP
+Referenced by main().
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 35 of file minisky.c.
+.SS "#define MAGICSUBSTITUTE   0.0"
+.PP
+Definition at line 39 of file minisky.c.
+.PP
+Referenced by main().
+.SS "#define SIGMA1   0.0"
+.PP
+Definition at line 37 of file minisky.c.
+.PP
+Referenced by main().
+.SS "#define TINYVALUE   1.0\fBe\fP-6"
+.PP
+Definition at line 40 of file minisky.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	minisky --- make \fBa\fP smooth local sky flat from cat of minima\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	minisky [option...] <catalogue >\fBfits\fP \\\fBn\fP\\		-s \fBn\fP		# work with scrunch^\fBn\fP-ed image (2)\\\fBn\fP\\		-\fBr\fP rf		# gaussian filter \fBradius\fP in \fBreal\fP pixels (64)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'minisky\\' reads minima from \fBa\fP catalogue on stdin\\\fBn\fP\\	It then creates two coarsely sampled images (chunky \fBpixel\fP side\\\fBn\fP\\	= 2^\fBn\fP \fBreal\fP pixels); \fBf1\fP is \fBnumber\fP of minima falling in \fBpixel\fP\\\fBn\fP\\	and f2 is sum of their fs values.  These are smoothed with\\\fBn\fP\\	gaussian \fBradius\fP rf and then fsky = f2 / \fBf1\fP.\\\fBn\fP\\	This will find low-frequency sky variations (as well as any\\\fBn\fP\\	\fBv\fP low frequency and low surface brightness \fBreal\fP objects.\\\fBn\fP\\	Output image needs unscrunching to full resolution\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file minisky.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 43 of file minisky.c.
+.PP
+References add_comment(), allocFloatArray(), ALPHA, error_exit, exit(), fits, FLOAT_PIXTYPE, ix, lcpipe, line, MAGIC, MAGICSUBSTITUTE, new2Dfitsheader(), scale, schecterfilter(), SIGMA1, TINYVALUE, usage, write2Dfloatimage(), x, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

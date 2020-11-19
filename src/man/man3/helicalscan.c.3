@@ -1,0 +1,62 @@
+.TH "helicalscan.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+helicalscan.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'utils/ipbuff.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	helicalscan --- generate \fBa\fP helical scan of \fBa\fP 2D \fBFITS\fP image\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	helicalscan \fBM\fP \fBd\fP \fBphi\fP [-\fBN\fP \fBnframes\fP] [-o \fBxo\fP \fByo\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'helicalscan' reads \fBa\fP 2 dimensional \fBFITS\fP image \fBfin\fP[y][x] from stdin and\\\fBn\fP\\	writes to stdout \fBa\fP 3 dimensional \fBFITS\fP image \fBfout\fP[\fBi\fP][y][x] consisting\\\fBn\fP\\	of \fBa\fP set of \fBM\fP x \fBM\fP subimages with origin placed at \fBa\fP sequence of\\\fBn\fP\\	positions on the input image:\\\fBn\fP\\\\\fBn\fP\\		\fBx0\fP = (\fBxo\fP + \fBi\fP * \fBd\fP * cos(\fBphi\fP)) % \fBN\fP\\\fBn\fP\\		y0 = (\fByo\fP + \fBi\fP * \fBd\fP * sin(\fBphi\fP)) % \fBN\fP\\\fBn\fP\\\\\fBn\fP\\	The \fBangle\fP \fBphi\fP at which the subimage moves across the source image\\\fBn\fP\\	is given in degrees.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMIN\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP)<(\fBb\fP)?(\fBa\fP):(\fBb\fP))"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MIN(\fBa\fP, \fBb\fP)   ((\fBa\fP)<(\fBb\fP)?(\fBa\fP):(\fBb\fP))"
+.PP
+Definition at line 35 of file helicalscan.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	helicalscan --- generate \fBa\fP helical scan of \fBa\fP 2D \fBFITS\fP image\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	helicalscan \fBM\fP \fBd\fP \fBphi\fP [-\fBN\fP \fBnframes\fP] [-o \fBxo\fP \fByo\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'helicalscan' reads \fBa\fP 2 dimensional \fBFITS\fP image \fBfin\fP[y][x] from stdin and\\\fBn\fP\\	writes to stdout \fBa\fP 3 dimensional \fBFITS\fP image \fBfout\fP[\fBi\fP][y][x] consisting\\\fBn\fP\\	of \fBa\fP set of \fBM\fP x \fBM\fP subimages with origin placed at \fBa\fP sequence of\\\fBn\fP\\	positions on the input image:\\\fBn\fP\\\\\fBn\fP\\		\fBx0\fP = (\fBxo\fP + \fBi\fP * \fBd\fP * cos(\fBphi\fP)) % \fBN\fP\\\fBn\fP\\		y0 = (\fByo\fP + \fBi\fP * \fBd\fP * sin(\fBphi\fP)) % \fBN\fP\\\fBn\fP\\\\\fBn\fP\\	The \fBangle\fP \fBphi\fP at which the subimage moves across the source image\\\fBn\fP\\	is given in degrees.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file helicalscan.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 37 of file helicalscan.c.
+.PP
+References add_comment(), allocFloatArray(), argsinit(), d, dx, dy, error_exit, exit(), fits, flag, FLAG_ARG, getargd(), getargi(), getflag(), i, M, MIN, fitsheader::n, N1, N2, fitsheader::ndim, nextargtype(), nframes, phi, read2Dfloatimage(), usage, writefitsheader(), writefitsplane(), x, xmin, xo, y, ymin, and yo.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

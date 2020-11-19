@@ -1,0 +1,4 @@
+Hubert suggests using xmkmf to figure out theappropriate CFLAGS and XLIBS:
+
+xmkmf
+make

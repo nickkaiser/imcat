@@ -1,0 +1,31 @@
+#! /usr/bin/perl
+
+$usage = "\
+NAME\
+	catcats --- shell script to concatenate catalogues\
+\
+SYNOPSIS\
+	catcats cat1 cat2.....\
+\
+DESCRIPTION\
+	'catcats' reads a set of catalogues, writes the first\
+	to stdout and then follows this with the objects from\
+	the subsequent files but without the header.\
+	This is very rudimentary and no check is made that the\
+	catalogues contain the same items even.\
+	The catalogues are output in the same form (binary\
+	or text) as input, and must all have the same form.\
+\
+AUTHOR\
+	Nick Kaiser - kaiser\@hawaii.edu\
+\
+\n";
+
+$cat1 = shift(@ARGV) || die $usage;
+die $usage if ($cat1 =~ /^-u$/);
+
+
+system("lc -a 'history: catcats' -x -B < $cat1");
+while ($cat = shift(@ARGV)) {
+	system("lc -o -B < $cat");
+}

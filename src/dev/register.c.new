@@ -1,0 +1,296 @@
+/*
+ * register.c
+ *
+ * determine crude rotation, scale and offset for pair of lists of coords
+ */
+
+
+#include <stdio.h>
+#include <math.h>
+#include "../src/arrays.h"
+#include "../src/myfft.h"
+#include "../src/error.h"
+#include "../src/filters.h"
+
+#define usage "usage: register xylist x'y'list [options...]\n\
+	read 2 lists of coords: (x,y), (x',y') and determine\n\
+	scale, rotation and translation that maps (x',y') => (x,y)\n\
+		x = a (x' cos - y' sin) + x0\n\
+		y = a (x' sin + y' cos) + y0\n\
+	It works by cross-correlating images of phi and wrapped ln(r)\n\
+	values for pairs of objects and locating peak to determine\n\
+	a, phi.  We then rotate and scale x' y', generate images\n\
+	of x,y positions and cross correlate these to get x0, y0.\n\
+	Before peak finding the ccf image is mexican-hat filtered.\n\
+	Options are:\n\
+		-i imsize	# internal image size (512)\n\
+		-s sigma1 sigma2# mexican hat parameters (1, 2)\n\
+		-a a1 a2	# find peaks only in this range of scale\n\
+		-d dlnr		# range of lnr for wrapping (1.0)\n\
+\n\n"
+
+#define	PI 3.14159
+#define MAX_OBJECTS 100000
+#define BIG_NEG		-1.e10
+#define BIG_POS		1.e10;
+
+float   mexicanfilterfunction(float ki, float kj);
+float   myfilter(float ki, float kj);
+
+#define dist(i,ia,ib)      sqrt((x[i][ia]-x[i][ib])*(x[i][ia]-x[i][ib])+(y[i][ia]-y[i][ib])*(y[i][ia]-y[i][ib]))
+
+main(int argc, char *argv[])
+{
+	char	line[1024];
+	double	rr, dx, dy, a, phi, dphi, phi1, phi2, lnr, dlnr, a1, a2, temp;
+	int	arg, i, ix, iy, imsize, nobj[2], i0, i1, i2, irot;
+	double	d01, d12, d20, phi01, phi12;
+	FILE	*ipf[2], *pipe;
+	float	**n[2], **theccf, sigma1, sigma2;
+	double	ccfmax, ccfabsmax, phimax, amax, X, Y, c, s, x1, y1, x2, y2;
+	double	x[3][MAX_OBJECTS], y[3][MAX_OBJECTS];
+	fft_type	fk[2];
+
+	/* defaults */
+	phi1 = 0.0;
+	phi2 = PI;
+	dlnr = 1.0;
+	imsize = 512;
+	a1 = 0.1;
+	a2 = 10.0;
+	sigma1 = 1;
+	sigma2 = 2;
+
+	if (argc < 3) {
+		fprintf(stderr, "%s", usage);
+		exit(-1);
+	}
+
+	/* open the list files */
+	if (!(ipf[0] = fopen(argv[1],"r")) || !(ipf[1] = fopen(argv[2],"r")))
+		error_exit("register: failed to open coordinate list files\n");
+
+	/* parse args */
+	arg = 3;
+	while (arg < argc) {
+		if (argv[arg][0] != '-')
+			error_exit(usage);
+		switch (argv[arg++][1]) {
+			case 'i':
+				sscanf(argv[arg++], "%d", &imsize);
+				break;
+			case 's':
+				sscanf(argv[arg++], "%f", &sigma1);
+				sscanf(argv[arg++], "%f", &sigma2);
+				break;
+			case 'a':
+				sscanf(argv[arg++], "%lf", &a1);
+				sscanf(argv[arg++], "%lf", &a2);
+				if (a2 < a1) {
+					temp = a2;
+					a2 = a1;
+					a1 = temp;
+				}
+				break;
+			case 'd':
+				sscanf(argv[arg++], "%lf", &dlnr);
+				break;
+			default:
+				error_exit(usage);
+				break;
+		}
+	}
+	dphi = phi2 - phi1;
+
+	/* allocate image arrays, fft's */
+	allocFloatArray(&theccf, imsize, imsize);
+	for (i = 0; i < 2; i++) {
+		allocFloatArray(&(n[i]), imsize, imsize);
+		alloc_fft(&(fk[i]), imsize, imsize);
+	}
+
+  
+	/* read the objects */
+	for (i = 0; i < 2; i++) {
+		nobj[i] = 0;
+		while (fgets(line, 1024, ipf[i])) {
+			if (line[0] == '#' || line[0] == '\0')
+				continue;
+			sscanf(line, "%lf %lf", &(x[i][nobj[i]]), &y[i][nobj[i]]);
+			if (nobj[i]++ >= MAX_OBJECTS)
+				error_exit("register: too many objects\n");
+		}
+	}
+	nobj[2] = nobj[1];
+
+	/* make images of triplets */
+	for (i = 0; i < 2; i++) {
+		for (i0 = 0; i0 < nobj[i]; i0++) {
+			for (i1 = 0; i1 < nobj[i]; i1++) {
+				for (i2 = 0; i2 < nobj[i]; i2++) {
+					d01 = dist(i, i0, i1);
+					d12 = dist(i, i1, i2);
+					d20 = dist(i, i2, i0);
+					if (d01 > d12 && d12 > d20) {
+						dx = x[i][i1] - x[i][i0];
+						dy = y[i][i1] - y[i][i0];
+						phi01 = atan2(dy, dx) - phi1;
+						dx = x[i][i2] - x[i][i1];
+						dy = y[i][i2] - y[i][i1];
+						phi12 = atan2(dy, dx) - phi1;
+						ix = imsize * (phi01/dphi - floor(phi01/dphi));
+						iy = imsize * (phi12/dlnr - floor(phi12/dlnr));
+						n[i][iy][ix] += 1.0;
+					}
+				}
+			}
+		}
+	}
+
+	/* do the crosscorrelation */
+	gaussfilter(n[0], imsize, imsize, n[0], sigma1, sigma1, 0, 0);
+	gaussfilter(n[1], imsize, imsize, n[1], sigma1, sigma1, 0, 0);
+	forward_fft(n[0], imsize, imsize, fk[0]);
+	forward_fft(n[1], imsize, imsize, fk[1]);
+	ccf(fk[0], fk[1], imsize, imsize, theccf, imsize / 2, imsize / 2);
+	mexicanfilter(theccf, imsize, imsize, theccf, sigma1, sigma2, 0);
+
+	set_output_pixtype(-32);
+	set_fits_opf(fopen("temp1.fits", "w"));
+	fwrite_fits(n[0], imsize, imsize, 0, argv);
+	set_fits_opf(fopen("temp2.fits", "w"));
+	fwrite_fits(n[1], imsize, imsize, 0, argv);
+	set_fits_opf(fopen("temp3.fits", "w"));
+	fwrite_fits(theccf, imsize, imsize, 0, argv);
+	exit(0);
+
+	/* find the cross correlation peak */
+	ccfmax = ccfabsmax = 0.0;
+	for (iy = 0; iy < imsize; iy++) {
+		for (ix = 0; ix < imsize; ix++) {
+			if (theccf[iy][ix] > ccfabsmax) {
+				ccfabsmax = theccf[iy][ix];
+			} 
+			if (theccf[iy][ix] > ccfmax) {
+				a = exp(dlnr * (iy - imsize / 2) / imsize);
+				phi = phi1 + dphi * (ix - imsize / 2) / imsize; 
+				if (a > a1 && a < a2) {
+					amax = a;
+					phimax = phi;
+					ccfmax = theccf[iy][ix];
+				}
+			} 
+		}
+	}
+	if (ccfabsmax != ccfmax)
+		fprintf(stderr, "register: warning - found higher peak outside of a1-a2\n");
+
+	/* next two lines fix fact that we actually calculate inverse scaling, rotation */
+	phi = -phimax;
+	amax = 1.0 / amax;
+
+	/* now, for phi = phimax and phi = phimax + pi we want to scale and */
+	/* rotate the 2nd list of coords, and then do cross-correlation to find */
+	/* the shift */
+	ccfmax = 0.0;
+	/* first we have to make a copy of the 2nd list */
+	for (i1 = 0; i1 < nobj[1]; i1++) {
+		x[2][i1] = x[1][i1];
+		y[2][i1] = y[1][i1];
+	}
+	for (irot = 0; irot < 2; irot++) {
+		phi -= irot * PI;
+		if (phi < -PI)
+			phi += 2 * PI;
+
+		/* now we scale and rotate the copy of the 2nd list of coords */
+		c = cos(phi);
+		s = sin(phi);
+		for (i1 = 0; i1 < nobj[1]; i1++) {
+			x[1][i1] = amax * (c * x[2][i1] - s * y[2][i1]);
+			y[1][i1] = amax * (s * x[2][i1] + c * y[2][i1]);
+		}
+	
+		/* now we figure out the bounding box */
+		x1 = y1 = BIG_POS;
+		x2 = y2 = BIG_NEG;
+		for (i = 0; i < 2; i++) {
+			for (i0 = 0; i0 < nobj[i]; i0++) {
+				if (x[i][i0] > x2)
+					x2 = x[i][i0];
+				if (x[i][i0] < x1)
+					x1 = x[i][i0];
+				if (y[i][i0] > y2)
+					y2 = y[i][i0];
+				if (y[i][i0] < y1)
+					y1 = y[i][i0];
+			}
+		}
+		/* and double it to stop wrap around problems */
+		x2 += (x2 - x1);
+		y2 += (y2 - y1);
+
+		/* now generate the two images of x,y coords */
+		for (iy = 0; iy < imsize; iy++) {
+			for (ix = 0; ix < imsize; ix++) {
+				n[0][iy][ix] = n[1][iy][ix] = 0.0;
+			}
+		}
+		for (i = 0; i < 2; i++) {
+			for (i0 = 0; i0 < nobj[i]; i0++) {
+				ix = floor(imsize * (x[i][i0] - x1) / (x2 - x1));
+				iy = floor(imsize * (y[i][i0] - y1) / (y2 - y1));
+				if (ix >= 0 && ix < imsize && iy >= 0 && iy < imsize)
+					n[i][iy][ix] += 1.0;
+			}
+		}
+
+		/* now we cross correlate and smooth */
+		forward_fft(n[0], imsize, imsize, fk[0]);
+		forward_fft(n[1], imsize, imsize, fk[1]);
+		ccf(fk[0], fk[1], imsize, imsize, theccf, imsize / 2, imsize / 2);
+		mexicanfilter(theccf, imsize, imsize, theccf, sigma1, sigma2, 0);
+
+
+		/* and find the peak */
+		for (iy = 0; iy < imsize; iy++) {
+			for (ix = 0; ix < imsize; ix++) {
+/*		for (iy = imsize / 4; iy < 3 * imsize / 4; iy++) {
+			for (ix = imsize / 4; ix < 3 * imsize / 4; ix++) {*/
+				if (theccf[iy][ix] > ccfmax) {
+					dx = -(x2 - x1) * (ix - imsize / 2) / imsize; 
+					dy = -(y2 - y1) * (iy - imsize / 2) / imsize; 
+					ccfmax = theccf[iy][ix];
+					phimax = phi;
+				}
+			} 
+		}
+	}
+
+	/* and we're all done */
+	fprintf(stdout, "%10.6lf %10.6lf %10.3lf %10.3lf\n", amax, phimax, dx, dy);	
+}
+
+
+
+float   myfilter(float ki, float kj)
+{
+        float   z, sigma = 1;
+ 
+        z = 0.5 * sigma * (ki * ki +  kj * kj);
+        if (z > 10.0)
+                return (0.0);
+        else
+                return (exp(- z));
+}
+
+/*
+	set_output_pixtype(-32);
+	set_fits_opf(fopen("temp1.fits", "w"));
+	fwrite_fits(n[0], imsize, imsize, 0, argv);
+	set_fits_opf(fopen("temp2.fits", "w"));
+	fwrite_fits(n[1], imsize, imsize, 0, argv);
+	set_fits_opf(fopen("temp3.fits", "w"));
+	fwrite_fits(theccf, imsize, imsize, 0, argv);
+
+*/

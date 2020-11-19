@@ -1,0 +1,41 @@
+#!/usr/bin/perl
+
+$usage = "\
+NAME\
+        getUSNOAcatfromESOhtml - extract lc cat from ESO USNOA web page\
+\
+SYNOPSYS\
+        getUSNOAcatfromESOhtml\
+\
+DESCRIPTION\
+	getUSNOAcatfromESOhtml reads a html format catalogue obtained from\
+		http://archive.eso.org/skycat/servers/usnoa\
+	(using the 'short' format with decimal RA, DEC) from\
+	stdin and generates a lc format catalogue containing\
+		RA, DEC, rmag, bmag, ID\
+	which is sent to stdout.\
+\
+AUTHOR\
+        Nick Kaiser --- kaiser\@hawaii.edu\
+";
+
+die $usage if (!$#ARGV);
+
+$headerdone = 0;
+
+open(LC, "| lc -C -n RA -n DEC -n rmag -n bmag -t ID");
+
+while (<>) {
+	if (s:^</b>::) {
+		$headerdone = 1;
+	}
+	if ($headerdone) {
+		if (/^$/) {
+			close(LC);
+			exit;
+		}
+		($nr, $id, $ra, $dec, $rmag, $bmag, $d, $posang) = split " ";
+		printf LC "%13.8g %13.8g %13.8g %13.8g %s", $ra, $dec, $rmag, $bmag, $id;
+	}
+}
+warn "getcatfromhtml: unexpected end of file\n";

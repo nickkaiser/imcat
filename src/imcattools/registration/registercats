@@ -1,0 +1,72 @@
+#! /usr/bin/perl
+
+# perl script to do 2-step registration.
+
+# force flushing
+$| = 1;
+
+$usage = "\
+NAME\
+	register - perl script to do 2-step registration on pair of cats\
+\
+SYNOPSYS\
+	register a.cat b.cat [options....]\
+\
+DESCRIPTION\
+	first we run acfregister to get crude transformation coefficients\
+	then we approximately transform one list, merge the lists,\
+	transform back, and run lintransfit to get accurate cooefts.\
+	Options are:\
+		-i imsize	# imsize parameter for acfregister (256)\
+		-v		# output acfregister images to iis\
+		-t tol		# tolerance for mergecats (30)\
+		-V		# verbose mode\
+		-x xname	# name for spatial coordinate vector\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+";
+
+# defaults:
+$imsize = 256;
+$acfregisterflags = "";
+$tol = 30.0;
+$verbose = 0;
+$xname = "x";
+
+die $usage if ($#ARGV < 1);
+
+$cat1 = shift(@ARGV) || die $usage;
+$cat2 = shift(@ARGV) || die $usage;
+
+while ($_ = shift(@ARGV)) {
+	if (/^-i/) {
+		$imsize = shift(@ARGV) || die $usage;
+	} elsif (/^-v/) {
+		$acfregisterflags = "-v";
+	} elsif (/^-t/) {
+		$tol =  shift(@ARGV) || die $usage;
+	} elsif (/^-V/) {
+		$verbose = 1;
+	} elsif (/^-x/) {
+		$xname =  shift(@ARGV) || die $usage;
+	} else {
+		die $usage;
+	}
+}
+
+print "# calculating crude transformation with acfregister...\n" if $verbose;
+$trans = `acfregister $acfregisterflags -i $imsize -x $xname $cat1 $cat2`;
+chop($trans);
+print "# crude parameters", $trans, "\n" if $verbose;
+&sys("scalerottrans $trans -x $xname < $cat1 > $$.1.tmp");
+&sys("mergecats -x $xname $tol $$.1.tmp $cat2 | lc -b 'x = %$xname' > $$.2.tmp");
+&sys("lc +all 'x = %x[0]' 'temp = %x[1]' < $$.2.tmp | scalerottrans $trans -i | lc 'x = %x %temp 2 vector' > $$.3.tmp");
+&sys("lintransfit < $$.3.tmp | tproc 'print \$1, \$2, sqrt(\$3 * \$6 - \$5 * \$4), atan2(\$5, \$6)'");
+system("rm -f $$.?.tmp");
+
+sub sys {
+        print ($_[0], "\n") if $verbose;
+        system($_[0]) && die "registercats: system call ($_[0]) failed\n";
+}
+

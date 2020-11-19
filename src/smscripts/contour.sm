@@ -1,0 +1,29 @@
+csig64 4   # $1 = file, $2 = rms sigma, $3 = dc level, $4 = stp
+         data $1.rec
+                define FIELD $1
+                read { tx 1 ty 2 s 3  }
+                set s = s + $3
+                set t = sqrt( tx**2 + ty**2 )
+        data 64.dat
+                read { I 1 J 2 }
+        lim tx ty
+                erase
+                bo
+        relocate (12000 31500)
+                label $FIELD
+        image(64,64)
+                set image(I,J) = (s)
+                lim 0 63 0 63 
+                box 3 3 3 3 
+                MINMAX min max
+                        set levs = ($min + $2), $max, (($max- $min)/$4)
+                        levels levs
+                        ltype 0
+                        contour
+                echo min = $min, max = $max
+        xlabel \gq\dx (arcminutes)
+        ylabel \gq\dy (arcminutes)
+        delete I
+        delete J
+        delete t
+        delete tx

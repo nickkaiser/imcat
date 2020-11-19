@@ -1,0 +1,92 @@
+.TH "pairs.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+pairs.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   'usage: pairs\\\fBn\fP\\	reads \fBa\fP list of x,y,\fBm\fP(agnitude) and outputs list of pairs of \fBpoints\fP.\\\fBn\fP\\	Outputs \fBx1\fP,y1,m1,\fBdr\fP,\fBphi\fP,\fBdm\fP\\\fBn\fP\\	Where \fBx1\fP,y1,m1 are \fBpos\fP,\fBmag\fP of brightest \fBobject\fP\\\fBn\fP\\	and \fBdr\fP, \fBphi\fP, \fBdm\fP are |r2-r1|, atan2(y2-y1,\fBx2\fP-\fBx1\fP), m2-m1.\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBWHOPPER\fP   1.e10"
+.br
+.ti -1c
+.RI "#define \fBMAX_OBJECTS\fP   10000"
+.br
+.ti -1c
+.RI "#define \fBdist\fP(\fBi\fP, \fBj\fP)   sqrt((x[\fBi\fP]-x[\fBj\fP])*(x[\fBi\fP]-x[\fBj\fP])+(y[\fBi\fP]-y[\fBj\fP])*(y[\fBi\fP]-y[\fBj\fP]))"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double \fBx\fP [MAX_OBJECTS]"
+.br
+.ti -1c
+.RI "double \fBy\fP [MAX_OBJECTS]"
+.br
+.ti -1c
+.RI "double \fBm\fP [MAX_OBJECTS]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define dist(\fBi\fP, \fBj\fP)   sqrt((x[\fBi\fP]-x[\fBj\fP])*(x[\fBi\fP]-x[\fBj\fP])+(y[\fBi\fP]-y[\fBj\fP])*(y[\fBi\fP]-y[\fBj\fP]))"
+.PP
+Definition at line 19 of file pairs.c.
+.PP
+Referenced by cdl_findNearest(), locate(), main(), and print().
+.SS "#define MAX_OBJECTS   10000"
+.PP
+Definition at line 17 of file pairs.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   'usage: pairs\\\fBn\fP\\	reads \fBa\fP list of x,y,\fBm\fP(agnitude) and outputs list of pairs of \fBpoints\fP.\\\fBn\fP\\	Outputs \fBx1\fP,y1,m1,\fBdr\fP,\fBphi\fP,\fBdm\fP\\\fBn\fP\\	Where \fBx1\fP,y1,m1 are \fBpos\fP,\fBmag\fP of brightest \fBobject\fP\\\fBn\fP\\	and \fBdr\fP, \fBphi\fP, \fBdm\fP are |r2-r1|, atan2(y2-y1,\fBx2\fP-\fBx1\fP), m2-m1.\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 10 of file pairs.c.
+.SS "#define WHOPPER   1.e10"
+.PP
+Definition at line 16 of file pairs.c.
+.PP
+Referenced by main().
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 23 of file pairs.c.
+.PP
+References dist, dr, exit(), line, m, n, phi, usage, x, and y.
+.SH "Variable Documentation"
+.PP 
+.SS "double \fBm\fP[MAX_OBJECTS]"
+.PP
+Definition at line 21 of file pairs.c.
+.PP
+Referenced by allocatearrays(), block_filter(), convert_matrix(), decimaltoxms(), dmatrix(), dosky(), f(), fill_pixmap(), fitdistortions(), fitextinctions(), fittranslations(), flatten_a(), free_dmatrix(), free_imatrix(), free_matrix(), gaussian_kernel_filter(), generatefm(), getmodeamplitudes_lc(), getmodeamplitudes_txt(), getrgbfromcmap(), Getshape(), getshape(), getshape2(), getshape3(), I(), imatrix(), kernel_filter(), lintransdoit(), lintransinit(), lmodelfunc(), main(), makeresiduals(), makezernikeR(), matrix(), mgoplt3d_(), modefunc(), newfourierlmodel(), newpolylmodel(), newzernikelmodel(), painttriangle(), printmatrix(), readlmodel(), recircdef(), rflatten_a(), rmodel(), runflatten_a(), submatrix(), unflatten_a(), worldpix(), worldpos(), write2Dpolymodel(), writelmodel(), and xmstodecimal().
+.SS "double x[MAX_OBJECTS]"
+.PP
+Definition at line 21 of file pairs.c.
+.SS "double y[MAX_OBJECTS]"
+.PP
+Definition at line 21 of file pairs.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

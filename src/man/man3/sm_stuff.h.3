@@ -1,0 +1,33 @@
+.TH "sm_stuff.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+sm_stuff.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBsmcontour\fP (float **f, int \fBN1\fP, int \fBN2\fP, int df, int nplus, int nminus, int comc, char *comv[])"
+.br
+.ti -1c
+.RI "void \fBsmprofile\fP (float **f, int \fBN1\fP, int \fBN2\fP, int \fBic\fP, int \fBjc\fP)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void smcontour (float ** f, int N1, int N2, int df, int nplus, int nminus, int comc, char * comv[])"
+.PP
+Definition at line 27 of file sm_stuff.c.
+.PP
+References error_exit, f, fits, FLOAT_PIXTYPE, i, j, N1, N2, new2Dfitsheader(), and write2Dfloatimage().
+.SS "void smprofile (float ** f, int N1, int N2, int ic, int jc)"
+.PP
+Definition at line 78 of file sm_stuff.c.
+.PP
+References error_exit, exit(), f, FLOAT_MAGIC, i, j, MAX, N1, N2, and sigma.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

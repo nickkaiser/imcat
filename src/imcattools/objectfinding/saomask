@@ -1,0 +1,48 @@
+#!/bin/sh
+ 
+# saomask :  converts sao mask coords to imcat style
+ 
+case $# in
+1)      echo "\nNAME\n\tsaomask -  convert saoimage coords to imcat format\n\
+SYNOPSIS\n\tsaomask\n\n\
+        where the input file is a list of points made by saoimage.\n\
+        The input file has the format:\n\
+            # tmp.fits	\n\
+            # Sun Jan 21 15:38:45 1996	\n\
+            # shape x, y, [x dimension, y dimension], [angle]	\n\
+             POINT(516,422)	\n\
+             POINT(586,513)	\n\
+                .	\n\
+                .	\n\
+AUTHOR\n\
+	Gordon Squires\n\
+\n"     1>&2; exit 2
+esac
+ 
+echo "#  imin  jmin  imax  jmax"
+ 
+awk '{ 
+        FS ="("; 
+        if ($1 ~ /POINT/) 
+                {print $2}  
+}' |
+awk '{
+        FS =","; 
+        print $1, $2
+}' |
+awk '{
+        FS =")"; 
+        print $1, $2
+}' |
+awk '{  
+        if( NR == 1 || NR == 2)
+                printf("   %s   %s", $1, $2)
+        else {
+                printf("\n   %s   %s", $1, $2)
+                NR=1
+        }
+}'  |
+awk '{
+        printf("   %s   %s   %s   %s\n", $1, $2, $3, $4)
+}'
+

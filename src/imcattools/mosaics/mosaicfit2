@@ -1,0 +1,274 @@
+#! /usr/bin/perl
+
+# another way to construct mosaic images
+# this one builds up a stack of oversize image planes for each chip
+$| = 1;
+
+$usage = "\
+NAME\
+	mosaicfit2 --- solve for distortion coefficients to map a stack of images\
+\
+SYNOPSIS\
+	mosaicfit2 [options....]\
+\
+DESCRIPTION\
+	The idea here is to assume a simple field distortion model, parameterised\
+	by 'alpha' such that nominal detector plane coords are given by\
+	x = r ( 1 + alpha r^2) where r is the sky coords, map the 'reference'\
+	image from x to r coords and then find a low order polynomial function\
+	which maps successive images onto the same coordinate system.  The goal\
+	here is to generate a stack of oversize images for each chip on the\
+	mosaic (rather than solve for a 'global' mapping for all of the chips\
+	at once as in 'mosaicfit').\
+\
+	The procedure is fairly involved.  We assume that we have generated a\
+	set of catalogues containing bright but unsaturated isolated stars which\
+	we use for registration.  We first apply the inverse alpha distortion\
+	model to the reference (first) catalogue, and apply the equivalent mapping to\
+	the corresponding image.  For each subsequent exposure, we again apply the\
+	inverse of the distortion model to the registration star catalogue, and then\
+	use 'merge2cats' and 'fit2cats' to generate the mapping from reference\
+	image coords to the image in question.  This is first done with a fairly\
+	coarse linking tolerance 'mergetol1', but once we have obtained a\
+	preliminary solution we apply this, reject outliers, and then refit with a much finer\
+	tolerance.  If all goes well this should give registration solution with\
+	rms residuals on the order of 0.05 pixels or so.  We then apply the mapping\
+	to the image.  In fact, the default mode is to generate a heavily (8x)\
+	demagnified 'deflection' image which can be used later by 'mapbynumericdef'\
+	to actually perform the mapping (this way one need only generate the warped\
+	images on demand, and one can easily rerun the mapping without having to\
+	go through the registration procedure).\
+	We also save the files containing the parameters of the mapping,\
+	as well as postscript files showing the final residuals, as\
+	well as 'de-distorted' cats in the directory 'mosfitdir'.\
+\
+	All of the catalogues etc are assumed to be arranged in directories\
+	containing subdirectories for each chip with naming convention for\
+	chips and exposures in files chips.db, fields.db as decribed in\
+	the man page for 'mosaicfittinginstructions'.\
+\
+	The command line options are the following:\
+		-a 	alpha		# parameter for assumed field distortion (1.99021e-10)\
+		-c 	catdir		# directory containing the cats (cats/)\
+		-s 	srcatsfx	# suffix for catalogues (.stars)\
+		-ic	imdir		# directory containing images (images/)\
+		-is	imsfx		# suffix for source images (.fits)\
+		-wd	dstimdir	# destination dir for images (warpedimages/)\
+		-ws	dstimsfx	# suffix for generated images (.def)\
+		-md	mosfitdir	# directory for distortion parameter files etc (mosaicfitdir/)\
+		-o	fitorder	# order of polynomial for mapping (3)\
+		-m1	mergetol1	# first pass merging tolerance (30)\
+		-m2	mergetol2	# second pass merging tolerance (4)\
+		-n	niter		# iterate niter times to do inverse mapping (3)\
+		-C	chopval		# reject > chopval * sigma outliers (3)\
+		-p			# pipe final residuals to plotcat for visual feedback\
+		-v			# verbose mode - echo all commands\
+		-m	mapmode		# this controls the mapping.  For 0, 1, 2 this\
+					  causes the actual source images to be mapped.\
+					  For small negative integers we generates a\
+					  deflection image which has been scrunched\
+					  -(1+mapmode) times.  Default is -4, which gives\
+					  a factor 8 scaling.\
+		-M	Mx My		# margins by which the generated images overlap\
+					  source image (200, 200)\
+		-N	Nx Ny		# output image is (Nx + Mx) x (Ny + My) pixels, so\
+					  these should normally be set to be size of\
+					  source images, but you can make them smaller,\
+					  or use negative margins, to genrate subrasters.\
+					  Default values are (2048, 4096)\
+		-cr	cmin cmax	# process this range of chip numbers (inclusive)\
+		-er	emin emax	# process this range of exposure numbers\
+		-u			# print this man page.\
+\
+AUTHOR\
+	Nick Kaiser -- kaiser\@ifa.hawaii.edu\
+\
+";
+
+require "nominal.db";
+require "fields.db";
+require "chips.db";
+
+# defaults
+$alpha = 1.99021e-10;
+$catdir = "cats/";
+$srccatsuffix = ".stars";
+$srcimdir = "images/";
+$srcimsuffix = ".fits";
+$dstimsuffix = ".def";
+$dstimdir = "warpedimages/";
+$mosfitdir = "mosaicfitdir/";
+$fitorder = 3;
+$mergetol1 = 30;
+$mergetol2 = 4;
+$niterate = 3;
+$chopval = 3;
+$plotfinalresids = 0;
+$verbose = 0;
+$mapmode = -4;
+$Mx = $My = 200;
+$N1 = 2048;
+$N2 = 4096;
+$expmin = 1;
+$expmax = $nfields - 1;
+$chipmin = 0;
+$chipmax = $nchips - 1;
+
+
+# parse args
+while ($_ = shift(@ARGV)) {
+	if (/^-a$/) {
+		$alpha = shift(@ARGV) || die $usage;
+	} elsif (/^-c$/) {
+		$catdir = shift(@ARGV) || die $usage;
+	} elsif (/^-s$/) {
+		$srcimsuffix = shift(@ARGV) || die $usage;
+	} elsif (/^-ic$/) {
+		$srcimdir = shift(@ARGV) || die $usage;
+	} elsif (/^-is$/) {
+		$srcimsuffix = shift(@ARGV) || die $usage;
+	} elsif (/^-wd$/) {
+		$dstimdir = shift(@ARGV) || die $usage;
+	} elsif (/^-ws$/) {
+		$dstimsuffix = shift(@ARGV) || die $usage;
+	} elsif (/^-md$/) {
+		$mosfitdir = shift(@ARGV) || die $usage;
+	} elsif (/^-o$/) {
+		$fitorder = shift(@ARGV) || die $usage;
+	} elsif (/^-m1$/) {
+		$mergetol1 = shift(@ARGV) || die $usage;
+	} elsif (/^-m2$/) {
+		$mergetol2 = shift(@ARGV) || die $usage;
+	} elsif (/^-n$/) {
+		$niterate = shift(@ARGV) || die $usage;
+	} elsif (/^-C$/) {
+		$chopval = shift(@ARGV) || die $usage;
+	} elsif (/^-p$/) {
+		$plotfinalresids = 1;
+	} elsif (/^-v$/) {
+		$verbose = 1;
+	} elsif (/^-m$/) {
+		$mapmode = shift(@ARGV) || die $usage;
+	} elsif (/^-M$/) {
+		$Mx = shift(@ARGV) || die $usage;
+		$My = shift(@ARGV) || die $usage;
+	} elsif (/^-N$/) {
+		$N1 = shift(@ARGV) || die $usage;
+		$N2 = shift(@ARGV) || die $usage;
+	} elsif (/^-cr$/) {
+		$chipmin = shift(@ARGV) || die $usage;
+		$chipmax = shift(@ARGV) || die $usage;
+		die "cmax < cmin!\n" if ($chipmax < $chipmin);
+	} elsif (/^-er$/) {
+		$expmin = shift(@ARGV) || die $usage;
+		$expmax = shift(@ARGV) || die $usage;
+		die "emax < emin!\n" if ($expmax < $expmin);
+	} else {
+		die $usage;
+	}
+}
+
+die "chip number out of range\n" if ($chipmin >= $nchips || $chipmax >= $nchips);
+die "field number out of range\n" if ($expmin <= 0 || $expmax <= 0 || $expmax >= $nfields);
+
+# this defines the assumed telescope distortion
+$transformation = "R = %x %R enter enter dot $alpha mult vscale vsub";
+
+
+for ($chip = $chipmin; $chip <= $chipmax; $chip++) {
+	# get the reference cat and convert to "nominal" coords
+	print "\n\n# chip $chip \n";
+	$refcat = $catdir."chip".$chipname[$chip]."/".$fieldname[0].$srccatsuffix;
+	print "# reference cat = $refcat \n";
+	# compute spatial origin
+	$x0 = $ix[$chip] * $Xsize + $xmargin;
+	$y0 = $iy[$chip] * $Ysize + $ymargin;
+	# shift to nominal coords and compute undistorted coordinate R
+	print "# applying inverse transformation to reference cat...\n";
+	inversetransform($refcat, "$$.0.tmp");
+	$cat0 = $mosfitdir."chip".$chipname[$chip]."/".$fieldname[0].".cat";
+	sys("lc -b +all 'x = %R' < $$.0.tmp > $cat0");
+	print "# mapping the reference image....\n";
+	$srcfits = $srcimdir."chip".$chipname[$chip]."/".$fieldname[0].$srcimsuffix;
+	$dstfits = $dstimdir."chip".$chipname[$chip]."/".$fieldname[0].$dstimsuffix;
+	sys("mosaicmap2 $alpha $Mx $My $x0 $y0 $xmargin $ymargin $N1 $N2 NULL $srcfits $dstfits $mapmode");
+	# now get the transformations for subsequent exposures
+	for ($exp = $expmin; $exp <= $expmax; $exp++) {
+		print "\n# registering exposure $exp : $fieldname[$exp]\n";
+		# get the catalogue
+		$srccat = $catdir."chip".$chipname[$chip]."/".$fieldname[$exp].$srccatsuffix;
+		# shift to nominal coords and compute undistorted coordinate R
+		# apply inverse alpha transformation
+		inversetransform($srccat, "$$.1.tmp");
+		$cat1 = $mosfitdir."chip".$chipname[$chip]."/".$fieldname[$exp].".cat";
+		sys("lc -b +all 'x = %R' < $$.1.tmp > $cat1");
+		# merge the cats
+		print "# merging cats with tolerance $mergetol1 ...\n";
+		sys("merge2cats $$.0.tmp $$.1.tmp -x R -d $mergetol1 > $$.2.tmp");
+		print "initial merged object count: ", `lc -c < $$.2.tmp`;
+		# get first approximation to transformation coefficients
+		print "# fitting for order $fitorder transformation coefficients...\n";
+		sys("fit2cats -l $fitorder < $$.2.tmp > $$.par1.tmp");
+		# apply them to get a refined solution
+		sys("lc -b R 'x = %R' 'r = %R' < $$.1.tmp > $$.1a.tmp");
+		sys("lc -b R 'x = %R' < $$.0.tmp | warpcat $$.par1.tmp > $$.0a.tmp");
+		print "# merging cats with tolerance $mergetol2 ...\n";
+		sys("mergecats -x r $mergetol2 $$.0a.tmp $$.1a.tmp  > $$.3.tmp");
+		print "first cut survivors: ", `lc -c < $$.3.tmp`;
+		# get the sigma etc...
+#		chop($modeline = `lc 'd = %r[1] %r[0] vsub' < $$.3.tmp | catstats | lc -o | grep mode`);
+#		($junk, $xmode, $ymode) = split(" ", $modeline);
+		chop($sigmaline = `lc 'd = %r[1] %r[0] vsub' < $$.3.tmp | catstats | lc -o | grep sigma1`);
+		($junk, $xsigma, $ysigma) = split(" ", $sigmaline);
+		$xmax = $chopval * $xsigma;
+		$xmin = -$xmax;
+		$ymax = $chopval * $ysigma;
+		$ymin = -$ymax;
+		print "# selecting pairs with dx, dy < $xmax , $ymax ...\n";
+		sys("lc -b +all 'd = %r[1] %r[0] vsub' < $$.3.tmp | lc -b -i '%d[0] $xmin > %d[0] $xmax < and %d[1] $ymin > and %d[1] $ymax < and' > $$.4.tmp");
+		print "second cut survivors: ", `lc -c < $$.4.tmp`;
+		$parfile = $mosfitdir."chip".$chipname[$chip]."/".$fieldname[$exp].".par";
+		print "# computing final solution > $parfile...\n";
+		sys("lc -b 'x = %R' < $$.4.tmp | fit2cats -l $fitorder > $parfile");
+		# get the final sigma:
+		sys("lc -b 'x = %R[0]' 'xx = %R[1]' < $$.4.tmp | warpcat $parfile > $$.5.tmp");
+		if ($plotfinalresids) {
+			sys("plotcat 'd = %xx %r vsub' -x -1 1 -1 1 -a 1 -T 'final residuals $parfile' < $$.5.tmp");
+		}
+		$psfile = $mosfitdir."chip".$chipname[$chip]."/".$fieldname[$exp].".ps/VPS";
+		sys("plotcat 'd = %xx %r vsub' -x -1 1 -1 1 -a 1 -T 'final residuals $parfile' -d $psfile < $$.5.tmp");
+		print "final ", `lc -b 'd = %xx %r vsub' < $$.5.tmp | catstats | lc -o | grep sigma1`;
+		print "# mapping the image....\n";
+		$srcfits = $srcimdir."chip".$chipname[$chip]."/".$fieldname[$exp].$srcimsuffix;
+		$dstfits = $dstimdir."chip".$chipname[$chip]."/".$fieldname[$exp].$dstimsuffix;
+		sys("mosaicmap2 $alpha $Mx $My $x0 $y0 $xmargin $ymargin $N1 $N2 $parfile $srcfits $dstfits $mapmode");
+	}
+}
+sys("rm $$.*");
+exit;
+
+sub inversetransform {
+	local ($srccat, $dstcat) = @_;
+
+	sys("lc -b +all 'x = %x $x0 $y0 2 vector vadd' < $srccat | lc -b +all 'R = %x' > $dstcat");
+	# apply inverse alpha transformation iteratively
+	for ($iter = 0; $iter < $niterate; $iter++) {
+		sys("doto $dstcat lc -b +all \"'$transformation'\"");
+	}
+}
+	
+
+sub echosys {
+        print @_, "\n" if ($verbose);
+        system(@_) && die "$0: System call $_[0] failed!\n";
+}
+
+sub sys {
+        print @_, "\n" if ($verbose);
+        system(@_) && die "$0: System call $_[0] failed!\n";
+}
+
+
+
+
+

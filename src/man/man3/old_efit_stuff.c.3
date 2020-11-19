@@ -1,0 +1,88 @@
+.TH "efit_stuff.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+efit_stuff.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include 'efit_stuff.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBg\fP (int \fBmode\fP, int \fBframe\fP, double \fBxx\fP, double \fByy\fP)"
+.br
+.ti -1c
+.RI "void \fBreadamplitudes\fP (int *\fBnmodes\fP, int *\fBnframes\fP, int *\fBframesize\fP, int *\fBorder\fP, double ***amp, FILE *stream)"
+.br
+.ti -1c
+.RI "void \fBsetnframes\fP (int xnframes)"
+.br
+.ti -1c
+.RI "void \fBsetframesize\fP (int \fBN\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBnframes\fP"
+.br
+.ti -1c
+.RI "int \fBframesize\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "double g (int mode, int frame, double xx, double yy)"
+.PP
+Definition at line 15 of file old/efit_stuff.c.
+.PP
+References error_exit, frame, framesize, GRAD1, GRAD2, GRADGRAD11, GRADGRAD12, GRADGRAD22, nframes, x, xx, and yy.
+.PP
+Referenced by fillarrays(), main(), makeresiduals(), and modelrms().
+.SS "void readamplitudes (int * nmodes, int * nframes, int * framesize, int * order, double *** amp, FILE * stream)"
+.PP
+Definition at line 50 of file old/efit_stuff.c.
+.PP
+References error_exit, framesize, line, nframes, nmodes, and order.
+.PP
+Referenced by main().
+.SS "void setframesize (int N)"
+.PP
+Definition at line 97 of file old/efit_stuff.c.
+.PP
+References framesize, and N.
+.PP
+Referenced by main().
+.SS "void setnframes (int xnframes)"
+.PP
+Definition at line 90 of file old/efit_stuff.c.
+.PP
+References nframes.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBframesize\fP\fC [static]\fP"
+.PP
+Definition at line 13 of file old/efit_stuff.c.
+.PP
+Referenced by g(), readamplitudes(), and setframesize().
+.SS "int \fBnframes\fP\fC [static]\fP"
+.PP
+Definition at line 13 of file old/efit_stuff.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

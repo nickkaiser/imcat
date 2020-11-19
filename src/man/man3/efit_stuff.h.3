@@ -1,0 +1,47 @@
+.TH "efit_stuff.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+efit_stuff.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBg\fP (int \fBmode\fP, double \fBxx\fP, double \fByy\fP)"
+.br
+.ti -1c
+.RI "void \fBreadamplitudes\fP (int *\fBnmodes\fP, int *\fBframesize\fP, int *\fBorder\fP, double ***amp, FILE *stream)"
+.br
+.ti -1c
+.RI "void \fBwriteamplitudes\fP (int \fBnmodes\fP, int \fBorder\fP, int \fBframesize\fP, double **amp)"
+.br
+.ti -1c
+.RI "void \fBsetframesize\fP (int \fBN\fP)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "double g (int mode, double xx, double yy)"
+.PP
+Definition at line 15 of file efit_stuff.c.
+.PP
+References error_exit, framesize, x, xx, and yy.
+.SS "void readamplitudes (int * nmodes, int * framesize, int * order, double *** amp, FILE * stream)"
+.PP
+Definition at line 117 of file efit_stuff.c.
+.PP
+References error_exit, framesize, line, nmodes, and order.
+.SS "void setframesize (int N)"
+.PP
+Definition at line 164 of file efit_stuff.c.
+.SS "void writeamplitudes (int nmodes, int order, int framesize, double ** amp)"
+.PP
+Definition at line 152 of file efit_stuff.c.
+.PP
+References framesize, nmodes, and order.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

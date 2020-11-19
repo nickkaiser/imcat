@@ -1,0 +1,4 @@
+'xfv' is an X-based Fits image Viewer I developed.  It reads a stream of
+2D fits images and displays them on the screen as a movie.
+There are two versions.  The one built by default uses the Imlib libraries.
+You can obtain these from <a href="http://www.rasterman.com"> Rasterman's Zone of Cruft </a>.

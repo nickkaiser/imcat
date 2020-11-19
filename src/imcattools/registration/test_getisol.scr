@@ -1,0 +1,10 @@
+#! /bin/sh
+
+for srccat in images/*.cat
+do
+	dstcat=images/`basename $srccat ".cat"`.isol
+	echoeval "getisolatedobjects -e 100 $srccat < $srccat > $dstcat"
+done
+mv images/0.cat.isol images/0.isol
+
+	

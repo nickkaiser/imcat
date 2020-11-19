@@ -1,0 +1,4 @@
+Wed Oct 25 14:10:50 EST 1995
+This directory contains general purpose catalogue processing tools - i.e. things
+which know nothing about images.
+At present it contains only 'lc' the versatile catalogue lister.

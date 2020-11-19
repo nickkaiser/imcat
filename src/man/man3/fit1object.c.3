@@ -1,0 +1,60 @@
+.TH "fit1object.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fit1object.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../../imlib/fits.h'\fP
+.br
+\fC#include '../../../utils/error.h'\fP
+.br
+\fC#include 'gengaussfit.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	fit1object - \fBfit\fP \fBFITS\fP file to generalised Gaussian model\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fit1object [\fBoptions\fP....]\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'fit1object\\' reads \fBa\fP \fBfits\fP image f from stdin and \fBfits\fP\\\fBn\fP\\	this to \fBa\fP simple model \fBobject\fP of the form\\\fBn\fP\\\\\fBn\fP\\		f_model = \fBf0\fP exp(-0.5 * [q_ij (\fBr\fP-\fBd\fP)_i (\fBr\fP-\fBd\fP)_j]^\fBalpha\fP)\\\fBn\fP\\\\\fBn\fP\\	by minimising\\\fBn\fP\\\\\fBn\fP\\		sum_r fabs(f - f_model)^beta\\\fBn\fP\\\\\fBn\fP\\	By default, \fBalpha\fP = 1 and beta = 2, so the program is\\\fBn\fP\\	fitting \fBa\fP 2-dimensional gaussian by least squares.\\\fBn\fP\\	and the ouput is in the form:\\\fBn\fP\\		\fBf0\fP, d_x, d_y, q_xx, q_xy, q_yy\\\fBn\fP\\	the matrix q_ij being taken to be symmetric.\\\fBn\fP\\	You can modify the behaviour with the following parameters:\\\fBn\fP\\		-\fBa\fP \fBalpha\fP	# set slope of exponential arg\\\fBn\fP\\		-\fBb\fP beta		# \fBtype\fP of \fBfit\fP\\\fBn\fP\\		-\fBi\fP		# output inverse of q_ij\\\fBn\fP\\		-\fBA\fP		# output \fBa\fP, \fBb\fP, \fBphi\fP (TBI)\\\fBn\fP\\		-f		# output the model as \fBfits\fP image\\\fBn\fP\\        The position is measured relative to the bottom left\\\fBn\fP\\        corner of the bottom left \fBpixel\fP (so \fBe\fP.g. \fBa\fP single 'hot' \fBpixel\fP\\\fBn\fP\\        at (\fBix\fP,\fBiy\fP) = (23,67), would generate an \fBobject\fP with x = (23.5, 67.5)\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBPI\fP   M_PI"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define PI   M_PI"
+.PP
+Definition at line 49 of file fit1object.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	fit1object - \fBfit\fP \fBFITS\fP file to generalised Gaussian model\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fit1object [\fBoptions\fP....]\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'fit1object\\' reads \fBa\fP \fBfits\fP image f from stdin and \fBfits\fP\\\fBn\fP\\	this to \fBa\fP simple model \fBobject\fP of the form\\\fBn\fP\\\\\fBn\fP\\		f_model = \fBf0\fP exp(-0.5 * [q_ij (\fBr\fP-\fBd\fP)_i (\fBr\fP-\fBd\fP)_j]^\fBalpha\fP)\\\fBn\fP\\\\\fBn\fP\\	by minimising\\\fBn\fP\\\\\fBn\fP\\		sum_r fabs(f - f_model)^beta\\\fBn\fP\\\\\fBn\fP\\	By default, \fBalpha\fP = 1 and beta = 2, so the program is\\\fBn\fP\\	fitting \fBa\fP 2-dimensional gaussian by least squares.\\\fBn\fP\\	and the ouput is in the form:\\\fBn\fP\\		\fBf0\fP, d_x, d_y, q_xx, q_xy, q_yy\\\fBn\fP\\	the matrix q_ij being taken to be symmetric.\\\fBn\fP\\	You can modify the behaviour with the following parameters:\\\fBn\fP\\		-\fBa\fP \fBalpha\fP	# set slope of exponential arg\\\fBn\fP\\		-\fBb\fP beta		# \fBtype\fP of \fBfit\fP\\\fBn\fP\\		-\fBi\fP		# output inverse of q_ij\\\fBn\fP\\		-\fBA\fP		# output \fBa\fP, \fBb\fP, \fBphi\fP (TBI)\\\fBn\fP\\		-f		# output the model as \fBfits\fP image\\\fBn\fP\\        The position is measured relative to the bottom left\\\fBn\fP\\        corner of the bottom left \fBpixel\fP (so \fBe\fP.g. \fBa\fP single 'hot' \fBpixel\fP\\\fBn\fP\\        at (\fBix\fP,\fBiy\fP) = (23,67), would generate an \fBobject\fP with x = (23.5, 67.5)\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file fit1object.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 52 of file fit1object.c.
+.PP
+References add_comment(), alpha, d, det(), error_exit, exit(), f, fits, gaussfit(), makemodel(), N1, N2, read2Dfloatimage(), usage, and write2Dfloatimage().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

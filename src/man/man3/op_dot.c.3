@@ -1,0 +1,170 @@
+.TH "op_dot.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+op_dot.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include 'stack.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBdotinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBdotdoit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBvsubinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBvsubdoit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBmsubinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBmsubdoit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBvaddinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBvadddoit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBmaddinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBmadddoit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBvscaleinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBvscaledoit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBmscaleinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBmscaledoit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBvshiftinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBvshiftdoit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBinverseinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBinversedoit\fP (\fBitem\fP *operator)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void dotdoit (\fBitem\fP * operator)"
+.PP
+Definition at line 66 of file op_dot.c.
+.PP
+References item::addr, item::dim, error_exit, i, j, k, item::ndim, pop(), x, and y.
+.SS "void dotinit (\fBitem\fP * operator)"
+.PP
+Definition at line 10 of file op_dot.c.
+.PP
+References item::addr, item::dim, error_exit, i, item::itype, j, k, item::ndim, NUM_TYPE, pop(), x, and y.
+.SS "void inversedoit (\fBitem\fP * operator)"
+.PP
+Definition at line 437 of file op_dot.c.
+.PP
+References a, op::addr, det(), i, j, op, and pop().
+.SS "void inverseinit (\fBitem\fP * operator)"
+.PP
+Definition at line 411 of file op_dot.c.
+.PP
+References a, item::addr, op::addr, det(), error_exit, i, j, NUM_TYPE, op, and pop().
+.SS "void madddoit (\fBitem\fP * operator)"
+.PP
+Definition at line 268 of file op_dot.c.
+.PP
+References item::addr, item::dim, i, j, pop(), x, and y.
+.SS "void maddinit (\fBitem\fP * operator)"
+.PP
+Definition at line 239 of file op_dot.c.
+.PP
+References item::addr, item::dim, error_exit, i, item::itype, j, item::ndim, NUM_TYPE, pop(), x, and y.
+.SS "void mscaledoit (\fBitem\fP * operator)"
+.PP
+Definition at line 353 of file op_dot.c.
+.PP
+References item::addr, item::dim, i, j, pop(), x, and y.
+.SS "void mscaleinit (\fBitem\fP * operator)"
+.PP
+Definition at line 325 of file op_dot.c.
+.PP
+References item::addr, item::dim, error_exit, i, item::itype, j, item::ndim, NUM_TYPE, pop(), x, and y.
+.SS "void msubdoit (\fBitem\fP * operator)"
+.PP
+Definition at line 182 of file op_dot.c.
+.PP
+References item::addr, item::dim, i, j, pop(), x, and y.
+.SS "void msubinit (\fBitem\fP * operator)"
+.PP
+Definition at line 153 of file op_dot.c.
+.PP
+References item::addr, item::dim, error_exit, i, item::itype, j, item::ndim, NUM_TYPE, pop(), x, and y.
+.SS "void vadddoit (\fBitem\fP * operator)"
+.PP
+Definition at line 223 of file op_dot.c.
+.PP
+References item::addr, item::dim, i, pop(), x, and y.
+.SS "void vaddinit (\fBitem\fP * operator)"
+.PP
+Definition at line 200 of file op_dot.c.
+.PP
+References item::addr, item::dim, error_exit, i, item::itype, item::ndim, NUM_TYPE, pop(), x, and y.
+.SS "void vscaledoit (\fBitem\fP * operator)"
+.PP
+Definition at line 309 of file op_dot.c.
+.PP
+References item::addr, item::dim, i, pop(), x, and y.
+.SS "void vscaleinit (\fBitem\fP * operator)"
+.PP
+Definition at line 286 of file op_dot.c.
+.PP
+References item::addr, item::dim, error_exit, i, item::itype, item::ndim, NUM_TYPE, pop(), x, and y.
+.SS "void vshiftdoit (\fBitem\fP * operator)"
+.PP
+Definition at line 394 of file op_dot.c.
+.PP
+References item::addr, item::dim, i, pop(), x, and y.
+.SS "void vshiftinit (\fBitem\fP * operator)"
+.PP
+Definition at line 371 of file op_dot.c.
+.PP
+References item::addr, item::dim, error_exit, i, item::itype, item::ndim, NUM_TYPE, pop(), x, and y.
+.SS "void vsubdoit (\fBitem\fP * operator)"
+.PP
+Definition at line 137 of file op_dot.c.
+.PP
+References item::addr, item::dim, i, pop(), x, and y.
+.SS "void vsubinit (\fBitem\fP * operator)"
+.PP
+Definition at line 114 of file op_dot.c.
+.PP
+References item::addr, item::dim, error_exit, i, item::itype, item::ndim, NUM_TYPE, pop(), x, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,45 @@
+.TH "zap.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+zap.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBZAP_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBUNZAP_MODE\fP   1"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBzap\fP (int \fBmode\fP, double rmax, double *x, float **f, float **fzap, short **nzap, int \fBN1\fP, int \fBN2\fP)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define UNZAP_MODE   1"
+.PP
+Definition at line 6 of file photometry/zap.h.
+.SS "#define ZAP_MODE   0"
+.PP
+Definition at line 5 of file photometry/zap.h.
+.SH "Function Documentation"
+.PP 
+.SS "void zap (int mode, double rmax, double * x, float ** f, float ** fzap, short ** nzap, int N1, int N2)"
+.PP
+Definition at line 10 of file objectfinding/zap.c.
+.PP
+References d, error_exit, f, ix, MAGIC, N1, N2, UNZAP_MODE, x, and ZAP_MODE.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,168 @@
+.TH "efit.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+efit.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include 'efit_stuff.h'\fP
+.br
+\fC#include '../../utils/lu.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	efit --- generate model for stellar ellipticities\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	efit [option...]\\\fBn\fP\\		-\fBm\fP emax		# reject stars with |\fBe\fP| > emax (0.4)\\\fBn\fP\\		-x numax	# don'\fBt\fP use stars with |\fBeres\fP| > numax * \fBsigma\fP (3.0)\\\fBn\fP\\		-\fBn\fP \fBN\fP		# image size (2048)\\\fBn\fP\\		-o \fBorder\fP	# \fBorder\fP of Taylor series (1)\\\fBn\fP\\		-\fBe\fP ename	# name for ellipticity (\fBe\fP)\\\fBn\fP\\		-\fBi\fP niter	# \fBnumber\fP of times to iterate (2)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'efit\\' reads \fBa\fP catalogue of stars from stdin and writes \fBa\fP set\\\fBn\fP\\	of coefficients for Taylor series expansion of the \fBe\fP / psm values\\\fBn\fP\\	to stdout.\\\fBn\fP\\	We first reject stars with |\fBe\fP| > emax, make the \fBfit\fP, and calculate\\\fBn\fP\\	the rms deviation from the \fBfit\fP. We then reject outliers\\\fBn\fP\\	with |\fBeres\fP| > numax * \fBsigma\fP and then we refit to get refined\\\fBn\fP\\	coefficients.  Use '-\fBi\fP' option to iterate rejection-fitting\\\fBn\fP\\	cycle. Maximum \fBorder\fP is 6.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAX_STARS\fP   10000"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBfillarrays\fP (void)"
+.br
+.ti -1c
+.RI "void \fBmakeresiduals\fP (double *sigmae)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double \fBx\fP [2][MAX_STARS]"
+.br
+.ti -1c
+.RI "double \fBe\fP [2][MAX_STARS]"
+.br
+.ti -1c
+.RI "double \fBeres\fP [2][MAX_STARS]"
+.br
+.ti -1c
+.RI "double \fBereslimit\fP"
+.br
+.ti -1c
+.RI "int \fBnobj\fP"
+.br
+.ti -1c
+.RI "int \fBnmodes\fP"
+.br
+.ti -1c
+.RI "int \fBnoutliers\fP"
+.br
+.ti -1c
+.RI "int \fBmaxorder\fP = 6 Nmodes[7] = {1, 3, 6, 10, 15, 21, 28}"
+.br
+.ti -1c
+.RI "double ** \fBA\fP"
+.br
+.ti -1c
+.RI "double * \fBB\fP [2]"
+.br
+.ti -1c
+.RI "double * \fBa\fP [2]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX_STARS   10000"
+.PP
+Definition at line 43 of file efit.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	efit --- generate model for stellar ellipticities\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	efit [option...]\\\fBn\fP\\		-\fBm\fP emax		# reject stars with |\fBe\fP| > emax (0.4)\\\fBn\fP\\		-x numax	# don'\fBt\fP use stars with |\fBeres\fP| > numax * \fBsigma\fP (3.0)\\\fBn\fP\\		-\fBn\fP \fBN\fP		# image size (2048)\\\fBn\fP\\		-o \fBorder\fP	# \fBorder\fP of Taylor series (1)\\\fBn\fP\\		-\fBe\fP ename	# name for ellipticity (\fBe\fP)\\\fBn\fP\\		-\fBi\fP niter	# \fBnumber\fP of times to iterate (2)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'efit\\' reads \fBa\fP catalogue of stars from stdin and writes \fBa\fP set\\\fBn\fP\\	of coefficients for Taylor series expansion of the \fBe\fP / psm values\\\fBn\fP\\	to stdout.\\\fBn\fP\\	We first reject stars with |\fBe\fP| > emax, make the \fBfit\fP, and calculate\\\fBn\fP\\	the rms deviation from the \fBfit\fP. We then reject outliers\\\fBn\fP\\	with |\fBeres\fP| > numax * \fBsigma\fP and then we refit to get refined\\\fBn\fP\\	coefficients.  Use '-\fBi\fP' option to iterate rejection-fitting\\\fBn\fP\\	cycle. Maximum \fBorder\fP is 6.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file efit.c.
+.SH "Function Documentation"
+.PP 
+.SS "void fillarrays (void)"
+.PP
+Definition at line 187 of file efit.c.
+.PP
+References A, B, e, eres, ereslimit, g(), nmodes, nobj, noutliers, and x.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 56 of file efit.c.
+.PP
+References A, a, B, d, e, ereslimit, error_exit, exit(), fillarrays(), indx, l, lcpipe, line, m, makeresiduals(), maxorder, mylubksb(), myludcmp(), N, nmodes, nobj, noutliers, order, setframesize(), usage, writeamplitudes(), and x.
+.SS "void makeresiduals (double * sigmae)"
+.PP
+Definition at line 217 of file efit.c.
+.PP
+References a, e, eres, ereslimit, g(), m, nmodes, nobj, and x.
+.SH "Variable Documentation"
+.PP 
+.SS "double * \fBa\fP[2]"
+.PP
+Definition at line 50 of file efit.c.
+.SS "double** \fBA\fP"
+.PP
+Definition at line 50 of file efit.c.
+.PP
+Referenced by cdl_findNearest(), deltam(), fillarrays(), gaussfilter(), gray(), invertmatrix(), keplertocartesian_shapiro(), linmodelincrement(), linmodelinit(), linmodelsolve(), main(), make_pop(), newslidervalue(), and rotate().
+.SS "double * \fBB\fP[2]"
+.PP
+Definition at line 50 of file efit.c.
+.PP
+Referenced by counterclockwiseadapt(), deltam(), fillarrays(), gaussfilter(), invertmatrix(), keplertocartesian_shapiro(), linmodelincrement(), linmodelinit(), linmodelsolve(), main(), and rotate().
+.SS "double \fBe\fP[2][MAX_STARS]"
+.PP
+Definition at line 47 of file efit.c.
+.PP
+Referenced by brent(), cartesiantokepler(), cpgellipses(), drawellipse(), estimate(), fast_expansion_sum_zeroelim(), fillarrays(), fitdistortions(), fitextinctions(), fittranslations(), getshape(), kepler_(), keplertocartesian(), keplertocartesian_shapiro(), main(), make_pop(), make_r(), make_z(), makeresiduals(), outputrcat(), readmergedcat(), scale_expansion_zeroelim(), and zapellipse().
+.SS "double \fBeres\fP[2][MAX_STARS]"
+.PP
+Definition at line 47 of file efit.c.
+.PP
+Referenced by fillarrays(), main(), and makeresiduals().
+.SS "double \fBereslimit\fP"
+.PP
+Definition at line 47 of file efit.c.
+.PP
+Referenced by fillarrays(), main(), and makeresiduals().
+.SS "int \fBmaxorder\fP = 6 Nmodes[7] = {1, 3, 6, 10, 15, 21, 28}"
+.PP
+Definition at line 49 of file efit.c.
+.PP
+Referenced by main().
+.SS "int \fBnmodes\fP"
+.PP
+Definition at line 48 of file efit.c.
+.SS "int \fBnobj\fP"
+.PP
+Definition at line 48 of file efit.c.
+.PP
+Referenced by fillarrays(), getobjects(), main(), makeresiduals(), and modelrms().
+.SS "int \fBnoutliers\fP"
+.PP
+Definition at line 48 of file efit.c.
+.PP
+Referenced by fillarrays(), and main().
+.SS "double x[2][MAX_STARS]"
+.PP
+Definition at line 46 of file efit.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

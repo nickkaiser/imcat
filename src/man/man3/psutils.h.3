@@ -1,0 +1,61 @@
+.TH "psutils.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+psutils.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBps\fP (char *string)"
+.br
+.ti -1c
+.RI "void \fBpsDrawChar\fP (char aChar)"
+.br
+.ti -1c
+.RI "void \fBprint_caption\fP (char *\fBcaption\fP)"
+.br
+.ti -1c
+.RI "void \fBset_print_opf\fP (FILE *thefile)"
+.br
+.ti -1c
+.RI "FILE * \fBget_print_opf\fP (void)"
+.br
+.ti -1c
+.RI "void \fBpsline\fP (double \fBx1\fP, double y1, double \fBx2\fP, double y2)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "FILE* get_print_opf (void)"
+.PP
+Definition at line 62 of file psutils.c.
+.PP
+References opf.
+.PP
+Referenced by printimage().
+.SS "void print_caption (char * caption)"
+.PP
+Definition at line 36 of file psutils.c.
+.SS "void ps (char * string)"
+.PP
+Definition at line 12 of file psutils.c.
+.SS "void psDrawChar (char aChar)"
+.PP
+Definition at line 18 of file psutils.c.
+.SS "void psline (double x1, double y1, double x2, double y2)"
+.PP
+Definition at line 68 of file psutils.c.
+.PP
+References opf.
+.PP
+Referenced by contourplot(), and mgoline_().
+.SS "void set_print_opf (FILE * thefile)"
+.PP
+Definition at line 57 of file psutils.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

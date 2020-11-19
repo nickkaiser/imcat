@@ -1,0 +1,8 @@
+#! /bin/sh
+
+echoeval "maketestcat 300  2 | lc -C -b -N '1 2 x' | lc -b 'x = %x 1500 vscale 250 vshift' > $$.xcat1"
+echoeval "maketestcat 10   2 | lc -C -b -N '1 2 x' | lc -b 'x = %x 1000 vscale 250 vshift' > $$.xcat2"
+echoeval "lc -b x 'e = %x[0] %x[1] mult %x[0] %x[0] mult 2 vector 1.e-6 vscale' < $$.xcat1 > $$.ecat1"
+echoeval "lc -b x 'e = grand grand 2 vector' < $$.xcat2 > $$.ecat2"
+echoeval "catcats $$.ecat[12] | lc -b +all 'psm = 1 0 2 vector 0 1 2 vector 2 vector' > test_stars.cat"
+echoeval "rm $$.xcat[12]  $$.ecat[12]"

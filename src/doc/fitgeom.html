@@ -1,0 +1,91 @@
+<html>
+<head>
+<title> Imcat man pages </title>
+</head>
+<body bgcolor="#FFFFFF">
+<h2>fitgeometry, fitgeometry2, fitgeometry3 notes</h2><hr>
+<pre>
+'fitgeometry' assumes a 'rigid detector model' - and is
+therefore probably inadequate.
+
+'fitgeometry2' and 'fitgeometry3' assume a 'jello detector model'.
+The difference between them is that fitgeometry2 reads the
+result of merging a set of N catalogues, wheras fitgeometry3
+reads a concatenation of catalogs (which must contain a particle
+number 'p', as well as the coordinates etc of the opbject detections).
+
+   With 'fitgeometry2' we read in the result of merging a set of 'planes' of images,
+   the first of which should be a 'reference' image (with plane number = 0).
+   We then solve for a set of transformations for all the other images and
+   for the positions of the N distinct objects which appear in the input
+   merged catalogue.  
+ 
+   Let there be nm modes for for each image: i.e. coordinates in the
+   reference system for the p'th object in terms of its measured
+   position on the i'th image (if present) is given by
+                r_p = x_pi + sum_m a_im f_m(x_pi) + e_pi
+   whereas for the reference image
+                r_p = x_p0 + e_p0
+   where the e_pi is the error in the p'th object's position on the ith frame
+   with <e_pi^2> = s_pi.
+ 
+   The chi-squared we need to minimise is
+  
+        chi^2 = sum_p [ sum_i E_pi (x_pi - sum_l a_il f_l(x_pi) - r_p)^2 / s_pi^2
+                        + E_p0 (x_p0 - r_p)^2 / s_po]
+   where E_pi = 1 if object p is found in catalgoue i.
+ 
+   Minimisation gives
+        nm * (nimages - 1) + np
+   linear equations for the distortion mode amplitudes a_il and
+   the np object locations.  The result is a set of transformation parameter
+   files and locations for a 'reference catalogue' which can be then used
+   to warp images.
+ 
+   This gives the following set of linear equations for the a_il, r_p's:
+ 
+        A x = B = 
+        = -   - 
+ 
+    -----------------------------------  --------     --------
+  |            :                      ||        |   |        |
+  | A_(jm)(il) :       A_(jm)(p)      || a_(il) |   | B_(jm) |
+  |            :                      ||        |   |        |
+  |...................................||........| = |........|
+  |            :                      ||        |   |        |
+  |            :                      ||        |   |        |
+  |            :                      ||        |   |        |
+  |            :                      ||        |   |        |
+  | A_(p')(il) :       A_(p')(p)      ||  r_(p) |   | B_(p') |
+  |            :                      ||        |   |        |
+  |            :                      ||        |   |        |
+  |            :                      ||        |   |        |
+  |            :                      ||        |   |        |
+   -----------------------------------  --------     --------
+ 
+  where
+ 
+       A_(jm)(il) = delta_ij sum_p E_pi f_l(x_pi) f_m(x_i) / s_pi
+ 
+       A_(jm)(p)  = - E_pj f_m(x_pj) / s_pj
+ 
+       A_(p')(il) = E_p'i f_l(x_p'i) / s_p'i
+ 
+       A_(p')(p)  = - delta_(p)(p') sum_i=0 1 / s_pi
+ 
+       B_(jm)     = - sum_p f_m(x_pj) x_pj / s_pj
+ 
+       B_(p')     = - sum_i=0 E_p'i x_p'i / s_p'i
+
+'fitge ometry3' solves the same set of equations, but is
+presented with a concatenation of previously identified
+and linked ojects. This could be the cats output by fitgeomtry2,
+which would allow one to do a refinement by rejecting outliers
+from the first solution.
+
+</pre>
+<hr>to <a href="imcattools_mosaics.html">imcattools_mosaics</a>
+to <a href="imcat.html">imcat</a>
+</body>
+</html>
+

@@ -1,0 +1,4 @@
+This section contains 'mergecats' and some related tools.
+'mergecats' is used for linking together objects in different
+catalogues on the basis of spatial coincidence.
+See mergecats man page for more details.

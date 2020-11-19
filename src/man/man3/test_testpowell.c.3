@@ -1,0 +1,60 @@
+.TH "testpowell.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+testpowell.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../utils/nrutil.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBNDIM\fP   3"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBpowell\fP (double p[], double **xi, int \fBn\fP, double ftol, int *iter, double *fret, double(*func)(double[]))"
+.br
+.ti -1c
+.RI "double \fBmyfunc\fP (double *x)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define NDIM   3"
+.PP
+Definition at line 10 of file test/testpowell.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 12 of file test/testpowell.c.
+.PP
+References i, myfunc(), NDIM, powell(), and y.
+.SS "double myfunc (double * x)"
+.PP
+Referenced by main().
+.SS "void powell (double p[], double ** xi, int n, double ftol, int * iter, double * fret, double(* func)(double[]))"
+.PP
+Definition at line 15 of file orbits/orbitutils/powell_dbl.c.
+.PP
+References free(), func(), i, ITMAX, j, linmin(), n, nrerror(), SQR, and t.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,46 @@
+.TH "worldpos.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+worldpos.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include 'wcs.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBworldpos\fP (double xpix, double ypix, struct \fBWorldCoor\fP *\fBwcs\fP, double *xpos, double *ypos)"
+.br
+.ti -1c
+.RI "int \fBworldpix\fP (double xpos, double ypos, struct \fBWorldCoor\fP *\fBwcs\fP, double *xpix, double *ypix)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int worldpix (double xpos, double ypos, struct \fBWorldCoor\fP * wcs, double	* xpix, double	* ypix)"
+.PP
+Definition at line 335 of file worldpos.c.
+.PP
+References degrad, dx, dy, l, m, ra, raddeg, and wcs.
+.PP
+Referenced by wcs2pix().
+.SS "int worldpos (double xpix, double ypix, struct \fBWorldCoor\fP * wcs, double	* xpos, double	* ypos)"
+.PP
+Definition at line 90 of file worldpos.c.
+.PP
+References degrad, dx, dy, l, m, raddeg, and wcs.
+.PP
+Referenced by pix2wcs().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

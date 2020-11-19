@@ -1,0 +1,14 @@
+# text format catalogue file --- do not edit manually, use 'lc'
+# header:
+# text     1 1         xname                             x
+# number   1 1         xdim                              2
+# text     1 1         aname                             a
+# text     1 1         model_type                  zernike
+# text     1 1         byteorder             LITTLE_ENDIAN
+# comment: history: lc -C -n n -n m -n a -H 'xname = {x}' -H 'xdim = 2' -H 'aname = {a}' -H 'model_type = {zernike}'
+# contents: 3
+# number   1 1         n                   
+# number   1 1         m                   
+# number   1 1         a                   
+#              n              m              a
+               0              0              1

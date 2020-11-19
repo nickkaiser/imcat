@@ -1,0 +1,15 @@
+# configuration database for luppino camera
+#
+# 	c = chip number
+#	ix 	= nominal integer x-coord of readout pixel
+#	iy 	= nominal integer y-coord of readout pixel
+#	cos	= cosine of orientation angle
+#
+#	c	ix	iy	cos
+	1	-1	-1	1
+	2	-1	1	-1
+	3	0	1	-1
+	4	2	1	-1
+	5	1	1	-1
+	6	1	-1	1
+	7	0	-1	1

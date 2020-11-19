@@ -1,0 +1,142 @@
+.TH "generatelmodelimage.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+generatelmodelimage.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'catlib/cat.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'utils/lmodel.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	generatelmodelimage --- generate realisation of \fBa\fP \fBlmodel\fP as \fBa\fP \fBFITS\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	generatelmodelimage \fBx1\fP \fBx2\fP \fBnx\fP y1 y2 \fBny\fP .... \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'generatelmodelimage' reads from stdin \fBa\fP '\fBlmodel\fP'\\\fBn\fP\\	and computes \fBa\fP \fBFITS\fP image containing the realisation of the model\\\fBn\fP\\	function on \fBa\fP grid of \fBpoints\fP spanning the \fBrectangle\fP bounded by\\\fBn\fP\\	x = \fBx1\fP, \fBx2\fP; y = y1, y2; etc and with \fBnx\fP \fBsamples\fP in x etc.\\\fBn\fP\\	There must be one triplet of arguments for each dimension of x.\\\fBn\fP\\	For example, for \fBa\fP 2-dimensional x, the command\\\fBn\fP\\\\\fBn\fP\\		generatelmodelimage 0 1 512 0 1 512\\\fBn\fP\\\\\fBn\fP\\	will generate an image of the model on the unit square with 512\\\fBn\fP\\	pixels in each dimension.\\\fBn\fP\\\\\fBn\fP\\	If the dependent variable \fBa\fP is \fBa\fP scalar then the dimensionality\\\fBn\fP\\	of the image is the same as that of the independent variable x.\\\fBn\fP\\	For \fBa\fP 3-vector x[] for instance\\\fBn\fP\\\\\fBn\fP\\		f[iz][\fBiy\fP][\fBix\fP] = sum_m a_m f_m(x)\\\fBn\fP\\	with\\\fBn\fP\\		x[0] = \fBx1\fP + \fBix\fP * (\fBx2\fP - \fBx1\fP) / \fBnx\fP\\\fBn\fP\\		x[1] = y1 + \fBiy\fP * (y2 - y1) / \fBny\fP\\\fBn\fP\\	etc.\\\fBn\fP\\\\\fBn\fP\\	If \fBa\fP is \fBa\fP matrix \fBa\fP[j0][j1]....[jn] then the image dimensionality\\\fBn\fP\\	is the sum of the rank of \fBa\fP and the length of x, and the \fBpixel\fP\\\fBn\fP\\	values are, for 2-vector x[] say\\\fBn\fP\\\\\fBn\fP\\		f[j0][j1]....[jn][\fBiy\fP][\fBix\fP] = sum_m a_m[j0][j1]....[jn] f_m(x)\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void * \fBallocfitsarray\fP (\fBfitsheader\fP *\fBfits\fP, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "int \fBwritefitsarray\fP (void *f, \fBfitsheader\fP *\fBfits\fP, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "int \fBaddtofitsarray\fP (void *fdst, void *fsrc, double fac, \fBfitsheader\fP *\fBfits\fP, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "int \fBgeneratefm\fP (void *fm, int \fBm\fP, \fBlmodel\fP *themodel, \fBfitsheader\fP *fm_fits, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "int \fBaloop\fP (\fBitem\fP *theitem, void *\fBa\fP, void *f, void *fm, \fBfitsheader\fP *fm_fits, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double * \fBx1\fP"
+.br
+.ti -1c
+.RI "double * \fBx2\fP"
+.br
+.ti -1c
+.RI "double * \fBdx\fP"
+.br
+.ti -1c
+.RI "double * \fBx\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	generatelmodelimage --- generate realisation of \fBa\fP \fBlmodel\fP as \fBa\fP \fBFITS\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	generatelmodelimage \fBx1\fP \fBx2\fP \fBnx\fP y1 y2 \fBny\fP .... \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'generatelmodelimage' reads from stdin \fBa\fP '\fBlmodel\fP'\\\fBn\fP\\	and computes \fBa\fP \fBFITS\fP image containing the realisation of the model\\\fBn\fP\\	function on \fBa\fP grid of \fBpoints\fP spanning the \fBrectangle\fP bounded by\\\fBn\fP\\	x = \fBx1\fP, \fBx2\fP; y = y1, y2; etc and with \fBnx\fP \fBsamples\fP in x etc.\\\fBn\fP\\	There must be one triplet of arguments for each dimension of x.\\\fBn\fP\\	For example, for \fBa\fP 2-dimensional x, the command\\\fBn\fP\\\\\fBn\fP\\		generatelmodelimage 0 1 512 0 1 512\\\fBn\fP\\\\\fBn\fP\\	will generate an image of the model on the unit square with 512\\\fBn\fP\\	pixels in each dimension.\\\fBn\fP\\\\\fBn\fP\\	If the dependent variable \fBa\fP is \fBa\fP scalar then the dimensionality\\\fBn\fP\\	of the image is the same as that of the independent variable x.\\\fBn\fP\\	For \fBa\fP 3-vector x[] for instance\\\fBn\fP\\\\\fBn\fP\\		f[iz][\fBiy\fP][\fBix\fP] = sum_m a_m f_m(x)\\\fBn\fP\\	with\\\fBn\fP\\		x[0] = \fBx1\fP + \fBix\fP * (\fBx2\fP - \fBx1\fP) / \fBnx\fP\\\fBn\fP\\		x[1] = y1 + \fBiy\fP * (y2 - y1) / \fBny\fP\\\fBn\fP\\	etc.\\\fBn\fP\\\\\fBn\fP\\	If \fBa\fP is \fBa\fP matrix \fBa\fP[j0][j1]....[jn] then the image dimensionality\\\fBn\fP\\	is the sum of the rank of \fBa\fP and the length of x, and the \fBpixel\fP\\\fBn\fP\\	values are, for 2-vector x[] say\\\fBn\fP\\\\\fBn\fP\\		f[j0][j1]....[jn][\fBiy\fP][\fBix\fP] = sum_m a_m[j0][j1]....[jn] f_m(x)\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 6 of file generatelmodelimage.c.
+.SH "Function Documentation"
+.PP 
+.SS "int addtofitsarray (void * fdst, void * fsrc, double fac, \fBfitsheader\fP * fits, int level)"
+.PP
+Definition at line 233 of file generatelmodelimage.c.
+.PP
+References DBL_PIXTYPE, error_exit, fits, FLOAT_PIXTYPE, i, INT_PIXTYPE, fitsheader::intpixtype, fitsheader::n, SHORT_PIXTYPE, and UCHAR_PIXTYPE.
+.PP
+Referenced by aloop().
+.SS "void * allocfitsarray (\fBfitsheader\fP * fits, int level)"
+.PP
+Definition at line 181 of file generatelmodelimage.c.
+.PP
+References f, fits, i, fitsheader::intpixtype, fitsheader::n, and pixsize().
+.PP
+Referenced by main().
+.SS "int aloop (\fBitem\fP * theitem, void * a, void * f, void * fm, \fBfitsheader\fP * fm_fits, int level)"
+.PP
+Definition at line 164 of file generatelmodelimage.c.
+.PP
+References a, addtofitsarray(), item::dim, f, i, fitsheader::ndim, and item::ndim.
+.PP
+Referenced by main().
+.SS "int generatefm (void * fm, int m, \fBlmodel\fP * themodel, \fBfitsheader\fP * fm_fits, int level)"
+.PP
+Definition at line 217 of file generatelmodelimage.c.
+.PP
+References dx, i, lmodelfunc(), m, fitsheader::n, x, and x1.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 66 of file generatelmodelimage.c.
+.PP
+References lmodel::a, a, add_comment(), lmodel::aitem, allocfitsarray(), aloop(), appendcomment(), argsinit(), dx, error_exit, exit(), f, fits, FLOAT_PIXTYPE, generatefm(), getargd(), getargi(), i, fitsheader::intpixtype, m, fitsheader::n, fitsheader::ndim, newfitsheader(), newnumericcomment(), newtextcomment(), lmodel::nmodes, nx, readlmodel(), usage, writefitsarray(), writefitsheader(), writefitstail(), x, x1, x2, and lmodel::xdim.
+.SS "int writefitsarray (void * f, \fBfitsheader\fP * fits, int level)"
+.PP
+Definition at line 200 of file generatelmodelimage.c.
+.PP
+References f, fits, i, fitsheader::n, and writefitsline().
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "double * \fBdx\fP\fC [static]\fP"
+.PP
+Definition at line 63 of file generatelmodelimage.c.
+.PP
+Referenced by generatefm(), and main().
+.SS "double * x\fC [static]\fP"
+.PP
+Definition at line 63 of file generatelmodelimage.c.
+.PP
+Referenced by generatefm(), and main().
+.SS "double* \fBx1\fP\fC [static]\fP"
+.PP
+Definition at line 63 of file generatelmodelimage.c.
+.PP
+Referenced by generatefm(), and main().
+.SS "double * \fBx2\fP\fC [static]\fP"
+.PP
+Definition at line 63 of file generatelmodelimage.c.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

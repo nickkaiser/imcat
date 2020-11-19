@@ -1,0 +1,172 @@
+.TH "mapbynumericdef.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+mapbynumericdef.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../imlib/map.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	mapbynumericdef --- map image using numerical deflection func\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	mapbynumericdef [\fBoptions\fP...] sourcefits deflectionfits\\\fBn\fP\\		-\fBi\fP \fBL1\fP \fBL2\fP	# perform inverse mapping\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\		-\fBm\fP mapmode	# \fBtype\fP of mapping\\\fBn\fP\\		-\fBM\fP		# initialise image to magic\\\fBn\fP\\		-s sfac		# use scrunched deflection image\\\fBn\fP\\		-\fBb\fP bgfits	# \fBbackground\fP \fBfits\fP image to paint onto\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Mapbynumericdef maps \fBa\fP source image to \fBa\fP target image using \fBa\fP numerically\\\fBn\fP\\	defined deflection function.  It reads \fBa\fP \fBN1\fP x \fBN2\fP image fs = 'sourcefits' and\\\fBn\fP\\	\fBa\fP \fBM1\fP x \fBM2\fP x 2 image \fBd\fP = 'deflectionfits' whose 0th ans 1\fBst\fP planes are\\\fBn\fP\\	x and y components of \fBa\fP deflection function.\\\fBn\fP\\	By default it generates \fBa\fP \fBM1\fP * \fBM2\fP image ft(\fBr\fP) = fs(\fBr\fP + \fBd\fP(\fBr\fP)), \fBi\fP.\fBe\fP.\\\fBn\fP\\	the deflection is given as \fBa\fP function of target image coordinates.\\\fBn\fP\\\\\fBn\fP\\	If either of the source images is given as 'stdin' then the image\\\fBn\fP\\	will be read from standard input.\\\fBn\fP\\\\\fBn\fP\\	With -\fBi\fP option it performs 'inverse' mapping --- \fBi\fP.\fBe\fP. deflection\\\fBn\fP\\	is given as \fBa\fP function of source image --- so the resulting image\\\fBn\fP\\	satisfies ft(x + \fBd\fP(x)) = fs(x) * \fBM\fP, where \fBM\fP is the magnification.\\\fBn\fP\\	With this option, the deflection\\\fBn\fP\\	function image size should be matched to the source image so\\\fBn\fP\\	\fBM1\fP = \fBN1\fP and \fBM2\fP = \fBN2\fP, and the output image size is \fBL1\fP x \fBL2\fP.\\\fBn\fP\\	Physically, inverse mapping projects \fBa\fP source image through \fBa\fP\\\fBn\fP\\	lens.\\\fBn\fP\\\\\fBn\fP\\	Use -\fBm\fP \fBflag\fP to specify mapping mode:\\\fBn\fP\\		\fBmode\fP = 0:	# nearest \fBpixel\fP\\\fBn\fP\\		\fBmode\fP = 1:	# linear interpolation\\\fBn\fP\\		\fBmode\fP = 2:	# sum over \fBtriangles\fP\\\fBn\fP\\	the default being linear interpolation.  With inverse mapping\\\fBn\fP\\	this \fBflag\fP is ignorred and \fBtriangle\fP mapping is used (which\\\fBn\fP\\	can be very slow).\\\fBn\fP\\\\\fBn\fP\\	The -s option allows you to read \fBa\fP miniature deflection image\\\fBn\fP\\	which has been scrunched by \fBa\fP factor 2^sfac. This is currently\\\fBn\fP\\	not implemented for inverse mapping.\\\fBn\fP\\\\\fBn\fP\\	The -\fBb\fP option allows you to supply \fBa\fP \fBbackground\fP image to be\\\fBn\fP\\	painted onto. The size of this image will override either the\\\fBn\fP\\	dimensions determined from the deflection image size for\\\fBn\fP\\	forward mapping or the \fBL1\fP, \fBL2\fP values set with '-\fBi\fP' option.\\\fBn\fP\\\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBdeflection\fP (float ri, float rj, float *\fBdi\fP, float *\fBdj\fP)"
+.br
+.ti -1c
+.RI "int \fBinvdeflection\fP (float ri, float rj, float *\fBdi\fP, float *\fBdj\fP)"
+.br
+.ti -1c
+.RI "void \fBmagicinit\fP (float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBN1\fP"
+.br
+.ti -1c
+.RI "int \fBN2\fP"
+.br
+.ti -1c
+.RI "int \fBM1\fP"
+.br
+.ti -1c
+.RI "int \fBM2\fP"
+.br
+.ti -1c
+.RI "int \fBL1\fP"
+.br
+.ti -1c
+.RI "int \fBL2\fP"
+.br
+.ti -1c
+.RI "int \fBMM1\fP"
+.br
+.ti -1c
+.RI "int \fBMM2\fP"
+.br
+.ti -1c
+.RI "int \fBoflagset\fP"
+.br
+.ti -1c
+.RI "float ** \fBdefx\fP"
+.br
+.ti -1c
+.RI "float ** \fBdefy\fP"
+.br
+.ti -1c
+.RI "float \fBscalefac\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	mapbynumericdef --- map image using numerical deflection func\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	mapbynumericdef [\fBoptions\fP...] sourcefits deflectionfits\\\fBn\fP\\		-\fBi\fP \fBL1\fP \fBL2\fP	# perform inverse mapping\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\		-\fBm\fP mapmode	# \fBtype\fP of mapping\\\fBn\fP\\		-\fBM\fP		# initialise image to magic\\\fBn\fP\\		-s sfac		# use scrunched deflection image\\\fBn\fP\\		-\fBb\fP bgfits	# \fBbackground\fP \fBfits\fP image to paint onto\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Mapbynumericdef maps \fBa\fP source image to \fBa\fP target image using \fBa\fP numerically\\\fBn\fP\\	defined deflection function.  It reads \fBa\fP \fBN1\fP x \fBN2\fP image fs = 'sourcefits' and\\\fBn\fP\\	\fBa\fP \fBM1\fP x \fBM2\fP x 2 image \fBd\fP = 'deflectionfits' whose 0th ans 1\fBst\fP planes are\\\fBn\fP\\	x and y components of \fBa\fP deflection function.\\\fBn\fP\\	By default it generates \fBa\fP \fBM1\fP * \fBM2\fP image ft(\fBr\fP) = fs(\fBr\fP + \fBd\fP(\fBr\fP)), \fBi\fP.\fBe\fP.\\\fBn\fP\\	the deflection is given as \fBa\fP function of target image coordinates.\\\fBn\fP\\\\\fBn\fP\\	If either of the source images is given as 'stdin' then the image\\\fBn\fP\\	will be read from standard input.\\\fBn\fP\\\\\fBn\fP\\	With -\fBi\fP option it performs 'inverse' mapping --- \fBi\fP.\fBe\fP. deflection\\\fBn\fP\\	is given as \fBa\fP function of source image --- so the resulting image\\\fBn\fP\\	satisfies ft(x + \fBd\fP(x)) = fs(x) * \fBM\fP, where \fBM\fP is the magnification.\\\fBn\fP\\	With this option, the deflection\\\fBn\fP\\	function image size should be matched to the source image so\\\fBn\fP\\	\fBM1\fP = \fBN1\fP and \fBM2\fP = \fBN2\fP, and the output image size is \fBL1\fP x \fBL2\fP.\\\fBn\fP\\	Physically, inverse mapping projects \fBa\fP source image through \fBa\fP\\\fBn\fP\\	lens.\\\fBn\fP\\\\\fBn\fP\\	Use -\fBm\fP \fBflag\fP to specify mapping mode:\\\fBn\fP\\		\fBmode\fP = 0:	# nearest \fBpixel\fP\\\fBn\fP\\		\fBmode\fP = 1:	# linear interpolation\\\fBn\fP\\		\fBmode\fP = 2:	# sum over \fBtriangles\fP\\\fBn\fP\\	the default being linear interpolation.  With inverse mapping\\\fBn\fP\\	this \fBflag\fP is ignorred and \fBtriangle\fP mapping is used (which\\\fBn\fP\\	can be very slow).\\\fBn\fP\\\\\fBn\fP\\	The -s option allows you to read \fBa\fP miniature deflection image\\\fBn\fP\\	which has been scrunched by \fBa\fP factor 2^sfac. This is currently\\\fBn\fP\\	not implemented for inverse mapping.\\\fBn\fP\\\\\fBn\fP\\	The -\fBb\fP option allows you to supply \fBa\fP \fBbackground\fP image to be\\\fBn\fP\\	painted onto. The size of this image will override either the\\\fBn\fP\\	dimensions determined from the deflection image size for\\\fBn\fP\\	forward mapping or the \fBL1\fP, \fBL2\fP values set with '-\fBi\fP' option.\\\fBn\fP\\\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file mapbynumericdef.c.
+.SH "Function Documentation"
+.PP 
+.SS "int deflection (float ri, float rj, float * di, float * dj)"
+.PP
+Definition at line 142 of file lensmap.c.
+.SS "int invdeflection (float ri, float rj, float * di, float * dj)"
+.PP
+Definition at line 272 of file mapbynumericdef.c.
+.PP
+References defx, defy, di, dj, FLOAT_MAGIC, i, j, N1, and N2.
+.PP
+Referenced by main().
+.SS "void magicinit (float ** f, int N1, int N2)"
+.PP
+Definition at line 293 of file mapbynumericdef.c.
+.PP
+References f, FLOAT_MAGIC, N1, N2, x, and y.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 79 of file mapbynumericdef.c.
+.PP
+References add_comment(), allocFloatArray(), copyfitsheader(), deflection(), defx, defy, error_exit, exit(), FAST_MAP_MODE, fastmap(), invdeflection(), INVERSEMAPMODE, L1, L2, M1, M2, magicinit(), map(), MM1, MM2, fitsheader::n, N1, N2, fitsheader::ndim, oflagset, read2Dfloatimage(), readfitsheader(), readfitsplane(), scalefac, set_triangle_map_mode(), TRIANGLE_MAP_MODE, ULTRAFAST_MAP_MODE, ultrafastmap(), usage, write2Dfloatimage(), x, and y.
+.SH "Variable Documentation"
+.PP 
+.SS "float** \fBdefx\fP\fC [static]\fP"
+.PP
+Definition at line 72 of file mapbynumericdef.c.
+.PP
+Referenced by invdeflection(), and main().
+.SS "float ** \fBdefy\fP\fC [static]\fP"
+.PP
+Definition at line 72 of file mapbynumericdef.c.
+.PP
+Referenced by invdeflection(), and main().
+.SS "int \fBL1\fP\fC [static]\fP"
+.PP
+Definition at line 71 of file mapbynumericdef.c.
+.PP
+Referenced by main().
+.SS "int \fBL2\fP\fC [static]\fP"
+.PP
+Definition at line 71 of file mapbynumericdef.c.
+.PP
+Referenced by main().
+.SS "int \fBM1\fP\fC [static]\fP"
+.PP
+Definition at line 71 of file mapbynumericdef.c.
+.SS "int \fBM2\fP\fC [static]\fP"
+.PP
+Definition at line 71 of file mapbynumericdef.c.
+.SS "int \fBMM1\fP\fC [static]\fP"
+.PP
+Definition at line 71 of file mapbynumericdef.c.
+.PP
+Referenced by main().
+.SS "int \fBMM2\fP\fC [static]\fP"
+.PP
+Definition at line 71 of file mapbynumericdef.c.
+.PP
+Referenced by main().
+.SS "int \fBN1\fP\fC [static]\fP"
+.PP
+Definition at line 71 of file mapbynumericdef.c.
+.SS "int \fBN2\fP\fC [static]\fP"
+.PP
+Definition at line 71 of file mapbynumericdef.c.
+.SS "int \fBoflagset\fP\fC [static]\fP"
+.PP
+Definition at line 71 of file mapbynumericdef.c.
+.PP
+Referenced by main().
+.SS "float \fBscalefac\fP\fC [static]\fP"
+.PP
+Definition at line 72 of file mapbynumericdef.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

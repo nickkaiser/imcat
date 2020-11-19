@@ -1,0 +1,46 @@
+.TH "fitmagshiftsplus.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitmagshiftsplus.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../utils/lu.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitmagshifts --- \fBfit\fP for extinction/gain coefficients for \fBa\fP set of exposures\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitmagshifts nc\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fitmagshifts' reads \fBa\fP catalogue containing (at least) pairs\\\fBn\fP\\	of magnitudes \fBmag\fP[2], chip numbers \fBc\fP[2], and positions x[2][2]\\\fBn\fP\\	for \fBa\fP set of reference stars observed on \fBa\fP mosaic of nc chips\\\fBn\fP\\	and solves for any gain variations between chips and gradients\\\fBn\fP\\	thereof.\\\fBn\fP\\\\\fBn\fP\\	More explicitly, we model the magnitude of \fBa\fP star as measured\\\fBn\fP\\	at position x, y on the \fBc\fP'th chip as:\\\fBn\fP\\		m_ce = \fBm\fP + m_c + x * m_cx + y * m_cy\\\fBn\fP\\	where \fBm\fP is the true magnitude, and we solve for the coefficients.\\\fBn\fP\\	We set M_0 and m_0 to be zero.\\\fBn\fP\\\\\fBn\fP\\	We output the coefficients as \fBa\fP lc-format catalog.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitmagshifts --- \fBfit\fP for extinction/gain coefficients for \fBa\fP set of exposures\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitmagshifts nc\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fitmagshifts' reads \fBa\fP catalogue containing (at least) pairs\\\fBn\fP\\	of magnitudes \fBmag\fP[2], chip numbers \fBc\fP[2], and positions x[2][2]\\\fBn\fP\\	for \fBa\fP set of reference stars observed on \fBa\fP mosaic of nc chips\\\fBn\fP\\	and solves for any gain variations between chips and gradients\\\fBn\fP\\	thereof.\\\fBn\fP\\\\\fBn\fP\\	More explicitly, we model the magnitude of \fBa\fP star as measured\\\fBn\fP\\	at position x, y on the \fBc\fP'th chip as:\\\fBn\fP\\		m_ce = \fBm\fP + m_c + x * m_cx + y * m_cy\\\fBn\fP\\	where \fBm\fP is the true magnitude, and we solve for the coefficients.\\\fBn\fP\\	We set M_0 and m_0 to be zero.\\\fBn\fP\\\\\fBn\fP\\	We output the coefficients as \fBa\fP lc-format catalog.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 6 of file fitmagshiftsplus.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 37 of file fitmagshiftsplus.c.
+.PP
+References c, d, error_exit, exit(), indx, lcpipe, line, m, mag, mylubksb(), myludcmp(), n, usage, x, xp(), y, and yp().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

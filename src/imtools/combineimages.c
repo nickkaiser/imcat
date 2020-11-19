@@ -1,0 +1,485 @@
+#define usage "\n\n\n\
+NAME\n\
+	combineimages - create mean, median, avsigclip of a stack of images\n\
+\n\
+SYNOPSIS\n\
+	combineimages [options....] infile1 infile2....\n\
+		-a clip		# reject pixels with |f - f_median| > clip * sigma\n\
+		-r r		# output the r'th image\n\
+		-s		# get sigmas from fits headers\n\
+		-e		# get sigmas from exposure map images\n\
+		-f f1 f2	# allow all pixels with f1 < (f - fmedian) / |fmedian| < f2\n\
+		-v		# verbose mode.\n\
+		-o name		# output average (.fits) and exposure (.exp) images\n\
+		-O name		# output average (.fits), exposure (.exp) and bad planes (.bp) images\n\
+		-F		# force 4 byte float format output image\n\
+		-I bscale bzero	# force 2-byte output with b-scaling\n\
+		-m bscale	# bscale factor for sigma image (0.0001)\n\
+\n\
+DESCRIPTION\n\
+	\"combineimages\" reads a collection of fits images (which\n\
+	must have identical sizes) and writes an average image\n\
+	to stdout.  Default behaviour is to calculate the median.\n\
+\n\
+	Use -a option for various types of averaging.\n\
+	With -a option we do avsigclip style rejection, rejecting pixels with\n\
+	f - fmedian > clip * sigma, and take the weighted average of what's left.\n\
+	With negative clip we take straight mean.\n\
+\n\
+	With -s option we read sigma's from 'SIGMA' value in fits header.\n\
+	With -e option we get sigma's from exposure map images containing 1/sigma^2.\n\
+	These images must have the same names as the source images, but with\n\
+	suffix '.exp'.\n\
+\n\
+	With (-s or -e) and -a options we reject pixels which differ from\n\
+	the median by more than clip * sigma and also lie outside the range\n\
+	f1 < (f - fmedian) / |fmedian| < f2. The extra tolerance for large\n\
+	|fmedian| values is to allow for variations in the shapes of stars\n\
+	due to seeing variations.  Sensible values for a range of 3:5 in seeing\n\
+	(eg 0.6'' - 1.0'') are f1 = -0.5, f2 = 1.0. \n\
+\n\
+	With (-s or -e) but without the -a option we take the weighted mean\n\
+	with no rejection.\n\
+\n\
+	If sigma values are supplied (with -s or -e options) then the pixels\n\
+	which survive selection are averaged with weight proportional\n\
+	to 1 / sigma^2.\n\
+\n\
+	With '-o foo' option (and -s or -e) we output two images:\n\
+		foo.fits	# the average image\n\
+		foo.exp		# the exposure map = sum 1/sigma^2   \n\
+\n\
+	With '-O foo' option (and -s or -e) we output three images:\n\
+		foo.fits	# the average image\n\
+		foo.exp		# the exposure map = sum 1/sigma^2   \n\
+		foo.bp		# bad-planes image: n'th bit set if n'th image rejected\n\
+\n\
+	With -r option we output the pixel value of a certain rank.\n\
+	With rank = n and n > 0 we output the n'th lowest image, unless\n\
+	there are fewer than n non-MAGIC values in which case we output\n\
+	the highest pixel.\n\
+	With rank = -n and n > 0 we output the n'th highest image, unless\n\
+	there are fewer than n non-MAGIC values in which case we output\n\
+	the lowest pixel.\n\
+\n\
+	With -v option we print the SIGMA values to stderr.\n\
+	Use -F option to generate float format image -- otherwise\n\
+	we inherit the value from the first input image.\n\
+\n\
+AUTHOR\n\
+	Nick Kaiser:  kaiser@cita.utoronto.ca\n\
+\n\n\n"
+
+
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+
+
+#include "../imlib/fits.h"
+#include "../utils/error.h"
+#include "../utils/args.h"
+#include "avgpixstack.h"
+
+#define	MEDIAN_MODE		0
+#define STRAIGHT_AVG_MODE	1
+#define WEIGHTED_AVG_MODE	2
+#define	AVSIGCLIP_MODE		3
+#define RANK_MODE		4
+
+#define	BATCH_SIZE	64	/* this thing reads and writes batches of lines */
+				/* to reduce disk overhead */ 		
+
+int		main(int argc, char *argv[])	
+{
+	int	c, cdot, nimages, im, pix, ib, done = 0, verbose, output_f_sigma_pair;
+	FILE	**ipf, **expmapf, *f_avg_f, *exp_f, *bp_f;
+	int	N1, N2, firstN1, firstN2;
+	fitsheader	**fits, *fitsavg, *fitsexp, *fitsbp, **expmapfits;
+	fitscomment	*sigmacom;
+	char	**fitsname, **expmapname;
+	float	***inputline, ***expmapline, *f_avg, *wsum, *fvec, *ftemp, *weightvec, clip, frac1, frac2, df;
+	int	*bp;
+	int	bp_pixtype;
+	int	batch_size, lines_read = 0, lines_wrote = 0;
+	int	opmode, hasclip, headersigmas, hasfrac, pixtype, pixtype0, npix, outputpixtype;
+	int	expmapsigmas, output_bp_image;
+	char	line[1024];
+	float	*sigma, junk, sigmafac, bscale, bzero;
+	int	bscaling;
+	char	f_avg_filename[128], exp_filename[128], bp_filename[128], *flag, *opname;
+	int	ranked, rank;
+
+	/* defaults */
+	hasclip = 0;
+	headersigmas = 0;
+	expmapsigmas = 0;
+	hasfrac = 0;
+	frac1 = 0.0;
+	frac2 = 0.0;
+	verbose = 0;
+	output_f_sigma_pair = 0;
+	outputpixtype = 0;
+	sigmafac = 0.0001;
+	ranked = 0;
+	output_bp_image = 0;
+	opname = NULL;
+
+	/* parse args */
+	argsinit(argc, argv, usage);
+	nimages = argc - 1;
+	while (nextargtype() == FLAG_ARG) {
+		flag = getflag();
+		nimages--;
+		switch (flag[0]) {
+			case 'a':
+				clip = getargf();
+				nimages--;
+				hasclip = 1;
+				break;
+			case 'f':
+				frac1 = getargf();
+				frac2 = getargf();
+				nimages -= 2;
+				hasfrac = 1;
+				break;
+			case 's':
+				headersigmas = 1;
+				break;
+			case 'e':
+				expmapsigmas = 1;
+				break;
+			case 'v':
+				verbose = 1;
+				break;
+			case 'O':
+				output_bp_image = 1;
+				opname = getargs();
+				nimages--;
+				strcpy(bp_filename, opname);
+				strcat(bp_filename, ".bp");
+			case 'o':
+				output_f_sigma_pair = 1;
+				if (!opname) {
+					opname = getargs();
+					nimages--;
+				}
+				strcpy(f_avg_filename, opname);
+				strcpy(exp_filename, opname);
+				strcat(f_avg_filename, ".fits");
+				strcat(exp_filename, ".exp");
+				break;
+			case 'F':
+				outputpixtype = FLOAT_PIXTYPE;
+				break;
+			case 'm':
+				sigmafac = getargf();
+				nimages--;
+				break;
+			case 'I':
+				outputpixtype = SHORT_PIXTYPE;
+				bscaling = 1;
+				bscale = getargf();
+				bzero = getargf();
+				nimages -= 2;
+				break;
+			case 'r':
+				ranked = 1;
+				rank = getargi();
+				nimages--;
+				break;
+			default:
+				error_exit(usage);
+				break;
+		}
+	}
+
+	/* die for incompatible arguments */
+	if (output_f_sigma_pair && (!headersigmas && !expmapsigmas))
+		error_exit("combineimages: -o, -O options only works with -s or -e options\n");
+	if (hasfrac && (!headersigmas && !expmapsigmas))
+		error_exit("combineimages: -f option only works with -s or -e options\n");
+
+	/* figure out what mode we're in */
+	opmode = MEDIAN_MODE;
+	if (ranked) {
+		opmode = RANK_MODE;
+	} else {
+		if (headersigmas || expmapsigmas) {
+			if (hasclip) {
+				opmode = AVSIGCLIP_MODE;
+			} else {
+				opmode = WEIGHTED_AVG_MODE;
+			}
+		} else {
+			if (hasclip) {
+				if (clip < 0.0) {
+					opmode =  STRAIGHT_AVG_MODE;
+				} else {
+					error_exit("combineimages: you must supply sigmas with -e or -s with +ve clip\n");
+				}
+			}
+		}
+	}
+	/* fprintf(stderr, "opmode = %d\n", opmode); */
+
+	/* allocate input stuff */
+	fits = (fitsheader **) calloc(nimages, sizeof(fitsheader *));
+	ipf = (FILE **) calloc(nimages, sizeof(FILE *));
+	inputline = (float ***) calloc(nimages, sizeof(float **));
+	for (im = 0; im < nimages; im++) {
+		inputline[im] = (float **) calloc(BATCH_SIZE, sizeof(float *));
+	}
+	fvec = (float *) calloc(nimages, sizeof(float));
+	fitsname = (char **) calloc(nimages, sizeof(char *));
+	weightvec = (float *) calloc(nimages, sizeof(float));
+	ftemp = (float *) calloc(nimages, sizeof(float));
+	if (headersigmas) {
+		sigma = (float *) calloc(nimages, sizeof(float));
+	}
+	if (expmapsigmas) {
+		expmapfits = (fitsheader **) calloc(nimages, sizeof(fitsheader *));
+		expmapf = (FILE **) calloc(nimages, sizeof(FILE *));
+		expmapline = (float ***) calloc(nimages, sizeof(float **));
+		expmapname = (char **) calloc(nimages, sizeof(char *));
+		for (im = 0; im < nimages; im++) {
+			expmapline[im] = (float **) calloc(BATCH_SIZE, sizeof(float *));
+			expmapname[im] = (char *) calloc(1024, sizeof(char));
+		}
+	}
+
+	/* read input image headers, check sizes etc */
+	for (im = 0; im < nimages; im++) {
+		fitsname[im] = getargs();
+		ipf[im] = fopen(fitsname[im], "r");
+		if (!ipf[im])
+			error_exit("combineimages: failed to open input file\n");
+		fits[im] = readfitsheader(ipf[im]);
+		N1 = fits[im]->n[0];
+		N2 = fits[im]->n[1];
+		if (fits[im]->ndim == 3) {
+			N2 *= fits[im]->n[2];
+		}
+		if (im == 0) {
+			firstN1 = N1;
+			firstN2 = N2;
+		}
+		if (N1 != firstN1 || N2 != firstN2)
+			error_exit("combineimages: files must be same size\n");
+		if (headersigmas) {
+			if (sigmacom = getcommentbyname("SIGMA", fits[im])) {
+				sigma[im] = (float) getnumericvalue(sigmacom);
+				if (verbose) {
+					fprintf(stderr, "sigma = %f\n", sigma[im]);
+				}
+			} else {
+				error_exit("combineimages: SIGMA fits header item missing\n");
+			}
+		}
+		if (expmapsigmas) {
+			/* generate the exposure map name */
+			strcpy(expmapname[im], fitsname[im]);
+			cdot = 0;
+			for (c = 0; c < strlen(expmapname[im]); c++) {
+				if (expmapname[im][c] == '.') {
+					cdot = c;
+				}
+			}
+			if (!cdot) {
+				error_exit("combineimages: failed to locate suffix in input fits file name\n");
+			}
+			expmapname[im][cdot] = '\0';
+			strcat(expmapname[im], ".exp");
+			expmapf[im] = fopen(expmapname[im], "r");
+			if (!expmapf[im])
+				error_exit("combineimages: failed to open input expmap file\n");
+			expmapfits[im] = readfitsheader(expmapf[im]);
+			N1 = expmapfits[im]->n[0];
+			N2 = expmapfits[im]->n[1];
+			if (expmapfits[im]->ndim == 3) {
+				N2 *= expmapfits[im]->n[2];
+			}
+			if (N1 != firstN1 || N2 != firstN2) {
+				error_exit("combineimages: expmap image size differs from data image\n");
+			}
+		}
+		for (ib = 0; ib < BATCH_SIZE; ib++) {
+			inputline[im][ib] = (float *) calloc(firstN1, sizeof(float));
+			if (!inputline[im][ib]) {
+				error_exit("combineimages: memory allocation failure 4\n");
+			}
+			if (expmapsigmas) {
+				expmapline[im][ib] = (float *) calloc(firstN1, sizeof(float));
+				if (!expmapline[im][ib]) {
+					error_exit("combineimages: memory allocation failure 5\n");
+				}
+			}
+		}
+	}
+
+	/* figure bp_pixtype */
+	if (output_bp_image) {
+		if (nimages > 32) {
+			error_exit("combineimages: I can only make bp image for up to 32 source images\n");
+		}
+		bp_pixtype = ((nimages <= 8) ? UCHAR_PIXTYPE : ((nimages <= 16) ? SHORT_PIXTYPE : INT_PIXTYPE));
+		bp = (int *) calloc(N1, sizeof(int));
+	}
+
+	/* allocate output lines */
+	f_avg 	= (float *) calloc(N1, sizeof(float));
+	wsum 	= (float *) calloc(N1, sizeof(float));
+	
+	if (output_f_sigma_pair) {
+		f_avg_f = fopen(f_avg_filename, "w");
+		exp_f = fopen(exp_filename, "w");
+		if (!f_avg_f || !exp_f) {
+			error_exit("combineimages: failed to open output fits file(s)\n");
+		}
+		if (output_bp_image) {
+			bp_f = fopen(bp_filename, "w");
+			if (!bp_f) {
+				error_exit("combineimages: failed to open output bp image\n");
+			}
+		}
+	} else {
+		f_avg_f = stdout;
+	}
+
+
+	fitsavg = copyfitsheader(fits[0]);
+	add_comment(argc, argv, fitsavg);
+	if (outputpixtype) {
+		fitsavg->extpixtype = outputpixtype;
+		if (outputpixtype == SHORT_PIXTYPE) {
+			fitsavg->bscaling = bscaling;
+			fitsavg->bscale = (double) bscale;
+			fitsavg->bzero  = (double) bzero;
+		}
+	}
+	fitsavg->opstream = f_avg_f;
+	writefitsheader(fitsavg);
+	if (output_f_sigma_pair) {
+		fitsexp = copyfitsheader(fitsavg);
+		fitsexp->extpixtype = SHORT_PIXTYPE;
+		fitsexp->opstream = exp_f;
+		fitsexp->bscaling = 1;
+		fitsexp->bscale = sigmafac;
+		fitsexp->bzero = 0.0;
+		writefitsheader(fitsexp);
+		if (output_bp_image) {
+			fitsbp = copyfitsheader(fitsavg);
+			fitsbp->extpixtype = bp_pixtype;
+			fitsbp->intpixtype = INT_PIXTYPE;
+			fitsbp->opstream = bp_f;
+			fitsbp->bscaling = 0;
+			writefitsheader(fitsbp);
+		}
+	}
+
+
+	while (!done) {
+		if (lines_read + BATCH_SIZE > N2) {
+			batch_size = N2 - lines_read;
+			done = 1;
+		} else
+			batch_size = BATCH_SIZE;
+		for (im = 0; im < nimages; im++) {
+			for (ib = 0; ib < batch_size; ib++) {
+				readfitsline(inputline[im][ib], fits[im]);
+				if (expmapsigmas) {
+					readfitsline(expmapline[im][ib], expmapfits[im]);
+				}
+			}
+		}
+		for (ib = 0; ib < batch_size; ib++) {
+			for (pix = 0; pix < N1; pix++) {
+				/* zero bp[] array */
+				if (output_bp_image) {
+					bp[pix] = 0;
+				}
+				/* fill fvec[], weightvec[] */
+				for (im = 0; im < nimages; im++) {
+					if (inputline[im][ib][pix] != FLOAT_MAGIC) {
+						fvec[im] = inputline[im][ib][pix];
+						if (opmode == AVSIGCLIP_MODE || opmode == WEIGHTED_AVG_MODE) {
+							if (headersigmas) {
+								weightvec[im] = pow(sigma[im], -2.0);
+							} else {
+								weightvec[im] = expmapline[im][ib][pix];
+							}
+						} else {
+							weightvec[im] = 1.0;
+						}
+					} else {
+						fvec[im] = FLOAT_MAGIC;
+						weightvec[im] = 0.0;
+					}
+				}
+				switch (opmode) {
+					case STRAIGHT_AVG_MODE:
+						avgpixstack(APS_STRAIGHT_AVERAGE, 0, nimages, fvec, weightvec, ftemp, &(f_avg[pix]), &(wsum[pix]));
+						break;
+					case MEDIAN_MODE:
+						avgpixstack(APS_MEDIAN, 0, nimages, fvec, weightvec, ftemp, &(f_avg[pix]), &(wsum[pix]));
+						break;
+					case RANK_MODE:
+						avgpixstack(APS_RANK, rank, nimages, fvec, weightvec, ftemp, &(f_avg[pix]), &(wsum[pix]));
+						break;
+					case AVSIGCLIP_MODE:
+						avgpixstack(APS_MEDIAN, 0, nimages, fvec, weightvec, ftemp, &(f_avg[pix]), &(wsum[pix]));
+						for (im = 0; im < nimages; im++) {
+							if (weightvec[im] > 0.0) {
+								df = fvec[im] - f_avg[pix];
+								if (fabs(df) > clip * pow(weightvec[im], -0.5)) {
+									if (!hasfrac ||
+										fvec[im] < f_avg[pix] + frac1 * fabs(f_avg[pix]) ||
+										fvec[im] > f_avg[pix] + frac2 * fabs(f_avg[pix])) {
+										weightvec[im] = 0.0;
+										if (output_bp_image) {
+											bp[pix] |= (01 << im);
+										}
+									}
+								}
+							}
+						}
+						avgpixstack(APS_WEIGHTED_AVERAGE, 0, nimages, fvec, weightvec, ftemp, &(f_avg[pix]), &(wsum[pix]));
+						break;
+					case WEIGHTED_AVG_MODE:
+						avgpixstack(APS_WEIGHTED_AVERAGE, 0, nimages, fvec, weightvec, ftemp, &(f_avg[pix]), &(wsum[pix]));
+						break;
+					default:
+						error_exit("combineimages: bad opmode\n");
+						break;
+				}
+			}
+			writefitsline(f_avg, fitsavg);
+			if (output_f_sigma_pair) {
+				writefitsline(wsum, fitsexp);
+				if (output_bp_image) {
+					writefitsline(bp, fitsbp);
+				}
+			}
+		}
+		lines_read += batch_size;
+	}
+
+	for (im = 0; im < nimages; im++)
+		fclose(ipf[im]);
+	writefitstail(fitsavg);
+	close(f_avg_f);
+	if (output_f_sigma_pair) {
+		writefitstail(fitsexp);
+		close(exp_f);
+		if(output_bp_image) {
+			writefitstail(fitsbp);
+			close(bp_f);
+		}
+	}
+	return (0);
+}
+
+
+

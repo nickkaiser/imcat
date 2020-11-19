@@ -1,0 +1,56 @@
+.TH "colormaps.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+colormaps.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCMAP_INDEX_MAX\fP   5"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBgetcolormap\fP (float **lp, float **rp, float **gp, float **bp, float *contra, float *bright, int *\fBn\fP, int index)"
+.br
+.ti -1c
+.RI "int \fBgetrgbfromcmap\fP (float **\fBr\fP, float **g, float **\fBb\fP, int \fBn\fP, int cmapindex)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CMAP_INDEX_MAX   5"
+.PP
+Definition at line 8 of file colormaps.c.
+.PP
+Referenced by getcolormap().
+.SH "Function Documentation"
+.PP 
+.SS "int getcolormap (float ** lp, float ** rp, float ** gp, float ** bp, float * contra, float * bright, int * n, int index)"
+.PP
+Definition at line 11 of file colormaps.c.
+.PP
+References b, c, cmap, CMAP_INDEX_MAX, error_exit, g(), l, n, and r.
+.PP
+Referenced by getrgbfromcmap(), and main().
+.SS "int getrgbfromcmap (float ** r, float ** g, float ** b, int n, int cmapindex)"
+.PP
+Definition at line 52 of file colormaps.c.
+.PP
+References b, f, g(), getcolormap(), i, j, l, m, n, and r.
+.PP
+Referenced by set_shades().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,122 @@
+.TH "fitstocat.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitstocat.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/arrays.h'\fP
+.br
+\fC#include '../utils/args.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	fitstocat --- make lc format list of \fBfits\fP image values\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitstocat [-u] [-\fBb\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fitstocat' reads \fBa\fP \fBFITS\fP image from stdin and sends \fBa\fP list of\\\fBn\fP\\	\fBpixel\fP values to stdout as \fBa\fP lc format catalogue containing\\\fBn\fP\\	\fBpixel\fP indices x[] and values f.\\\fBn\fP\\\\\fBn\fP\\	Options:\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\		-\fBb\fP		# generate \fBa\fP binary format catalogue\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBwriteimage\fP (int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBbinarycat\fP"
+.br
+.ti -1c
+.RI "int \fBxdim\fP"
+.br
+.ti -1c
+.RI "int * \fBidim\fP"
+.br
+.ti -1c
+.RI "\fBfitsheader\fP * \fBfits\fP"
+.br
+.ti -1c
+.RI "double * \fBx\fP"
+.br
+.ti -1c
+.RI "double \fBf\fP"
+.br
+.ti -1c
+.RI "float * \fBF\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	fitstocat --- make lc format list of \fBfits\fP image values\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitstocat [-u] [-\fBb\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fitstocat' reads \fBa\fP \fBFITS\fP image from stdin and sends \fBa\fP list of\\\fBn\fP\\	\fBpixel\fP values to stdout as \fBa\fP lc format catalogue containing\\\fBn\fP\\	\fBpixel\fP indices x[] and values f.\\\fBn\fP\\\\\fBn\fP\\	Options:\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\		-\fBb\fP		# generate \fBa\fP binary format catalogue\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file fitstocat.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 40 of file fitstocat.c.
+.PP
+References argsinit(), argsToString(), binarycat, error_exit, exit(), F, fits, flag, getflag(), idim, fitsheader::n, fitsheader::ndim, readfitsheader(), usage, writeimage(), x, and xdim.
+.SS "void writeimage (int level)"
+.PP
+Definition at line 85 of file fitstocat.c.
+.PP
+References binarycat, F, fits, i, idim, j, fitsheader::n, readfitsline(), x, and xdim.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBbinarycat\fP\fC [static]\fP"
+.PP
+Definition at line 33 of file fitstocat.c.
+.PP
+Referenced by main(), and writeimage().
+.SS "float* F\fC [static]\fP"
+.PP
+Definition at line 36 of file fitstocat.c.
+.PP
+Referenced by main(), and writeimage().
+.SS "double f\fC [static]\fP"
+.PP
+Definition at line 35 of file fitstocat.c.
+.SS "\fBfitsheader\fP* \fBfits\fP\fC [static]\fP"
+.PP
+Definition at line 34 of file fitstocat.c.
+.SS "int * \fBidim\fP\fC [static]\fP"
+.PP
+Definition at line 33 of file fitstocat.c.
+.PP
+Referenced by main(), and writeimage().
+.SS "double* x\fC [static]\fP"
+.PP
+Definition at line 35 of file fitstocat.c.
+.SS "int \fBxdim\fP\fC [static]\fP"
+.PP
+Definition at line 33 of file fitstocat.c.
+.PP
+Referenced by main(), and writeimage().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

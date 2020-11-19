@@ -1,0 +1,38 @@
+.TH "changesex.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+changesex.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBswap_half\fP(\fBa\fP)   ( ((\fBa\fP & 0xff) << 8) | ((unsigned short)(\fBa\fP) >> 8) )"
+.br
+.ti -1c
+.RI "#define \fBswap_word\fP(\fBa\fP)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define swap_half(\fBa\fP)   ( ((\fBa\fP & 0xff) << 8) | ((unsigned short)(\fBa\fP) >> 8) )"
+.PP
+Definition at line 2 of file changesex.h.
+.PP
+Referenced by main(), and sheaderrecord().
+.SS "#define swap_word(\fBa\fP)"
+.PP
+\fBValue:\fP.nf
+( ((a) << 24) | \
+                      (((a) << 8) & 0x00ff0000) | \
+                      (((a) >> 8) & 0x0000ff00) | \
+        ((unsigned int)(a) >>24) )
+.fi
+.PP
+Definition at line 3 of file changesex.h.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

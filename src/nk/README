@@ -1,0 +1,4 @@
+Wed Oct 25 14:55:05 EST 1995
+This directory contains some scripts, some of which get called by other imcat
+scripts.  There is also the "tablestuff" directory which contains some useful
+c-programs for manipulating tables (though much of this is superceded by "lc").

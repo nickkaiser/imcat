@@ -1,0 +1,194 @@
+.TH "hget.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+hget.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <string.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include 'fitshead.h'\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <float.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "char * \fBhgetc\fP ()"
+.br
+.ti -1c
+.RI "int \fBhlength\fP (char *header, int lhead)"
+.br
+.ti -1c
+.RI "int \fBhgeti4\fP (char *hstring, char *keyword, int *ival)"
+.br
+.ti -1c
+.RI "int \fBhgeti2\fP (char *hstring, char *keyword, short *ival)"
+.br
+.ti -1c
+.RI "int \fBhgetr4\fP (char *hstring, char *keyword, float *rval)"
+.br
+.ti -1c
+.RI "int \fBhgetra\fP (char *hstring, char *keyword, double *dval)"
+.br
+.ti -1c
+.RI "int \fBhgetdec\fP (char *hstring, char *keyword, double *dval)"
+.br
+.ti -1c
+.RI "int \fBhgetr8\fP (char *hstring, char *keyword, double *dval)"
+.br
+.ti -1c
+.RI "int \fBhgetl\fP (char *hstring, char *keyword, int *ival)"
+.br
+.ti -1c
+.RI "int \fBhgetdate\fP (char *hstring, char *keyword, double *dval)"
+.br
+.ti -1c
+.RI "int \fBhgets\fP (char *hstring, char *keyword, int lstr, char *\fBstr\fP)"
+.br
+.ti -1c
+.RI "char * \fBhgetc\fP (char *hstring, char *keyword0)"
+.br
+.ti -1c
+.RI "char * \fBksearch\fP (char *hstring, char *keyword)"
+.br
+.ti -1c
+.RI "double \fBstr2ra\fP (char *in)"
+.br
+.ti -1c
+.RI "double \fBstr2dec\fP (char *in)"
+.br
+.ti -1c
+.RI "char * \fBstrsrch\fP (char *s1, char *s2)"
+.br
+.ti -1c
+.RI "char * \fBstrnsrch\fP (char *s1, char *s2, int ls1)"
+.br
+.ti -1c
+.RI "int \fBisnum\fP (char *string)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "char \fBval\fP [30]"
+.br
+.ti -1c
+.RI "int \fBlhead0\fP = 0"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "char* hgetc (char * hstring, char * keyword0)"
+.PP
+Definition at line 420 of file hget.c.
+.PP
+References i, ier, ksearch(), line, and strsrch().
+.SS "char* hgetc ()"
+.PP
+Referenced by hgetdate(), hgetdec(), hgeti2(), hgeti4(), hgetl(), hgetr4(), hgetr8(), hgetra(), and hgets().
+.SS "int hgetdate (char * hstring, char * keyword, double * dval)"
+.PP
+Definition at line 308 of file hget.c.
+.PP
+References hgetc(), and i.
+.SS "int hgetdec (char * hstring, char * keyword, double * dval)"
+.PP
+Definition at line 213 of file hget.c.
+.PP
+References hgetc(), and str2dec().
+.SS "int hgeti2 (char * hstring, char * keyword, short * ival)"
+.PP
+Definition at line 111 of file hget.c.
+.PP
+References hgetc(), and val.
+.SS "int hgeti4 (char * hstring, char * keyword, int * ival)"
+.PP
+Definition at line 69 of file hget.c.
+.PP
+References hgetc(), and val.
+.SS "int hgetl (char * hstring, char * keyword, int * ival)"
+.PP
+Definition at line 273 of file hget.c.
+.PP
+References hgetc(), and val.
+.SS "int hgetr4 (char * hstring, char * keyword, float * rval)"
+.PP
+Definition at line 152 of file hget.c.
+.PP
+References hgetc(), and val.
+.SS "int hgetr8 (char * hstring, char * keyword, double * dval)"
+.PP
+Definition at line 242 of file hget.c.
+.PP
+References hgetc(), and val.
+.SS "int hgetra (char * hstring, char * keyword, double * dval)"
+.PP
+Definition at line 183 of file hget.c.
+.PP
+References hgetc(), and str2ra().
+.SS "int hgets (char * hstring, char * keyword, int lstr, char * str)"
+.PP
+Definition at line 384 of file hget.c.
+.PP
+References hgetc(), and str.
+.SS "int hlength (char	* header, int lhead)"
+.PP
+Definition at line 52 of file hget.c.
+.PP
+References ksearch(), and lhead0.
+.SS "int isnum (char * string)"
+.PP
+Definition at line 804 of file hget.c.
+.PP
+References cstr, and i.
+.SS "char* ksearch (char * hstring, char * keyword)"
+.PP
+Definition at line 565 of file hget.c.
+.PP
+References ier, lhead0, line, and strnsrch().
+.SS "double str2dec (char	* in)"
+.PP
+Definition at line 678 of file hget.c.
+.PP
+References min, sign, and strsrch().
+.SS "double str2ra (char	* in)"
+.PP
+Definition at line 660 of file hget.c.
+.PP
+References ra, str2dec(), and strsrch().
+.SS "char* strnsrch (char	* s1, char	* s2, int ls1)"
+.PP
+Definition at line 744 of file hget.c.
+.PP
+References i.
+.SS "char* strsrch (char * s1, char * s2)"
+.PP
+Definition at line 730 of file hget.c.
+.PP
+References strnsrch().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBlhead0\fP = 0\fC [static]\fP"
+.PP
+Definition at line 50 of file hget.c.
+.PP
+Referenced by hlength(), and ksearch().
+.SS "char \fBval\fP[30]"
+.PP
+Definition at line 48 of file hget.c.
+.PP
+Referenced by cdl_isFITS(), cdl_readHeader(), eps_doColorbar(), eps_writeRGB(), getnumericvalue(), gettextvalue(), hgeti2(), hgeti4(), hgetl(), hgetr4(), hgetr8(), iis_display(), jpl_init_ephemeris(), main(), and setcolorscheme().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

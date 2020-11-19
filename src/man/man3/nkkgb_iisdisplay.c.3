@@ -1,0 +1,122 @@
+.TH "iisdisplay.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+iisdisplay.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'iis.h'\fP
+.br
+\fC#include 'iisdisplay.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBFMAX\fP   200"
+.br
+.ti -1c
+.RI "#define \fBIIS_GREEN\fP   201"
+.br
+.ti -1c
+.RI "#define \fBIIS_BLACK\fP   202"
+.br
+.ti -1c
+.RI "#define \fBIIS_WHITE\fP   203"
+.br
+.ti -1c
+.RI "#define \fBIIS_RED\fP   204"
+.br
+.ti -1c
+.RI "#define \fBIIS_BLUE\fP   206"
+.br
+.ti -1c
+.RI "#define \fBIIS_YELLOW\fP   207"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBopeniispipe\fP (void)"
+.br
+.ti -1c
+.RI "int \fBiisdisplay\fP (float **f, int \fBN1\fP, int \fBN2\fP, float \fBfmin\fP, float \fBfmax\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "short * \fBdata\fP = NULL"
+.br
+.ti -1c
+.RI "FILE * \fBiispipe\fP"
+.br
+.ti -1c
+.RI "FILE * \fBsyspipe\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define FMAX   200"
+.PP
+Definition at line 15 of file nkkgb/iisdisplay.c.
+.SS "#define IIS_BLACK   202"
+.PP
+Definition at line 17 of file nkkgb/iisdisplay.c.
+.SS "#define IIS_BLUE   206"
+.PP
+Definition at line 20 of file nkkgb/iisdisplay.c.
+.SS "#define IIS_GREEN   201"
+.PP
+Definition at line 16 of file nkkgb/iisdisplay.c.
+.SS "#define IIS_RED   204"
+.PP
+Definition at line 19 of file nkkgb/iisdisplay.c.
+.SS "#define IIS_WHITE   203"
+.PP
+Definition at line 18 of file nkkgb/iisdisplay.c.
+.SS "#define IIS_YELLOW   207"
+.PP
+Definition at line 21 of file nkkgb/iisdisplay.c.
+.SH "Function Documentation"
+.PP 
+.SS "int iisdisplay (float ** f, int N1, int N2, float fmin, float fmax)"
+.PP
+Definition at line 41 of file nkkgb/iisdisplay.c.
+.PP
+References ADVXONTC, ADVYONXOV, ALLBITPL, CHAN2, CHECK_SUM, data, f, ff, FLOAT_MAGIC, FMAX, fmin, IIS_YELLOW, iispipe, indx, IWRITE, ix, N1, N2, REFRESH, scale, SUB_UNIT, T_REGISTER, THING_COUNT, TRANSFER_ID, x, X_REGISTER, y, Y_REGISTER, and Z_REGISTER.
+.SS "int openiispipe (void)"
+.PP
+Definition at line 23 of file nkkgb/iisdisplay.c.
+.PP
+References exit(), iispipe, and syspipe.
+.SH "Variable Documentation"
+.PP 
+.SS "short* \fBdata\fP = NULL\fC [static]\fP"
+.PP
+Definition at line 12 of file nkkgb/iisdisplay.c.
+.PP
+Referenced by iisdisplay().
+.SS "FILE* \fBiispipe\fP\fC [static]\fP"
+.PP
+Definition at line 13 of file nkkgb/iisdisplay.c.
+.PP
+Referenced by iisdisplay(), and openiispipe().
+.SS "FILE * \fBsyspipe\fP\fC [static]\fP"
+.PP
+Definition at line 13 of file nkkgb/iisdisplay.c.
+.PP
+Referenced by openiispipe().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

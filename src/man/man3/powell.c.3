@@ -1,0 +1,50 @@
+.TH "powell.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+powell.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include 'nrutil.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBNRANSI\fP"
+.br
+.ti -1c
+.RI "#define \fBITMAX\fP   200"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBpowell\fP (float p[], float **xi, int \fBn\fP, float ftol, int *iter, float *fret, float(*func)(float[]))"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define ITMAX   200"
+.PP
+Definition at line 4 of file powell.c.
+.SS "#define NRANSI"
+.PP
+Definition at line 2 of file powell.c.
+.SH "Function Documentation"
+.PP 
+.SS "void powell (float p[], float ** xi, int n, float ftol, int * iter, float * fret, float(* func)(float[]))"
+.PP
+Definition at line 6 of file powell.c.
+.PP
+References free_vector(), func(), i, ITMAX, j, linmin(), n, nrerror(), SQR, t, and vector().
+.PP
+Referenced by findmin(), fitall(), gaussfit(), gaussfitn(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

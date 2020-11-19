@@ -1,0 +1,40 @@
+#!/usr/bin/perl
+
+$| = 1;			# force flushing
+
+$usage = "\
+NAME\
+	makehtmlindex --- perl script to generate a html index\
+\
+SYNOPSIS\
+	makehtmlindex path sectionname command1 command2....\
+\
+DESCRIPTION\
+	'makehtmlindex' generates an html file containing\
+	hot links to the individual web-man-pages\
+	for a list of commands.  The first argument\
+	is the path to the main index, the second arg\
+	is a string to identify the section, and the\
+	remaining arguments are the commands.\
+\
+";
+
+$path = shift(@ARGV);
+if ($path eq "-u") {
+	die $usage;
+	exit;
+}
+$section = shift(@ARGV);
+
+
+printf "<html>\n<head>\n<title> %s index </title>\n</head>\n", $section;
+printf "<body bgcolor=\"#FFFFFF\">\n<h2>index for imcat section `%s'</h2><hr>\n", $section;
+printf "<p><a href=\"readme.html\">readme</a><hr>\n";
+printf "<p>\n<ul>\n";
+while ($command = shift(@ARGV)) {
+	printf "<li> <a href=\"%s.html\">%s</a>\n", $command, $command;
+}
+printf "</ul>\n<hr>\n";
+printf "<p><a href=\"%s/mainindex.html\">main index</a>\n", $path;
+printf "</body>\n</html>\n";
+

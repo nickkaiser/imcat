@@ -1,0 +1,356 @@
+.TH "inlist" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+inlist \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <f2c.h>\fP
+.PP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBflag\fP \fBinerr\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP \fBinunit\fP"
+.br
+.ti -1c
+.RI "char * \fBinfile\fP"
+.br
+.ti -1c
+.RI "\fBftnlen\fP \fBinfilen\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinex\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinopen\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinnum\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinnamed\fP"
+.br
+.ti -1c
+.RI "char * \fBinname\fP"
+.br
+.ti -1c
+.RI "\fBftnlen\fP \fBinnamlen\fP"
+.br
+.ti -1c
+.RI "char * \fBinacc\fP"
+.br
+.ti -1c
+.RI "\fBftnlen\fP \fBinacclen\fP"
+.br
+.ti -1c
+.RI "char * \fBinseq\fP"
+.br
+.ti -1c
+.RI "\fBftnlen\fP \fBinseqlen\fP"
+.br
+.ti -1c
+.RI "char * \fBindir\fP"
+.br
+.ti -1c
+.RI "\fBftnlen\fP \fBindirlen\fP"
+.br
+.ti -1c
+.RI "char * \fBinfmt\fP"
+.br
+.ti -1c
+.RI "\fBftnlen\fP \fBinfmtlen\fP"
+.br
+.ti -1c
+.RI "char * \fBinform\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP \fBinformlen\fP"
+.br
+.ti -1c
+.RI "char * \fBinunf\fP"
+.br
+.ti -1c
+.RI "\fBftnlen\fP \fBinunflen\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinrecl\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinnrec\fP"
+.br
+.ti -1c
+.RI "char * \fBinblank\fP"
+.br
+.ti -1c
+.RI "\fBftnlen\fP \fBinblanklen\fP"
+.br
+.ti -1c
+.RI "char * \fBinfile\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinex\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinopen\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinnum\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinnamed\fP"
+.br
+.ti -1c
+.RI "char * \fBinname\fP"
+.br
+.ti -1c
+.RI "char * \fBinacc\fP"
+.br
+.ti -1c
+.RI "char * \fBinseq\fP"
+.br
+.ti -1c
+.RI "char * \fBindir\fP"
+.br
+.ti -1c
+.RI "char * \fBinfmt\fP"
+.br
+.ti -1c
+.RI "char * \fBinform\fP"
+.br
+.ti -1c
+.RI "char * \fBinunf\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinrecl\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinnrec\fP"
+.br
+.ti -1c
+.RI "char * \fBinblank\fP"
+.br
+.ti -1c
+.RI "char * \fBinfile\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinex\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinopen\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinnum\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinnamed\fP"
+.br
+.ti -1c
+.RI "char * \fBinname\fP"
+.br
+.ti -1c
+.RI "char * \fBinacc\fP"
+.br
+.ti -1c
+.RI "char * \fBinseq\fP"
+.br
+.ti -1c
+.RI "char * \fBindir\fP"
+.br
+.ti -1c
+.RI "char * \fBinfmt\fP"
+.br
+.ti -1c
+.RI "char * \fBinform\fP"
+.br
+.ti -1c
+.RI "char * \fBinunf\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinrecl\fP"
+.br
+.ti -1c
+.RI "\fBftnint\fP * \fBinnrec\fP"
+.br
+.ti -1c
+.RI "char * \fBinblank\fP"
+.br
+.in -1c
+.SH "Field Documentation"
+.PP 
+.SS "char* \fBinlist::inacc\fP"
+.PP
+Definition at line 107 of file myf2c.h.
+.SS "char* \fBinlist::inacc\fP"
+.PP
+Definition at line 140 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "char* \fBinlist::inacc\fP"
+.PP
+Definition at line 101 of file fftpack_c/f2c.h.
+.SS "\fBftnlen\fP \fBinlist::inacclen\fP"
+.PP
+Definition at line 108 of file myf2c.h.
+.SS "char* \fBinlist::inblank\fP"
+.PP
+Definition at line 121 of file myf2c.h.
+.SS "char* \fBinlist::inblank\fP"
+.PP
+Definition at line 154 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "char* \fBinlist::inblank\fP"
+.PP
+Definition at line 115 of file fftpack_c/f2c.h.
+.SS "\fBftnlen\fP \fBinlist::inblanklen\fP"
+.PP
+Definition at line 122 of file myf2c.h.
+.SS "char* \fBinlist::indir\fP"
+.PP
+Definition at line 111 of file myf2c.h.
+.SS "char* \fBinlist::indir\fP"
+.PP
+Definition at line 144 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "char* \fBinlist::indir\fP"
+.PP
+Definition at line 105 of file fftpack_c/f2c.h.
+.SS "\fBftnlen\fP \fBinlist::indirlen\fP"
+.PP
+Definition at line 112 of file myf2c.h.
+.SS "\fBflag\fP \fBinlist::inerr\fP"
+.PP
+Definition at line 97 of file myf2c.h.
+.SS "\fBftnint\fP* \fBinlist::inex\fP"
+.PP
+Definition at line 101 of file myf2c.h.
+.SS "\fBftnint\fP* \fBinlist::inex\fP"
+.PP
+Definition at line 134 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "\fBftnint\fP* \fBinlist::inex\fP"
+.PP
+Definition at line 95 of file fftpack_c/f2c.h.
+.SS "char* \fBinlist::infile\fP"
+.PP
+Definition at line 99 of file myf2c.h.
+.SS "char* \fBinlist::infile\fP"
+.PP
+Definition at line 132 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "char* \fBinlist::infile\fP"
+.PP
+Definition at line 93 of file fftpack_c/f2c.h.
+.SS "\fBftnlen\fP \fBinlist::infilen\fP"
+.PP
+Definition at line 100 of file myf2c.h.
+.SS "char* \fBinlist::infmt\fP"
+.PP
+Definition at line 113 of file myf2c.h.
+.SS "char* \fBinlist::infmt\fP"
+.PP
+Definition at line 146 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "char* \fBinlist::infmt\fP"
+.PP
+Definition at line 107 of file fftpack_c/f2c.h.
+.SS "\fBftnlen\fP \fBinlist::infmtlen\fP"
+.PP
+Definition at line 114 of file myf2c.h.
+.SS "char* \fBinlist::inform\fP"
+.PP
+Definition at line 115 of file myf2c.h.
+.SS "char* \fBinlist::inform\fP"
+.PP
+Definition at line 148 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "char* \fBinlist::inform\fP"
+.PP
+Definition at line 109 of file fftpack_c/f2c.h.
+.SS "\fBftnint\fP \fBinlist::informlen\fP"
+.PP
+Definition at line 116 of file myf2c.h.
+.SS "char* \fBinlist::inname\fP"
+.PP
+Definition at line 105 of file myf2c.h.
+.SS "char* \fBinlist::inname\fP"
+.PP
+Definition at line 138 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "char* \fBinlist::inname\fP"
+.PP
+Definition at line 99 of file fftpack_c/f2c.h.
+.SS "\fBftnint\fP* \fBinlist::innamed\fP"
+.PP
+Definition at line 104 of file myf2c.h.
+.SS "\fBftnint\fP* \fBinlist::innamed\fP"
+.PP
+Definition at line 137 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "\fBftnint\fP* \fBinlist::innamed\fP"
+.PP
+Definition at line 98 of file fftpack_c/f2c.h.
+.SS "\fBftnlen\fP \fBinlist::innamlen\fP"
+.PP
+Definition at line 106 of file myf2c.h.
+.SS "\fBftnint\fP* \fBinlist::innrec\fP"
+.PP
+Definition at line 120 of file myf2c.h.
+.SS "\fBftnint\fP* \fBinlist::innrec\fP"
+.PP
+Definition at line 153 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "\fBftnint\fP* \fBinlist::innrec\fP"
+.PP
+Definition at line 114 of file fftpack_c/f2c.h.
+.SS "\fBftnint\fP* \fBinlist::innum\fP"
+.PP
+Definition at line 103 of file myf2c.h.
+.SS "\fBftnint\fP* \fBinlist::innum\fP"
+.PP
+Definition at line 136 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "\fBftnint\fP* \fBinlist::innum\fP"
+.PP
+Definition at line 97 of file fftpack_c/f2c.h.
+.SS "\fBftnint\fP* \fBinlist::inopen\fP"
+.PP
+Definition at line 102 of file myf2c.h.
+.SS "\fBftnint\fP* \fBinlist::inopen\fP"
+.PP
+Definition at line 135 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "\fBftnint\fP* \fBinlist::inopen\fP"
+.PP
+Definition at line 96 of file fftpack_c/f2c.h.
+.SS "\fBftnint\fP* \fBinlist::inrecl\fP"
+.PP
+Definition at line 119 of file myf2c.h.
+.SS "\fBftnint\fP* \fBinlist::inrecl\fP"
+.PP
+Definition at line 152 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "\fBftnint\fP* \fBinlist::inrecl\fP"
+.PP
+Definition at line 113 of file fftpack_c/f2c.h.
+.SS "char* \fBinlist::inseq\fP"
+.PP
+Definition at line 109 of file myf2c.h.
+.SS "char* \fBinlist::inseq\fP"
+.PP
+Definition at line 142 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "char* \fBinlist::inseq\fP"
+.PP
+Definition at line 103 of file fftpack_c/f2c.h.
+.SS "\fBftnlen\fP \fBinlist::inseqlen\fP"
+.PP
+Definition at line 110 of file myf2c.h.
+.SS "char* \fBinlist::inunf\fP"
+.PP
+Definition at line 117 of file myf2c.h.
+.SS "char* \fBinlist::inunf\fP"
+.PP
+Definition at line 150 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "char* \fBinlist::inunf\fP"
+.PP
+Definition at line 111 of file fftpack_c/f2c.h.
+.SS "\fBftnlen\fP \fBinlist::inunflen\fP"
+.PP
+Definition at line 118 of file myf2c.h.
+.SS "\fBftnint\fP \fBinlist::inunit\fP"
+.PP
+Definition at line 98 of file myf2c.h.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

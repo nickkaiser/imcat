@@ -1,0 +1,58 @@
+.TH "line" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+line \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <hfindpeaks.h>\fP
+.PP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBpeak\fP * \fBhead\fP"
+.br
+.ti -1c
+.RI "\fBpeak\fP * \fBtail\fP"
+.br
+.ti -1c
+.RI "\fBline\fP * \fBnext\fP"
+.br
+.ti -1c
+.RI "\fBline\fP * \fBprev\fP"
+.br
+.ti -1c
+.RI "\fBline\fP * \fBcellmate\fP"
+.br
+.in -1c
+.SH "Field Documentation"
+.PP 
+.SS "struct \fBline\fP* \fBline::cellmate\fP"
+.PP
+Definition at line 16 of file hfindpeaks.h.
+.SS "struct \fBpeak\fP* \fBline::head\fP"
+.PP
+Definition at line 12 of file hfindpeaks.h.
+.PP
+Referenced by addnewline().
+.SS "struct \fBline\fP* \fBline::next\fP"
+.PP
+Definition at line 14 of file hfindpeaks.h.
+.PP
+Referenced by addnewline(), and readfitsheader().
+.SS "struct \fBline\fP* \fBline::prev\fP"
+.PP
+Definition at line 15 of file hfindpeaks.h.
+.PP
+Referenced by removedead().
+.SS "struct \fBpeak\fP* \fBline::tail\fP"
+.PP
+Definition at line 13 of file hfindpeaks.h.
+.PP
+Referenced by addnewline().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

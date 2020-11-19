@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# tfilter :  table-filter
+
+# check for at least one argument
+case $# in
+0)	echo "\ntfilter :  table-filter\n\nusage: tfilter condition\n\
+	where condition is a legal nawk expression\n\n\
+examples:\n\
+	tfilter ' \$1 > 0'\n\
+	tfilter ' \$1 > 30 && \$2 < 0 '\n\
+	tfilter ' \$4 ~ /gal/ '\n\
+\n"	1>&2; exit 2
+esac
+
+condition=$1
+
+echo \# tfilter \'$condition\'
+nawk '{
+	if ($0 ~ /^#/)
+		print $0			# pass comment lines through #
+	else
+		if ('"$condition"')
+			print $0
+}'
+

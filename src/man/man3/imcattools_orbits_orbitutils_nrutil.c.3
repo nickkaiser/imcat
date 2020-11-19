@@ -1,0 +1,234 @@
+.TH "nrutil.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+nrutil.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stddef.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include 'nrutil.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBNR_END\fP   0"
+.br
+.ti -1c
+.RI "#define \fBFREE_ARG\fP   char*"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBnrerror\fP (char error_text[])"
+.br
+.ti -1c
+.RI "float * \fBvector\fP (long nl, long nh)"
+.br
+.ti -1c
+.RI "int * \fBivector\fP (long nl, long nh)"
+.br
+.ti -1c
+.RI "unsigned char * \fBcvector\fP (long nl, long nh)"
+.br
+.ti -1c
+.RI "unsigned long * \fBlvector\fP (long nl, long nh)"
+.br
+.ti -1c
+.RI "double * \fBdvector\fP (long nl, long nh)"
+.br
+.ti -1c
+.RI "float ** \fBmatrix\fP (long nrl, long nrh, long ncl, long nch)"
+.br
+.ti -1c
+.RI "double ** \fBdmatrix\fP (long nrl, long nrh, long ncl, long nch)"
+.br
+.ti -1c
+.RI "int ** \fBimatrix\fP (long nrl, long nrh, long ncl, long nch)"
+.br
+.ti -1c
+.RI "float ** \fBsubmatrix\fP (float **\fBa\fP, long oldrl, long oldrh, long oldcl, long oldch, long newrl, long newcl)"
+.br
+.ti -1c
+.RI "float ** \fBconvert_matrix\fP (float *\fBa\fP, long nrl, long nrh, long ncl, long nch)"
+.br
+.ti -1c
+.RI "float *** \fBf3tensor\fP (long nrl, long nrh, long ncl, long nch, long ndl, long ndh)"
+.br
+.ti -1c
+.RI "void \fBfree_vector\fP (float *\fBv\fP, long nl, long nh)"
+.br
+.ti -1c
+.RI "void \fBfree_ivector\fP (int *\fBv\fP, long nl, long nh)"
+.br
+.ti -1c
+.RI "void \fBfree_cvector\fP (unsigned char *\fBv\fP, long nl, long nh)"
+.br
+.ti -1c
+.RI "void \fBfree_lvector\fP (unsigned long *\fBv\fP, long nl, long nh)"
+.br
+.ti -1c
+.RI "void \fBfree_dvector\fP (double *\fBv\fP, long nl, long nh)"
+.br
+.ti -1c
+.RI "void \fBfree_matrix\fP (float **\fBm\fP, long nrl, long nrh, long ncl, long nch)"
+.br
+.ti -1c
+.RI "void \fBfree_dmatrix\fP (double **\fBm\fP, long nrl, long nrh, long ncl, long nch)"
+.br
+.ti -1c
+.RI "void \fBfree_imatrix\fP (int **\fBm\fP, long nrl, long nrh, long ncl, long nch)"
+.br
+.ti -1c
+.RI "void \fBfree_submatrix\fP (float **\fBb\fP, long nrl, long nrh, long ncl, long nch)"
+.br
+.ti -1c
+.RI "void \fBfree_convert_matrix\fP (float **\fBb\fP, long nrl, long nrh, long ncl, long nch)"
+.br
+.ti -1c
+.RI "void \fBfree_f3tensor\fP (float ***\fBt\fP, long nrl, long nrh, long ncl, long nch, long ndl, long ndh)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define FREE_ARG   char*"
+.PP
+Definition at line 6 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+Referenced by free_convert_matrix(), free_cvector(), free_dmatrix(), free_dvector(), free_f3tensor(), free_imatrix(), free_ivector(), free_lvector(), free_matrix(), free_submatrix(), and free_vector().
+.SS "#define NR_END   0"
+.PP
+Definition at line 5 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+Referenced by convert_matrix(), cvector(), dmatrix(), dvector(), f3tensor(), free_convert_matrix(), free_cvector(), free_dmatrix(), free_dvector(), free_f3tensor(), free_imatrix(), free_ivector(), free_lvector(), free_matrix(), free_submatrix(), free_vector(), imatrix(), ivector(), lvector(), matrix(), submatrix(), and vector().
+.SH "Function Documentation"
+.PP 
+.SS "float** convert_matrix (float * a, long nrl, long nrh, long ncl, long nch)"
+.PP
+Definition at line 160 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References a, i, j, m, malloc(), NR_END, and nrerror().
+.SS "unsigned char* cvector (long nl, long nh)"
+.PP
+Definition at line 37 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References malloc(), NR_END, nrerror(), and v.
+.SS "double** dmatrix (long nrl, long nrh, long ncl, long nch)"
+.PP
+Definition at line 91 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References i, m, malloc(), NR_END, and nrerror().
+.SS "double* dvector (long nl, long nh)"
+.PP
+Definition at line 57 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References malloc(), NR_END, nrerror(), and v.
+.SS "float*** f3tensor (long nrl, long nrh, long ncl, long nch, long ndl, long ndh)"
+.PP
+Definition at line 182 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References i, j, malloc(), NR_END, nrerror(), and t.
+.SS "void free_convert_matrix (float ** b, long nrl, long nrh, long ncl, long nch)"
+.PP
+Definition at line 274 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References b, free(), FREE_ARG, and NR_END.
+.SS "void free_cvector (unsigned char * v, long nl, long nh)"
+.PP
+Definition at line 229 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References free(), FREE_ARG, NR_END, and v.
+.SS "void free_dmatrix (double ** m, long nrl, long nrh, long ncl, long nch)"
+.PP
+Definition at line 254 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References free(), FREE_ARG, m, and NR_END.
+.SS "void free_dvector (double * v, long nl, long nh)"
+.PP
+Definition at line 241 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References free(), FREE_ARG, NR_END, and v.
+.SS "void free_f3tensor (float *** t, long nrl, long nrh, long ncl, long nch, long ndl, long ndh)"
+.PP
+Definition at line 280 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References free(), FREE_ARG, NR_END, and t.
+.SS "void free_imatrix (int ** m, long nrl, long nrh, long ncl, long nch)"
+.PP
+Definition at line 261 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References free(), FREE_ARG, m, and NR_END.
+.SS "void free_ivector (int * v, long nl, long nh)"
+.PP
+Definition at line 223 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References free(), FREE_ARG, NR_END, and v.
+.SS "void free_lvector (unsigned long * v, long nl, long nh)"
+.PP
+Definition at line 235 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References free(), FREE_ARG, NR_END, and v.
+.SS "void free_matrix (float ** m, long nrl, long nrh, long ncl, long nch)"
+.PP
+Definition at line 247 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References free(), FREE_ARG, m, and NR_END.
+.SS "void free_submatrix (float ** b, long nrl, long nrh, long ncl, long nch)"
+.PP
+Definition at line 268 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References b, free(), FREE_ARG, and NR_END.
+.SS "void free_vector (float * v, long nl, long nh)"
+.PP
+Definition at line 217 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References free(), FREE_ARG, NR_END, and v.
+.SS "int** imatrix (long nrl, long nrh, long ncl, long nch)"
+.PP
+Definition at line 115 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References i, m, malloc(), NR_END, and nrerror().
+.SS "int* ivector (long nl, long nh)"
+.PP
+Definition at line 27 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References malloc(), NR_END, nrerror(), and v.
+.SS "unsigned long* lvector (long nl, long nh)"
+.PP
+Definition at line 47 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References malloc(), NR_END, nrerror(), and v.
+.SS "float** matrix (long nrl, long nrh, long ncl, long nch)"
+.PP
+Definition at line 67 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References i, m, malloc(), NR_END, and nrerror().
+.SS "void nrerror (char error_text[])"
+.PP
+Definition at line 8 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References exit().
+.SS "float** submatrix (float ** a, long oldrl, long oldrh, long oldcl, long oldch, long newrl, long newcl)"
+.PP
+Definition at line 140 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References a, i, j, m, malloc(), NR_END, and nrerror().
+.SS "float* vector (long nl, long nh)"
+.PP
+Definition at line 17 of file imcattools/orbits/orbitutils/nrutil.c.
+.PP
+References malloc(), NR_END, nrerror(), and v.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

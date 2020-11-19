@@ -1,0 +1,27 @@
+plotall
+	window 2 2 1 1
+	ptype 4 1
+	getlimits tempb.lst
+	plotlist tempb.lst
+	window 2 2 1 2
+	ptype 4 0
+	getlimits tempa.lst
+	plotlist tempa.lst
+	window 2 1 2 1
+	getlimits temp.lst
+	ptype 4 0
+	plotlist tempc.lst
+	ptype 4 1
+	plotlist tempb.lst
+	
+
+getlimits 1
+	data $1
+	read {x 1 y 2}
+	limits x y
+	box
+
+plotlist 1
+	data $1
+	read {x 1 y 2}
+	points x y

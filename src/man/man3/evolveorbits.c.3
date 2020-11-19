@@ -1,0 +1,56 @@
+.TH "evolveorbits.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+evolveorbits.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+\fC#include 'tcl.h'\fP
+.br
+\fC#include 'utils/ipbuff.h'\fP
+.br
+\fC#include 'kepler.h'\fP
+.br
+\fC#include 'extravars.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	evolveorbits - evolve orbits by two-body or time-centered leapfrog\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	evolveorbits dt nsteps [-writekepler] [-tcl nsubsteps] [-extravars vardefs] [-jupiter phase]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	evolveorbits reads an lc catalog containing \fBa\fP set of positions \fBr\fP[3]\\\fBn\fP\\	and velocities \fBv\fP[3] from stdin, evolves the positions and\\\fBn\fP\\	velocities through nsteps steps of length and writes the results\\\fBn\fP\\	to stdout.\\\fBn\fP\\\\\fBn\fP\\	By default, it does this by converting from phase-space to\\\fBn\fP\\	Kepler orbital elements (\fBa\fP, \fBe\fP, \fBi\fP, omega, Omega, \fBM\fP) and incrementing\\\fBn\fP\\	\fBM\fP and then performing the inverse transformation.\\\fBn\fP\\\\\fBn\fP\\	With -writekepler option, we also output the orbital elements.\\\fBn\fP\\\\\fBn\fP\\	With -extravars option we carry defined variables along.  For example, use\\\fBn\fP\\		-extrvars myscalar:1:myvector:3\\\fBn\fP\\	to carry along myscalar and myvector[3]\\\fBn\fP\\\\\fBn\fP\\	With option -tcl we do the evolution using time-centered\\\fBn\fP\\	leapfrog with nsubsteps steps of length dt / nsubsteps\\\fBn\fP\\\\\fBn\fP\\	Times are given in units of earths dynamical time (approx 58 days).\\\fBn\fP\\	Distances are in AU.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	maketestpparfile.pl makeobs_circ laplace3 evolve\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	evolveorbits - evolve orbits by two-body or time-centered leapfrog\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	evolveorbits dt nsteps [-writekepler] [-tcl nsubsteps] [-extravars vardefs] [-jupiter phase]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	evolveorbits reads an lc catalog containing \fBa\fP set of positions \fBr\fP[3]\\\fBn\fP\\	and velocities \fBv\fP[3] from stdin, evolves the positions and\\\fBn\fP\\	velocities through nsteps steps of length and writes the results\\\fBn\fP\\	to stdout.\\\fBn\fP\\\\\fBn\fP\\	By default, it does this by converting from phase-space to\\\fBn\fP\\	Kepler orbital elements (\fBa\fP, \fBe\fP, \fBi\fP, omega, Omega, \fBM\fP) and incrementing\\\fBn\fP\\	\fBM\fP and then performing the inverse transformation.\\\fBn\fP\\\\\fBn\fP\\	With -writekepler option, we also output the orbital elements.\\\fBn\fP\\\\\fBn\fP\\	With -extravars option we carry defined variables along.  For example, use\\\fBn\fP\\		-extrvars myscalar:1:myvector:3\\\fBn\fP\\	to carry along myscalar and myvector[3]\\\fBn\fP\\\\\fBn\fP\\	With option -tcl we do the evolution using time-centered\\\fBn\fP\\	leapfrog with nsubsteps steps of length dt / nsubsteps\\\fBn\fP\\\\\fBn\fP\\	Times are given in units of earths dynamical time (approx 58 days).\\\fBn\fP\\	Distances are in AU.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	maketestpparfile.pl makeobs_circ laplace3 evolve\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 11 of file evolveorbits.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 46 of file evolveorbits.c.
+.PP
+References keplerorbit::a, cartesiantokepler(), dotcl, exit(), fillbufferfromkeplerorbit(), i, ipf, jupiteron(), keplertocartesian(), keplerorbit::M, parseextravars(), r, readdoublebuff(), t, tcl(), theorbit, usage, and v.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

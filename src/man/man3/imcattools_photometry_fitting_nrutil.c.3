@@ -1,0 +1,158 @@
+.TH "nrutil.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+nrutil.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBnrerror\fP (char *error_text)"
+.br
+.ti -1c
+.RI "float * \fBvector\fP (int nl, int nh)"
+.br
+.ti -1c
+.RI "int * \fBivector\fP (int nl, int nh)"
+.br
+.ti -1c
+.RI "double * \fBdvector\fP (int nl, int nh)"
+.br
+.ti -1c
+.RI "float ** \fBmatrix\fP (int nrl, int nrh, int ncl, int nch)"
+.br
+.ti -1c
+.RI "double ** \fBdmatrix\fP (int nrl, int nrh, int ncl, int nch)"
+.br
+.ti -1c
+.RI "int ** \fBimatrix\fP (int nrl, int nrh, int ncl, int nch)"
+.br
+.ti -1c
+.RI "float ** \fBsubmatrix\fP (float **\fBa\fP, int oldrl, int oldrh, int oldcl, int oldch, int newrl, int newcl)"
+.br
+.ti -1c
+.RI "void \fBfree_vector\fP (float *\fBv\fP, int nl, int nh)"
+.br
+.ti -1c
+.RI "void \fBfree_ivector\fP (int *\fBv\fP, int nl, int nh)"
+.br
+.ti -1c
+.RI "void \fBfree_dvector\fP (double *\fBv\fP, int nl, int nh)"
+.br
+.ti -1c
+.RI "void \fBfree_matrix\fP (float **\fBm\fP, int nrl, int nrh, int ncl, int nch)"
+.br
+.ti -1c
+.RI "void \fBfree_dmatrix\fP (double **\fBm\fP, int nrl, int nrh, int ncl, int nch)"
+.br
+.ti -1c
+.RI "void \fBfree_imatrix\fP (int **\fBm\fP, int nrl, int nrh, int ncl, int nch)"
+.br
+.ti -1c
+.RI "void \fBfree_submatrix\fP (float **\fBb\fP, int nrl, int nrh, int ncl, int nch)"
+.br
+.ti -1c
+.RI "float ** \fBconvert_matrix\fP (float *\fBa\fP, int nrl, int nrh, int ncl, int nch)"
+.br
+.ti -1c
+.RI "void \fBfree_convert_matrix\fP (float **\fBb\fP, int nrl, int nrh, int ncl, int nch)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "float** convert_matrix (float * a, int nrl, int nrh, int ncl, int nch)"
+.PP
+Definition at line 165 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References a, i, j, m, malloc(), and nrerror().
+.SS "double** dmatrix (int nrl, int nrh, int ncl, int nch)"
+.PP
+Definition at line 63 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References i, m, malloc(), and nrerror().
+.SS "double* dvector (int nl, int nh)"
+.PP
+Definition at line 35 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References malloc(), nrerror(), and v.
+.SS "void free_convert_matrix (float ** b, int nrl, int nrh, int ncl, int nch)"
+.PP
+Definition at line 181 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References b, and free().
+.SS "void free_dmatrix (double ** m, int nrl, int nrh, int ncl, int nch)"
+.PP
+Definition at line 140 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References free(), i, and m.
+.SS "void free_dvector (double * v, int nl, int nh)"
+.PP
+Definition at line 125 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References free(), and v.
+.SS "void free_imatrix (int ** m, int nrl, int nrh, int ncl, int nch)"
+.PP
+Definition at line 148 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References free(), i, and m.
+.SS "void free_ivector (int * v, int nl, int nh)"
+.PP
+Definition at line 120 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References free(), and v.
+.SS "void free_matrix (float ** m, int nrl, int nrh, int ncl, int nch)"
+.PP
+Definition at line 132 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References free(), i, and m.
+.SS "void free_submatrix (float ** b, int nrl, int nrh, int ncl, int nch)"
+.PP
+Definition at line 158 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References b, and free().
+.SS "void free_vector (float * v, int nl, int nh)"
+.PP
+Definition at line 115 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References free(), and v.
+.SS "int** imatrix (int nrl, int nrh, int ncl, int nch)"
+.PP
+Definition at line 80 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References i, m, malloc(), and nrerror().
+.SS "int* ivector (int nl, int nh)"
+.PP
+Definition at line 26 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References malloc(), nrerror(), and v.
+.SS "float** matrix (int nrl, int nrh, int ncl, int nch)"
+.PP
+Definition at line 46 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References i, m, malloc(), and nrerror().
+.SS "void nrerror (char * error_text)"
+.PP
+Definition at line 5 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References exit().
+.SS "float** submatrix (float ** a, int oldrl, int oldrh, int oldcl, int oldch, int newrl, int newcl)"
+.PP
+Definition at line 98 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References a, i, j, m, malloc(), and nrerror().
+.SS "float* vector (int nl, int nh)"
+.PP
+Definition at line 17 of file imcattools/photometry/fitting/nrutil.c.
+.PP
+References malloc(), nrerror(), and v.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,17 @@
+# text format catalogue file --- do not edit manually, use 'lc'
+# header:
+# text     1 1         model_type                  2Dpoly
+# number   1 1         ndim                             2
+# number   1 1         nmodes                           3
+# text     1 1         xname                            x
+# number   1 2         xorigin                          0             0
+# comment: spatial polynomial parameter file
+# comment: history: fit2cats 
+# comment: history: lc '+all' -r l
+# contents: 2
+# number   1 1         m                   
+# number   1 2         a                   
+#             m          a[0]          a[1]
+              0           0.2           0.2
+              0  -1.94033e-07  -2.74356e-07
+              1   6.81812e-07   5.58945e-07

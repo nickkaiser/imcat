@@ -1,0 +1,48 @@
+.TH "mosaicfit.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+mosaicfit.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	mosaicfit --- \fBfit\fP for transformation coefficients for \fBa\fP set of exposures\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	mosaicfit [\fBoptions\fP...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'mosaicfit' reads \fBa\fP catalogue containing the result of\\\fBn\fP\\	merging all pairs of 'mosaiccat's (as created by 'mergemosaiccats1'\\\fBn\fP\\	or 'mergemosaiccats2') and which must contain entries for the\\\fBn\fP\\	spatial coords 'x', chip-\fBnumber\fP 'chip' and exp \fBnumber\fP 'exp'\\\fBn\fP\\	and magnitude '\fBmag\fP' from stdin, and \fBfits\fP \fBa\fP linear\\\fBn\fP\\	model in which x,y are related to \\'detector coords\\' xd,yd by\\\fBn\fP\\\\\fBn\fP\\		xd = x + phi_c * y + dx_c\\\fBt\fP\\\fBn\fP\\		yd = y - phi_c * x + dy_c\\\fBt\fP\\\fBn\fP\\\\\fBn\fP\\	so chips are rotated thru phi_c and displaced by dx_c, dy_c\\\fBn\fP\\	relative to coordinate \fBframe\fP define by chip-0\\\fBn\fP\\	and where sky coords X_e,Y_e are related to detector coords by\\\fBn\fP\\\\\fBn\fP\\		X_e = (1 + \fBalpha\fP * (xd * xd + yd * yd)) xd\\\fBt\fP\\\fBn\fP\\		Y_e = (1 + \fBalpha\fP * (xd * xd + yd * yd)) yd\\\fBt\fP\\\fBn\fP\\\\\fBn\fP\\	and where sky coords in \fBframe\fP defined by exposure-0 are\\\fBn\fP\\\\\fBn\fP\\		\fBX\fP = X_e + Phi00_e * X_e + Phi01_e * Y_e + dX_e\\\fBt\fP\\\fBn\fP\\		\fBY\fP = Y_e + Phi10_e * X_e + Phi11_e * Y_e + dY_e\\\fBt\fP\\\fBn\fP\\\\\fBn\fP\\	which allows for pointing shifts and rotations as well as\\\fBn\fP\\	any scale change or differential refraction.\\\fBn\fP\\	The model is linearised - so only valid for small\\\fBn\fP\\	\fBalpha\fP, phi_c, dx_c, dy_c, Phi_e (dX_e, dY_e can be large though)\\\fBn\fP\\	Solves by minimising squared residuals.\\\fBn\fP\\	We also read magnitudes, which we model as:\\\fBn\fP\\\\\fBn\fP\\		m_ce = \fBm\fP + m_c + M_e\\\fBn\fP\\\\\fBn\fP\\	where \fBm\fP is the true magnitude and m_c and M_e are magnitude\\\fBn\fP\\	offsets for chip and exposure (relative to chip-0, exp-0).\\\fBn\fP\\	Outputs coefficients in tabular form:\\\fBn\fP\\		\fBalpha\fP\\\fBt\fP\\\fBn\fP\\		0	0	0	0	0	0	0\\\fBt\fP\\\fBn\fP\\			....\\\fBt\fP\\\fBn\fP\\		Phi00_m	Phi01_m	Phi10_m	Phi11_m	dX_m	dY_m	M_m\\\fBt\fP\\\fBn\fP\\			....\\\fBt\fP\\\fBn\fP\\		0	0	0	0\\\fBt\fP\\\fBn\fP\\			....\\\fBt\fP\\\fBn\fP\\		phi_n	dx_n	dy_n	m_n\\\fBt\fP\\\fBn\fP\\			....\\\fBt\fP\\\fBn\fP\\OPTIONS\\\fBn\fP\\	Options are\\\fBn\fP\\		-\fBc\fP Nc\\\fBt\fP# \fBnumber\fP of chips (7)\\\fBn\fP\\		-\fBe\fP Ne\\\fBt\fP# \fBnumber\fP of exposures (11)\\\fBn\fP\\		-\fBn\fP\\\fBt\fP# don'\fBt\fP compute magnitude shifts   \\\fBn\fP\\\\\fBn\fP\\</pre><p>See also <\fBa\fP href=\\'./mosaicfitting.ps\\'> mosaicfitting.ps </\fBa\fP><pre>\\\fBn\fP\\\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBSCALE\fP   4096.0"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define SCALE   4096.0"
+.PP
+Definition at line 73 of file mosaicfit.c.
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	mosaicfit --- \fBfit\fP for transformation coefficients for \fBa\fP set of exposures\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	mosaicfit [\fBoptions\fP...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'mosaicfit' reads \fBa\fP catalogue containing the result of\\\fBn\fP\\	merging all pairs of 'mosaiccat's (as created by 'mergemosaiccats1'\\\fBn\fP\\	or 'mergemosaiccats2') and which must contain entries for the\\\fBn\fP\\	spatial coords 'x', chip-\fBnumber\fP 'chip' and exp \fBnumber\fP 'exp'\\\fBn\fP\\	and magnitude '\fBmag\fP' from stdin, and \fBfits\fP \fBa\fP linear\\\fBn\fP\\	model in which x,y are related to \\'detector coords\\' xd,yd by\\\fBn\fP\\\\\fBn\fP\\		xd = x + phi_c * y + dx_c\\\fBt\fP\\\fBn\fP\\		yd = y - phi_c * x + dy_c\\\fBt\fP\\\fBn\fP\\\\\fBn\fP\\	so chips are rotated thru phi_c and displaced by dx_c, dy_c\\\fBn\fP\\	relative to coordinate \fBframe\fP define by chip-0\\\fBn\fP\\	and where sky coords X_e,Y_e are related to detector coords by\\\fBn\fP\\\\\fBn\fP\\		X_e = (1 + \fBalpha\fP * (xd * xd + yd * yd)) xd\\\fBt\fP\\\fBn\fP\\		Y_e = (1 + \fBalpha\fP * (xd * xd + yd * yd)) yd\\\fBt\fP\\\fBn\fP\\\\\fBn\fP\\	and where sky coords in \fBframe\fP defined by exposure-0 are\\\fBn\fP\\\\\fBn\fP\\		\fBX\fP = X_e + Phi00_e * X_e + Phi01_e * Y_e + dX_e\\\fBt\fP\\\fBn\fP\\		\fBY\fP = Y_e + Phi10_e * X_e + Phi11_e * Y_e + dY_e\\\fBt\fP\\\fBn\fP\\\\\fBn\fP\\	which allows for pointing shifts and rotations as well as\\\fBn\fP\\	any scale change or differential refraction.\\\fBn\fP\\	The model is linearised - so only valid for small\\\fBn\fP\\	\fBalpha\fP, phi_c, dx_c, dy_c, Phi_e (dX_e, dY_e can be large though)\\\fBn\fP\\	Solves by minimising squared residuals.\\\fBn\fP\\	We also read magnitudes, which we model as:\\\fBn\fP\\\\\fBn\fP\\		m_ce = \fBm\fP + m_c + M_e\\\fBn\fP\\\\\fBn\fP\\	where \fBm\fP is the true magnitude and m_c and M_e are magnitude\\\fBn\fP\\	offsets for chip and exposure (relative to chip-0, exp-0).\\\fBn\fP\\	Outputs coefficients in tabular form:\\\fBn\fP\\		\fBalpha\fP\\\fBt\fP\\\fBn\fP\\		0	0	0	0	0	0	0\\\fBt\fP\\\fBn\fP\\			....\\\fBt\fP\\\fBn\fP\\		Phi00_m	Phi01_m	Phi10_m	Phi11_m	dX_m	dY_m	M_m\\\fBt\fP\\\fBn\fP\\			....\\\fBt\fP\\\fBn\fP\\		0	0	0	0\\\fBt\fP\\\fBn\fP\\			....\\\fBt\fP\\\fBn\fP\\		phi_n	dx_n	dy_n	m_n\\\fBt\fP\\\fBn\fP\\			....\\\fBt\fP\\\fBn\fP\\OPTIONS\\\fBn\fP\\	Options are\\\fBn\fP\\		-\fBc\fP Nc\\\fBt\fP# \fBnumber\fP of chips (7)\\\fBn\fP\\		-\fBe\fP Ne\\\fBt\fP# \fBnumber\fP of exposures (11)\\\fBn\fP\\		-\fBn\fP\\\fBt\fP# don'\fBt\fP compute magnitude shifts   \\\fBn\fP\\\\\fBn\fP\\</pre><p>See also <\fBa\fP href=\\'./mosaicfitting.ps\\'> mosaicfitting.ps </\fBa\fP><pre>\\\fBn\fP\\\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 6 of file mosaicfit.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 75 of file mosaicfit.c.
+.PP
+References A, alpha, B, c, d, dx, dX, dy, dY, e, exit(), indx, lcpipe, line, m, mag, mylubksb(), myludcmp(), n, phi, SCALE, usage, x, xp(), y, and yp().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

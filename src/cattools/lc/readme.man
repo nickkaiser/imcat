@@ -1,0 +1,7 @@
+'lc' is a general purpose catalogue filter.  It uses a reverse polish
+notation syntax to allow you to generate complicated operations on the
+command line.
+It is similar in some ways to 'awk', but much more efficient as it allows
+binary format catalogues.
+lc can be very useful is invoked as a filter to pipe catalogue
+data into and out of c-progs or perl-scripts.

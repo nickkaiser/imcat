@@ -1,0 +1,297 @@
+.TH "comm.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+comm.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include 'cdl.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBiis_hdr\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCDL_LIBRARY_SOURCE\fP"
+.br
+.ti -1c
+.RI "#define \fBMEMORY\fP   01"
+.br
+.ti -1c
+.RI "#define \fBLUT\fP   02"
+.br
+.ti -1c
+.RI "#define \fBFEEDBACK\fP   05"
+.br
+.ti -1c
+.RI "#define \fBIMCURSOR\fP   020"
+.br
+.ti -1c
+.RI "#define \fBWCS\fP   021"
+.br
+.ti -1c
+.RI "#define \fBSZ_IMCURVAL\fP   160"
+.br
+.ti -1c
+.RI "#define \fBSZ_WCSBUF\fP   320"
+.br
+.ti -1c
+.RI "#define \fBPACKED\fP   0040000"
+.br
+.ti -1c
+.RI "#define \fBIMC_SAMPLE\fP   0040000"
+.br
+.ti -1c
+.RI "#define \fBCOMMAND\fP   0100000"
+.br
+.ti -1c
+.RI "#define \fBIIS_WRITE\fP   0400000"
+.br
+.ti -1c
+.RI "#define \fBIIS_READ\fP   0100000"
+.br
+.ti -1c
+.RI "#define \fBOK\fP   0"
+.br
+.ti -1c
+.RI "#define \fBERR\fP   1"
+.br
+.ti -1c
+.RI "#define \fBmin\fP(\fBa\fP, \fBb\fP)   (\fBa\fP < \fBb\fP ? \fBa\fP : \fBb\fP)"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBcom_whdr\fP ()"
+.br
+.ti -1c
+.RI "int \fBcom_write\fP ()"
+.br
+.ti -1c
+.RI "int \fBcom_read\fP ()"
+.br
+.ti -1c
+.RI "int \fBcom_writeData\fP (int fd, short x, short y, \fBuchar\fP *\fBpix\fP, int nbytes)"
+.br
+.ti -1c
+.RI "int \fBcom_readData\fP (int fdin, int fdout, short x, short y, \fBuchar\fP *\fBpix\fP, int *npix)"
+.br
+.ti -1c
+.RI "int \fBcom_readCursor\fP (int fdin, int fdout, int sample, float *x, float *y, char *\fBkey\fP)"
+.br
+.ti -1c
+.RI "int \fBcom_setCursor\fP (int fd, int x, int y, int \fBwcs\fP)"
+.br
+.ti -1c
+.RI "int \fBcom_setFBConfig\fP (int fd, int configno)"
+.br
+.ti -1c
+.RI "int \fBcom_setFrame\fP (int fd, int frame_num)"
+.br
+.ti -1c
+.RI "int \fBcom_writeWCS\fP (int fd, char *name, float \fBa\fP, float \fBb\fP, float \fBc\fP, float \fBd\fP, float \fBtx\fP, float \fBty\fP, float \fBz1\fP, float \fBz2\fP, int \fBzt\fP)"
+.br
+.ti -1c
+.RI "int \fBcom_readWCS\fP (int fdin, int fdout, char *name, float *\fBa\fP, float *\fBb\fP, float *\fBc\fP, float *\fBd\fP, float *\fBtx\fP, float *\fBty\fP, float *\fBz1\fP, float *\fBz2\fP, int *\fBzt\fP)"
+.br
+.ti -1c
+.RI "int \fBcom_eraseFrame\fP (int fd)"
+.br
+.ti -1c
+.RI "int \fBcom_whdr\fP (int fd, int tid, int subunit, int thingct, int x, int y, int \fBz\fP, int \fBt\fP)"
+.br
+.ti -1c
+.RI "int \fBcom_write\fP (int fd, char *\fBbuf\fP, int nbytes)"
+.br
+.ti -1c
+.RI "int \fBcom_read\fP (int fd, char *\fBbuf\fP, int maxbytes, int *nbytes)"
+.br
+.ti -1c
+.RI "int \fBcom_setDebug\fP (int state)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBframe\fP = 1 \fBfbconfig\fP = 1"
+.br
+.ti -1c
+.RI "int \fBcom_debug\fP = 0"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CDL_LIBRARY_SOURCE"
+.PP
+Definition at line 2 of file comm.c.
+.SS "#define COMMAND   0100000"
+.PP
+Definition at line 49 of file comm.c.
+.PP
+Referenced by com_setFrame(), and vx_iisio().
+.SS "#define ERR   1"
+.PP
+Definition at line 54 of file comm.c.
+.SS "#define FEEDBACK   05"
+.PP
+Definition at line 40 of file comm.c.
+.PP
+Referenced by com_eraseFrame(), iis_display(), and vx_iisio().
+.SS "#define IIS_READ   0100000"
+.PP
+Definition at line 51 of file comm.c.
+.PP
+Referenced by com_readCursor(), com_readData(), com_readWCS(), and vx_iisio().
+.SS "#define IIS_WRITE   0400000"
+.PP
+Definition at line 50 of file comm.c.
+.PP
+Referenced by com_eraseFrame(), com_setCursor(), com_setFrame(), com_writeData(), and com_writeWCS().
+.SS "#define IMC_SAMPLE   0040000"
+.PP
+Definition at line 48 of file comm.c.
+.PP
+Referenced by com_readCursor(), and vx_iisio().
+.SS "#define IMCURSOR   020"
+.PP
+Definition at line 41 of file comm.c.
+.PP
+Referenced by com_readCursor(), com_setCursor(), iis_cur(), and vx_iisio().
+.SS "#define LUT   02"
+.PP
+Definition at line 39 of file comm.c.
+.PP
+Referenced by com_setFrame(), and vx_iisio().
+.SS "#define MEMORY   01"
+.PP
+Definition at line 38 of file comm.c.
+.PP
+Referenced by com_readData(), com_writeData(), and vx_iisio().
+.SS "#define min(\fBa\fP, \fBb\fP)   (\fBa\fP < \fBb\fP ? \fBa\fP : \fBb\fP)"
+.PP
+Definition at line 57 of file comm.c.
+.SS "#define OK   0"
+.PP
+Definition at line 53 of file comm.c.
+.SS "#define PACKED   0040000"
+.PP
+Definition at line 47 of file comm.c.
+.PP
+Referenced by com_readData(), com_whdr(), com_writeData(), com_writeWCS(), iis_display(), iis_drawcirc(), and vx_iisio().
+.SS "#define SZ_IMCURVAL   160"
+.PP
+Definition at line 43 of file comm.c.
+.PP
+Referenced by com_readCursor(), vx_iisio(), and vx_retCursorVal().
+.SS "#define SZ_WCSBUF   320"
+.PP
+Definition at line 44 of file comm.c.
+.PP
+Referenced by com_readWCS(), com_writeWCS(), and vx_iisio().
+.SS "#define WCS   021"
+.PP
+Definition at line 42 of file comm.c.
+.PP
+Referenced by com_readWCS(), com_writeWCS(), iis_display(), iis_drawcirc(), and vx_iisio().
+.SH "Function Documentation"
+.PP 
+.SS "int com_eraseFrame (int fd)"
+.PP
+Definition at line 413 of file comm.c.
+.PP
+References com_whdr(), ERR, fbconfig, FEEDBACK, frame, IIS_WRITE, and OK.
+.SS "int com_read (int fd, char 	* buf, int maxbytes, int 	* nbytes)\fC [static]\fP"
+.PP
+Definition at line 545 of file comm.c.
+.PP
+References buf, ERR, and OK.
+.SS "int com_read ()"
+.PP
+Referenced by com_readCursor(), com_readData(), and com_readWCS().
+.SS "int com_readCursor (int fdin, int fdout, int sample, float	* x, float * y, char	* key)"
+.PP
+Definition at line 185 of file comm.c.
+.PP
+References buf, com_read(), com_whdr(), ERR, IIS_READ, IMC_SAMPLE, IMCURSOR, key, n, SZ_IMCURVAL, wcs, x, and y.
+.SS "int com_readData (int fdin, int fdout, short x, short y, \fBuchar\fP 	* pix, int	* npix)"
+.PP
+Definition at line 138 of file comm.c.
+.PP
+References com_read(), com_whdr(), ERR, frame, IIS_READ, malloc(), MEMORY, n, OK, PACKED, pix, uchar, x, and y.
+.SS "int com_readWCS (int fdin, int fdout, char	* name, float	* a, float * b, float * c, float * d, float	* tx, float * ty, float	* z1, float * z2, int	* zt)"
+.PP
+Definition at line 366 of file comm.c.
+.PP
+References a, b, c, com_read(), com_whdr(), d, ERR, IIS_READ, n, OK, SZ_WCSBUF, tx, ty, WCS, z1, z2, and zt.
+.SS "int com_setCursor (int fd, int x, int y, int wcs)"
+.PP
+Definition at line 225 of file comm.c.
+.PP
+References com_whdr(), ERR, IIS_WRITE, IMCURSOR, OK, wcs, x, and y.
+.SS "int com_setDebug (int state)"
+.PP
+Definition at line 571 of file comm.c.
+.PP
+References com_debug, and OK.
+.SS "int com_setFBConfig (int fd, int configno)"
+.PP
+Definition at line 252 of file comm.c.
+.PP
+References fbconfig, and OK.
+.SS "int com_setFrame (int fd, int frame_num)"
+.PP
+Definition at line 275 of file comm.c.
+.PP
+References com_whdr(), com_write(), COMMAND, ERR, frame, IIS_WRITE, and LUT.
+.SS "int com_whdr (int fd, int tid, int subunit, int thingct, int x, int y, int z, int t)\fC [static]\fP"
+.PP
+Definition at line 450 of file comm.c.
+.PP
+References iis_hdr::checksum, com_debug, com_write(), PACKED, iis_hdr::subunit, iis_hdr::t, t, iis_hdr::thingct, iis_hdr::tid, iis_hdr::x, x, iis_hdr::y, y, iis_hdr::z, and z.
+.SS "int com_whdr ()\fC [static]\fP"
+.PP
+Referenced by com_eraseFrame(), com_readCursor(), com_readData(), com_readWCS(), com_setCursor(), com_setFrame(), com_writeData(), and com_writeWCS().
+.SS "int com_write (int fd, char 	* buf, int nbytes)\fC [static]\fP"
+.PP
+Definition at line 509 of file comm.c.
+.PP
+References buf, ERR, min, n, and OK.
+.SS "int com_write ()"
+.PP
+Referenced by com_setFrame(), com_whdr(), com_writeData(), and com_writeWCS().
+.SS "int com_writeData (int fd, short x, short y, \fBuchar\fP 	* pix, int nbytes)"
+.PP
+Definition at line 103 of file comm.c.
+.PP
+References com_whdr(), com_write(), ERR, frame, IIS_WRITE, MEMORY, PACKED, pix, uchar, x, and y.
+.SS "int com_writeWCS (int fd, char	* name, float a, float b, float c, float d, float tx, float ty, float z1, float z2, int zt)"
+.PP
+Definition at line 316 of file comm.c.
+.PP
+References a, b, c, com_whdr(), com_write(), d, ERR, fbconfig, frame, IIS_WRITE, PACKED, SZ_WCSBUF, tx, ty, WCS, z1, z2, and zt.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBcom_debug\fP = 0\fC [static]\fP"
+.PP
+Definition at line 70 of file comm.c.
+.PP
+Referenced by com_setDebug(), and com_whdr().
+.SS "int \fBframe\fP = 1 \fBfbconfig\fP = 1\fC [static]\fP"
+.PP
+Definition at line 69 of file comm.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

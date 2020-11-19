@@ -1,0 +1,91 @@
+#! /usr/bin/perl
+
+# generate a stack of images for a given region of X,Y sky coords
+$usage = "usage: makestack [options...]\
+	apply linear transformations according to parameters in\
+	'fitstack.par' to a stack of images.  Requires a database\
+	'exp.db' giving names of exposures.\
+	By default, the output image size is inherited from\
+	the inoput image.\
+	Options are:\
+		-i srcdir	# source image directory ('images')\
+		-d imdstdir	# source image directory ('images')\
+		-S srcsfx	# suffix for source images ('.fits')\
+		-s dstsfx	# suffix for transformed images ('.warp')\
+		-x dx dy	# add dx, dy to dX, dY values\
+		-n N1 N2	# size of output image\
+		-m dm		# add dm to the delta-mag column\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+";
+
+$| = 1;
+
+# defaults:
+$srcdir = "images";
+$dstdir = "images";
+$srcsfx = ".fits";
+$dstsfx = ".warp";
+$sizeopt = "";
+
+while ($_ = shift(@ARGV)) {
+        if (/^-i/) {
+		$srcdir = shift(@ARGV) || die $usage;
+	} elsif (/^-d/) {
+		$dstdir = shift(@ARGV) || die $usage;
+	} elsif (/^-S/) {
+		$srcsfx = shift(@ARGV) || die $usage;
+	} elsif (/^-s/) {
+		$dstsfx = shift(@ARGV) || die $usage;
+	} elsif (/^-x/) {
+		$dx = shift(@ARGV) || die $usage;
+		$dy = shift(@ARGV) || die $usage;
+ 	} elsif (/^-n/) {
+		$N1 = shift(@ARGV) || die $usage;
+		$N2 = shift(@ARGV) || die $usage;
+		$sizeopt = "-n $N1 $N2 ";
+  	} elsif (/^-m/) {
+		$dm = shift(@ARGV) || die $usage;
+        } else {
+                die $usage;
+        }
+}
+
+
+
+
+require "exp.db";
+
+# read the transformation coefficients
+open(COEFFTS, "fitstack.par") || die "Can't open fitstack.par";
+for ($exp = 0; $exp < $Nexp; $exp++) {
+        ($Phi[$exp], $dX[$exp], $dY[$exp], $dM[$exp]) = split(' ', <COEFFTS>);
+	$dX[$exp] += $dx;
+	$dY[$exp] += $dy;
+	$dM[$exp] += $dm;
+}
+close(COEFFTS);
+
+
+foreach $exp (keys %expname) {
+	$src = "$srcdir/$expname{$exp}$srcsfx";
+	$dst = "$dstdir/$expname{$exp}$dstsfx";
+	$magfactor = 10.0 ** (0.4 * $dM[$exp]);
+	print "# getting sigma value for $src:";
+	$sigma = `stats -v sigma < $src` * $magfactor;
+	print " $sigma", "\n";
+	&echosys("ic -c $N1 $N2 'MAGIC' > $$.fits");
+	$sysstring = sprintf("ic '%%1 %f mult' %s | transformimage $sizeopt -p 1 %f %f 1 -t %f %f -i -f %s > %s",
+		$magfactor, $src, $Phi[$exp], -$Phi[$exp], $dX[$exp], $dY[$exp], "$$.fits", $dst);
+	&echosys($sysstring);
+#	&echosys("rm $$.fits");
+	&echosys("addfitscomment $dst SIGMA $sigma");
+	
+}
+
+
+sub echosys {
+        print @_, "\n";
+        system(@_) && die "makestack: systemcall failed\n";
+}

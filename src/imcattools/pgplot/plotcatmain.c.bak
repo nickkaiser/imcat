@@ -1,0 +1,997 @@
+/*
+ * plotcatmain.c
+ */
+
+
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+#include <unistd.h>
+
+#include "cpgplot.h"
+#include "cpgellipses.h"
+#include "getrange.h"
+#include "rectangles.h"
+#include "lcfilter.h"
+#include "../../utils/error.h"
+#include "../../imlib/fits.h"
+#include "../../utils/colormaps.h"
+#include "labels.h"
+
+#define MARGIN 			0.03
+#define RFRACDEFAULT 		0.01
+#define EMAX 			0.9
+#define NVERT			8
+
+#define MAX_MODES		20
+
+#define SYMBOL_TYPE		0
+#define POLY_TYPE		1
+
+#define XY_MODE			0
+#define XY_SHADE_MODE		1
+#define XY_SYMBOL_MODE		2
+#define XY_SYMBOL_SHADE_MODE	3
+#define XY_R_MODE		4
+#define XY_E_MODE		5
+#define XY_R_SHADE_MODE		6
+#define XY_E_SHADE_MODE		7
+#define XY_R_E_MODE		8
+#define XY_R_E_SHADE_MODE	9
+#define XY_HIST_MODE		10
+#define XY_ERRY_MODE		11
+#define XY_SYMBOL_ERRY_MODE	12
+
+
+static int		cilo, cihi;
+int			getcifromshade(float shade);
+
+int		main(int argc, char *argv[])	
+{
+	int		arg = 1, lwidth, needrange, readtable, type, editmode;
+	int		readsymbol, readshade, readradius, readellipticity;
+	int		needcolourrange;
+	char		*device, defdevice[64] = "/xserve", line[1024];
+	char		xlabel[64] = "", ylabel[64] = "", plotlabel[512] = "";
+	char		iplcstring[512], coords[128], pipestring[512], tempstring[512];
+	float		xmin, xmax, ymin, ymax, x1, x2, y1, y2, rfrac;
+	float		*x, *y, *shade, *r, *e0, *e1, *a, *b, *phi;
+	float		ee, rr, rdefault, fillshade, theshade;
+	int		just, axis, mode;
+	FILE		*tempf, *tempf2, *ippipe, *temppipe, *fitsf, *opmask, *ipmask;
+	char		*tempfilename, *tempfilename2, cursevent[64], tempprefix[10] = "imcat";
+	float		xc0, yc0, xc1, yc1, xc2, yc2;
+	double		*lcrecord, ipmaskrec[4], *ipmaskx1, *ipmasky1, *ipmaskx2, *ipmasky2;
+	int		lcrecordsize[MAX_MODES], ipt, npts;
+	char		*symbolname, *shadename, *radiusname, *ellipticityname, *coordsarg[2];
+	int		*symbol, defaultsymbol, drawoutline;
+	int		boxci, rectci, defci, oldci, newci, fillci, coordsargcount;
+	int		dobackgroundimage, docontours, ncontours, N1, N2, comc, ix, iy, icontour;
+	fitsheader	*fits;
+	float		**fgray, *ffgray, *flev, fmin, fmax, tr[6], dxgray, dygray;
+	char		*imcatdir, manstring[128];
+	int		plotvectors, plotmask;
+        float           *cmapl, *cmapr, *cmapg, *cmapb, cmapcontra, cmapbright;
+        int             cmapn, cmapindex;
+	int		dowedge, usertickscale, plotline, linestyle;
+	float		X1, X2, Y1, Y2;
+	float		charheight;
+	label		*baselabel = NULL, *newlabel;
+	int		histogram, doerry;
+	char		*erryname;
+	float		*erry[2];
+
+	/* set up lcrecordsize array */
+	lcrecordsize[XY_MODE] = 2;
+	lcrecordsize[XY_SHADE_MODE] = 3;
+	lcrecordsize[XY_SYMBOL_MODE] = 3;
+	lcrecordsize[XY_SYMBOL_SHADE_MODE] = 4;
+	lcrecordsize[XY_R_MODE] = 3;
+	lcrecordsize[XY_E_MODE] = 4;
+	lcrecordsize[XY_R_SHADE_MODE] = 4;
+	lcrecordsize[XY_E_SHADE_MODE] = 5;
+	lcrecordsize[XY_R_E_MODE] = 5;
+	lcrecordsize[XY_R_E_SHADE_MODE] = 6;
+	lcrecordsize[XY_HIST_MODE] = 2;
+	lcrecordsize[XY_ERRY_MODE] = 4;
+	lcrecordsize[XY_SYMBOL_ERRY_MODE] = 5;
+
+	/* defaults */
+	device = defdevice;
+	needrange = 1;
+	lwidth = 1;
+	just = -1;
+	axis = 0;
+	readtable = 0;
+	type = SYMBOL_TYPE;
+	readsymbol = 0;
+	readshade = 0;
+	needcolourrange = 0;
+	readradius = 0;
+	readellipticity = 0;
+	drawoutline = 0;
+	fillshade = -1.0;
+	defaultsymbol = -10;
+	rfrac = RFRACDEFAULT;
+	editmode = NOEDIT_MODE;
+	coordsargcount = 0;
+	dobackgroundimage = 0;
+	docontours = 0;
+	defci = 3;
+	rectci = 4;
+	boxci = 1;
+	plotvectors = 0;
+	plotmask = 0;
+	dowedge = 0;
+	usertickscale = 0;
+	charheight = 1;
+	histogram = 0;
+	doerry = 0;
+	plotline = 0;
+
+	imcatdir = getenv("IMCATDIR");
+	if (!imcatdir) {
+		fprintf(stderr, "plotcat: you need to define IMCATDIR!\n");
+	}
+	sprintf(manstring, "cat %s/src/imcattools/pgplot/plotcat.hlp 1>&2", imcatdir);
+
+	while (arg < argc) {
+                if (argv[arg][0] != '-')  {		/* must be spatial coords coming */
+				if (coordsargcount > 1) {
+				system(manstring);
+				exit(-1);
+			}
+			coordsarg[coordsargcount++] = argv[arg++];
+		} else {
+                switch (*(argv[arg++]+1)) {
+			case 's':
+				readsymbol = 1;
+				symbolname = argv[arg++];
+				break;
+			case 'c':
+				readshade = 1;
+				needcolourrange = 1;
+				shadename = argv[arg++];
+				break;
+			case 'r':
+				readradius = 1;
+				type = POLY_TYPE;
+				radiusname = argv[arg++];
+				break;
+			case 'V':
+				plotvectors = 1;
+			case 'e':
+				readellipticity = 1;
+				type = POLY_TYPE;
+				ellipticityname = argv[arg++];
+				break;
+ 			case 'd':
+				device = argv[arg++];
+				defci = 1;
+				break;
+			case 't':
+				readtable = 1;
+				break;
+			case 'T':
+				strcpy(plotlabel, argv[arg++]);
+				break;
+			case 'l':
+				strcpy(xlabel,argv[arg++]);
+				strcpy(ylabel,argv[arg++]);
+				break;
+			case 'w':
+				sscanf(argv[arg++], "%d", &lwidth);
+				break;
+			case 'H':
+				sscanf(argv[arg++], "%f", &charheight);
+				break;
+			case 'x':
+				sscanf(argv[arg++], "%f", &x1);
+ 				sscanf(argv[arg++], "%f", &x2);
+				sscanf(argv[arg++], "%f", &y1);
+ 				sscanf(argv[arg++], "%f", &y2);
+				needrange = 0;
+				break;
+			case 'X':
+				sscanf(argv[arg++], "%f", &X1);
+ 				sscanf(argv[arg++], "%f", &X2);
+				sscanf(argv[arg++], "%f", &Y1);
+ 				sscanf(argv[arg++], "%f", &Y2);
+				usertickscale = 1;
+				break;
+			case 'j':
+				sscanf(argv[arg++], "%d", &just);
+				break;
+			case 'a':
+				sscanf(argv[arg++], "%d", &axis);
+				break;
+			case 'o':
+				drawoutline = 1;
+				break;
+			case 'f':
+				sscanf(argv[arg++], "%f", &fillshade);
+				break;
+			case 'v':
+				sscanf(argv[arg++], "%f", &rfrac);
+				break;
+			case 'y':
+				sscanf(argv[arg++], "%d", &defaultsymbol);
+				break;
+			case 'u':
+				system(manstring);
+				exit(0);
+				break;
+			case 'R':
+				editmode = REJECT_MODE;
+				break;
+			case 'S':
+				editmode = SELECT_MODE;
+				break;
+			case 'm':
+				plotmask = 1;
+				sprintf(tempstring, "lc -b -o x1 x2 < %s", argv[arg++]);
+				ipmaskx1 = ipmaskrec + 0;
+				ipmasky1 = ipmaskrec + 1;
+				ipmaskx2 = ipmaskrec + 2;
+				ipmasky2 = ipmaskrec + 3;
+ 				ipmask = popen(tempstring, "r");
+				if (!ipmask) {
+					error_exit("plotcat: failed to open lc-pipe for mask input\n");
+				}
+				break;
+			case 'M':
+				editmode = MASK_MODE;
+				opmask = popen("lc -C -N '1 2 x1' -N '1 2 x2' -x -a 'mask file - generated by plotcat'", "w");
+				if (!opmask) {
+					error_exit("plotcat: failed to open lc-pipe for mask output\n");
+				}
+				break;
+			case 'F':
+				dobackgroundimage = 1;
+				fitsf = fopen(argv[arg++], "r");
+				if (!fitsf)
+					error_exit("plotcat: unable to open fits file\n");
+				read2Dfloatimage(&fgray, &N1, &N2, &fits, fitsf);
+				ffgray = (float *) calloc(N1 * N2, sizeof(float));
+				sscanf(argv[arg++], "%d", &cmapindex);
+				break;
+			case 'C':
+				docontours = 1;
+				sscanf(argv[arg++], "%d", &ncontours);
+				flev = (float *) calloc(ncontours + 1, sizeof(float));
+				break;
+			case 'L':
+				/* create the new label */
+				newlabel = (label *) calloc(1, sizeof(label));
+				sscanf(argv[arg++], "%f", &(newlabel->x));
+				sscanf(argv[arg++], "%f", &(newlabel->y));
+				newlabel->text = argv[arg++];
+				/* and install it at the front of the list */
+				newlabel->next = baselabel;
+				baselabel = newlabel;
+				break;
+			case 'K':
+				newlabel = (label *) calloc(1, sizeof(label));
+				sscanf(argv[arg++], "%f", &(newlabel->x));
+				sscanf(argv[arg++], "%f", &(newlabel->y));
+				newlabel->text = argv[arg++];
+				sscanf(argv[arg++], "%d", &(newlabel->colorindex));
+				newlabel->next = baselabel;
+				baselabel = newlabel;
+				break;
+			case 'W':
+				dowedge = 1;
+				break;
+			case 'h':
+				histogram = 1;
+				break;
+			case 'E':
+				doerry = 1;
+				erryname = argv[arg++];
+				break;
+			case 'Q':
+				plotline = 1;
+				sscanf(argv[arg++], "%d", &linestyle);
+				break;
+                        default:
+                                system(manstring);
+				exit(-1);
+                                break;
+		}
+		}
+        }
+
+	/* create the coords string */
+	switch (coordsargcount) {
+		case 0:
+			sprintf(coords, "x");
+			coordsarg[0] = coords;
+			coordsargcount = 1;
+			break;
+		case 1:
+			sprintf(coords, "'%s'", coordsarg[0]);
+			break;
+		case 2:
+			sprintf(coords, "'%s' '%s'", coordsarg[0], coordsarg[1]);
+			break;
+		default:
+			error_exit("plotcat: invalid coordsargcount\n");
+			break;
+	}
+
+	/* set the default justification */
+	if (just < 0) {
+		just = (coordsargcount == 1 ? 1 : 0);
+	}
+
+	/* create the labels */
+	if (!strlen(xlabel)) {
+		if (coordsargcount == 1) {
+			sscanf(coordsarg[0], "%s", xlabel);
+			sscanf(coordsarg[0], "%s", ylabel);
+			strcat(xlabel, "[0]");
+			strcat(ylabel, "[1]");
+		} else {
+			sscanf(coordsarg[0], "%s", xlabel);
+			sscanf(coordsarg[1], "%s", ylabel);
+		}
+	}
+	if (!strlen(plotlabel)) {
+		for (arg = 0; arg < argc; arg++) {
+			strcat(plotlabel, argv[arg]);
+			strcat(plotlabel, " ");
+		}
+	}
+	
+
+	/* determine the mode */
+	switch (type) {
+		case SYMBOL_TYPE:
+			if (readsymbol) {
+				if (readshade) {
+					mode = XY_SYMBOL_SHADE_MODE;
+				} else {
+					if (doerry) {
+						mode = XY_SYMBOL_ERRY_MODE;
+					} else {
+						mode = XY_SYMBOL_MODE;
+					}
+				}
+			} else {
+				if (readshade) {
+					mode = XY_SHADE_MODE;
+				} else {
+					if (histogram) {
+						mode = XY_HIST_MODE;
+					} else {
+						if (doerry) {
+							mode = XY_ERRY_MODE;
+						} else {
+							mode = XY_MODE;
+						}
+					}
+				}
+			}
+			break;
+		case POLY_TYPE:
+			if (readradius) {
+				if (readellipticity) {
+					mode = (readshade ? XY_R_E_SHADE_MODE : XY_R_E_MODE);
+				} else {
+					mode = (readshade ? XY_R_SHADE_MODE : XY_R_MODE);
+				}
+			} else {
+				mode = (readshade ? XY_E_SHADE_MODE : XY_E_MODE);
+			}
+			break;
+		default:
+			error_exit("plotcat: bad plot type\n");
+			break;
+	}
+	if (plotline && (mode != XY_MODE)) {
+		error_exit("plotcat: -Q option incompatible with other arguments\n");
+	}
+
+ 	/* read the catalogue as raw bytes into the temporary file and count records*/
+	lcrecord = (double *) calloc(lcrecordsize[mode], sizeof(double));       
+	tempfilename = tempnam(NULL, tempprefix);
+	/* create the lc string */
+	switch (mode) {
+		case XY_MODE:
+		case XY_HIST_MODE:
+			if (readtable) {
+				sprintf(iplcstring, "lc -C -b -N '1 2 x'");
+			} else {
+				sprintf(iplcstring, "lc -b %s", coords);
+			}
+			break;
+		case XY_SHADE_MODE:
+			if (readtable) {
+				sprintf(iplcstring, "lc -C -b -N '1 2 x' -n shade");
+			} else {
+				sprintf(iplcstring, "lc -b %s '%s'", coords, shadename);
+			}
+			break;
+		case XY_SYMBOL_MODE:
+			if (readtable) {
+				sprintf(iplcstring, "lc -C -b -N '1 2 x' -n sym");
+			} else {
+				sprintf(iplcstring, "lc -b %s '%s'", coords, symbolname);
+			}
+			break;
+		case XY_SYMBOL_SHADE_MODE:
+			if (readtable) {
+				sprintf(iplcstring, "lc -C -b -N '1 2 x' -n sym -n shade");
+			} else {
+				sprintf(iplcstring, "lc -b %s '%s' '%s'", coords, symbolname, shadename);
+			}
+			break;
+		case XY_R_MODE:
+			if (readtable) {
+				sprintf(iplcstring, "lc -C -b -N '1 2 x' -n r");
+			} else {
+				sprintf(iplcstring, "lc -b %s '%s'", coords, radiusname);
+			}
+			break;
+		case XY_E_MODE:
+			if (readtable) {
+				sprintf(iplcstring, "lc -C -b -N '1 2 x' -N '1 2 e'");
+			} else {
+				sprintf(iplcstring, "lc -b %s '%s'", coords, ellipticityname);
+			}
+			break;
+		case XY_R_SHADE_MODE:
+			if (readtable) {
+				sprintf(iplcstring, "lc -C -b -N '1 2 x' -n r -n shade");
+			} else {
+				sprintf(iplcstring, "lc -b %s '%s' '%s'", coords, radiusname, shadename);
+			}
+			break;
+		case XY_E_SHADE_MODE:
+			if (readtable) {
+				sprintf(iplcstring, "lc -C -b -N '1 2 x' -N '1 2 e' -n shade");
+			} else {
+				sprintf(iplcstring, "lc -b %s '%s' '%s'", coords, ellipticityname, shadename);
+			}
+			break;
+		case XY_R_E_MODE:
+			if (readtable) {
+				sprintf(iplcstring, "lc -C -b -N '1 2 x' -n r -N '1 2 e'");
+			} else {
+				sprintf(iplcstring, "lc -b %s '%s' '%s'", coords, radiusname, ellipticityname);
+			}
+			break;
+		case XY_R_E_SHADE_MODE:
+			if (readtable) {
+				sprintf(iplcstring, "lc -C -b -N '1 2 x' -n r -N '1 2 e' -n shade");
+			} else {
+				sprintf(iplcstring, "lc -b %s '%s' '%s' '%s'", coords, radiusname, ellipticityname, shadename);
+			}
+			break;
+		case XY_ERRY_MODE:
+			sprintf(iplcstring, "lc -b %s '%s'", coords, erryname);
+			break;
+		case XY_SYMBOL_ERRY_MODE:
+			sprintf(iplcstring, "lc -b %s '%s' '%s'", coords, symbolname, erryname);
+			break;
+		default:
+			error_exit("plotcat: illegal plot mode!\n");
+			break;
+	}
+	if (editmode == SELECT_MODE || editmode == REJECT_MODE) {	/* keep a copy of original cat */
+		tempfilename2 = tempnam(NULL, tempprefix);
+		startfilter(coordsargcount, coordsarg, editmode);
+		if (readtable) {
+			sprintf(pipestring, "%s > %s", iplcstring, tempfilename2);
+		} else {
+			sprintf(pipestring, "cat > %s", tempfilename2);
+		}
+		if (!(temppipe = popen(pipestring, "r")))
+			error_exit("plotcat: can't open temp-pipe!\n");
+		pclose(temppipe);
+		if (readtable) {
+			sprintf(iplcstring, "lc -b -o < %s", tempfilename2);
+		} else {
+			strcat(iplcstring, " -o < ");
+			strcat(iplcstring, tempfilename2);
+		}
+	} else {
+		strcat(iplcstring, " -o");
+	}
+
+	if (!(ippipe = popen(iplcstring, "r")))
+		error_exit("plotcat: can't open 'lc'-pipe for input!\n");
+	if (!(tempf = fopen(tempfilename, "w")))
+		error_exit("plotcat: can't open temporary file for output!\n");
+	npts = 0;
+	while (fread(lcrecord, sizeof(double), lcrecordsize[mode], ippipe)) {
+		fwrite(lcrecord, sizeof(double), lcrecordsize[mode], tempf);
+		npts++;
+	}
+	fclose(tempf);
+	pclose(ippipe);
+
+	if (!npts) {
+		error_exit("plotcat: no objects read\n");
+	}
+
+	/* set the default symbol */
+	if (defaultsymbol == -10) {
+		if (npts < 1000) {
+			defaultsymbol = 22;
+		} else {
+			defaultsymbol = -1;
+		}
+	}
+
+	/* allocate memory for pgplot variables */
+	x = (float *) calloc(npts, sizeof(float));
+	y = (float *) calloc(npts, sizeof(float));
+	switch (mode) {
+		case XY_MODE:
+		case XY_HIST_MODE:
+			break;
+		case XY_SHADE_MODE:
+			shade = (float *) calloc(npts, sizeof(float));
+			break;
+		case XY_SYMBOL_MODE:
+			symbol = (int *) calloc(npts, sizeof(int));
+			break;
+		case XY_SYMBOL_SHADE_MODE:
+			symbol = (int *) calloc(npts, sizeof(int));
+			shade = (float *) calloc(npts, sizeof(float));
+			break;
+		case XY_R_MODE:
+			r = (float *) calloc(npts, sizeof(float));
+			break;
+		case XY_E_MODE:
+			e0 = (float *) calloc(npts, sizeof(float));
+			e1 = (float *) calloc(npts, sizeof(float));
+			a = (float *) calloc(npts, sizeof(float));
+			b = (float *) calloc(npts, sizeof(float));
+			phi = (float *) calloc(npts, sizeof(float));
+			break;
+		case XY_R_SHADE_MODE:
+			r = (float *) calloc(npts, sizeof(float));
+			shade = (float *) calloc(npts, sizeof(float));
+			break;
+		case XY_E_SHADE_MODE:
+			e0 = (float *) calloc(npts, sizeof(float));
+			e1 = (float *) calloc(npts, sizeof(float));
+			shade = (float *) calloc(npts, sizeof(float));
+			a = (float *) calloc(npts, sizeof(float));
+			b = (float *) calloc(npts, sizeof(float));
+			phi = (float *) calloc(npts, sizeof(float));
+			break;
+		case XY_R_E_MODE:
+			r = (float *) calloc(npts, sizeof(float));
+			e0 = (float *) calloc(npts, sizeof(float));
+			e1 = (float *) calloc(npts, sizeof(float));
+			a = (float *) calloc(npts, sizeof(float));
+			b = (float *) calloc(npts, sizeof(float));
+			phi = (float *) calloc(npts, sizeof(float));
+			break;
+		case XY_R_E_SHADE_MODE:
+			r = (float *) calloc(npts, sizeof(float));
+			e0 = (float *) calloc(npts, sizeof(float));
+			e1 = (float *) calloc(npts, sizeof(float));
+			shade = (float *) calloc(npts, sizeof(float));
+			a = (float *) calloc(npts, sizeof(float));
+			b = (float *) calloc(npts, sizeof(float));
+			phi = (float *) calloc(npts, sizeof(float));
+			break;
+		case XY_SYMBOL_ERRY_MODE:
+			symbol = (int *) calloc(npts, sizeof(int));
+		case XY_ERRY_MODE:
+			erry[0] = (float *) calloc(npts, sizeof(float));
+			erry[1] = (float *) calloc(npts, sizeof(float));
+			break;
+		default:
+			error_exit("plotcat: illegal plot mode!\n");
+			break;
+	}
+
+	/* read the pgplot variables from temporary file */
+	if (!(tempf = fopen(tempfilename, "r")))
+		error_exit("plotcat: can't open temp file for input!\n");
+	ipt = 0;
+	while (fread(lcrecord, sizeof(double), lcrecordsize[mode], tempf)) {
+		x[ipt] = (float) lcrecord[0];
+		y[ipt] = (float) lcrecord[1];
+		switch (mode) {
+			case XY_MODE:
+			case XY_HIST_MODE:
+				break;
+			case XY_SHADE_MODE:
+				shade[ipt] = (float) lcrecord[2];
+				break;
+			case XY_SYMBOL_MODE:
+				symbol[ipt] = (int) lcrecord[2];
+				break;
+			case XY_SYMBOL_SHADE_MODE:
+				symbol[ipt] = (int) lcrecord[2];
+				shade[ipt] = (float) lcrecord[3];
+				break;
+			case XY_R_MODE:
+				r[ipt] = (float) lcrecord[2];
+				break;
+			case XY_E_MODE:
+				e0[ipt] = (float) lcrecord[2];
+				e1[ipt] = (float) lcrecord[3];
+				break;
+			case XY_R_SHADE_MODE:
+				r[ipt] = (float) lcrecord[2];
+				shade[ipt] = (float) lcrecord[3];
+				break;
+			case XY_E_SHADE_MODE:
+				e0[ipt] = (float) lcrecord[2];
+				e1[ipt] = (float) lcrecord[3];
+				shade[ipt] = (float) lcrecord[4];
+				break;
+			case XY_R_E_MODE:
+				r[ipt] = (float) lcrecord[2];
+				e0[ipt] = (float) lcrecord[3];
+				e1[ipt] = (float) lcrecord[4];
+				break;
+			case XY_R_E_SHADE_MODE:
+				r[ipt] = (float) lcrecord[2];
+				e0[ipt] = (float) lcrecord[3];
+				e1[ipt] = (float) lcrecord[4];
+				shade[ipt] = (float) lcrecord[5];
+				break;
+			case XY_ERRY_MODE:
+				erry[0][ipt] = (float) lcrecord[2];
+				erry[1][ipt] = (float) lcrecord[3];
+				break;
+			case XY_SYMBOL_ERRY_MODE:
+				symbol[ipt] = (int) lcrecord[2];
+				erry[0][ipt] = (float) lcrecord[3];
+				erry[1][ipt] = (float) lcrecord[4];
+				break;
+			default:
+				error_exit("plotcat: illegal plot mode!\n");
+				break;
+		}
+		ipt++;
+	}
+	/* remove the temporary file */
+	sprintf(tempstring, "rm -f %s\n", tempfilename);
+	system(tempstring);
+
+	/* get the range of coords */
+	if (needrange) {
+		getrange(x, npts, &x1, &x2);
+		getrange(y, npts, &y1, &y2);
+	}
+
+	rdefault = rfrac * (fabs(x1 - x2));
+
+	/* calculate a, b, phi */
+	if (readellipticity && (!plotvectors)) {
+		for (ipt = 0; ipt < npts; ipt++) {
+			if (e0[ipt] != 0.0 && e1[ipt] != 0.0)
+				phi[ipt] = 0.5 * atan2(e1[ipt], e0[ipt]);
+			else
+				phi[ipt] = 0.0;
+			rr = (readradius ? r[ipt] : rdefault);
+			ee = sqrt(e0[ipt] * e0[ipt] + e1[ipt] * e1[ipt]);
+			ee = (ee > EMAX ? EMAX : ee);
+			a[ipt] = rr * (1 + ee);
+			b[ipt] = rr / (1 + ee);
+		}
+	}
+
+	/* intialise pgplot */
+	if (1 != cpgbeg(0, device, 1, 1))
+		error_exit("plotcat: failed to open pgplot device\n");
+
+	/* get colour range and initialise colours */
+	cpgqcir(&cilo, &cihi);
+	for (fillci = cilo; fillci <= cihi; fillci++) {
+		theshade = (fillci - cilo) / (double) (cihi - cilo);
+		cpgscr(fillci, theshade, theshade, theshade);
+	}
+
+	if (fillshade >= 0.0)
+		fillci = getcifromshade(fillshade);
+
+	/* set theimcattools/pgplot/plotcatmain.c line width */
+	cpgslw(lwidth);
+	
+	/* set the character size */
+	cpgsch(charheight);
+
+	cpgenv(x1, x2, y1, y2, just, -2);
+	cpglab(xlabel, ylabel, plotlabel);
+
+	/* do background grayscale/contour */
+	if (dobackgroundimage) {
+		fmin = 1.e18;
+		fmax = -1.e18;
+		for (iy = 0; iy < N2; iy++) {
+			for (ix = 0; ix < N1; ix++) {
+				if (fgray[iy][ix] != FLOAT_MAGIC) {
+					if (fgray[iy][ix] > fmax) {
+						fmax = fgray[iy][ix];
+					}
+					if (fgray[iy][ix] < fmin) {
+						fmin = fgray[iy][ix];
+					}
+					ffgray[N1 * iy + ix] = fgray[iy][ix];
+				} else {
+					ffgray[N1 * iy + ix] = 0.0;
+				}
+			}
+		}
+		dxgray = (x2 - x1) / N1;
+		dygray = (y2 - y1) / N2;
+		tr[0] = x1 - 0.5 * dxgray;
+		tr[1] = dxgray;
+		tr[2] = 0.0;
+		tr[3] = y1 - 0.5 * dygray;
+		tr[4] = 0.0;
+		tr[5] = dygray;
+		cpgbbuf();
+		if (cmapindex >= 0) {
+                	if (!getcolormap(&cmapl, &cmapr, &cmapg, &cmapb, &cmapcontra, &cmapbright, &cmapn, cmapindex)) {
+                        	error_exit("contour: illegal colormap index\n");
+                	}
+                	cpgctab(cmapl, cmapr, cmapg, cmapb, cmapn, cmapcontra, cmapbright);
+                	cpgimag(ffgray, N1, N2, 1, N1, 1, N2, fmax, fmin, tr);
+                	if (dowedge) {
+                     	   cpgqch(&charheight);
+                     	   cpgsch((float) (0.4 * charheight));
+                        	cpgwedg("RI", 1, 10, fmax, fmin, " ");
+                        	cpgsch(charheight);
+                	}
+		} else {
+			cpggray(ffgray, N1, N2, 1, N1, 1, N2, fmax, fmin, tr);
+                	if (dowedge) {
+                        	cpgqch(&charheight);
+                        	cpgsch((float) (0.4 * charheight));
+                        	cpgwedg("RG", 1, 10, fmax, fmin, " ");
+                        	cpgsch(charheight);
+                	}
+		}
+		if (docontours) {
+			for (icontour = 0; icontour <= ncontours; icontour++) {
+				flev[icontour] = fmin + icontour * (fmax - fmin) / ncontours;
+			}
+			cpgcont(ffgray, N1, N2, 1, N1, 1, N2, flev, ncontours, tr);
+		}
+		cpgebuf();
+	}
+
+	cpgbbuf();
+	cpgsci(defci);
+	switch (mode) {
+		case XY_MODE:
+			if (plotline) {
+				cpgsls(linestyle);
+				cpgline(npts, x, y);
+				cpgsls(1);
+			}
+			cpgpt(npts, x, y, defaultsymbol);
+			break;
+		case XY_HIST_MODE:
+			cpgbin(npts, x, y, 1);
+			break;
+		case XY_SHADE_MODE:
+			cpgqci(&oldci);
+			for (ipt = 0; ipt < npts; ipt++) {
+				cpgsci(getcifromshade(shade[ipt]));
+				cpgpt(1, x + ipt, y + ipt, defaultsymbol);
+			}
+			cpgsci(oldci);
+			break;
+		case XY_SYMBOL_MODE:
+			cpgpnts(npts, x, y, symbol, npts);
+			break;
+		case XY_SYMBOL_SHADE_MODE:
+			cpgqci(&oldci);
+			for (ipt = 0; ipt < npts; ipt++) {
+				cpgsci(getcifromshade(shade[ipt]));
+				cpgpt(1, x + ipt, y + ipt, symbol[ipt]);
+			}
+			cpgsci(oldci);
+			break;
+		case XY_R_MODE:
+			cpgqci(&oldci);
+			for (ipt = 0; ipt < npts; ipt++) {
+				if (fillshade >= 0.0) {
+					cpgsci(fillci);
+					cpgcirc(x[ipt], y[ipt], r[ipt]);
+				}
+				cpgsci(oldci);
+				cpgsfs(2);
+				cpgcirc(x[ipt], y[ipt], r[ipt]);
+				cpgsfs(1);
+			}
+			break;			
+		case XY_E_MODE:
+			if (plotvectors) {
+				for (ipt = 0; ipt < npts; ipt++) {
+					cpgmove(x[ipt], y[ipt]);
+					cpgdraw(x[ipt] + e0[ipt], y[ipt] + e1[ipt]);
+				}
+				cpgpt(npts, x, y, defaultsymbol);
+			} else {
+				cpgellipses(npts, x, y, a, b, phi, NULL, NVERT, 1, fillshade);
+			}
+			break;			
+		case XY_R_SHADE_MODE:
+			cpgqci(&oldci);
+			for (ipt = 0; ipt < npts; ipt++) {
+				cpgsci(getcifromshade(shade[ipt]));
+				cpgcirc(x[ipt], y[ipt], r[ipt]);
+				if (drawoutline) {
+					cpgsci(oldci);
+					cpgsfs(2);
+					cpgcirc(x[ipt], y[ipt], r[ipt]);
+					cpgsfs(1);
+				}
+			}
+			cpgsci(oldci);
+			break;			
+		case XY_E_SHADE_MODE:
+			cpgellipses(npts, x, y, a, b, phi, shade, NVERT, drawoutline, -1);
+			break;			
+		case XY_R_E_MODE:
+			cpgellipses(npts, x, y, a, b, phi, NULL, NVERT, 1, fillshade);
+			break;			
+		case XY_R_E_SHADE_MODE:
+			cpgellipses(npts, x, y, a, b, phi, shade, NVERT, drawoutline, -1);
+			break;			
+		case XY_ERRY_MODE:
+			cpgpt(npts, x, y, defaultsymbol);
+			cpgerry(npts, x, erry[0], erry[1], 1.0);
+			break;
+		case XY_SYMBOL_ERRY_MODE:
+			cpgpnts(npts, x, y, symbol, npts);
+			cpgerry(npts, x, erry[0], erry[1], 1.0);
+			break;
+		default:
+			error_exit("plotcat: illegal plot mode!\n");
+			break;
+	}
+	cpgsci(boxci);
+	if (plotmask) {
+		while (fread(ipmaskrec, sizeof(double), 4, ipmask)) {
+			cpgmove(*ipmaskx1, *ipmasky1);
+			cpgdraw(*ipmaskx1, *ipmasky2);
+			cpgdraw(*ipmaskx2, *ipmasky2);
+			cpgdraw(*ipmaskx2, *ipmasky1);
+			cpgdraw(*ipmaskx1, *ipmasky1);
+		}
+	}
+	
+	/* now we draw the box */
+	if (usertickscale) {
+		cpgswin(X1, X2, Y1, Y2);
+	}
+	switch (axis) {
+		case -2:
+			break;
+		case -1:
+			cpgbox("BC", 0.0, 0, "BC", 0.0, 0);
+			break;
+		case 0:
+			cpgbox("BCNST", 0.0, 0, "BCNST", 0.0, 0);
+			break;
+		case 1:
+			cpgbox("ABCNST", 0.0, 0, "ABCNST", 0.0, 0);
+			break;
+		case 2:
+			cpgbox("ABCGNST", 0.0, 0, "ABCGNST", 0.0, 0);
+			break;
+		case 10:
+			cpgbox("BCLNST", 0.0, 0, "BCNST", 0.0, 0);
+			break;
+		case 20:
+			cpgbox("BCNST", 0.0, 0, "BCLNST", 0.0, 0);
+			break;
+		case 30:
+			cpgbox("BCLNST", 0.0, 0, "BCLNST", 0.0, 0);
+			break;
+		case 40:
+			cpgtbox("BCNSTHZ", 0.0, 0, "BCNSTDZ", 0.0, 0);
+			break;
+		case 42:
+			cpgtbox("BCNSTHZG", 0.0, 0, "BCNSTDZG", 0.0, 0);
+			break;
+		case 43:
+			cpgtbox("BCNSTHZ", 0.0, 0, "BCNST", 0.0, 0);
+			break;
+		case 44:
+			cpgtbox("BCNST", 0.0, 0, "BCNSTHZ", 0.0, 0);
+			break;
+		default:
+			break;
+	}
+	if (usertickscale) {
+		cpgswin(x1, x2, y1, y2);
+	}
+	cpgsci(defci);	
+	/* now add the labels */
+	while (baselabel) {
+		if (baselabel->colorindex) {
+			cpgqci(&oldci);
+			cpgsci(baselabel->colorindex);
+		}		
+		cpgtext(baselabel->x, baselabel->y, baselabel->text); 
+		if (baselabel->colorindex) {
+			cpgsci(oldci);
+		}
+		baselabel = baselabel->next;
+	}
+	cpgebuf();
+	if (!editmode) {
+		cpgend();
+		exit(0);
+	}
+
+/*
+	if (editmode == MASK_MODE) {
+		fprintf(stdout, "#     left     bottom      right        top\n");
+	}
+*/
+	cpgsfs(2);
+	cpgsci(rectci);
+	while (1) {
+		cpgcurs(&xc0, &yc0, cursevent);
+		if (cursevent[0] == 'X') {		/* right button */
+			if (!deactivate(xc0, yc0, &xc1, &xc2, &yc1, &yc2)) {
+				cpgend();
+				setposfirst();
+				while (getrect(&xc1, &xc2, &yc1, &yc2)) {
+					if (editmode == MASK_MODE) {
+						fprintf(opmask, "%10.3f %10.3f %10.3f %10.3f\n",
+							xc1, yc1, xc2, yc2);
+					} else {
+						addfiltercondition(xc1, xc2, yc1, yc2);
+					}
+				}
+				if (editmode != MASK_MODE) {
+					dofilter(tempfilename2);
+					sprintf(tempstring, "rm -f %s\n", tempfilename2);
+					system(tempstring);
+				}
+				exit(0);
+			} else {
+				cpgsci(0);
+				cpgrect(xc1, xc2, yc1, yc2);
+				cpgsci(rectci);
+			}
+		}
+		if (cursevent[0] == 'A') {		/* left button */
+			cpgband(2, 0, xc0, yc0, &xc1, &yc1, cursevent);
+			if (cursevent[0] == 'A') {		/* left button */
+				cpgrect(xc0, xc1, yc0, yc1);
+				installrect(xc0, xc1, yc0, yc1);
+			}
+		}
+	}
+}
+
+
+
+
+
+int	getcifromshade(float shade)
+{
+	int	ci;
+
+	if (shade >= 0.0) {
+		ci = cilo + (int) floor(shade * (1 + cihi - cilo));
+		ci = (ci > cihi ? cihi : (ci < cilo ? cilo : ci));
+	} else {
+		ci = - (int) shade;
+		ci = (ci < 0 ? 0 : (ci > 15 ? 15 : ci));
+	}
+	return (ci);
+}
+
+
+

@@ -1,0 +1,45 @@
+.TH "smpopup.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+smpopup.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBsmpopup\fP (void(*drawfn)(void), void(*cursorfn)(float x, float y, int \fBkey\fP), char *geomstring)"
+.br
+.ti -1c
+.RI "void \fBdrawfn\fP (void)"
+.br
+.ti -1c
+.RI "void \fBcursorfn\fP (float x, float y, int \fBkey\fP)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void cursorfn (float x, float y, int key)"
+.PP
+Definition at line 225 of file smselect.c.
+.PP
+References drawfn(), drawselectionbox(), key, smx1, smx2, smy1, smy2, x, and y.
+.PP
+Referenced by smpopup().
+.SS "void drawfn (void)"
+.PP
+Definition at line 210 of file smselect.c.
+.PP
+References smN, smx, smxlim1, smxlim2, smxname, smy, smylim1, smylim2, and smyname.
+.SS "void smpopup (void(* drawfn)(void), void(* cursorfn)(float x, float y, int \fBkey\fP), char * geomstring)"
+.PP
+Definition at line 20 of file smpopup.c.
+.PP
+References cursorfn(), drawfn(), key, x, and y.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

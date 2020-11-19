@@ -1,0 +1,430 @@
+% notes regarding determination of geometry of a mosaic camera a la Luppino
+
+\documentstyle{article}
+\begin{document}
+
+\section{MOSAIC CAMERA GEOMETRY FITTING}
+
+\subsection{The Problem}
+
+We assume that the telescope produces a distorted image of
+the sky on the detector plane, with some simple parameterised
+form for distortion, and that the CCD chips are roughly
+positioned on a regular grid, but with small offsets and
+rotations.  Given a set of dithered observations we want to
+determine
+\begin{itemize}
+\item parameters of the distortion model
+\item shifts and rotations of the chips relative to asumed grid
+\item global shift and linear transformations for dithered fields
+\end{itemize}
+The method of solution described here is
+\begin{enumerate}
+\item Convert pixel positions to `nominal' detector frame coords
+(i.e.~assuming chips are perfectly positioned on the grid).
+\item Guess parameters for chip rotations, offsets and distortion (e.g~all
+zero).
+\item \label{item:makesuperlists} For each exposure, from the
+lists of star coordinates from the individual chips
+generate a `superlist' containing
+approximate sky positions determined using guessed parameters
+and chip ID. 
+\item For a pair of exposures, solve approximately for relative shift,
+rotation of 2nd exposure.
+\item Transform 2nd superlist; merge superlists (with some coarse
+tolerance); and untransform coordinates from 2nd exposure.
+\item Un-apply any non trivial transformation in step
+\ref{item:makesuperlists} so we're back to nominal chip coords.
+\item Using pairs of these coordinates from merged superlists solve for
+all parameters in a linearised manner.
+\end{enumerate}
+Now using these improved parameters we can
+\begin{enumerate}
+\item \label{item:transform} Apply transformation from
+nominal coords to sky coords using current parameters
+(including shift, rotation to bring second exposure coords onto first).
+\item Merge lists using fine tolerance
+\item Apply inverse of tranformation in step \ref{item:transform}.
+\item Solve for all parameters using improved merged list.
+\end{enumerate}
+and iterate if necessary.
+
+In fact we have more than one pair of pointings so we really want to solve for
+everything simultaneously using all pairings of objects....
+
+The goal is that with these tranformations we can map the individual
+images from each exposure onto a single image so we can then
+process a stack of such images to do cosmic ray removal and
+averaging.
+
+\subsection{Mathematical formulation}
+
+The starting point is a set of catalogues for $\sim 50$ or so stars
+per chip per exposure giving integer pixel coords $i_x, i_y$. 
+Let chips have nominal size $N_x \times N_y$ ($2048 \times 4096$).
+
+Our first task is to generate a first approximation to
+rectilinear sky coords based on assumtions re size, spacing
+and orientation of chips.  Call these coordinates `nominal
+detector coords'.  We generate these as follows:
+
+First we make transformation for upper row of chips (which are
+`upside down':
+\begin{equation}
+\matrix{
+i_x \rightarrow N_x - i_x - 1 \cr
+i_y \rightarrow N_y - i_y - 1
+}
+\end{equation}
+
+We then model chips as mounted on blocks of size $(N_x + 2 M_x) \times
+(N_y + 2 M_y)$ so $M_x$, $M_y$ are the margin widths.
+We assign chips an integer position $(I_x,I_y)$
+where $I_x = (-2,...,1)$, $I_y = (-1,0)$). (Bottom left chip
+is (-2,-1); chip-5 has readout pixel at centre of grid and
+has position $(0,0)$.
+
+
+Generate `nominal detector coords' for $c$th chip and $e$th exposure
+\begin{equation}
+\left[\matrix{
+x_{ce} \cr y_{ce}
+}\right]
+=
+\left[\matrix{
+I_x * (N_x + 2 M_x) + M_x + i_x 
+\cr
+I_y * (N_y + 2 M_y) + M_y + i_y
+}\right]
+\end{equation}
+from the pixel positions $i,j$ and chip position.
+We assume these are related to perfect rectilinear detector
+coords $(x,y)$ by
+\begin{equation}
+\left[\matrix{
+x_e \cr y_e
+}\right]
+=
+\left[\matrix{
+1 & \phi_c
+\cr
+-\phi_c & 1
+}\right]
+\left[\matrix{
+x_{ce}
+\cr
+y_{ce}
+}\right]
++
+\left[\matrix{
+dx_c
+\cr
+dy_c
+}\right]
+\end{equation}
+
+We assume that perfect detector coords are related to 
+locally rectilinear sky coords by
+\begin{equation}
+\left[\matrix{
+X_e
+\cr
+Y_e
+}\right]
+=
+(1 + \alpha (x_e^2 + y_e^2))
+\left[\matrix{
+x_e
+\cr
+y_e
+}\right]
+\end{equation}
+for some fiducial telescope pointing and orientation, and that
+absolute sky coordinates
+$(X,Y)$ are given by
+\begin{equation}
+\left[\matrix{
+X
+\cr
+Y
+}\right]
+=
+\left[\matrix{
+X_e
+\cr
+Y_e
+}\right] + 
+\left[\matrix{
+\Phi_e^{00} & \Phi_e^{01}
+\cr
+\Phi_e^{10} & \Phi_e^{11}
+}\right]
+\left[\matrix{
+X_e
+\cr
+Y_e
+}\right]
++
+\left[\matrix{
+dX_e
+\cr
+dY_e
+}\right]
+\end{equation}
+
+Let chip number $c$ run from $0$ to $N_c - 1$ and let exposure
+number $e$ run from $0$ to $N_e - 1$
+We set $\phi_0 = dx_0 = dx_0 = \Phi_0 = dX_0 = dY_0 = 0$, and linearise
+in the $1 + 3 (N_e - 1) + 3 (N_c - 1)$
+assumed very small parameters $\alpha$; $\Phi_m,dX_m,dY_m$, 
+$m = 1\ldots N_e -1$; and $\phi_n,dx_n,dy_n$, $n = 1 \ldots N_c -1$
+to obtain
+\begin{equation}
+\left[\matrix{
+X
+\cr
+Y
+}\right]
+=
+\left[\matrix{
+x_{ce}
+\cr
+y_{ce}
+}\right]
++
+\alpha (x_{ce}^2 + y_{ce}^2)
+\left[\matrix{
+x_{ce}
+\cr
+y_{ce}
+}\right]
++
+\left[\matrix{
+\Phi_e^{00} & \Phi_e^{01}
+\cr
+\Phi_e^{10} & \Phi_e^{11}
+}\right]
+\left[\matrix{
+x_{ce}
+\cr
+y_{ce}
+}\right]
++
+\left[\matrix{
+dX_e
+\cr
+dY_e
+}\right]
++
+\phi_c
+\left[\matrix{
+y_{ce}
+\cr
+-x_{ce}
+}\right]
++
+\left[\matrix{
+dx_c
+\cr
+dy_c
+}\right]
+\end{equation}
+To determine coefficients we need to generate lists of pairs of
+positions $(X,Y)$ $(X',Y')$ for same object and minimise
+\begin{equation}
+\chi^2 = \sum (\Delta X^2 + \Delta Y^2)
+\end{equation}
+where $\Delta X \equiv X - X'$ etc.
+
+Packaging the variables in a vector $V_I$ we can write
+\begin{equation}
+\left[\matrix{
+\Delta X
+\cr
+\Delta Y
+}\right]
+=
+\left[\matrix{
+x_{ce} - x_{c'e'}
+\cr
+y_{ce} - y_{c'e'}
+}\right]
++
+\left[\matrix{
+C^x_I V_I
+\cr
+C^y_I V_I
+}\right]
+\end{equation}
+where
+\begin{equation}
+V_I = 
+\left[\matrix{
+\alpha \cr
+\vdots \cr
+\Phi_m^{00} \cr
+\vdots \cr
+\Phi_m^{01} \cr
+\vdots \cr
+\Phi_m^{10} \cr
+\vdots \cr
+\Phi_m^{11} \cr
+\vdots \cr
+dX_m \cr
+\vdots \cr
+dY_m \cr
+\vdots \cr
+\phi_n \cr
+\vdots \cr
+dx_n \cr
+\vdots \cr
+dy_n \cr
+\vdots
+}\right]
+\quad\quad
+C^x_I =
+\left[\matrix{
+r^2 x - r'^2 x' \cr
+\vdots \cr
+x \delta_{me} - x' \delta_{me'} \cr
+\vdots \cr
+y \delta_{me} - y' \delta_{me'} \cr
+\vdots \cr
+0 \cr
+\vdots \cr
+0 \cr
+\vdots \cr
+\delta_{me} - \delta_{me'}\cr
+\vdots \cr
+0 \cr
+\vdots \cr
+y \delta_{nc} - y' \delta_{nc'} \cr
+\vdots \cr
+\delta_{nc} - \delta_{nc'} \cr
+\vdots \cr
+0 \cr
+\vdots
+}\right]
+\quad\quad
+C^y_I =
+\left[\matrix{
+r^2 y - r'^2 y' \cr
+\vdots \cr
+0 \cr
+\vdots \cr
+0 \cr
+\vdots \cr
+x \delta_{me} - x' \delta_{me'} \cr
+\vdots \cr
+y \delta_{me} - y' \delta_{me'} \cr
+\vdots \cr
+0 \cr
+\vdots \cr
+\delta_{me} - \delta_{me'} \cr
+\vdots \cr
+-x \delta_{nc} + x' \delta_{nc'} \cr
+\vdots \cr
+0 \cr
+\vdots \cr
+\delta_{nc} - \delta_{nc'}  \cr
+\vdots
+}\right]
+\end{equation}
+and we now have 
+\begin{equation}
+\chi^2 = \sum (\Delta x + C^x_I V_I)^2 + (\Delta y + C^y_I V_I)^2
+\end{equation}
+where $\Delta x \equiv x_{ce} - x_{c'e'}$ and so minimising wrt the
+variable $V_I$ yields the set of linear equations:
+\begin{equation}
+A_{IJ} V_J = B_J
+\end{equation}
+where
+\begin{equation}
+A_{IJ} = \sum C^x_I C^x_J + C^y_I C^y_J
+\quad\quad\quad\quad
+B_J = -\sum C^x_J \Delta x + C^y_J \Delta y
+\end{equation}
+
+
+
+\subsection{Databases and software}
+
+The parameters for the nominal chip size, margin etc are kept in
+{\tt nominal.db}.  (All these databases are in perl format as they get
+read by perl scripts).
+
+Chip names, integer positions and orientation of chips are stored
+as associative arrays in {\tt chips.db}.  The key is an integer
+which runs from $0\ldots N_c - 1$.  Orientation is 1 for lower
+row of chips, -1 for upper.
+
+Field names (for a1413 run these were exposure numbers `031',
+`032' etc.) are stored as associative array in {\tt fields.db}.
+
+Assume that one has generated 
+{\tt basedir/chip\$chipname/\$fieldname.stars}
+cats of moderately bright stars
+(I used
+{\tt select -m 16 19 -rx 0.8 1.2} to select them) then
+you first want to run {\tt superlists.pl} which generates
+a set of $N_e$ files  (1 per exposure) containing 
+nominal detector coords $x,y$; chip number $c$, and exposure
+number $e$.
+
+The next step is to run {\tt makemergelist.pl} which figures
+out an approximate rotation and translation to register pairs of
+superlists (we use all pairings of exposures) and generate a
+file {\tt mergelists.out} containing $x,y,c,e,x',y',c',e'$.
+
+We now feed {\tt mergelists.out} to {\tt mosaicfit -c 7 -e 11}
+which solves for $\alpha$; $\Phi_e, dX_e, dY_e$; $\phi_c, dx_c, dy_c$
+and redirect output into {\tt mosaicfit.par}.
+
+We now run {\tt makemergelist2.pl} which uses 1st approximation
+to paramaters in {\tt mosaicfit.par} make a refined
+merged list: {\tt mergelists2.out} which we feed back to
+{\tt mosaicfit -c 7 -e 11} (perhaps after filtering on
+column 9 which contains residual displacement) to give
+a refined set of transformation parameters.
+
+For the 11 exposures and 7 chips for a1413 data the result was
+\begin{verbatim}
+ -1.92821e-10
+            0             0             0
+ -6.01328e-05        296.92       10.5084
+    0.0004332       271.737        1202.7
+  0.000364594      -262.278       1218.76
+  0.000282352      -380.615       1090.64
+  0.000300921       1105.92       1159.14
+  0.000401059       1265.68       1321.57
+   0.00897166      -748.315       1151.47
+   0.00893781        -161.3       1188.75
+   0.00881633      -147.714        897.66
+   0.00940282       731.594       935.408
+            0             0             0
+  0.000571406       9.25005       8.26747
+   0.00255388       9.46212       7.78085
+   0.00169522       2.99181        10.856
+   0.00245214        6.8493       0.62552
+ -0.000119338      -5.15558      -12.0497
+  0.000498863      -1.47967      -10.6429
+\end{verbatim}
+
+The first line contains distortion coefficient $\alpha$.
+
+The next 11 lines contain $\Phi_e, dX_e, dY_e$ (zero for
+1st exposure).
+
+The next 7 lines contain $\phi_c, dx_c, dy_c$ (zero for
+first chip).
+
+Now we can generate a stack of images for a chosen section
+of $X,Y$ space using {\tt makestack.pl} which figures out
+which chips lie under the chosen section for each exposure and 
+warps them using {\tt mosaicmap}.
+
+The final step is to combine the images (median, avsigclip
+or whatever) with {\tt pastiche}.
+
+\end{document}

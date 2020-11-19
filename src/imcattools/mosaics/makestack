@@ -1,0 +1,113 @@
+#! /usr/bin/perl
+$| = 1;
+
+$usage = "\
+NAME\
+	makestack ---- generate a stack of image planes\
+\
+SYNOPSIS\
+	makestack x0 y0 Nx Ny stackdir warpimdir [filter]\
+\
+DESCRIPTION\
+	'makestack' generates a stack of images of size Nx, Ny with\
+	spatial origin x0, y0 and with names 'stackdir'/'fieldname'.fits\
+	where the fieldnames are defined in 'fields.db'\
+	(or in fields_filter.db if filter is specified)\
+	and the images are in warpimdir/chip?/etc..\
+	You need to defile the environment variable TMPDIR\
+	where makestack stores temporary files\
+\n";
+
+die $usage if ($#ARGV != 5 && $#ARGV != 6);
+require "chips.db";
+require "astrometry.db"; 
+require "warping.db"; 
+
+$tmpdir = $ENV{"TMPDIR"};
+die "makestack: You need to defile the environment variable TMPDIR\n" if (!$tmpdir);
+
+$tmpbase = "$tmpdir/$$";
+
+$x0 = shift @ARGV;
+$y0 = shift @ARGV;
+$Nx = shift @ARGV;
+$Ny = shift @ARGV;
+$stackdir = shift @ARGV;
+$srcimdir = shift @ARGV;
+
+if ($#ARGV >= 0) {
+	$filter = shift @ARGV;
+	require "fields_$filter.db";
+} else {
+	require "fields.db";
+}
+
+$x1 = $x0 + $Nx - 1;
+$y1 = $y0 + $Ny - 1;
+
+# WCS stuff
+$wcsdelta = sprintf "%13.8g", $pixsize / 3600.0;
+$wcspix1 = -$x0 + 0.5;
+$wcspix2 = -$y0 + 0.5;
+
+# loop over source image files, see if they get mapped, and then extract subimages and add offsets file into
+foreach ($e = 0; $e < $nfields; $e++) {
+	$exp = $fieldname[$e];
+	$patchnum = 0;
+	# start the offsets file
+	$offsetsfile = "$tmpbase.off";
+	open(OFFSETS, ">$offsetsfile");
+	print OFFSETS "#\n";
+	# start the imnames files file
+	$namesfile = "$tmpbase.names";
+	open(NAMES, ">$namesfile");
+	$needany = 0;
+	for ($c = 0; $c < $nchips; $c++) {
+		$srcim = "$srcimdir/chip$chipname[$c]/$exp.fits";
+		if (-f $srcim) {
+			# get range of image
+			chop($xrange = `imhead -t BBOX < $srcim`);
+			($X0, $Y0, $X1, $Y1) = split(" ", $xrange);
+			# print "$X0 $Y0 $X1 $Y1\n";
+			# see if they overlap
+			$x0max = ($X0 > $x0 ? $X0 : $x0);
+			$y0max = ($Y0 > $y0 ? $Y0 : $y0);
+			$x1min = ($X1 < $x1 ? $X1 : $x1);
+			$y1min = ($Y1 < $y1 ? $Y1 : $y1);
+			# print "$x0max $y0max $x1min $y1min\n";
+			if (($x0max < $x1min) && ($y0max < $y1min)) {		# we have overlap!
+				$needany = 1;
+				# image patch size
+				$nx = $x1min - $x0max;
+				$ny = $y1min - $y0max;
+				$patchim = "$tmpbase.$patchnum.fits";
+				$patchnum++;
+				print NAMES "$patchim\n";
+				# extract patch
+				$xp0 = $x0max - $X0;
+				$yp0 = $y0max - $Y0;
+				$NXp = ($x1min - $x0max) + 1;
+				$NYp = ($y1min - $y0max) + 1;
+				echosys("makesubimage $xp0 $yp0 $NXp $NYp < $srcim > $patchim");
+				# print offset
+				printf OFFSETS "%6d %6d\n", $x0max - $x0, $y0max - $y0;
+			}
+		}
+	}
+	close OFFSETS;
+	close NAMES;
+	$dstim = "$stackdir/$exp.fits";
+	if ($needany) {
+		echosys("album -f $offsetsfile -M $Nx $Ny `cat $namesfile` ".
+			"| setwcsinfo RA---STG -$wcsdelta $RA0 $wcspix1 DEC--STG $wcsdelta $DEC0 $wcspix2 $theta_deg > $dstim");
+	} else {
+		print "# WARNING : didn't make $dstim ...\n";
+	}
+}
+echosys("rm $tmpbase.*");
+
+sub echosys {
+        print @_, "\n";
+        system(@_) && die "$0: System call $_[0] failed!\n";
+}
+

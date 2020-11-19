@@ -1,0 +1,218 @@
+.TH "makechart.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makechart.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../utils/stats_stuff.h'\fP
+.br
+\fC#include 'makechart.h'\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	makechart - overlay \fBFITS\fP image with \fBobject\fP markers\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makechart [option...] < \fBcatfile\fP > \fBfitsout\fP\\\fBn\fP\\		-\fBr\fP rname \fBa\fP	# draw or zap disk\\\fBn\fP\\		-\fBc\fP 		# draw 16-32 \fBpixel\fP collar\\\fBn\fP\\		-s sf		# scrunch factor (1)\\\fBn\fP\\		-f image	# fitsfile \\\fBn\fP\\		-\fBm\fP mask		# maskfile \\\fBn\fP\\		-\fBz\fP		# zap circles or ellipses around \fBobject\fP\\\fBn\fP\\		-\fBe\fP ename efac	# draw an ellipse\\\fBn\fP\\		-\fBv\fP \fBcircval\fP	# paint circles etc this value (MAGIC)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'makechart\\' draws boxes or crosshairs round objects\\\fBn\fP\\	Normally uses the image found in the cat header.\\\fBn\fP\\	-f option forces it to use fitsfile\\\fBn\fP\\	With -\fBm\fP option it draws rectangles from maskfile\\\fBn\fP\\	which must be an 'lc' format catalogue containing\\\fBn\fP\\	entries for \fBa\fP air of position vectors \fBx1\fP[2], \fBx2\fP[2]\\\fBn\fP\\	for bottom-left and top-right corners respectively.\\\fBn\fP\\	Use '-\fBr\fP rname \fBa\fP' to draw circle of \fBradius\fP \fBa\fP times the value of the \fBobject\fP \fBitem\fP\\\fBn\fP\\	'rname', so use \fBe\fP.g. '-\fBr\fP \fBrh\fP 3' for circles 3 times the half-light \fBradius\fP.\\\fBn\fP\\	Similarly, with -\fBe\fP option it will draw an ellipse with ellipticity\\\fBn\fP\\	efac times the \fBobject\fP ellipticity and with sqrt(\fBa\fP \fBb\fP) equal\\\fBn\fP\\	to the \fBradius\fP as calculated above.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.ti -1c
+.RI "#define \fBCURS_MIN\fP   8"
+.br
+.ti -1c
+.RI "#define \fBCURS_MAX\fP   16"
+.br
+.ti -1c
+.RI "#define \fBDEF_CURSOR_VAL\fP   MAGIC"
+.br
+.ti -1c
+.RI "#define \fBDEF_CIRCLE_VAL\fP   MAGIC"
+.br
+.ti -1c
+.RI "#define \fBNW\fP   0"
+.br
+.ti -1c
+.RI "#define \fBNE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBSE\fP   2"
+.br
+.ti -1c
+.RI "#define \fBSW\fP   3"
+.br
+.ti -1c
+.RI "#define \fBPI\fP   M_PI"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "void \fBdrawcursor\fP (double x, double y, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBdrawcollar\fP (int \fBio\fP, int \fBjo\fP, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBdrawcircle\fP (double x, double y, float \fBr\fP, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBdrawellipse\fP (double x, double y, float \fBr\fP, float \fBe\fP, float phi0, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBzapcircle\fP (double x, double y, float \fBr\fP, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBzapellipse\fP (double x, double y, float \fBr\fP, float \fBe\fP, float phi0, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float \fBcursval\fP"
+.br
+.ti -1c
+.RI "float \fBcircval\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CURS_MAX   16"
+.PP
+Definition at line 50 of file makechart.c.
+.PP
+Referenced by drawcursor().
+.SS "#define CURS_MIN   8"
+.PP
+Definition at line 49 of file makechart.c.
+.PP
+Referenced by drawcursor().
+.SS "#define DEF_CIRCLE_VAL   MAGIC"
+.PP
+Definition at line 52 of file makechart.c.
+.PP
+Referenced by main().
+.SS "#define DEF_CURSOR_VAL   MAGIC"
+.PP
+Definition at line 51 of file makechart.c.
+.PP
+Referenced by main().
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 47 of file makechart.c.
+.SS "#define NE   1"
+.PP
+Definition at line 54 of file makechart.c.
+.PP
+Referenced by drawcollar(), and main().
+.SS "#define NW   0"
+.PP
+Definition at line 53 of file makechart.c.
+.PP
+Referenced by drawcollar().
+.SS "#define PI   M_PI"
+.PP
+Definition at line 299 of file makechart.c.
+.SS "#define SE   2"
+.PP
+Definition at line 55 of file makechart.c.
+.PP
+Referenced by drawcollar().
+.SS "#define SW   3"
+.PP
+Definition at line 56 of file makechart.c.
+.PP
+Referenced by drawcollar().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	makechart - overlay \fBFITS\fP image with \fBobject\fP markers\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makechart [option...] < \fBcatfile\fP > \fBfitsout\fP\\\fBn\fP\\		-\fBr\fP rname \fBa\fP	# draw or zap disk\\\fBn\fP\\		-\fBc\fP 		# draw 16-32 \fBpixel\fP collar\\\fBn\fP\\		-s sf		# scrunch factor (1)\\\fBn\fP\\		-f image	# fitsfile \\\fBn\fP\\		-\fBm\fP mask		# maskfile \\\fBn\fP\\		-\fBz\fP		# zap circles or ellipses around \fBobject\fP\\\fBn\fP\\		-\fBe\fP ename efac	# draw an ellipse\\\fBn\fP\\		-\fBv\fP \fBcircval\fP	# paint circles etc this value (MAGIC)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'makechart\\' draws boxes or crosshairs round objects\\\fBn\fP\\	Normally uses the image found in the cat header.\\\fBn\fP\\	-f option forces it to use fitsfile\\\fBn\fP\\	With -\fBm\fP option it draws rectangles from maskfile\\\fBn\fP\\	which must be an 'lc' format catalogue containing\\\fBn\fP\\	entries for \fBa\fP air of position vectors \fBx1\fP[2], \fBx2\fP[2]\\\fBn\fP\\	for bottom-left and top-right corners respectively.\\\fBn\fP\\	Use '-\fBr\fP rname \fBa\fP' to draw circle of \fBradius\fP \fBa\fP times the value of the \fBobject\fP \fBitem\fP\\\fBn\fP\\	'rname', so use \fBe\fP.g. '-\fBr\fP \fBrh\fP 3' for circles 3 times the half-light \fBradius\fP.\\\fBn\fP\\	Similarly, with -\fBe\fP option it will draw an ellipse with ellipticity\\\fBn\fP\\	efac times the \fBobject\fP ellipticity and with sqrt(\fBa\fP \fBb\fP) equal\\\fBn\fP\\	to the \fBradius\fP as calculated above.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file makechart.c.
+.SH "Function Documentation"
+.PP 
+.SS "void drawcircle (double x, double y, float r, float ** f, int N1, int N2)"
+.PP
+Definition at line 301 of file makechart.c.
+.PP
+References circval, f, i, j, N1, phi, PI, r, x, and y.
+.PP
+Referenced by drawcollar(), and main().
+.SS "void drawcollar (int io, int jo, float ** f, int N1, int N2)"
+.PP
+Definition at line 266 of file makechart.c.
+.PP
+References cursval, d, drawcircle(), f, i, j, N1, N2, NE, NW, SE, and SW.
+.PP
+Referenced by main().
+.SS "void drawcursor (double x, double y, float ** f, int N1, int N2)"
+.PP
+Definition at line 245 of file makechart.c.
+.PP
+References CURS_MAX, CURS_MIN, cursval, d, f, i, j, N1, N2, x, and y.
+.PP
+Referenced by main().
+.SS "void drawellipse (double x, double y, float r, float e, float phi0, float ** f, int N1, int N2)"
+.PP
+Definition at line 325 of file makechart.c.
+.PP
+References a, b, c, circval, e, f, i, I(), j, N1, phi, PI, r, x, and y.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 62 of file makechart.c.
+.PP
+References a, add_comment(), allocobjectcontents(), b, circval, connectcatheadtoobject(), cursval, DEF_CIRCLE_VAL, DEF_CURSOR_VAL, drawcircle(), drawcollar(), drawcursor(), drawellipse(), E, e, error_exit, exit(), f, fits, getheaderitemaddress(), getobjectitemindex(), i, j, l, ll, lt(), N1, N2, newobject(), phi, r, radius, read2Dfloatimage(), readcathead(), readobject(), setaddress(), t, usage, write2Dfloatimage(), X, x, y, zapcircle(), and zapellipse().
+.SS "void zapcircle (double x, double y, float r, float ** f, int N1, int N2)"
+.PP
+Definition at line 356 of file makechart.c.
+.PP
+References dx, dy, f, i, j, MAGIC, N1, r, x, and y.
+.PP
+Referenced by main().
+.SS "void zapellipse (double x, double y, float r, float e, float phi0, float ** f, int N1, int N2)"
+.PP
+Definition at line 378 of file makechart.c.
+.PP
+References a, b, c, circval, dx, dy, e, f, i, I(), j, MAGIC, N1, phi, r, x, and y.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "float \fBcircval\fP\fC [static]\fP"
+.PP
+Definition at line 59 of file makechart.c.
+.PP
+Referenced by drawcircle(), drawellipse(), main(), and zapellipse().
+.SS "float \fBcursval\fP\fC [static]\fP"
+.PP
+Definition at line 59 of file makechart.c.
+.PP
+Referenced by drawcollar(), drawcursor(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

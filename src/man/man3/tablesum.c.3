@@ -1,0 +1,60 @@
+.TH "tablesum.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+tablesum.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	tablesum --- sum \fBa\fP table of numbers\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	tablesum c1 p1 [c2 p2 ....] \\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		tablesum read lines of \fBa\fP table containing lines\\\fBn\fP\\			X_1 X_2 X_3 .....\\\fBn\fP\\		from stdin\\\fBn\fP\\		lines beginning with \\'#\\' and empty lines are ignored\\\fBn\fP\\		returns sum X_c1^p1\\\fBn\fP\\		if additional \fBc\fP,p pairs are given the it returns sum of\\\fBn\fP\\		(X_c1^p1) * ( X_c2^p2) *.....\\\fBn\fP\\		max \fBline\fP length 4096 characters, max \fBnumber\fP of cols = 32.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAX_LINE_LENGTH\fP   4096"
+.br
+.ti -1c
+.RI "#define \fBMAX_COLS\fP   32"
+.br
+.ti -1c
+.RI "#define \fBMAX_WORD_LENGTH\fP   128"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX_COLS   32"
+.PP
+Definition at line 25 of file tablesum.c.
+.SS "#define MAX_LINE_LENGTH   4096"
+.PP
+Definition at line 24 of file tablesum.c.
+.SS "#define MAX_WORD_LENGTH   128"
+.PP
+Definition at line 26 of file tablesum.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	tablesum --- sum \fBa\fP table of numbers\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	tablesum c1 p1 [c2 p2 ....] \\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		tablesum read lines of \fBa\fP table containing lines\\\fBn\fP\\			X_1 X_2 X_3 .....\\\fBn\fP\\		from stdin\\\fBn\fP\\		lines beginning with \\'#\\' and empty lines are ignored\\\fBn\fP\\		returns sum X_c1^p1\\\fBn\fP\\		if additional \fBc\fP,p pairs are given the it returns sum of\\\fBn\fP\\		(X_c1^p1) * ( X_c2^p2) *.....\\\fBn\fP\\		max \fBline\fP length 4096 characters, max \fBnumber\fP of cols = 32.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file tablesum.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 28 of file tablesum.c.
+.PP
+References c, exit(), line, MAX_COLS, MAX_LINE_LENGTH, MAX_WORD_LENGTH, usage, and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

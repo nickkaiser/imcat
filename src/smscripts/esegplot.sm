@@ -1,0 +1,19 @@
+esegplot  	
+		data estats.out
+		read {es1 6 es2 7 ng 8 emed1 9 emed2 10}
+		set es = sqrt(es1 * es1 + es2 * es2)
+		set egmed = (emed1 * es1 + emed2 * es2) / es
+		limits es -0.1 0.1
+		box
+		rel 0 0
+		draw 1 0
+		ptype 6 3
+		points es egmed if (ng > 150)
+		ptype 4 1
+		points es egmed if (ng > 100 && ng < 150)
+		ptype 1 1
+		points es egmed if (ng < 100)
+		xlabel e\d*
+		ylabel e\dg
+		relocate 0.05 - 0.025
+		label mode estimator

@@ -1,0 +1,81 @@
+#!/usr/bin/perl
+
+$| = 1;			# force flushing
+
+chop($com = `basename $0`);
+
+$usage = "\
+NAME\
+	$com --- perl script to generate a groff man page from cat version\
+\
+SYNOPSIS\
+	$com commandname sectionname\
+\
+DESCRIPTION\
+	$com reads a cat-style man page from stdin and sends a formatted\
+	version to stdout.\
+\
+\n";
+
+$com = shift(@ARGV) || die $usage;
+die $usage if ($com =~ /^-u$/);
+$section = shift(@ARGV) || die $usage;
+
+@date = split(" ", `date`);
+$date = "$date[0] $date[1] $date[2] $date[4]";
+
+open(IP, "-");
+
+open(OP, "| cat");
+
+print OP ".\\\" Process this file with\n";
+print OP ".\\\" groff -man -Tascii $com.1\n";
+print OP ".\\\"\n";
+print OP ".TH $com 1 \"$date\" $section \"Imcat User Commands\"\n";
+while ($line = <IP>) {
+	$line =~ s/'/\\'/g;				# escape single quotes
+	if ($line =~ /^NAME/) {
+		print OP ".SH $line";
+		$line = <IP>;
+		@word = split(" ", $line);
+		$word = shift(@word);
+		print OP "$word \\- ";
+		$word = shift(@word);
+		while ($word = shift(@word)) {
+			print OP "$word ";
+		}
+		print OP "\n";
+	} elsif ($line =~ /^SYNOPSIS/) {
+		print OP ".SH $line";
+		print OP ".B ";
+		$line = <IP>;
+		$line =~ s/.\/$com/$com/g;
+		$line =~ s/^\t*//;
+		print OP $line;
+		print OP "\n";
+	} elsif ($line =~ /^[A-Z]/) {
+		print OP ".SH $line";
+	# } elsif ($line =~ /^ *$/) {
+	} else {
+		$line =~ s/^\t*//;			# kill leading tabs
+		if ($line =~ /\t\n/) {			# trailing tab means extra new line
+			print OP $line;
+			print OP "\n";		
+		} elsif ($line =~ /\t#/) {		# # delineated list		
+			($w1, $w2) = split("#", $line);
+			print OP ".IP \"$w1\"\n";
+			print OP $w2;
+			if ($line =~ /   \n/) {		# 3 trailing spaces means last one
+				print OP ".PP\n";
+			}
+		} else {
+			print OP $line;
+		}
+	}
+		
+}
+
+close(OP);
+
+close(IP);
+exit;

@@ -1,0 +1,57 @@
+#!/local/bin/perl
+
+$Pgname = `basename $0`; chop $Pgname;
+$Usage  = "usage: $Pgname <file> [<file> ...] | -\n";
+
+$Ltrace = 0;
+
+sub usage {
+	print "$Usage";
+	exit;
+}
+
+sub err2 {
+	local($mess,$rest) = @_;
+	print STDERR "$Pgname: $mess\n";
+}
+
+sub ltrace {
+	local($mess,$rest) = @_;
+	print STDERR "$mess\n" if $Ltrace;
+}
+
+&usage unless scalar(@ARGV) >= 1;
+
+if( ($stdin = $ARGV[1] == '-') ) {
+	&usage unless scalar(@ARGV) == 1;
+}
+
+if( $stdin ) {
+	$lino = 0;
+	while( <> ) {
+		$lines[++$lino] = $_;
+	}
+	close(FILE);
+	for( $l = $lino; $l >= 1; --$l ) {
+		printf $lines[$l];                              I
+	}
+} else {
+	foreach $f ( @ARGV ) {
+		if( -T $f ) {
+			if( open(FILE,"<$f") ) {
+				$lino = 0;
+				while( <FILE> ) {
+					$lines[++$lino] = $_;
+				}
+				close(FILE);
+				for( $l = $lino; $l >= 1; --$l ) {
+					printf $lines[$l];
+				}
+			} else {
+				&err2("Can not open $f for read.");
+			}
+		} else {
+			&err2("file $f does not exist.");
+		}
+	}
+}

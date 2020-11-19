@@ -1,0 +1,58 @@
+.TH "op_misc.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+op_misc.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include 'stack.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBifinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBifdoit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBenterinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBenterdoit\fP (\fBitem\fP *operator)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void enterdoit (\fBitem\fP * operator)"
+.PP
+Definition at line 63 of file op_misc.c.
+.PP
+References item::addr, copyitemcontents(), item::next, pop(), and push().
+.SS "void enterinit (\fBitem\fP * operator)"
+.PP
+Definition at line 52 of file op_misc.c.
+.PP
+References item::addr, allocitemcontents(), pop(), and push().
+.SS "void ifdoit (\fBitem\fP * operator)"
+.PP
+Definition at line 35 of file op_misc.c.
+.PP
+References item::addr, copyitemcontents(), item::next, and pop().
+.SS "void ifinit (\fBitem\fP * operator)"
+.PP
+Definition at line 10 of file op_misc.c.
+.PP
+References item::addr, allocitemcontents(), item::dim, error_exit, i, item::itype, item::ndim, NUM_TYPE, and pop().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,84 @@
+.TH "trackpeak.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+trackpeak.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'findpeak.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	trackpeak --- read stream of PSF images and track cell averaged \fBpeak\fP\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	trackpeak [-x \fBnx\fP] \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'trackpeak' reads \fBa\fP 3D \fBFITS\fP image consisting of \fBa\fP stream\\\fBn\fP\\	of PSF images, average them with \fBa\fP cell of size \fBnx\fP * \fBnx\fP * \fBnt\fP\\\fBn\fP\\\\\fBn\fP\\	Options\\\fBn\fP\\		-x \fBnx\fP		# cell size in \fBangle\fP (6)\\\fBn\fP\\		-\fBt\fP \fBnt\fP		# cell size on time (3)\\\fBn\fP\\		-\fBn\fP nphotons	# \fBnumber\fP of photons (100)\\\fBn\fP\\		-\fBr\fP readnoise	# read noise in electrons (2.0)\\\fBn\fP\\		-T		# only output \fBpeak\fP position\\\fBn\fP\\		-o opfname	# save accumulated psfs as opfname.\fBfits\fP\\\fBn\fP\\		-O opfname	# ditto, but don'\fBt\fP output the video stream\\\fBn\fP\\		-\fBN\fP \fBnframes\fP	# only read the first \fBnframes\fP frames\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "float \fBpoidev\fP (float xm, long *idum)"
+.br
+.ti -1c
+.RI "int \fBgetcentroid\fP (float **f, int \fBN1\fP, int \fBN2\fP, double *xc, double *yc)"
+.br
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "float \fBran1\fP (long *idum)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	trackpeak --- read stream of PSF images and track cell averaged \fBpeak\fP\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	trackpeak [-x \fBnx\fP] \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'trackpeak' reads \fBa\fP 3D \fBFITS\fP image consisting of \fBa\fP stream\\\fBn\fP\\	of PSF images, average them with \fBa\fP cell of size \fBnx\fP * \fBnx\fP * \fBnt\fP\\\fBn\fP\\\\\fBn\fP\\	Options\\\fBn\fP\\		-x \fBnx\fP		# cell size in \fBangle\fP (6)\\\fBn\fP\\		-\fBt\fP \fBnt\fP		# cell size on time (3)\\\fBn\fP\\		-\fBn\fP nphotons	# \fBnumber\fP of photons (100)\\\fBn\fP\\		-\fBr\fP readnoise	# read noise in electrons (2.0)\\\fBn\fP\\		-T		# only output \fBpeak\fP position\\\fBn\fP\\		-o opfname	# save accumulated psfs as opfname.\fBfits\fP\\\fBn\fP\\		-O opfname	# ditto, but don'\fBt\fP output the video stream\\\fBn\fP\\		-\fBN\fP \fBnframes\fP	# only read the first \fBnframes\fP frames\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file trackpeak.c.
+.SH "Function Documentation"
+.PP 
+.SS "int getcentroid (float ** f, int N1, int N2, double * xc, double * yc)"
+.PP
+Definition at line 262 of file trackpeak.c.
+.PP
+References f, N1, N2, x, and y.
+.PP
+Referenced by main().
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 40 of file trackpeak.c.
+.PP
+References add_comment(), allocFloatArray(), argsinit(), copyfitsheader(), error_exit, exit(), fb, findpeak(), flag, getargf(), getargi(), getargs(), getcentroid(), getflag(), ix, M1, M2, fitsheader::n, N1, N2, fitsheader::ndim, nt, nx, fitsheader::opstream, poidev(), readfitsheader(), readfitsplane(), sigma, t, usage, writefitsheader(), writefitsplane(), writefitstail(), X, x, Y, y, and ys.
+.SS "float poidev (float xm, long * idum)"
+.PP
+Definition at line 4 of file poidev.c.
+.PP
+References g(), gammln(), PI, ran1(), t, xx, and y.
+.PP
+Referenced by main().
+.SS "float ran1 (long * idum)"
+.PP
+Definition at line 256 of file trackpeak.c.
+.PP
+References drand48().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

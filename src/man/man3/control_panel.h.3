@@ -1,0 +1,114 @@
+.TH "control_panel.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+control_panel.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBFD_control_panel\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBrewind_button_callback\fP (FL_OBJECT *, long)"
+.br
+.ti -1c
+.RI "void \fBstop_button_callback\fP (FL_OBJECT *, long)"
+.br
+.ti -1c
+.RI "void \fBrec_button_callback\fP (FL_OBJECT *, long)"
+.br
+.ti -1c
+.RI "void \fBforwardstep_button_callback\fP (FL_OBJECT *, long)"
+.br
+.ti -1c
+.RI "void \fBquit_button_callback\fP (FL_OBJECT *, long)"
+.br
+.ti -1c
+.RI "void \fBcommand_input_callback\fP (FL_OBJECT *, long)"
+.br
+.ti -1c
+.RI "void \fBzscale_counter_callback\fP (FL_OBJECT *, long)"
+.br
+.ti -1c
+.RI "void \fBgo_button_callback\fP (FL_OBJECT *, long)"
+.br
+.ti -1c
+.RI "\fBFD_control_panel\fP * \fBcreate_form_control_panel\fP (void)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void command_input_callback (FL_OBJECT *, long)"
+.PP
+Definition at line 75 of file callbacks.c.
+.PP
+References DrawMesh(), fitsgencommand, ReadNewFrame(), and start_command().
+.PP
+Referenced by create_form_control_panel().
+.SS "\fBFD_control_panel\fP* create_form_control_panel (void)"
+.PP
+Definition at line 7 of file control_panel.c.
+.PP
+References FD_control_panel::command_input, command_input_callback(), FD_control_panel::control_panel, FD_control_panel::forward_step_button, forwardstep_button_callback(), FD_control_panel::frame_number_text, FD_control_panel::go_button, go_button_callback(), FD_control_panel::quit_button, quit_button_callback(), FD_control_panel::rec_button, rec_button_callback(), FD_control_panel::rewind_button, rewind_button_callback(), FD_control_panel::stop_button, stop_button_callback(), FD_control_panel::zscale_counter, and zscale_counter_callback().
+.PP
+Referenced by main().
+.SS "void forwardstep_button_callback (FL_OBJECT *, long)"
+.PP
+Definition at line 43 of file callbacks.c.
+.PP
+References DrawMesh(), f, IDLE_MODE, opmode, and ReadNewFrame().
+.PP
+Referenced by create_form_control_panel().
+.SS "void go_button_callback (FL_OBJECT *, long)"
+.PP
+Definition at line 57 of file callbacks.c.
+.PP
+References f, opmode, and RUN_MODE.
+.PP
+Referenced by create_form_control_panel().
+.SS "void quit_button_callback (FL_OBJECT *, long)"
+.PP
+Definition at line 69 of file callbacks.c.
+.PP
+References exit().
+.PP
+Referenced by create_form_control_panel().
+.SS "void rec_button_callback (FL_OBJECT *, long)"
+.PP
+Definition at line 64 of file callbacks.c.
+.PP
+References recording.
+.PP
+Referenced by create_form_control_panel().
+.SS "void rewind_button_callback (FL_OBJECT *, long)"
+.PP
+Callbacks, globals and object handlers * Definition at line 32 of file callbacks.c.
+.PP
+References DrawMesh(), f, IDLE_MODE, opmode, ReadNewFrame(), and start_command().
+.PP
+Referenced by create_form_control_panel().
+.SS "void stop_button_callback (FL_OBJECT *, long)"
+.PP
+Definition at line 52 of file callbacks.c.
+.PP
+References IDLE_MODE, and opmode.
+.PP
+Referenced by create_form_control_panel().
+.SS "void zscale_counter_callback (FL_OBJECT *, long)"
+.PP
+Definition at line 23 of file callbacks.c.
+.PP
+References DrawMesh(), f, log2zscale, thecontrolpanel, zscale, and FD_control_panel::zscale_counter.
+.PP
+Referenced by create_form_control_panel().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

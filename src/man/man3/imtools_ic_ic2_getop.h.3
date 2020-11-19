@@ -1,0 +1,97 @@
+.TH "getop.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getop.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBop\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBN_TYPES\fP   5"
+.br
+.ti -1c
+.RI "#define \fBNUM0_FUNC_TYPE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBNUM1_FUNC_TYPE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBNUM2_FUNC_TYPE\fP   2"
+.br
+.ti -1c
+.RI "#define \fBCONSTANT_TYPE\fP   3"
+.br
+.ti -1c
+.RI "#define \fBIM_VALUE_TYPE\fP   4"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBop\fP \fBop\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBop\fP * \fBgetop\fP (char **sptr)"
+.br
+.ti -1c
+.RI "char * \fBgetword\fP (char **sptr)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CONSTANT_TYPE   3"
+.PP
+Definition at line 10 of file imtools/ic/ic2/getop.h.
+.SS "#define IM_VALUE_TYPE   4"
+.PP
+Definition at line 11 of file imtools/ic/ic2/getop.h.
+.SS "#define N_TYPES   5"
+.PP
+Definition at line 6 of file imtools/ic/ic2/getop.h.
+.SS "#define NUM0_FUNC_TYPE   0"
+.PP
+Definition at line 7 of file imtools/ic/ic2/getop.h.
+.SS "#define NUM1_FUNC_TYPE   1"
+.PP
+Definition at line 8 of file imtools/ic/ic2/getop.h.
+.SS "#define NUM2_FUNC_TYPE   2"
+.PP
+Definition at line 9 of file imtools/ic/ic2/getop.h.
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBop\fP  \fBop\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "\fBop\fP* getop (char ** sptr)"
+.PP
+Definition at line 16 of file cattools/lc/getop.c.
+.PP
+References item::addr, allocitemcontents(), CONSTANT_TYPE, copyitem(), copystring(), op::data, error_exit, exit(), free(), getheaderitem(), getobjectitem(), getword(), IM_VALUE_TYPE, MAGIC, newitem(), newop(), newopitem(), nim, NUM_TYPE, number, op::opno, sourcecathead, TEXT_TYPE, and op::type.
+.PP
+Referenced by main(), and newrpnfunction().
+.SS "char* getword (char ** sptr)"
+.PP
+Definition at line 84 of file cattools/lc/getop.c.
+.PP
+References c, and len.
+.PP
+Referenced by getop(), parseheaderexpr(), and parsename().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

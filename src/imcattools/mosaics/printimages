@@ -1,0 +1,29 @@
+#! /usr/bin/perl
+
+# print make postscript files
+
+$| = 1;
+$usage = "NAME\
+	printimages - send many files to printer with pauses\
+SYNOPSIS\
+	printimages fits1....\
+DESCRIPTION\
+	perl script to print a set of images\n";
+
+die $usage if ($ARGV[0] eq "-u");
+
+$printopts = "-f -20 100";
+
+foreach $f (@ARGV) {
+	while (-f "$$.ps") {
+		sleep 3;
+	}
+	&echosys("print_image $f $printopts > $$.ps");
+	&echosys("lpr -h -s -r -Pnetps1 $$.ps");
+}
+ 	
+
+sub echosys {
+        print @_, "\n";
+        system(@_);
+}

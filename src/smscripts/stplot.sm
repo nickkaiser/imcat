@@ -1,0 +1,40 @@
+stplot	1
+	ltype 0
+	data $1
+	read {R 2 st 4 error 5 Rs 6 sigma 7 sigmaerror 8}
+	set r = R * 0.34
+	set rs = Rs * 0.34
+	window 1 2 1 2
+	limits 0 300 -0.1 0.6
+	expand 1.5
+	ptype 4 0
+	points r st
+	errorbar r st error 2
+	errorbar r st error 4
+	box
+	xlabel r [arcsec]
+	ylabel <s\dT>
+	relocate 0 0
+	draw 400 0
+	set x = 10, 300, 10
+	set st1000 = (0.344 * 30 / x)
+	ltype 2
+	connect x st1000
+	ltype 0
+	window 1 2 1 1
+	limits 0 300 0 0.5
+	box
+	points rs sigma
+	errorbar rs sigma sigmaerror 2
+	errorbar rs sigma sigmaerror 4
+	set y = 10, 300, 10
+	set boost = 1.0 / (1 - y * y / (350 * 350))
+	set sigma1000 = boost * 0.4 * 30 * (1 / y - 1 / 300)
+	ltype 2
+	connect y sigma1000
+	ltype 0
+	xlabel r [arcsec]
+	ylabel \gS / \gS\dc\dr\di\dt
+	expand 1.0
+
+	

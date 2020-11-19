@@ -1,0 +1,98 @@
+.TH "makekernel.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makekernel.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../fftlib/myfft.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	makekernel --- calculate the kernel for the polarizability\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makekernel [-\fBw\fP rf | -W \fBalpha\fP rf | -K \fBalpha\fP beta rf | -Z \fBalpha\fP beta rf | -R \fBalpha\fP rf]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'makekernel' reads \fBa\fP psf image from stdin and computes various\\\fBn\fP\\	kernels for the polarisation\\\fBn\fP\\\\\fBn\fP\\	Options are:\\\fBn\fP\\		-u			# print this message\\\fBn\fP\\		-\fBw\fP rf			# compute \fBw\fP\\\fBn\fP\\		-W \fBalpha\fP rf		# compute W_alpha\\\fBn\fP\\		-K \fBalpha\fP beta rf	# compute K_alpha beta\\\fBn\fP\\		-Z \fBalpha\fP beta rf	# compute Z_alpha beta\\\fBn\fP\\		-R \fBalpha\fP rf		# compute R_alpha   \\\fBn\fP\\	rf is the scale length for the gaussian weight function.\\\fBn\fP\\\\\fBn\fP\\	With -\fBw\fP, -W, -Z \fBoptions\fP, only the size of the psf image is used.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBwMODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBKMODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBWMODE\fP   2"
+.br
+.ti -1c
+.RI "#define \fBRMODE\fP   3"
+.br
+.ti -1c
+.RI "#define \fBZMODE\fP   4"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "int \fBgoodindex\fP (int x)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define KMODE   1"
+.PP
+Definition at line 39 of file makekernel.c.
+.PP
+Referenced by main().
+.SS "#define RMODE   3"
+.PP
+Definition at line 41 of file makekernel.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	makekernel --- calculate the kernel for the polarizability\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makekernel [-\fBw\fP rf | -W \fBalpha\fP rf | -K \fBalpha\fP beta rf | -Z \fBalpha\fP beta rf | -R \fBalpha\fP rf]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'makekernel' reads \fBa\fP psf image from stdin and computes various\\\fBn\fP\\	kernels for the polarisation\\\fBn\fP\\\\\fBn\fP\\	Options are:\\\fBn\fP\\		-u			# print this message\\\fBn\fP\\		-\fBw\fP rf			# compute \fBw\fP\\\fBn\fP\\		-W \fBalpha\fP rf		# compute W_alpha\\\fBn\fP\\		-K \fBalpha\fP beta rf	# compute K_alpha beta\\\fBn\fP\\		-Z \fBalpha\fP beta rf	# compute Z_alpha beta\\\fBn\fP\\		-R \fBalpha\fP rf		# compute R_alpha   \\\fBn\fP\\	rf is the scale length for the gaussian weight function.\\\fBn\fP\\\\\fBn\fP\\	With -\fBw\fP, -W, -Z \fBoptions\fP, only the size of the psf image is used.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 5 of file makekernel.c.
+.SS "#define WMODE   2"
+.PP
+Definition at line 40 of file makekernel.c.
+.PP
+Referenced by main().
+.SS "#define wMODE   0"
+.PP
+Definition at line 38 of file makekernel.c.
+.PP
+Referenced by main().
+.SS "#define ZMODE   4"
+.PP
+Definition at line 42 of file makekernel.c.
+.PP
+Referenced by main().
+.SH "Function Documentation"
+.PP 
+.SS "int goodindex (int x)"
+.PP
+Definition at line 313 of file makekernel.c.
+.PP
+References x.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 45 of file makekernel.c.
+.PP
+References A, add_comment(), alloc_fft(), allocFloatArray(), alpha, B, C, ccf(), exit(), fft_type, fits, forward_fft(), g(), goodindex(), i, ix, j, K, KMODE, l, M, m, N1, N2, r, read2Dfloatimage(), RMODE, usage, W, w, WMODE, wMODE, write2Dfloatimage(), and ZMODE.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

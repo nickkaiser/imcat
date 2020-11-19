@@ -1,0 +1,86 @@
+.TH "nan.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+nan.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fB_D0\fP   0"
+.br
+.ti -1c
+.RI "#define \fB_DOFF\fP   4"
+.br
+.ti -1c
+.RI "#define \fB_DMAX\fP   ((1<<(15-_DOFF))-1)"
+.br
+.ti -1c
+.RI "#define \fB_DNAN\fP   (0x8000|_DMAX<<_DOFF|1<<(_DOFF-1))"
+.br
+.ti -1c
+.RI "#define \fBNBITS\fP   (48+_DOFF)"
+.br
+.ti -1c
+.RI "#define \fBINIT\fP(w0)   w0, 0, 0, 0"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "union {"
+.br
+.ti -1c
+.RI "   unsigned short \fB_W\fP [4]"
+.br
+.ti -1c
+.RI "   double \fB_D\fP"
+.br
+.ti -1c
+.RI "} \fB_Dconst\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define _D0   0"
+.PP
+Definition at line 4 of file nan.h.
+.SS "#define _DMAX   ((1<<(15-_DOFF))-1)"
+.PP
+Definition at line 8 of file nan.h.
+.SS "#define _DNAN   (0x8000|_DMAX<<_DOFF|1<<(_DOFF-1))"
+.PP
+Definition at line 9 of file nan.h.
+.PP
+Referenced by convertmagictonans(), and convertnanstomagic().
+.SS "#define _DOFF   4"
+.PP
+Definition at line 7 of file nan.h.
+.SS "#define INIT(w0)   w0, 0, 0, 0"
+.PP
+Definition at line 15 of file nan.h.
+.PP
+Referenced by convertmagictonans(), and convertnanstomagic().
+.SS "#define NBITS   (48+_DOFF)"
+.PP
+Definition at line 11 of file nan.h.
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef { ... }   \fB_Dconst\fP"
+.PP
+Referenced by convertmagictonans(), and convertnanstomagic().
+.SH "Variable Documentation"
+.PP 
+.SS "double \fB_D\fP"
+.PP
+Definition at line 20 of file nan.h.
+.SS "unsigned short \fB_W\fP[4]"
+.PP
+Definition at line 19 of file nan.h.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

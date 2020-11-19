@@ -1,0 +1,2 @@
+fitstops is a tool for making encapsulated postscript 
+greyscale, contour plots

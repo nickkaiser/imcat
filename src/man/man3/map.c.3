@@ -1,0 +1,394 @@
+.TH "map.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+map.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include 'fits.h'\fP
+.br
+\fC#include 'map_private.h'\fP
+.br
+\fC#include 'map.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBTINY\fP   1.\fBe\fP-8"
+.br
+.ti -1c
+.RI "#define \fBNOCUT\fP   0"
+.br
+.ti -1c
+.RI "#define \fBXCUT\fP   1"
+.br
+.ti -1c
+.RI "#define \fBYCUT\fP   2"
+.br
+.ti -1c
+.RI "#define \fBMAX\fP(x, y)   (((x) > (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMIN\fP(x, y)   (((x) < (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMAX_VERTS\fP   100000"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBvert\fP * \fBmakevertex\fP (float x, float y)"
+.br
+.ti -1c
+.RI "void \fBmakering\fP (\fBvert\fP **basevertex, \fBvert\fP **\fBpoint\fP, int npoints)"
+.br
+.ti -1c
+.RI "void \fBdecompose\fP (\fBvert\fP *basevert)"
+.br
+.ti -1c
+.RI "void \fBdopolygon\fP (\fBvert\fP *basevert)"
+.br
+.ti -1c
+.RI "void \fBdotriangle\fP (\fBvert\fP *basevert)"
+.br
+.ti -1c
+.RI "void \fBprintpolygon\fP (\fBvert\fP *basevert)"
+.br
+.ti -1c
+.RI "void \fBprintvertex\fP (\fBvert\fP *thevert)"
+.br
+.ti -1c
+.RI "void \fBsmprintpolygon\fP (\fBvert\fP *basevert)"
+.br
+.ti -1c
+.RI "void \fBfreepolygon\fP (\fBvert\fP *basevert)"
+.br
+.ti -1c
+.RI "void \fBswitchxy\fP (\fBvert\fP *\fBv\fP)"
+.br
+.ti -1c
+.RI "void \fBmakebreakpoints\fP (\fBvert\fP *v1, \fBvert\fP *v2, \fBvert\fP **V1, \fBvert\fP **V2, int \fBdir\fP, float cut)"
+.br
+.ti -1c
+.RI "void \fBlink\fP (\fBvert\fP *r1, \fBvert\fP *r2, \fBvert\fP *l1, \fBvert\fP *l2, \fBvert\fP *R1, \fBvert\fP *R2, \fBvert\fP *\fBL1\fP, \fBvert\fP *\fBL2\fP)"
+.br
+.ti -1c
+.RI "float \fBtrianglearea\fP (\fBvert\fP *basevert)"
+.br
+.ti -1c
+.RI "void \fBgetsourceij\fP (\fBvert\fP *basevert, int *\fBix\fP, int *\fBiy\fP)"
+.br
+.ti -1c
+.RI "void \fBmap\fP (float **ftarget, int \fBN1\fP, int \fBN2\fP, float **fsource, int \fBM1\fP, int \fBM2\fP, int(*deflection)(float ri, float rj, float *\fBdi\fP, float *\fBdj\fP))"
+.br
+.ti -1c
+.RI "void \fBaddarea\fP (int \fBix\fP, int \fBiy\fP, float area)"
+.br
+.ti -1c
+.RI "long \fBtrianglecount\fP (void)"
+.br
+.ti -1c
+.RI "\fBvert\fP * \fBallocvert\fP (void)"
+.br
+.ti -1c
+.RI "void \fBfreeverts\fP (void)"
+.br
+.ti -1c
+.RI "void \fBset_triangle_map_mode\fP (int mapmode)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBglobalmapmode\fP = FORWARDMAPMODE"
+.br
+.ti -1c
+.RI "int \fBgM1\fP"
+.br
+.ti -1c
+.RI "int \fBgM2\fP"
+.br
+.ti -1c
+.RI "int \fBgtargeti\fP"
+.br
+.ti -1c
+.RI "int \fBgtargetj\fP"
+.br
+.ti -1c
+.RI "float \fBgareasum\fP"
+.br
+.ti -1c
+.RI "float \fBgfsum\fP"
+.br
+.ti -1c
+.RI "float ** \fBgfsource\fP"
+.br
+.ti -1c
+.RI "float ** \fBgftarget\fP"
+.br
+.ti -1c
+.RI "long \fBgntriangles\fP = 0"
+.br
+.ti -1c
+.RI "float \fBgarea\fP"
+.br
+.ti -1c
+.RI "int \fBcounter\fP = 0"
+.br
+.ti -1c
+.RI "\fBvert\fP \fBvstore\fP [MAX_VERTS]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX(x, y)   (((x) > (y)) ? (x) : (y))"
+.PP
+Definition at line 27 of file map.c.
+.SS "#define MAX_VERTS   100000"
+.PP
+Definition at line 495 of file map.c.
+.PP
+Referenced by allocvert().
+.SS "#define MIN(x, y)   (((x) < (y)) ? (x) : (y))"
+.PP
+Definition at line 28 of file map.c.
+.SS "#define NOCUT   0"
+.PP
+Definition at line 23 of file map.c.
+.PP
+Referenced by decompose().
+.SS "#define TINY   1.\fBe\fP-8"
+.PP
+Definition at line 22 of file map.c.
+.SS "#define XCUT   1"
+.PP
+Definition at line 24 of file map.c.
+.PP
+Referenced by decompose().
+.SS "#define YCUT   2"
+.PP
+Definition at line 25 of file map.c.
+.PP
+Referenced by decompose(), and makebreakpoints().
+.SH "Function Documentation"
+.PP 
+.SS "void addarea (int ix, int iy, float area)"
+.PP
+Definition at line 467 of file map.c.
+.PP
+References FLOAT_MAGIC, FORWARDMAPMODE, garea, gareasum, gfsource, gfsum, gftarget, globalmapmode, gM2, gntriangles, gtargeti, gtargetj, and ix.
+.PP
+Referenced by dotriangle().
+.SS "\fBvert\fP* allocvert (void)"
+.PP
+Definition at line 498 of file map.c.
+.PP
+References counter, error_exit, MAX_VERTS, and vstore.
+.PP
+Referenced by dopolygon(), makebreakpoints(), and makevertex().
+.SS "void decompose (\fBvert\fP * basevert)"
+.PP
+Definition at line 62 of file map.c.
+.PP
+References dopolygon(), error_exit, link(), makebreakpoints(), vert::next, NOCUT, vert::prev, vert::x, XCUT, xmax, xmin, vert::y, YCUT, ymax, and ymin.
+.PP
+Referenced by map().
+.SS "void dopolygon (\fBvert\fP * basevert)"
+.PP
+Definition at line 186 of file map.c.
+.PP
+References allocvert(), dotriangle(), error_exit, vert::next, and vert::prev.
+.PP
+Referenced by decompose().
+.SS "void dotriangle (\fBvert\fP * basevert)"
+.PP
+Definition at line 227 of file map.c.
+.PP
+References addarea(), getsourceij(), i, j, and trianglearea().
+.PP
+Referenced by dopolygon().
+.SS "void freepolygon (\fBvert\fP * basevert)"
+.PP
+Definition at line 289 of file map.c.
+.PP
+References free(), and vert::next.
+.SS "void freeverts (void)"
+.PP
+Definition at line 507 of file map.c.
+.PP
+References counter.
+.PP
+Referenced by map().
+.SS "void getsourceij (\fBvert\fP * basevert, int * ix, int * iy)"
+.PP
+Definition at line 374 of file map.c.
+.PP
+References ix, MIN, vert::next, vert::prev, vert::x, and vert::y.
+.PP
+Referenced by dotriangle().
+.SS "void link (\fBvert\fP * r1, \fBvert\fP * r2, \fBvert\fP * l1, \fBvert\fP * l2, \fBvert\fP * R1, \fBvert\fP * R2, \fBvert\fP * L1, \fBvert\fP * L2)"
+.PP
+Definition at line 344 of file map.c.
+.PP
+References vert::next, and vert::prev.
+.PP
+Referenced by decompose().
+.SS "void makebreakpoints (\fBvert\fP * v1, \fBvert\fP * v2, \fBvert\fP ** V1, \fBvert\fP ** V2, int dir, float cut)"
+.PP
+Definition at line 316 of file map.c.
+.PP
+References allocvert(), dir, switchxy(), vert::x, vert::y, and YCUT.
+.PP
+Referenced by decompose().
+.SS "void makering (\fBvert\fP ** basevertex, \fBvert\fP ** point, int npoints)"
+.PP
+Definition at line 48 of file map.c.
+.PP
+References i, and point.
+.PP
+Referenced by map().
+.SS "\fBvert\fP* makevertex (float x, float y)"
+.PP
+Definition at line 33 of file map.c.
+.PP
+References allocvert(), vert::x, x, vert::y, and y.
+.PP
+Referenced by map().
+.SS "void map (float ** ftarget, int N1, int N2, float ** fsource, int M1, int M2, int(* deflection)(float ri, float rj, float *\fBdi\fP, float *\fBdj\fP))"
+.PP
+Definition at line 405 of file map.c.
+.PP
+References decompose(), deflection(), di, dj, FORWARDMAPMODE, freeverts(), garea, gareasum, gfsource, gfsum, gftarget, globalmapmode, gM1, gM2, gtargeti, gtargetj, i, INVERSEMAPMODE, j, M1, M2, makering(), makevertex(), N1, N2, point, trianglearea(), x, and y.
+.PP
+Referenced by main().
+.SS "void printpolygon (\fBvert\fP * basevert)"
+.PP
+Definition at line 241 of file map.c.
+.PP
+References vert::next, and printvertex().
+.SS "void printvertex (\fBvert\fP * thevert)"
+.PP
+Definition at line 265 of file map.c.
+.PP
+References vert::x, and vert::y.
+.PP
+Referenced by printpolygon().
+.SS "void set_triangle_map_mode (int mapmode)"
+.PP
+Definition at line 514 of file map.c.
+.PP
+References globalmapmode.
+.PP
+Referenced by main().
+.SS "void smprintpolygon (\fBvert\fP * basevert)"
+.PP
+Definition at line 272 of file map.c.
+.PP
+References vert::next, vert::x, and vert::y.
+.SS "void switchxy (\fBvert\fP * v)"
+.PP
+Definition at line 305 of file map.c.
+.PP
+References v.
+.PP
+Referenced by makebreakpoints().
+.SS "float trianglearea (\fBvert\fP * basevert)"
+.PP
+Definition at line 361 of file map.c.
+.PP
+References vert::next, vert::prev, vert::x, and vert::y.
+.PP
+Referenced by dotriangle(), and map().
+.SS "long trianglecount (void)"
+.PP
+Definition at line 485 of file map.c.
+.PP
+References gntriangles.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBcounter\fP = 0\fC [static]\fP"
+.PP
+Definition at line 494 of file map.c.
+.PP
+Referenced by allocvert(), and freeverts().
+.SS "float \fBgarea\fP\fC [static]\fP"
+.PP
+Definition at line 394 of file map.c.
+.PP
+Referenced by addarea(), and map().
+.SS "float \fBgareasum\fP\fC [static]\fP"
+.PP
+Definition at line 392 of file map.c.
+.PP
+Referenced by addarea(), and map().
+.SS "float ** \fBgfsource\fP\fC [static]\fP"
+.PP
+Definition at line 392 of file map.c.
+.PP
+Referenced by addarea(), and map().
+.SS "float \fBgfsum\fP\fC [static]\fP"
+.PP
+Definition at line 392 of file map.c.
+.PP
+Referenced by addarea(), and map().
+.SS "float ** \fBgftarget\fP\fC [static]\fP"
+.PP
+Definition at line 392 of file map.c.
+.PP
+Referenced by addarea(), and map().
+.SS "int \fBglobalmapmode\fP = FORWARDMAPMODE\fC [static]\fP"
+.PP
+Definition at line 30 of file map.c.
+.PP
+Referenced by addarea(), map(), and set_triangle_map_mode().
+.SS "int \fBgM1\fP\fC [static]\fP"
+.PP
+Definition at line 391 of file map.c.
+.PP
+Referenced by map().
+.SS "int \fBgM2\fP\fC [static]\fP"
+.PP
+Definition at line 391 of file map.c.
+.PP
+Referenced by addarea(), and map().
+.SS "long \fBgntriangles\fP = 0\fC [static]\fP"
+.PP
+Definition at line 393 of file map.c.
+.PP
+Referenced by addarea(), and trianglecount().
+.SS "int \fBgtargeti\fP\fC [static]\fP"
+.PP
+Definition at line 391 of file map.c.
+.PP
+Referenced by addarea(), and map().
+.SS "int \fBgtargetj\fP\fC [static]\fP"
+.PP
+Definition at line 391 of file map.c.
+.PP
+Referenced by addarea(), and map().
+.SS "\fBvert\fP \fBvstore\fP[MAX_VERTS]\fC [static]\fP"
+.PP
+Definition at line 496 of file map.c.
+.PP
+Referenced by allocvert().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

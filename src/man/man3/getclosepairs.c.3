@@ -1,0 +1,77 @@
+.TH "getclosepairs.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getclosepairs.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include 'grid.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	getclosepairs - make catalogue of close pairs from 2 input cats\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getclosepairs [\fBoptions\fP....] dmax cat1 cat2\\\fBn\fP\\		-u		# print this man page\\\fBn\fP\\		-x \fBxname\fP 	# specify name for coords (x)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\        'getclosepairs' reads two catalogues cat1, cat2 and writes to stdout\\\fBn\fP\\	\fBa\fP catalogue containing pairs with |separation| < dmax \\\fBn\fP\\	Output cat has \fBobject\fP items with the same names as in the input cats\\\fBn\fP\\	(which must have identical \fBobject\fP items)\\\fBn\fP\\	but each \fBobject\fP is \fBa\fP 2-vector formed from \fBa\fP \fBpair\fP of\\\fBn\fP\\	input objects.\\\fBn\fP\\	It works by installing the objects from the first cat into\\\fBn\fP\\	\fBa\fP grid of linked lists, and it then reads the objects\\\fBn\fP\\	from the second cat and outputs \fBa\fP \fBpair\fP-\fBobject\fP for\\\fBn\fP\\	each \fBpair\fP with separation < dmax.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBBIG_POS\fP   1.e100"
+.br
+.ti -1c
+.RI "#define \fBBIG_NEG\fP   -1.e100"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBidentical\fP (\fBcathead\fP *cat1, \fBcathead\fP *cat2)"
+.br
+.ti -1c
+.RI "double \fBsep2\fP (\fBobject\fP *obj1, \fBobject\fP *obj2, int \fBxindex\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define BIG_NEG   -1.e100"
+.PP
+Definition at line 42 of file getclosepairs.c.
+.SS "#define BIG_POS   1.e100"
+.PP
+Definition at line 41 of file getclosepairs.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	getclosepairs - make catalogue of close pairs from 2 input cats\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getclosepairs [\fBoptions\fP....] dmax cat1 cat2\\\fBn\fP\\		-u		# print this man page\\\fBn\fP\\		-x \fBxname\fP 	# specify name for coords (x)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\        'getclosepairs' reads two catalogues cat1, cat2 and writes to stdout\\\fBn\fP\\	\fBa\fP catalogue containing pairs with |separation| < dmax \\\fBn\fP\\	Output cat has \fBobject\fP items with the same names as in the input cats\\\fBn\fP\\	(which must have identical \fBobject\fP items)\\\fBn\fP\\	but each \fBobject\fP is \fBa\fP 2-vector formed from \fBa\fP \fBpair\fP of\\\fBn\fP\\	input objects.\\\fBn\fP\\	It works by installing the objects from the first cat into\\\fBn\fP\\	\fBa\fP grid of linked lists, and it then reads the objects\\\fBn\fP\\	from the second cat and outputs \fBa\fP \fBpair\fP-\fBobject\fP for\\\fBn\fP\\	each \fBpair\fP with separation < dmax.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file getclosepairs.c.
+.SH "Function Documentation"
+.PP 
+.SS "int identical (\fBcathead\fP * cat1, \fBcathead\fP * cat2)"
+.PP
+Definition at line 202 of file getclosepairs.c.
+.PP
+References item::dim, i, item::itype, j, item::name, item::ndim, item::next, cathead::nobjectitems, and cathead::objectitembase.
+.PP
+Referenced by inheritcontents().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 44 of file getclosepairs.c.
+.PP
+References addargscomment(), addobjectitem(), item::addr, object::addrlist, allocgrid(), allocitemcontents(), allocobjectcontents(), BIG_NEG, BIG_POS, BINARY_FILE_TYPE, copyheaderinfo(), item::dim, dmax, error_exit, exit(), getcatipfiletype(), getgridcoords(), getneighbours(), getobjectitem(), getobjectitemindex(), i, identical(), item::itype, ix, j, MAX_NEIGHBOURS, item::name, item::ndim, newitem(), newobject(), object::next, item::next, object::nitems, NUM_TYPE, cathead::objectitembase, readcathead(), readobject(), sep2(), setcatipf(), setcatipfiletype(), setcatopfiletype(), setgridsize(), usage, writecathead(), writeobject(), x, xmax, and xmin.
+.SS "double sep2 (\fBobject\fP * obj1, \fBobject\fP * obj2, int xindex)"
+.PP
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

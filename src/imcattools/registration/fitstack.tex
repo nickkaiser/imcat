@@ -1,0 +1,148 @@
+% fitstack.tex - somenotes regarding registration of stacks of images
+
+% \documentstyle[aaspptwo]{article}
+\documentstyle{article}
+\def \beginfig 		{\begin{figure}}
+\def \endfig 		{\end{figure}}
+\def \figcap		{\caption}
+
+\def \begineq 		{\begin{equation}}
+\def \endeq 		{\end{equation}}
+
+\def \max		{{\rm max}}
+
+
+\begin{document}
+
+%\twocolumn
+
+\section{Registering a stack of images with {\tt fitstack2}.}
+
+This is an attempt to register a set of images/catalogues
+and solve for low-order polynomial type distortion of the
+field in the telescope.
+
+We treat the sky as flat cartesian space, and we tie the
+origin of coordinates to the origin of detector coords in the first
+image. We set the scale and orientation such that the unit
+$x$-vector in detector coords maps to the unit $x$-vector in sky coords.
+
+We model the relationship between sky coords $r$ and detector coords $x$ (on first
+image) as 
+\begineq
+r_i = x_i + \sum_{\rm modes} a^M_i f^M(x)
+\endeq
+where the mode functions $f^M(x)$ indexed by the integer $M$ are 
+polynomials in detector coordinates $x$.
+The choice of scale and orientation of the sky coordinate system implies that   
+the cooeficient of the mode $f = x$ must vanish.  We take $f^0 = y$ and
+the other modes $f^M = x^{l-m}y^m$ with $2 \le l \le l_\max$,and 
+$0 \le m \le l$ and with index
+\begineq
+M(l,m) = 1 + \sum_{l'=2}^{l - 1} (l'+1) + m
+\endeq
+thus the first few modes are
+$y, x^2, xy, y^2, x^3, x^2 y, x y^2, y^3, x^4, x^3 y, x^2 y^2, x y^3, y^4, \ldots$ 
+and so on.
+
+We model relation between sky coords in the different exposures as
+\begineq
+r_i = r^e_i + \delta\phi^e_{ij} r^e_j + d^e_i
+\endeq
+where $d_e$ is displacement of the telescope axis relative to the
+first image (so $d^0_i = 0$), and the assumed small $2\times 2$ matrix
+$\delta\phi^e_{ij}$ allows for small rotations of the telescope axis
+and the possibility of image shear due to atmospheric refraction.
+So, ignoring terms of order $a \delta\phi$ we have
+\begineq
+r_i = x_i + \sum_M a^M_i f^M(x) + 
+\delta\phi^e_{ij} x_j + d^e_i
+\endeq
+We solve for the $6(N_e - 1) + 2 M$ parameters by minimising the
+sum of the squares of the residuals $\Delta r = r - r'$ which we
+can write as
+\begineq
+\Delta r_i = \Delta x_i + \sum_I C_i^I V^I
+\endeq
+where we have defined the vectors $V^I$ (which contains the parameters
+of the image  mapping model) and also the vectors $C_i^I$:
+\begineq
+V^I = \left[\begin{matrix}{
+\vdots \cr d_0^n \cr \vdots \cr
+\cdots \cr
+\vdots \cr d_1^n \cr \vdots \cr
+\cdots \cr
+\vdots \cr \phi_{00}^n \cr \vdots \cr
+\cdots \cr
+\vdots \cr \phi_{01}^n \cr \vdots \cr
+\cdots \cr
+\vdots \cr \phi_{10}^n \cr \vdots \cr
+\cdots \cr
+\vdots \cr \phi_{11}^n \cr \vdots \cr
+\cdots \cr
+\vdots \cr a_0^M \cr \vdots \cr
+\cdots \cr
+\vdots \cr a_1^M \cr \vdots
+}\end{matrix}\right]
+\quad\quad
+C_0^I = \left[\begin{matrix}{
+\vdots \cr \delta_{ne} - \delta_{ne'} \cr \vdots \cr
+\cdots \cr
+\vdots \cr 0 \cr \vdots \cr
+\cdots \cr
+\vdots \cr x_0\delta_{ne} - x'_0\delta_{ne'} \cr \vdots \cr
+\cdots \cr
+\vdots \cr x_1\delta_{ne} - x'_1\delta_{ne'} \cr \vdots \cr
+\cdots \cr
+\vdots \cr 0 \cr \vdots \cr
+\cdots \cr
+\vdots \cr 0 \cr \vdots \cr
+\cdots \cr
+\vdots \cr f^M(x) - f^M(x') \cr \vdots \cr
+\cdots \cr
+\vdots \cr 0 \cr \vdots
+}\end{matrix}\right]
+\quad\quad
+C_1^I = \left[\begin{matrix}{
+\vdots \cr 0 \cr \vdots \cr
+\cdots \cr
+\vdots \cr \delta_{ne} - \delta_{ne'} \cr \vdots \cr
+\cdots \cr
+\vdots \cr 0 \cr \vdots \cr
+\cdots \cr
+\vdots \cr 0 \cr \vdots \cr
+\cdots \cr
+\vdots \cr x_0\delta_{ne} - x'_0\delta_{ne'} \cr \vdots \cr
+\cdots \cr
+\vdots \cr x_1\delta_{ne} - x'_1\delta_{ne'} \cr \vdots \cr
+\cdots \cr
+\vdots \cr 0 \cr \vdots \cr
+\cdots \cr
+\vdots \cr f^M(x) - f^M(x') \cr \vdots
+}\end{matrix}\right]
+\endeq
+
+The summed squared residuals are
+\begineq
+\sum \Delta r^2 =  \sum (\Delta x_i + C_i^IV^I)(\Delta x_i + C_i^JV^J)
+\endeq
+and minimising this wrt the model parameters $V^I$ gives the linear equations
+\begineq
+A^{IJ} V^J = B^J
+\endeq
+with
+\begineq
+A^{IJ} = \sum C_i^I C_i^J 
+\quad\quad
+{\rm and}
+\quad\quad
+B^J = - \sum C_i^J \Delta x_i
+\endeq
+
+There may be a problem with ill conditioned matrices for sets of images
+dithhered with essentially zero rotation, since there is then an ambiguity
+in the $y$-scale.....
+
+\end{document}
+
+

@@ -1,0 +1,77 @@
+.TH "makechart.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makechart.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBdrawcursor\fP (double x, double y, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBdrawcircle\fP (double x, double y, float \fBr\fP, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBzapcircle\fP (double x, double y, float \fBr\fP, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBdrawcollar\fP (int \fBi\fP, int \fBj\fP, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBdrawellipse\fP (double x, double y, float \fBr\fP, float \fBe\fP, float phi0, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBzapellipse\fP (double x, double y, float \fBr\fP, float \fBe\fP, float phi0, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void drawcircle (double x, double y, float r, float ** f, int N1, int N2)"
+.PP
+Definition at line 301 of file makechart.c.
+.PP
+References circval, f, i, j, N1, phi, PI, r, x, and y.
+.PP
+Referenced by drawcollar(), and main().
+.SS "void drawcollar (int i, int j, float ** f, int N1, int N2)"
+.PP
+Definition at line 266 of file makechart.c.
+.PP
+References cursval, d, drawcircle(), f, i, j, N1, N2, NE, NW, SE, and SW.
+.PP
+Referenced by main().
+.SS "void drawcursor (double x, double y, float ** f, int N1, int N2)"
+.PP
+Definition at line 245 of file makechart.c.
+.PP
+References CURS_MAX, CURS_MIN, cursval, d, f, i, j, N1, N2, x, and y.
+.PP
+Referenced by main().
+.SS "void drawellipse (double x, double y, float r, float e, float phi0, float ** f, int N1, int N2)"
+.PP
+Definition at line 325 of file makechart.c.
+.PP
+References a, b, c, circval, e, f, I(), i, j, N1, phi, PI, r, x, and y.
+.PP
+Referenced by main().
+.SS "void zapcircle (double x, double y, float r, float ** f, int N1, int N2)"
+.PP
+Definition at line 356 of file makechart.c.
+.PP
+References dx, dy, f, i, j, MAGIC, N1, r, x, and y.
+.PP
+Referenced by main().
+.SS "void zapellipse (double x, double y, float r, float e, float phi0, float ** f, int N1, int N2)"
+.PP
+Definition at line 378 of file makechart.c.
+.PP
+References a, b, c, circval, dx, dy, e, f, I(), i, j, MAGIC, N1, phi, r, x, and y.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

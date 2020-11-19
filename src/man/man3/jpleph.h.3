@@ -1,0 +1,156 @@
+.TH "jpleph.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+jpleph.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBDLL_FUNC\fP"
+.br
+.ti -1c
+.RI "#define \fBJPL_EPHEM_START_JD\fP   0"
+.br
+.ti -1c
+.RI "#define \fBJPL_EPHEM_END_JD\fP   8"
+.br
+.ti -1c
+.RI "#define \fBJPL_EPHEM_STEP\fP   16"
+.br
+.ti -1c
+.RI "#define \fBJPL_EPHEM_N_CONSTANTS\fP   24"
+.br
+.ti -1c
+.RI "#define \fBJPL_EPHEM_AU_IN_KM\fP   28"
+.br
+.ti -1c
+.RI "#define \fBJPL_EPHEM_EARTH_MOON_RATIO\fP   36"
+.br
+.ti -1c
+.RI "#define \fBJPL_EPHEM_EPHEMERIS_VERSION\fP   200"
+.br
+.ti -1c
+.RI "#define \fBJPL_EPHEM_KERNEL_SIZE\fP   204"
+.br
+.ti -1c
+.RI "#define \fBJPL_EPHEM_KERNEL_RECORD_SIZE\fP   208"
+.br
+.ti -1c
+.RI "#define \fBJPL_EPHEM_KERNEL_NCOEFF\fP   212"
+.br
+.ti -1c
+.RI "#define \fBJPL_EPHEM_KERNEL_SWAP_BYTES\fP   216"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void *DLL_FUNC \fBjpl_init_ephemeris\fP (const char *ephemeris_filename, char nam[][6], double *\fBval\fP)"
+.br
+.ti -1c
+.RI "void DLL_FUNC \fBjpl_close_ephemeris\fP (void *ephem)"
+.br
+.ti -1c
+.RI "int DLL_FUNC \fBjpl_state\fP (void *ephem, const double et, const int list[12], double pv[][6], double nut[4], const int bary)"
+.br
+.ti -1c
+.RI "int DLL_FUNC \fBjpl_pleph\fP (void *ephem, const double et, const int ntarg, const int ncent, double rrd[], const int calc_velocity)"
+.br
+.ti -1c
+.RI "double DLL_FUNC \fBjpl_get_double\fP (const void *ephem, const int value)"
+.br
+.ti -1c
+.RI "double DLL_FUNC \fBjpl_get_long\fP (const void *ephem, const int value)"
+.br
+.ti -1c
+.RI "int DLL_FUNC \fBmake_sub_ephem\fP (const void *ephem, const char *sub_filename, const double start_jd, const double end_jd)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define DLL_FUNC"
+.PP
+Definition at line 21 of file jpleph.h.
+.PP
+Referenced by jpl_close_ephemeris(), jpl_get_double(), jpl_get_long(), jpl_init_ephemeris(), jpl_pleph(), and jpl_state().
+.SS "#define JPL_EPHEM_AU_IN_KM   28"
+.PP
+Definition at line 51 of file jpleph.h.
+.SS "#define JPL_EPHEM_EARTH_MOON_RATIO   36"
+.PP
+Definition at line 52 of file jpleph.h.
+.SS "#define JPL_EPHEM_END_JD   8"
+.PP
+Definition at line 48 of file jpleph.h.
+.SS "#define JPL_EPHEM_EPHEMERIS_VERSION   200"
+.PP
+Definition at line 53 of file jpleph.h.
+.SS "#define JPL_EPHEM_KERNEL_NCOEFF   212"
+.PP
+Definition at line 56 of file jpleph.h.
+.SS "#define JPL_EPHEM_KERNEL_RECORD_SIZE   208"
+.PP
+Definition at line 55 of file jpleph.h.
+.SS "#define JPL_EPHEM_KERNEL_SIZE   204"
+.PP
+Definition at line 54 of file jpleph.h.
+.SS "#define JPL_EPHEM_KERNEL_SWAP_BYTES   216"
+.PP
+Definition at line 57 of file jpleph.h.
+.SS "#define JPL_EPHEM_N_CONSTANTS   24"
+.PP
+Definition at line 50 of file jpleph.h.
+.SS "#define JPL_EPHEM_START_JD   0"
+.PP
+Definition at line 47 of file jpleph.h.
+.SS "#define JPL_EPHEM_STEP   16"
+.PP
+Definition at line 49 of file jpleph.h.
+.SH "Function Documentation"
+.PP 
+.SS "void DLL_FUNC jpl_close_ephemeris (void * ephem)"
+.PP
+Definition at line 663 of file jpleph.cpp.
+.PP
+References DLL_FUNC, and free().
+.SS "double DLL_FUNC jpl_get_double (const void * ephem, const int value)"
+.PP
+Definition at line 42 of file jpleph.cpp.
+.PP
+References DLL_FUNC.
+.SS "double DLL_FUNC jpl_get_long (const void * ephem, const int value)"
+.PP
+Definition at line 47 of file jpleph.cpp.
+.PP
+References DLL_FUNC.
+.SS "void* DLL_FUNC jpl_init_ephemeris (const char * ephemeris_filename, char nam[][6], double * val)"
+.PP
+Definition at line 546 of file jpleph.cpp.
+.PP
+References DLL_FUNC, i, j, JPL_HEADER_SIZE, L, MAX_KERNEL_SIZE, swap_double(), swap_long_integer(), title, and val.
+.PP
+Referenced by main().
+.SS "int DLL_FUNC jpl_pleph (void * ephem, const double et, const int ntarg, const int ncent, double rrd[], const int calc_velocity)"
+.PP
+Definition at line 98 of file jpleph.cpp.
+.PP
+References DLL_FUNC, i, jpl_state(), and k.
+.PP
+Referenced by main().
+.SS "int DLL_FUNC jpl_state (void * ephem, const double et, const int list[12], double pv[][6], double nut[4], const int bary)"
+.PP
+Definition at line 443 of file jpleph.cpp.
+.PP
+References buf, dest, DLL_FUNC, flag, i, interp(), j, swap_double(), and t.
+.PP
+Referenced by jpl_pleph().
+.SS "int DLL_FUNC make_sub_ephem (const void * ephem, const char * sub_filename, const double start_jd, const double end_jd)"
+.PP
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

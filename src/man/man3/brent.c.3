@@ -1,0 +1,72 @@
+.TH "brent.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+brent.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include 'brent.h'\fP
+.br
+\fC#include 'fitstatus.h'\fP
+.br
+\fC#include 'nrutil.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBITMAX\fP   100"
+.br
+.ti -1c
+.RI "#define \fBCGOLD\fP   0.3819660"
+.br
+.ti -1c
+.RI "#define \fBZEPS\fP   1.0\fBe\fP-10"
+.br
+.ti -1c
+.RI "#define \fBSIGN\fP(\fBa\fP, \fBb\fP)   ((\fBb\fP) > 0.0 ? fabs(\fBa\fP) : -fabs(\fBa\fP))"
+.br
+.ti -1c
+.RI "#define \fBSHFT\fP(\fBa\fP, \fBb\fP, \fBc\fP, \fBd\fP)   (\fBa\fP)=(\fBb\fP);(\fBb\fP)=(\fBc\fP);(\fBc\fP)=(\fBd\fP);"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "float \fBbrent\fP (float ax, float bx, float cx, float(*f)(float), float tol, float *\fBxmin\fP)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CGOLD   0.3819660"
+.PP
+Definition at line 14 of file brent.c.
+.SS "#define ITMAX   100"
+.PP
+Definition at line 13 of file brent.c.
+.SS "#define SHFT(\fBa\fP, \fBb\fP, \fBc\fP, \fBd\fP)   (\fBa\fP)=(\fBb\fP);(\fBb\fP)=(\fBc\fP);(\fBc\fP)=(\fBd\fP);"
+.PP
+Definition at line 17 of file brent.c.
+.SS "#define SIGN(\fBa\fP, \fBb\fP)   ((\fBb\fP) > 0.0 ? fabs(\fBa\fP) : -fabs(\fBa\fP))"
+.PP
+Definition at line 16 of file brent.c.
+.SS "#define ZEPS   1.0\fBe\fP-10"
+.PP
+Definition at line 15 of file brent.c.
+.SH "Function Documentation"
+.PP 
+.SS "float brent (float ax, float bx, float cx, float(* f)(float), float tol, float * xmin)"
+.PP
+Definition at line 19 of file brent.c.
+.PP
+References a, b, CGOLD, d, e, getfitstatus(), ITMAX, r, setfitstatus(), SHFT, SIGN, TOO_MANY_ITERATIONS, v, w, x, xmin, and ZEPS.
+.PP
+Referenced by linmin(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,52 @@
+.TH "spinflip.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+spinflip.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	spinflip - apply 90 degree rotations or parity flips to \fBFITS\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	spinflip mii mij mji mjj\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'spinflip\\' reflects images or rotates them through multiples\\\fBn\fP\\	of 90 degrees according to\\\fBn\fP\\		\fBdi\fP' = Mii * \fBdi\fP + Mij * \fBdj\fP\\\fBn\fP\\		\fBdj\fP' = Mji * \fBdi\fP + Mjj * \fBdj\fP\\\fBn\fP\\	with matrix elements \fBM\fP = -1, 0, 1 and with the constraint\\\fBn\fP\\		Mii^2 + Mij^2 = Mji^2 + Mjj^2  = 1\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	spinflip - apply 90 degree rotations or parity flips to \fBFITS\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	spinflip mii mij mji mjj\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'spinflip\\' reflects images or rotates them through multiples\\\fBn\fP\\	of 90 degrees according to\\\fBn\fP\\		\fBdi\fP' = Mii * \fBdi\fP + Mij * \fBdj\fP\\\fBn\fP\\		\fBdj\fP' = Mji * \fBdi\fP + Mjj * \fBdj\fP\\\fBn\fP\\	with matrix elements \fBM\fP = -1, 0, 1 and with the constraint\\\fBn\fP\\		Mii^2 + Mij^2 = Mji^2 + Mjj^2  = 1\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file spinflip.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 30 of file spinflip.c.
+.PP
+References add_comment(), allocFloatArray(), error_exit, exit(), fits, i, j, N, N1, N2, read2Dfloatimage(), usage, and write2Dfloatimage().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

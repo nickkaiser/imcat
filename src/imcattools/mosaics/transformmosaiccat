@@ -1,0 +1,50 @@
+#! /usr/bin/perl
+
+# apply transformations defined by mosaicfit.par to a mosaiccat
+$usage = "NAME\
+	transformmosaiccat - apply transformations to a mosaic-cat\
+SYSOPSIS\
+	transformmosaiccat\
+DESCRIPTION\
+	transformmosaiccat: apply transformations defined by mosaicfit.par to a mosaiccat\
+	generates extra object values r = transformed coordinate and magc = corrected magnitude\
+	reads transformation coefficients from 'mosaicfit.par'\n";
+$| = 1;
+die $usage if ($#ARGV > -1);
+
+
+require "chips.db";
+require "fields.db";
+
+
+
+# read the transformation coefficients
+open(COEFFTS, "mosaicfit.par") || die "Can't open mosaicfit.par";
+($alpha) = split(' ', <COEFFTS>);
+for ($fieldno = 0; $fieldno < $nfields; $fieldno++) {
+	($Phi00[$fieldno], $Phi01[$fieldno], $Phi10[$fieldno], $Phi11[$fieldno], 
+		$dX[$fieldno], $dY[$fieldno], $dM[$fieldno]) = split(' ', <COEFFTS>);
+}
+for ($chipno = 0; $chipno < $nchips; $chipno++) {
+	($phi[$chipno], $dx[$chipno], $dy[$chipno], $dm[$chipno]) = split(' ', <COEFFTS>);
+}
+close(COEFFTS);
+
+open(LCIN, "lc -o x chip exp mag |") || die "Can't open lc-pipe for input";
+open(LCOUT, "| lc -C -b -N '1 2 x' -N '1 2 r' -n chip -n exp -n mag -n magc") || die "Can't open lc-pipe for output";
+
+
+while (<LCIN>) {
+	unless (/^#/) {
+		($xce, $yce, $c, $e, $mag) = split(' ');
+		$xe = $xce + $phi[$c] * $yce + $dx[$c];
+		$ye = $yce - $phi[$c] * $xce + $dy[$c];
+		$rr = $xe * $xe + $ye * $ye;
+		$Xe = (1 + $alpha * $rr) * $xe;
+		$Ye = (1 + $alpha * $rr) * $ye;
+		$X = $Xe + $Phi00[$e] * $Xe + $Phi01[$e] * $Ye + $dX[$e];
+		$Y = $Ye + $Phi10[$e] * $Xe + $Phi11[$e] * $Ye + $dY[$e];
+		$magc = $mag - ($dM[$e] + $dm[$c]);
+		printf LCOUT "%13g %13g %13g %13g %d %d %13g %13g\n", $xce, $yce, $X, $Y, $c, $e, $mag, $magc;
+	}
+}

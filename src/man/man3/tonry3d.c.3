@@ -1,0 +1,200 @@
+.TH "tonry3d.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+tonry3d.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'myf2c.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBmgoplt3b_1\fP   \fBmgoplt3b_\fP"
+.br
+.ti -1c
+.RI "#define \fBmgonxtv1_1\fP   \fBmgonxtv1_\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmgoplt3d_\fP (float *\fBa\fP, int *\fBm\fP, int *\fBn\fP, float *alt, float *az, float *zfac, float *zoff, float width, float height)"
+.br
+.ti -1c
+.RI "int \fBmgonxtvu_\fP (\fBinteger\fP *\fBic\fP, \fBreal\fP *x, \fBreal\fP *y, \fBinteger\fP *\fBn\fP, \fBinteger\fP *\fBier\fP)"
+.br
+.ti -1c
+.RI "int \fBmgooutp_\fP (\fBreal\fP *x, \fBreal\fP *y, \fBinteger\fP *\fBier\fP)"
+.br
+.ti -1c
+.RI "\fBdoublereal\fP \fBmgoalin_\fP (\fBreal\fP *\fBx0\fP, \fBreal\fP *\fBx1\fP, \fBreal\fP *y0, \fBreal\fP *y1, \fBreal\fP *x)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "struct {"
+.br
+.ti -1c
+.RI "   \fBreal\fP \fBa1\fP"
+.br
+.ti -1c
+.RI "   \fBreal\fP \fBa2\fP"
+.br
+.ti -1c
+.RI "   \fBreal\fP \fBa3\fP"
+.br
+.ti -1c
+.RI "   \fBreal\fP \fBb1\fP"
+.br
+.ti -1c
+.RI "   \fBreal\fP \fBb2\fP"
+.br
+.ti -1c
+.RI "   \fBreal\fP \fBb3\fP"
+.br
+.ti -1c
+.RI "   \fBreal\fP \fBb4\fP"
+.br
+.ti -1c
+.RI "} \fBmgoplt3b_\fP"
+.br
+.ti -1c
+.RI "struct {"
+.br
+.ti -1c
+.RI "   \fBreal\fP \fBxx\fP [2000]"
+.br
+.ti -1c
+.RI "   \fBreal\fP \fByy\fP [2000]"
+.br
+.ti -1c
+.RI "   \fBinteger\fP \fBkk\fP"
+.br
+.ti -1c
+.RI "   \fBinteger\fP \fBll\fP"
+.br
+.ti -1c
+.RI "} \fBmgonxtv1_\fP"
+.br
+.ti -1c
+.RI "\fBinteger\fP \fBc__1\fP = 1"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define mgonxtv1_1   \fBmgonxtv1_\fP"
+.PP
+Definition at line 22 of file tonry3d.c.
+.PP
+Referenced by mgonxtvu_(), and mgooutp_().
+.SS "#define mgoplt3b_1   \fBmgoplt3b_\fP"
+.PP
+Definition at line 15 of file tonry3d.c.
+.PP
+Referenced by mgoplt3d_().
+.SH "Function Documentation"
+.PP 
+.SS "\fBdoublereal\fP mgoalin_ (\fBreal\fP * x0, \fBreal\fP * x1, \fBreal\fP * y0, \fBreal\fP * y1, \fBreal\fP * x)"
+.PP
+Definition at line 560 of file tonry3d.c.
+.PP
+References doublereal, real, and x.
+.PP
+Referenced by mgonxtvu_().
+.SS "int mgonxtvu_ (\fBinteger\fP * ic, \fBreal\fP * x, \fBreal\fP * y, \fBinteger\fP * n, \fBinteger\fP * ier)"
+.PP
+Definition at line 265 of file tonry3d.c.
+.PP
+References doublereal, ier, integer, j, mgoalin_(), mgoline_(), mgonxtv1_1, mgooutp_(), n, real, x, and y.
+.PP
+Referenced by mgoplt3d_().
+.SS "int mgooutp_ (\fBreal\fP * x, \fBreal\fP * y, \fBinteger\fP * ier)"
+.PP
+Definition at line 532 of file tonry3d.c.
+.PP
+References dabs, ier, integer, mgonxtv1_1, real, x, and y.
+.PP
+Referenced by mgonxtvu_().
+.SS "int mgoplt3d_ (float * a, int * m, int * n, float * alt, float * az, float * zfac, float * zoff, float width, float height)"
+.PP
+Definition at line 50 of file tonry3d.c.
+.PP
+References a, abs, c__1, ier, integer, j, ll, m, mgonxtvu_(), mgoplt3b_1, min, n, real, xx, and yy.
+.PP
+Referenced by surfaceplot().
+.SH "Variable Documentation"
+.PP 
+.SS "\fBreal\fP \fBa1\fP"
+.PP
+Definition at line 12 of file tonry3d.c.
+.PP
+Referenced by ccf(), cdl_getCircleCoords(), circkernel(), dosky(), and main().
+.SS "\fBreal\fP \fBa2\fP"
+.PP
+Definition at line 12 of file tonry3d.c.
+.PP
+Referenced by ccf(), cdl_getCircleCoords(), cdl_getEllipseCoords(), circkernel(), dosky(), and main().
+.SS "\fBreal\fP \fBa3\fP"
+.PP
+Definition at line 12 of file tonry3d.c.
+.PP
+Referenced by cdl_getCircleCoords().
+.SS "\fBreal\fP \fBb1\fP"
+.PP
+Definition at line 12 of file tonry3d.c.
+.PP
+Referenced by ccf(), cdl_getCircleCoords(), cdl_getEllipseCoords(), and main().
+.SS "\fBreal\fP \fBb2\fP"
+.PP
+Definition at line 12 of file tonry3d.c.
+.PP
+Referenced by ccf(), cdl_getCircleCoords(), and main().
+.SS "\fBreal\fP \fBb3\fP"
+.PP
+Definition at line 12 of file tonry3d.c.
+.PP
+Referenced by cdl_getCircleCoords(), and cdl_getEllipseCoords().
+.SS "\fBreal\fP \fBb4\fP"
+.PP
+Definition at line 12 of file tonry3d.c.
+.PP
+Referenced by cdl_getCircleCoords().
+.SS "\fBinteger\fP \fBc__1\fP = 1\fC [static]\fP"
+.PP
+Definition at line 26 of file tonry3d.c.
+.PP
+Referenced by mgoplt3d_().
+.SS "\fBinteger\fP \fBkk\fP"
+.PP
+Definition at line 19 of file tonry3d.c.
+.PP
+Referenced by chi1(), chi2(), def1(), def2(), difflmodel(), exponentialfilterfunction(), fourierloop(), gamma1(), gamma2(), kolmogorovfilterfunction(), main(), mexicanfilterfunction(), powerlawfilterfunction(), schecterfilterfunction(), and thefilterfunction().
+.SS "\fBinteger\fP \fBll\fP"
+.PP
+Definition at line 19 of file tonry3d.c.
+.PP
+Referenced by main(), mgoplt3d_(), and readlmodel().
+.SS "struct { ... }   \fBmgonxtv1_\fP"
+.PP
+.SS "struct { ... }   \fBmgoplt3b_\fP"
+.PP
+.SS "\fBreal\fP \fBxx\fP[2000]"
+.PP
+Definition at line 18 of file tonry3d.c.
+.PP
+Referenced by assigncharge_cic(), f(), fill_pixmap(), fillzoompixmap(), g(), gammln(), iis_display(), iis_drawcirc(), inversegetxcoords(), linmin(), main(), make_r(), make_re(), mgoplt3d_(), and poidev().
+.SS "\fBreal\fP \fByy\fP[2000]"
+.PP
+Definition at line 18 of file tonry3d.c.
+.PP
+Referenced by fill_pixmap(), fillzoompixmap(), g(), iis_display(), iis_drawcirc(), main(), mgoplt3d_(), and power().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

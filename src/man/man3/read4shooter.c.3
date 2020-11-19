@@ -1,0 +1,110 @@
+.TH "read4shooter.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+read4shooter.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include 'magic.h'\fP
+.br
+\fC#include '../utils/arrays.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	read4shooter [option...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	converts \fBa\fP 4-shooter image to \fBfits\fP format\\\fBn\fP\\	Reads and writes from stdin, stdout\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBswap_half\fP(\fBa\fP)   ( ((\fBa\fP & 0xff) << 8) | ((unsigned short)(\fBa\fP) >> 8) )"
+.br
+.ti -1c
+.RI "#define \fBN1\fP   816"
+.br
+.ti -1c
+.RI "#define \fBN2\fP   800"
+.br
+.ti -1c
+.RI "#define \fBNREC\fP   160"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "short \fBsheaderrecord\fP ()"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "short \fBsheaderrecord\fP (int \fBi\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "char \fBbuff\fP [8192]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBN1\fP   816"
+.PP
+Definition at line 30 of file read4shooter.c.
+.SS "#define \fBN2\fP   800"
+.PP
+Definition at line 31 of file read4shooter.c.
+.SS "#define NREC   160"
+.PP
+Definition at line 32 of file read4shooter.c.
+.PP
+Referenced by main().
+.SS "#define swap_half(\fBa\fP)   ( ((\fBa\fP & 0xff) << 8) | ((unsigned short)(\fBa\fP) >> 8) )"
+.PP
+Definition at line 29 of file read4shooter.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	read4shooter [option...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	converts \fBa\fP 4-shooter image to \fBfits\fP format\\\fBn\fP\\	Reads and writes from stdin, stdout\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file read4shooter.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 38 of file read4shooter.c.
+.PP
+References add_1comment(), add_comment(), buff, comment, error_exit, exit(), f, i, j, MAGIC, N1, N2, NREC, sheaderrecord(), swap_half, usage, write_fits_head(), write_fits_line(), and write_fits_tail().
+.SS "short sheaderrecord (int i)"
+.PP
+Definition at line 124 of file read4shooter.c.
+.PP
+References buff, i, and swap_half.
+.SS "short sheaderrecord ()"
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "char \fBbuff\fP[8192]"
+.PP
+Definition at line 36 of file read4shooter.c.
+.PP
+Referenced by main(), readdoublebuff(), readmergedcat(), sheaderrecord(), and writehotpixel().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

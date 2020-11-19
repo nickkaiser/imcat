@@ -1,0 +1,52 @@
+.TH "difflmodel.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+difflmodel.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'catlib/cat.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'utils/lmodel.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	difflmodel --- differentiate linear \fBmode\fP superposition model\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	difflmodel [-\fBi\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'difflmodel' reads from stdin \fBa\fP catalogue containing the\\\fBn\fP\\	definition of \fBa\fP linear \fBmode\fP function superposition model\\\fBn\fP\\	or '\fBlmodel\fP' and sends to stdout \fBa\fP \fBlmodel\fP giving the\\\fBn\fP\\	coefficients of the derivative of the input model function.\\\fBn\fP\\\\\fBn\fP\\	For example, given \fBa\fP model of \fBa\fP rank-2 matrix\\\fBn\fP\\	valued function f_ij(x) on an \fBn\fP-dimensional space\\\fBn\fP\\	which we model as:\\\fBn\fP\\\\\fBn\fP\\		F_ij(x) = sum_m a_mij f_m(x)\\\fBn\fP\\\\\fBn\fP\\	the result is \fBa\fP set of \fBmode\fP coefficients \fBa\fP'_mijlm such that\\\fBn\fP\\\\\fBn\fP\\		F'_ijl(x) = sum_m a_mijl f_m(x) = \fBd\fP F_ij / \fBd\fP x_l\\\fBn\fP\\\\\fBn\fP\\	With -\fBi\fP option we perform the inverse operation - \fBi\fP.\fBe\fP. we\\\fBn\fP\\	compute the integral of the input model.\\\fBn\fP\\\\\fBn\fP\\	It only works for polynomial or Fourier models.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	difflmodel --- differentiate linear \fBmode\fP superposition model\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	difflmodel [-\fBi\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'difflmodel' reads from stdin \fBa\fP catalogue containing the\\\fBn\fP\\	definition of \fBa\fP linear \fBmode\fP function superposition model\\\fBn\fP\\	or '\fBlmodel\fP' and sends to stdout \fBa\fP \fBlmodel\fP giving the\\\fBn\fP\\	coefficients of the derivative of the input model function.\\\fBn\fP\\\\\fBn\fP\\	For example, given \fBa\fP model of \fBa\fP rank-2 matrix\\\fBn\fP\\	valued function f_ij(x) on an \fBn\fP-dimensional space\\\fBn\fP\\	which we model as:\\\fBn\fP\\\\\fBn\fP\\		F_ij(x) = sum_m a_mij f_m(x)\\\fBn\fP\\\\\fBn\fP\\	the result is \fBa\fP set of \fBmode\fP coefficients \fBa\fP'_mijlm such that\\\fBn\fP\\\\\fBn\fP\\		F'_ijl(x) = sum_m a_mijl f_m(x) = \fBd\fP F_ij / \fBd\fP x_l\\\fBn\fP\\\\\fBn\fP\\	With -\fBi\fP option we perform the inverse operation - \fBi\fP.\fBe\fP. we\\\fBn\fP\\	compute the integral of the input model.\\\fBn\fP\\\\\fBn\fP\\	It only works for polynomial or Fourier models.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 6 of file difflmodel.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 47 of file difflmodel.c.
+.PP
+References argsinit(), difflmodel(), error_exit, exit(), flag, getflag(), readlmodel(), usage, and writelmodel().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,316 @@
+.TH "oldfilters.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+oldfilters.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include 'filters.h'\fP
+.br
+\fC#include 'fits.h'\fP
+.br
+\fC#include '../fftlib/myfft.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBmax\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) < (\fBb\fP) ? (\fBb\fP) : (\fBa\fP))"
+.br
+.ti -1c
+.RI "#define \fBmin\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) < (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.br
+.ti -1c
+.RI "#define \fBZMAX\fP   10"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBgaussian_kernel_filter\fP (short **f, short **fs, int \fBN1\fP, int \fBN2\fP, int \fBm\fP, float rf)"
+.br
+.ti -1c
+.RI "void \fBkernel_filter\fP (short **f, short **fs, int \fBN1\fP, int \fBN2\fP, int \fBm\fP, float(*filterfunc)(int \fBdi\fP, int \fBdj\fP))"
+.br
+.ti -1c
+.RI "void \fBblock_filter\fP (short **f, short **fs, int \fBN1\fP, int \fBN2\fP, int \fBm\fP)"
+.br
+.ti -1c
+.RI "void \fBtukey\fP (short **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBschecterfilter\fP (float **f, int \fBN1\fP, int \fBN2\fP, float **fs, float \fBsigma1\fP, float \fBsigma2\fP, float \fBalpha\fP, float magicsubstitute)"
+.br
+.ti -1c
+.RI "void \fBkolmogorovfilter\fP (float **f, int \fBN1\fP, int \fBN2\fP, float **fs, float \fBsigma\fP, float magicsubstitute)"
+.br
+.ti -1c
+.RI "void \fBgaussfilter\fP (float **f, int \fBN1\fP, int \fBN2\fP, float **fs, float \fBA\fP, float \fBB\fP, float \fBphi\fP, float magicsubstitute)"
+.br
+.ti -1c
+.RI "void \fBmexicanfilter\fP (float **f, int \fBN1\fP, int \fBN2\fP, float **fs, float \fBsigma1\fP, float \fBsigma2\fP, float magicsubstitute)"
+.br
+.ti -1c
+.RI "void \fBpowerlawfilter\fP (float **f, int \fBN1\fP, int \fBN2\fP, float **fs, float \fBalpha\fP, float magicsubstitute)"
+.br
+.ti -1c
+.RI "void \fBpowerspectrum\fP (float **f, int \fBN1\fP, int \fBN2\fP, float **P, int **\fBnmodes\fP)"
+.br
+.ti -1c
+.RI "float \fBgaussianfilterfunc\fP (int \fBi\fP, int \fBj\fP)"
+.br
+.ti -1c
+.RI "float \fBschecterfilterfunction\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "float \fBkolmogorovfilterfunction\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "float \fBgaussballfunction\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "float \fBgaussellipsoidfunction\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "float \fBmexicanfilterfunction\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "float \fBpowerlawfilterfunction\fP (float ki, float kj)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float \fBgaussballsigma\fP"
+.br
+.ti -1c
+.RI "float \fBgaussfilterparam\fP"
+.br
+.ti -1c
+.RI "float \fBschectersigma1\fP"
+.br
+.ti -1c
+.RI "float \fBschectersigma2\fP"
+.br
+.ti -1c
+.RI "float \fBschecteralpha\fP"
+.br
+.ti -1c
+.RI "float \fBkolmogorovsigmasquared\fP"
+.br
+.ti -1c
+.RI "float \fBgausssigma11\fP"
+.br
+.ti -1c
+.RI "float \fBgausssigma22\fP"
+.br
+.ti -1c
+.RI "float \fBgausssigma12\fP"
+.br
+.ti -1c
+.RI "float \fBmexicansigma1\fP"
+.br
+.ti -1c
+.RI "float \fBmexicansigma2\fP"
+.br
+.ti -1c
+.RI "float \fBpowerlawalpha\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define max(\fBa\fP, \fBb\fP)   ((\fBa\fP) < (\fBb\fP) ? (\fBb\fP) : (\fBa\fP))"
+.PP
+\fBfilters.c\fP --- image processing routines Definition at line 15 of file oldfilters.c.
+.SS "#define min(\fBa\fP, \fBb\fP)   ((\fBa\fP) < (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.PP
+Definition at line 16 of file oldfilters.c.
+.SS "#define ZMAX   10"
+.PP
+Definition at line 387 of file oldfilters.c.
+.SH "Function Documentation"
+.PP 
+.SS "void block_filter (short ** f, short ** fs, int N1, int N2, int m)"
+.PP
+Definition at line 85 of file oldfilters.c.
+.PP
+References error_exit, f, i, j, m, N1, N2, and SHORT_MAGIC.
+.PP
+Referenced by main().
+.SS "float gaussballfunction (float ki, float kj)"
+.PP
+Definition at line 420 of file oldfilters.c.
+.PP
+References gaussballsigma, z, and ZMAX.
+.SS "float gaussellipsoidfunction (float ki, float kj)"
+.PP
+Definition at line 433 of file oldfilters.c.
+.PP
+References gausssigma11, gausssigma12, gausssigma22, z, and ZMAX.
+.SS "void gaussfilter (float ** f, int N1, int N2, float ** fs, float A, float B, float phi, float magicsubstitute)"
+.PP
+Definition at line 250 of file oldfilters.c.
+.PP
+References A, alloc_fft(), B, c, f, fft_type, filter(), forward_fft(), free_fft(), gaussballfunction(), gaussballsigma, gaussellipsoidfunction(), gausssigma11, gausssigma12, gausssigma22, i, inverse_fft(), j, N1, N2, phi, PI, and substitute().
+.PP
+Referenced by main().
+.SS "void gaussian_kernel_filter (short ** f, short ** fs, int N1, int N2, int m, float rf)"
+.PP
+Definition at line 27 of file oldfilters.c.
+.PP
+References f, gaussfilterparam, gaussianfilterfunc(), kernel_filter(), m, N1, and N2.
+.PP
+Referenced by main().
+.SS "float gaussianfilterfunc (int i, int j)"
+.PP
+Definition at line 389 of file oldfilters.c.
+.PP
+References gaussfilterparam, i, j, z, and ZMAX.
+.SS "void kernel_filter (short ** f, short ** fs, int N1, int N2, int m, float(* filterfunc)(int \fBdi\fP, int \fBdj\fP))"
+.PP
+Definition at line 34 of file oldfilters.c.
+.PP
+References error_exit, f, free(), i, j, k, m, max, min, N1, N2, and SHORT_MAGIC.
+.PP
+Referenced by gaussian_kernel_filter().
+.SS "void kolmogorovfilter (float ** f, int N1, int N2, float ** fs, float sigma, float magicsubstitute)"
+.PP
+Definition at line 207 of file oldfilters.c.
+.PP
+References alloc_fft(), f, fft_type, filter(), forward_fft(), free_fft(), i, inverse_fft(), j, kolmogorovfilterfunction(), kolmogorovsigmasquared, N1, N2, sigma, and substitute().
+.PP
+Referenced by main().
+.SS "float kolmogorovfilterfunction (float ki, float kj)"
+.PP
+Definition at line 411 of file oldfilters.c.
+.PP
+References kk, and kolmogorovsigmasquared.
+.SS "void mexicanfilter (float ** f, int N1, int N2, float ** fs, float sigma1, float sigma2, float magicsubstitute)"
+.PP
+Definition at line 308 of file oldfilters.c.
+.PP
+References alloc_fft(), f, fft_type, filter(), forward_fft(), free_fft(), inverse_fft(), mexicanfilterfunction(), mexicansigma1, mexicansigma2, N1, N2, and substitute().
+.PP
+Referenced by main().
+.SS "float mexicanfilterfunction (float ki, float kj)"
+.PP
+Definition at line 447 of file oldfilters.c.
+.PP
+References kk, mexicansigma1, and mexicansigma2.
+.SS "void powerlawfilter (float ** f, int N1, int N2, float ** fs, float alpha, float magicsubstitute)"
+.PP
+Definition at line 342 of file oldfilters.c.
+.PP
+References alloc_fft(), alpha, f, fft_type, filter(), forward_fft(), free_fft(), inverse_fft(), N1, N2, powerlawalpha, powerlawfilterfunction(), and substitute().
+.PP
+Referenced by main().
+.SS "float powerlawfilterfunction (float ki, float kj)"
+.PP
+Definition at line 457 of file oldfilters.c.
+.PP
+References kk, and powerlawalpha.
+.SS "void powerspectrum (float ** f, int N1, int N2, float ** P, int ** nmodes)"
+.PP
+2-D power spectrum analysis. f[][] is N2 * N1 array. N must be power of two. P[] and nmodes[] must be allocated by calling function with dimension N / 2.
+.PP
+Result is P[k] = sum f exp(\fBik.r\fP) averages on rings in k-space. Array nmodes[k] contains the number of modes used in averaging which is needed for uncertainty. Definition at line 374 of file oldfilters.c.
+.PP
+References error_exit.
+.SS "void schecterfilter (float ** f, int N1, int N2, float ** fs, float sigma1, float sigma2, float alpha, float magicsubstitute)"
+.PP
+Definition at line 156 of file oldfilters.c.
+.PP
+References alloc_fft(), alpha, f, fft_type, filter(), forward_fft(), free_fft(), i, inverse_fft(), j, N1, N2, schecteralpha, schecterfilterfunction(), schectersigma1, schectersigma2, and substitute().
+.PP
+Referenced by main().
+.SS "float schecterfilterfunction (float ki, float kj)"
+.PP
+Definition at line 401 of file oldfilters.c.
+.PP
+References kk, schecteralpha, schectersigma1, and schectersigma2.
+.SS "void tukey (short ** f, int N1, int N2)"
+.PP
+Definition at line 123 of file oldfilters.c.
+.PP
+References f, i, j, max, min, N1, and N2.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "float \fBgaussballsigma\fP\fC [static]\fP"
+.PP
+Definition at line 19 of file oldfilters.c.
+.PP
+Referenced by gaussballfunction(), and gaussfilter().
+.SS "float \fBgaussfilterparam\fP\fC [static]\fP"
+.PP
+Definition at line 20 of file oldfilters.c.
+.PP
+Referenced by gaussian_kernel_filter(), and gaussianfilterfunc().
+.SS "float \fBgausssigma11\fP\fC [static]\fP"
+.PP
+Definition at line 23 of file oldfilters.c.
+.PP
+Referenced by gaussellipsoidfunction(), and gaussfilter().
+.SS "float \fBgausssigma12\fP\fC [static]\fP"
+.PP
+Definition at line 23 of file oldfilters.c.
+.PP
+Referenced by gaussellipsoidfunction(), and gaussfilter().
+.SS "float \fBgausssigma22\fP\fC [static]\fP"
+.PP
+Definition at line 23 of file oldfilters.c.
+.PP
+Referenced by gaussellipsoidfunction(), and gaussfilter().
+.SS "float \fBkolmogorovsigmasquared\fP\fC [static]\fP"
+.PP
+Definition at line 22 of file oldfilters.c.
+.PP
+Referenced by kolmogorovfilter(), and kolmogorovfilterfunction().
+.SS "float \fBmexicansigma1\fP\fC [static]\fP"
+.PP
+Definition at line 24 of file oldfilters.c.
+.PP
+Referenced by mexicanfilter(), and mexicanfilterfunction().
+.SS "float \fBmexicansigma2\fP\fC [static]\fP"
+.PP
+Definition at line 24 of file oldfilters.c.
+.PP
+Referenced by mexicanfilter(), and mexicanfilterfunction().
+.SS "float \fBpowerlawalpha\fP\fC [static]\fP"
+.PP
+Definition at line 25 of file oldfilters.c.
+.PP
+Referenced by powerlawfilter(), and powerlawfilterfunction().
+.SS "float \fBschecteralpha\fP\fC [static]\fP"
+.PP
+Definition at line 21 of file oldfilters.c.
+.PP
+Referenced by schecterfilter(), and schecterfilterfunction().
+.SS "float \fBschectersigma1\fP\fC [static]\fP"
+.PP
+Definition at line 21 of file oldfilters.c.
+.PP
+Referenced by schecterfilter(), and schecterfilterfunction().
+.SS "float \fBschectersigma2\fP\fC [static]\fP"
+.PP
+Definition at line 21 of file oldfilters.c.
+.PP
+Referenced by schecterfilter(), and schecterfilterfunction().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,116 @@
+.TH "composite.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+composite.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'fits.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+\fC#include 'stats_stuff.h'\fP
+.br
+\fC#include 'object_stuff.h'\fP
+.br
+\fC#include 'magic.h'\fP
+.br
+\fC#include 'catio.h'\fP
+.br
+\fC#include 'arrays.h'\fP
+.br
+\fC#include 'composite.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		composite	[option...] \fBa\fP.cat \fBb\fP.cat ....\\\fBn\fP\\			-\fBr\fP	min max	# range of half-light radii (default 2-3)\\\fBn\fP\\			-\fBl\fP  	min max	# range of log luminosity (default 4-8)\\\fBn\fP\\			-\fBm\fP	\fBM\fP	# array size (32)\\\fBn\fP\\			-s		# scale by \fBr\fP * \fBr\fP / \fBl\fP\\\fBn\fP\\			-\fBi\fP 		# generate an image: text -> stderr\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		\\'composite()\\' forms \fBa\fP MODAL galaxy surface brightness profile\\\fBn\fP\\		from \fBa\fP collection of cat files created by findpeaks().\\\fBn\fP\\		Outputs modal SB + ellpticity \fBalpha\fP parameter to stdout\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAX_VALS\fP   20000"
+.br
+.ti -1c
+.RI "#define \fBN_ALPHA\fP   6"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "void \fBaccumulate\fP (\fBobject\fP \fBobj\fP, float ***fval, int **index, int \fBM\fP, short **f, int \fBN\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float \fBlbar\fP"
+.br
+.ti -1c
+.RI "float \fBrbar\fP"
+.br
+.ti -1c
+.RI "int \fBscale\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX_VALS   20000"
+.PP
+Definition at line 32 of file composite.c.
+.PP
+Referenced by accumulate(), and main().
+.SS "#define N_ALPHA   6"
+.PP
+Definition at line 33 of file composite.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		composite	[option...] \fBa\fP.cat \fBb\fP.cat ....\\\fBn\fP\\			-\fBr\fP	min max	# range of half-light radii (default 2-3)\\\fBn\fP\\			-\fBl\fP  	min max	# range of log luminosity (default 4-8)\\\fBn\fP\\			-\fBm\fP	\fBM\fP	# array size (32)\\\fBn\fP\\			-s		# scale by \fBr\fP * \fBr\fP / \fBl\fP\\\fBn\fP\\			-\fBi\fP 		# generate an image: text -> stderr\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		\\'composite()\\' forms \fBa\fP MODAL galaxy surface brightness profile\\\fBn\fP\\		from \fBa\fP collection of cat files created by findpeaks().\\\fBn\fP\\		Outputs modal SB + ellpticity \fBalpha\fP parameter to stdout\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file composite.c.
+.SH "Function Documentation"
+.PP 
+.SS "void accumulate (\fBobject\fP obj, float *** fval, int ** index, int M, short ** f, int N)"
+.PP
+Definition at line 220 of file composite.c.
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 38 of file composite.c.
+.PP
+References accumulate(), add_comment(), allocShortArray(), alpha, error_exit, exit(), f, freeShortArray(), i, j, lbar, liststats(), M, MAX_VALS, median(), n, N, N_ALPHA, r, rbar, read_fits(), scale, set_fits_ipf(), sigma, usage, and write_fits().
+.SH "Variable Documentation"
+.PP 
+.SS "float \fBlbar\fP"
+.PP
+Definition at line 35 of file composite.c.
+.PP
+Referenced by accumulate(), and main().
+.SS "float \fBrbar\fP"
+.PP
+Definition at line 35 of file composite.c.
+.PP
+Referenced by accumulate(), and main().
+.SS "int scale"
+.PP
+Definition at line 36 of file composite.c.
+.PP
+Referenced by accumulate(), cdl_applyZscale(), eps_pageParams(), eps_setPage(), eps_setTransform(), iisdisplay(), inverse_fft(), main(), make_pixmap(), myfftwcfft(), and power().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

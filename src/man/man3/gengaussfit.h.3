@@ -1,0 +1,52 @@
+.TH "gengaussfit.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+gengaussfit.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "float \fBfunc\fP (float *p)"
+.br
+.ti -1c
+.RI "void \fBdfunc\fP (float *p, float *df)"
+.br
+.ti -1c
+.RI "int \fBgaussfit\fP (float **\fBff\fP, int \fBN1\fP, int \fBN2\fP, float *\fBd\fP, float **q, float *\fBf0\fP, float \fBalpha\fP, float beta)"
+.br
+.ti -1c
+.RI "void \fBmakemodel\fP (float **\fBff\fP, int \fBN1\fP, int \fBN2\fP, float *\fBd\fP, float **q, float \fBf0\fP)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void dfunc (float * p, float * df)"
+.PP
+.SS "float func (float * p)"
+.PP
+Definition at line 67 of file betafit.c.
+.PP
+References f, galpha, gbeta, gn, gN, ix, n1, n2, x, and y.
+.PP
+Referenced by fitall(), and gaussfitn().
+.SS "int gaussfit (float ** ff, int N1, int N2, float * d, float ** q, float * f0, float alpha, float beta)"
+.PP
+Definition at line 32 of file gengaussfit.c.
+.PP
+References alpha, d, f, ff, free_matrix(), free_vector(), func(), galpha, gbeta, i, matrix(), N1, n1, N2, n2, powell(), and vector().
+.PP
+Referenced by do_object_stats(), and main().
+.SS "void makemodel (float ** ff, int N1, int N2, float * d, float ** q, float f0)"
+.PP
+Definition at line 110 of file gengaussfit.c.
+.PP
+References d, ff, galpha, ix, n1, n2, x, and y.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

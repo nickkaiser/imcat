@@ -1,0 +1,76 @@
+.TH "flip.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+flip.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	flip --- reflect or rotate \fBa\fP \fBfits\fP image\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	flip [\fBh\fP|\fBv\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	By default \\'flip\\' rotates an image by 180 degrees to\\\fBn\fP\\	produce an image of the same dimensions.\\\fBn\fP\\	With optional first argument '\fBh\fP' or '\fBv\fP' it will reflect the image\\\fBn\fP\\	about the horizontal or vertical axis respectively.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBROTATE_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBREFLECT_H_MODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBREFLECT_V_MODE\fP   2"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define REFLECT_H_MODE   1"
+.PP
+Definition at line 28 of file flip.c.
+.PP
+Referenced by main().
+.SS "#define REFLECT_V_MODE   2"
+.PP
+Definition at line 29 of file flip.c.
+.PP
+Referenced by main().
+.SS "#define ROTATE_MODE   0"
+.PP
+Definition at line 27 of file flip.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	flip --- reflect or rotate \fBa\fP \fBfits\fP image\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	flip [\fBh\fP|\fBv\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	By default \\'flip\\' rotates an image by 180 degrees to\\\fBn\fP\\	produce an image of the same dimensions.\\\fBn\fP\\	With optional first argument '\fBh\fP' or '\fBv\fP' it will reflect the image\\\fBn\fP\\	about the horizontal or vertical axis respectively.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file flip.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 31 of file flip.c.
+.PP
+References add_comment(), allocFloatArray(), error_exit, exit(), fits, i, j, N1, N2, read2Dfloatimage(), REFLECT_H_MODE, REFLECT_V_MODE, ROTATE_MODE, usage, and write2Dfloatimage().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

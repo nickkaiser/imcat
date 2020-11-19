@@ -1,0 +1,129 @@
+/*
+ * getxfromradecfunc.c
+ */
+
+#include <math.h>
+#include <stdio.h>
+#include "getxfromradecfunc.h"
+
+/* 
+ * this function computes stereographic projection x 
+ * of a point ra, dec relative to reference (tangent) point rao, deco
+ */
+
+
+int	getxcoords(double ra, double dec, double rao, double deco, double *x)
+{
+	double		theta, phi, mu;
+	static double	xo[3], xp[3], dlat[3], dlong[3], lastrao, lastdeco;
+	static int	i, first = 1;
+	
+	/* compute 3-d coords of point */
+	theta = M_PI * (90 - dec) / 180.0;
+	phi = M_PI * ra / 180.0;
+	xp[0] = sin(theta) * cos(phi);
+	xp[1] = sin(theta) * sin(phi);
+	xp[2] = cos(theta);
+	
+	if (first || (rao != lastrao) || (deco != lastdeco)) {
+		first = 0;
+		/* compute 3-d coords of tangent point */
+		theta = M_PI * (90 - deco) / 180.0;
+		phi = M_PI * rao / 180.0;
+		xo[0] = sin(theta) * cos(phi);
+		xo[1] = sin(theta) * sin(phi);
+		xo[2] = cos(theta);		
+		/* compute unit vectors dlat, dlong at tangent point */
+		/* dlong increases to the W */
+		dlong[0] = sin(phi);
+		dlong[1] = -cos(phi);
+		dlong[2] = 0.0;
+		/* dlat increases to the N */
+		dlat[0] = -cos(theta) * cos(phi);
+		dlat[1] = -cos(theta) * sin(phi);
+		dlat[2] = sin(theta);	
+	}
+	lastrao  = rao;
+	lastdeco = deco;
+
+	/* compute mu = cos(theta) */
+	mu = 0;
+	for (i = 0; i < 3; i++) {
+		mu += xp[i] * xo[i];
+	}
+
+	/* compute xp' = xo + xp */
+	for (i = 0; i < 3; i++) {
+		xp[i] += xo[i];
+	}
+
+	/* scale it by 1 / cos^2 rho = 2 / (1 + mu) */
+	if (1 + mu > 0.0) {
+		for (i = 0; i < 3; i++) {
+			xp[i] *= 2 / (1 + mu);
+		}
+	}
+
+	/* dot xp with unit vectors to make the x vector */
+	x[0] = x[1] = 0.0;
+	for (i = 0; i < 3; i++) {
+		x[0] += xp[i] * dlong[i] * 180.0 / M_PI;
+		x[1] += xp[i] * dlat[i] * 180.0 / M_PI;
+	}
+}
+
+
+/* this function performs the inverse operation - given x[] and the tangent point */
+/* it finds the celestial coords */
+
+int	inversegetxcoords(double *ra, double *dec, double rao, double deco, double *x)
+{
+	double		theta, phi, mu, xlen, xx;
+	static double	xo[3], xp[3], dlat[3], dlong[3], lastrao, lastdeco;
+	static int	i, first = 1;
+
+	/* compute mu */
+	xx = 0.0;
+	for (i = 0; i < 2; i++) {
+		xx += x[i] * x[i];
+	}
+	xx *= M_PI * M_PI / (180.0 * 180.0);
+	mu = (1.0 - 0.25 * xx) / (1.0 + 0.25 * xx);	
+		
+	if (first || (rao != lastrao) || (deco != lastdeco)) {
+		first = 0;
+		/* compute 3-d coords of tangent point */
+		theta = M_PI * (90.0 - deco) / 180.0;
+		phi = M_PI * rao / 180.0;
+		xo[0] = sin(theta) * cos(phi);
+		xo[1] = sin(theta) * sin(phi);
+		xo[2] = cos(theta);		
+		/* compute unit vectors dlat, dlong at tangent point */
+		/* dlong increases to the W */
+		dlong[0] = sin(phi);
+		dlong[1] = -cos(phi);
+		dlong[2] = 0.0;
+		/* dlat increases to the N */
+		dlat[0] = -cos(theta) * cos(phi);
+		dlat[1] = -cos(theta) * sin(phi);
+		dlat[2] = sin(theta);	
+	}
+	lastrao  = rao;
+	lastdeco = deco;
+
+	/* compute projection of point onto unit sphere */
+	for (i = 0; i < 3; i++) {
+		xp[i] = 0.5 * (1.0 + mu) * (2 * xo[i] + (x[0] * dlong[i] + x[1] * dlat[i]) * M_PI / 180.0) - xo[i];
+	}
+
+	/* compute polar coords */
+	theta = acos(xp[2]);
+	phi = atan2(xp[1], xp[0]);
+
+	/* and convert to ra dec in degrees */
+	*ra = 180.0 * phi / M_PI;
+	*dec = 90.0 - 180.0 * theta / M_PI;
+}
+
+
+

@@ -1,0 +1,470 @@
+.TH "cdliraf.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cdliraf.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include 'cdl.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCDL_LIBRARY_SOURCE\fP"
+.br
+.ti -1c
+.RI "#define \fBVERSION_1\fP   1"
+.br
+.ti -1c
+.RI "#define \fBVERSION_2\fP   2"
+.br
+.ti -1c
+.RI "#define \fBSZ_V1PIXFILE\fP   79"
+.br
+.ti -1c
+.RI "#define \fBSZ_V1TITLE\fP   79"
+.br
+.ti -1c
+.RI "#define \fBSZ_V1HDR\fP   2048"
+.br
+.ti -1c
+.RI "#define \fBIM_V1PIXTYPE\fP   4"
+.br
+.ti -1c
+.RI "#define \fBIM_V1NDIM\fP   5"
+.br
+.ti -1c
+.RI "#define \fBIM_V1LEN\fP   6"
+.br
+.ti -1c
+.RI "#define \fBIM_V1PHYSLEN\fP   13"
+.br
+.ti -1c
+.RI "#define \fBIM_V1PIXOFF\fP   22"
+.br
+.ti -1c
+.RI "#define \fBIM_V1PIXFILE\fP   103"
+.br
+.ti -1c
+.RI "#define \fBIM_V1TITLE\fP   183"
+.br
+.ti -1c
+.RI "#define \fBSZ_V2PIXFILE\fP   255"
+.br
+.ti -1c
+.RI "#define \fBSZ_V2HDR\fP   513"
+.br
+.ti -1c
+.RI "#define \fBIM_V2PIXTYPE\fP   10"
+.br
+.ti -1c
+.RI "#define \fBIM_V2SWAPPED\fP   14"
+.br
+.ti -1c
+.RI "#define \fBIM_V2NDIM\fP   18"
+.br
+.ti -1c
+.RI "#define \fBIM_V2LEN\fP   22"
+.br
+.ti -1c
+.RI "#define \fBIM_V2PHYSLEN\fP   50"
+.br
+.ti -1c
+.RI "#define \fBIM_V2PIXOFF\fP   86"
+.br
+.ti -1c
+.RI "#define \fBIM_V2PIXFILE\fP   126"
+.br
+.ti -1c
+.RI "#define \fBIM_V2TITLE\fP   159"
+.br
+.ti -1c
+.RI "#define \fBTY_CHAR\fP   2"
+.br
+.ti -1c
+.RI "#define \fBTY_SHORT\fP   3"
+.br
+.ti -1c
+.RI "#define \fBTY_INT\fP   4"
+.br
+.ti -1c
+.RI "#define \fBTY_LONG\fP   5"
+.br
+.ti -1c
+.RI "#define \fBTY_REAL\fP   6"
+.br
+.ti -1c
+.RI "#define \fBTY_DOUBLE\fP   7"
+.br
+.ti -1c
+.RI "#define \fBTY_USHORT\fP   11"
+.br
+.ti -1c
+.RI "#define \fBTY_UCHAR\fP   12"
+.br
+.ti -1c
+.RI "#define \fBmax\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) > (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.br
+.ti -1c
+.RI "#define \fBmin\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) < (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "char * \fBcdl_getIRAFPixels\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_getPixfile\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_strpak\fP ()"
+.br
+.ti -1c
+.RI "void \fBbswap2\fP ()"
+.br
+.ti -1c
+.RI "void \fBbswap4\fP ()"
+.br
+.ti -1c
+.RI "void \fBbswap8\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_swapPixels\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_readImageHdr\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_setBitpix\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_getVersion\fP ()"
+.br
+.ti -1c
+.RI "int \fBis_swapped_machine\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_displayIRAF\fP (\fBCDLPtr\fP cdl, char *fname, int \fBband\fP, int \fBframe\fP, int \fBfbconfig\fP, int \fBzscale\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_isIRAF\fP (char *fname)"
+.br
+.ti -1c
+.RI "int \fBcdl_readIRAF\fP (char *fname, int \fBband\fP, \fBuchar\fP **\fBpix\fP, int *\fBnx\fP, int *\fBny\fP, int *\fBbitpix\fP, char *\fBtitle\fP)"
+.br
+.ti -1c
+.RI "char * \fBcdl_getIRAFPixels\fP (char *fname, int \fBband\fP, \fBuchar\fP **image, int *\fBnx\fP, int *\fBny\fP, int *\fBbitpix\fP, char *\fBtitle\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_readImageHdr\fP (char *fname, int *version, int *px, int *py, int *\fBnx\fP, int *\fBny\fP, int *nbands, int *ptype, int *offset, int *swapped, char *pfile, char *\fBtitle\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_getVersion\fP (FILE *fd)"
+.br
+.ti -1c
+.RI "void \fBcdl_getPixfile\fP (char *fname, char *pfile)"
+.br
+.ti -1c
+.RI "int \fBcdl_setBitpix\fP (int ptype, int *pix_size, int *\fBbitpix\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_swapPixels\fP (int swapped, int \fBnx\fP, int \fBny\fP, int ptype, \fBuchar\fP **image)"
+.br
+.ti -1c
+.RI "void \fBcdl_strpak\fP (char *in, char *out, int \fBlen\fP)"
+.br
+.ti -1c
+.RI "void \fBbswap2\fP (char *\fBa\fP, char *\fBb\fP, int nbytes)"
+.br
+.ti -1c
+.RI "void \fBbswap4\fP (char *\fBa\fP, int aoff, char *\fBb\fP, int boff, int nbytes)"
+.br
+.ti -1c
+.RI "void \fBbswap8\fP (char *\fBa\fP, int aoff, char *\fBb\fP, int boff, int nbytes)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBcdl_debug\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CDL_LIBRARY_SOURCE"
+.PP
+Definition at line 10 of file cdliraf.c.
+.SS "#define IM_V1LEN   6"
+.PP
+Definition at line 34 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define IM_V1NDIM   5"
+.PP
+Definition at line 33 of file cdliraf.c.
+.SS "#define IM_V1PHYSLEN   13"
+.PP
+Definition at line 35 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define IM_V1PIXFILE   103"
+.PP
+Definition at line 37 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define IM_V1PIXOFF   22"
+.PP
+Definition at line 36 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define IM_V1PIXTYPE   4"
+.PP
+Definition at line 32 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define IM_V1TITLE   183"
+.PP
+Definition at line 38 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define IM_V2LEN   22"
+.PP
+Definition at line 48 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define IM_V2NDIM   18"
+.PP
+Definition at line 47 of file cdliraf.c.
+.SS "#define IM_V2PHYSLEN   50"
+.PP
+Definition at line 49 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define IM_V2PIXFILE   126"
+.PP
+Definition at line 51 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define IM_V2PIXOFF   86"
+.PP
+Definition at line 50 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define IM_V2PIXTYPE   10"
+.PP
+Definition at line 45 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define IM_V2SWAPPED   14"
+.PP
+Definition at line 46 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define IM_V2TITLE   159"
+.PP
+Definition at line 52 of file cdliraf.c.
+.SS "#define max(\fBa\fP, \fBb\fP)   ((\fBa\fP) > (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.PP
+Definition at line 70 of file cdliraf.c.
+.PP
+Referenced by cdl_applyZscale(), cdl_displayPix(), cdl_drawDashVec(), cdl_drawVector(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markPoint(), cdl_markPointLabel(), cdl_setFBConfig(), cdl_zscale(), decode_frameno(), eps_writeMono(), eps_writePix(), eps_writeRGB(), fitLine(), get_fbconfig(), getrange(), imd_loadImtoolrc(), imd_minmax(), imd_readSubRaster(), imd_writeImage(), imd_writeSubRaster(), kernel_filter(), main(), MAIN__(), rejectPixels(), sampleImage(), set_fbconfig(), tukey(), and vx_iisio().
+.SS "#define min(\fBa\fP, \fBb\fP)   ((\fBa\fP) < (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.PP
+Definition at line 72 of file cdliraf.c.
+.PP
+Referenced by cdl_applyZscale(), cdl_doLineMark(), cdl_drawDashVec(), cdl_drawVector(), cdl_findNearest(), cdl_markLine(), cdl_markPolygon(), cdl_markPolyline(), cdl_zscale(), com_write(), eps_writeMono(), eps_writePix(), eps_writeRGB(), get_fbconfig(), getrange(), imd_displayImage(), imd_loadImtoolrc(), imd_minmax(), imd_readSubRaster(), imd_writeImage(), imd_writeSubRaster(), kernel_filter(), main(), mgoplt3d_(), rejectPixels(), sampleImage(), str2dec(), tukey(), and vx_iisio().
+.SS "#define SZ_V1HDR   2048"
+.PP
+Definition at line 29 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define SZ_V1PIXFILE   79"
+.PP
+Definition at line 27 of file cdliraf.c.
+.PP
+Referenced by cdl_getPixfile(), and cdl_readImageHdr().
+.SS "#define SZ_V1TITLE   79"
+.PP
+Definition at line 28 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define SZ_V2HDR   513"
+.PP
+Definition at line 42 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define SZ_V2PIXFILE   255"
+.PP
+Definition at line 41 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define TY_CHAR   2"
+.PP
+Definition at line 55 of file cdliraf.c.
+.SS "#define TY_DOUBLE   7"
+.PP
+Definition at line 60 of file cdliraf.c.
+.PP
+Referenced by cdl_setBitpix(), and cdl_swapPixels().
+.SS "#define TY_INT   4"
+.PP
+Definition at line 57 of file cdliraf.c.
+.PP
+Referenced by cdl_setBitpix(), and cdl_swapPixels().
+.SS "#define TY_LONG   5"
+.PP
+Definition at line 58 of file cdliraf.c.
+.PP
+Referenced by cdl_setBitpix(), and cdl_swapPixels().
+.SS "#define TY_REAL   6"
+.PP
+Definition at line 59 of file cdliraf.c.
+.PP
+Referenced by cdl_setBitpix(), and cdl_swapPixels().
+.SS "#define TY_SHORT   3"
+.PP
+Definition at line 56 of file cdliraf.c.
+.PP
+Referenced by cdl_setBitpix(), and cdl_swapPixels().
+.SS "#define TY_UCHAR   12"
+.PP
+Definition at line 62 of file cdliraf.c.
+.SS "#define TY_USHORT   11"
+.PP
+Definition at line 61 of file cdliraf.c.
+.PP
+Referenced by cdl_setBitpix(), and cdl_swapPixels().
+.SS "#define VERSION_1   1"
+.PP
+Definition at line 23 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SS "#define VERSION_2   2"
+.PP
+Definition at line 24 of file cdliraf.c.
+.PP
+Referenced by cdl_readImageHdr().
+.SH "Function Documentation"
+.PP 
+.SS "void bswap2 (char    * a, char * b, int nbytes)\fC [static]\fP"
+.PP
+Definition at line 683 of file cdliraf.c.
+.PP
+References a, b, and op.
+.SS "void bswap2 ()\fC [static]\fP"
+.PP
+Referenced by cdl_swapPixels(), and vx_iisio().
+.SS "void bswap4 (char	* a, int aoff, char	* b, int boff, int nbytes)\fC [static]\fP"
+.PP
+Definition at line 724 of file cdliraf.c.
+.PP
+References a, b, n, and op.
+.SS "void bswap4 ()"
+.PP
+Referenced by cdl_readImageHdr(), and cdl_swapPixels().
+.SS "void bswap8 (char	* a, int aoff, char	* b, int boff, int nbytes)\fC [static]\fP"
+.PP
+Definition at line 779 of file cdliraf.c.
+.PP
+References a, b, n, and op.
+.SS "void bswap8 ()"
+.PP
+Referenced by cdl_swapPixels().
+.SS "int cdl_displayIRAF (\fBCDLPtr\fP cdl, char	* fname, int band, int frame, int fbconfig, int zscale)"
+.PP
+Definition at line 123 of file cdliraf.c.
+.PP
+References band, bitpix, cdl_debug, cdl_displayPix(), cdl_isIRAF(), cdl_readIRAF(), cdl_setName(), cdl_setTitle(), CDLPtr, ERR, fbconfig, frame, free(), nx, ny, pix, title, uchar, z1, z2, and zscale.
+.SS "char* cdl_getIRAFPixels (char    * fname, int band, \fBuchar\fP   ** image, int     * nx, int * ny, int	* bitpix, char	* title)\fC [static]\fP"
+.PP
+Definition at line 279 of file cdliraf.c.
+.PP
+References band, bitpix, cdl_readImageHdr(), cdl_setBitpix(), cdl_swapPixels(), ERR, free(), i, line, malloc(), nx, ny, title, and uchar.
+.SS "char* cdl_getIRAFPixels ()\fC [static]\fP"
+.PP
+Referenced by cdl_readIRAF().
+.SS "void cdl_getPixfile (char	* fname, char	* pfile)\fC [static]\fP"
+.PP
+Definition at line 515 of file cdliraf.c.
+.PP
+References len, and SZ_V1PIXFILE.
+.SS "void cdl_getPixfile ()\fC [static]\fP"
+.PP
+Referenced by cdl_readImageHdr().
+.SS "int cdl_getVersion (FILE	* fd)\fC [static]\fP"
+.PP
+Definition at line 482 of file cdliraf.c.
+.PP
+References cdl_strpak().
+.SS "int cdl_getVersion ()\fC [static]\fP"
+.PP
+Referenced by cdl_readImageHdr().
+.SS "int cdl_isIRAF (char	* fname)"
+.PP
+Definition at line 178 of file cdliraf.c.
+.PP
+References cdl_strpak().
+.PP
+Referenced by cdl_displayIRAF(), and cdl_readIRAF().
+.SS "int cdl_readImageHdr (char	* fname, int	* version, int	* px, int * py, int	* nx, int * ny, int * nbands, int	* ptype, int	* offset, int	* swapped, char	* pfile, char	* title)\fC [static]\fP"
+.PP
+Definition at line 364 of file cdliraf.c.
+.PP
+References bswap4(), cdl_debug, cdl_getPixfile(), cdl_getVersion(), cdl_strpak(), ERR, IM_V1LEN, IM_V1PHYSLEN, IM_V1PIXFILE, IM_V1PIXOFF, IM_V1PIXTYPE, IM_V1TITLE, IM_V2LEN, IM_V2PHYSLEN, IM_V2PIXFILE, IM_V2PIXOFF, IM_V2PIXTYPE, IM_V2SWAPPED, is_swapped_machine(), nx, ny, OK, SZ_V1HDR, SZ_V1PIXFILE, SZ_V1TITLE, SZ_V2HDR, SZ_V2PIXFILE, title, VERSION_1, and VERSION_2.
+.SS "int cdl_readImageHdr ()\fC [static]\fP"
+.PP
+Referenced by cdl_getIRAFPixels().
+.SS "int cdl_readIRAF (char	* fname, int band, \fBuchar\fP	** pix, int	* nx, int * ny, int	* bitpix, char	* title)"
+.PP
+Definition at line 223 of file cdliraf.c.
+.PP
+References band, bitpix, cdl_debug, cdl_getIRAFPixels(), cdl_isIRAF(), ERR, nx, ny, OK, pix, title, and uchar.
+.SS "int cdl_setBitpix (int ptype, int	* pix_size, int	* bitpix)\fC [static]\fP"
+.PP
+Definition at line 560 of file cdliraf.c.
+.PP
+References bitpix, ERR, OK, TY_DOUBLE, TY_INT, TY_LONG, TY_REAL, TY_SHORT, and TY_USHORT.
+.SS "int cdl_setBitpix ()"
+.PP
+Referenced by cdl_getIRAFPixels().
+.SS "void cdl_strpak (char	* in, char * out, int len)\fC [static]\fP"
+.PP
+Definition at line 649 of file cdliraf.c.
+.PP
+References i, j, and len.
+.SS "void cdl_strpak ()"
+.PP
+Referenced by cdl_getVersion(), cdl_isIRAF(), and cdl_readImageHdr().
+.SS "void cdl_swapPixels (int swapped, int nx, int ny, int ptype, \fBuchar\fP	** image)\fC [static]\fP"
+.PP
+Definition at line 605 of file cdliraf.c.
+.PP
+References bswap2(), bswap4(), bswap8(), is_swapped_machine(), nx, ny, TY_DOUBLE, TY_INT, TY_LONG, TY_REAL, TY_SHORT, TY_USHORT, and uchar.
+.SS "void cdl_swapPixels ()\fC [static]\fP"
+.PP
+Referenced by cdl_getIRAFPixels().
+.SS "int is_swapped_machine ()\fC [static]\fP"
+.PP
+Definition at line 832 of file cdliraf.c.
+.PP
+References i.
+.PP
+Referenced by cdl_readImageHdr(), and cdl_swapPixels().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBcdl_debug\fP"
+.PP
+Definition at line 74 of file cdliraf.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

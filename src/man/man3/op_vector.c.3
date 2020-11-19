@@ -1,0 +1,42 @@
+.TH "op_vector.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+op_vector.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include 'stack.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBvectorinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBvectordoit\fP (\fBitem\fP *operator)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void vectordoit (\fBitem\fP * operator)"
+.PP
+Definition at line 96 of file op_vector.c.
+.PP
+References op::addr, error_exit, i, NUM_TYPE, op, pop(), and TEXT_TYPE.
+.SS "void vectorinit (\fBitem\fP * operator)"
+.PP
+Definition at line 12 of file op_vector.c.
+.PP
+References op::addr, item::addr, item::dim, error_exit, i, item::itype, MAX_DIMS, item::name, item::ndim, NUM_TYPE, op, pop(), and TEXT_TYPE.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

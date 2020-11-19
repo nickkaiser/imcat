@@ -1,0 +1,15 @@
+NAME
+	plot2d --- tk based plotter
+SYNOPSIS
+	plot2d [options...]
+		-xlabel xname				# label for x-axis ('x')
+		-xrange x1 x2				# range of x-values (0.0 1.0)
+		-ylabel yname				# label for y-axis ('y')
+		-yrange y1 y2				# range of y-values (0.0 1.0)
+		-plotlabel label			# plot label ('')
+		-canvassize width height		# canvas size (800 800)
+		-margin left bottom right top		# margins (100 70 30 60)
+		-plottype plottype	       			# plottype ('xyscatterplot')
+		-nobox					# don't draw box around plot
+		-nolabels				# don't draw labels
+		-data datafile				# file (or pipe) for data

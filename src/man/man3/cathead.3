@@ -1,0 +1,60 @@
+.TH "cathead" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cathead \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <cat.h>\fP
+.PP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "\fBitem\fP * \fBheaderitembase\fP"
+.br
+.ti -1c
+.RI "\fBcomment\fP * \fBcommentbase\fP"
+.br
+.ti -1c
+.RI "int \fBnobjectitems\fP"
+.br
+.ti -1c
+.RI "\fBitem\fP * \fBobjectitembase\fP"
+.br
+.ti -1c
+.RI "\fBitem\fP ** \fBitemlist\fP"
+.br
+.in -1c
+.SH "Field Documentation"
+.PP 
+.SS "\fBcomment\fP* \fBcathead::commentbase\fP"
+.PP
+Definition at line 64 of file cat.h.
+.PP
+Referenced by addargscomment(), addcomment(), chopcomments(), copyheaderinfo(), main(), readcathead(), and writecathead().
+.SS "\fBitem\fP* \fBcathead::headeritembase\fP"
+.PP
+Definition at line 63 of file cat.h.
+.PP
+Referenced by adddate(), addheadercontents(), copyheaderinfo(), deleteheaderitem(), freecathead(), getheaderitem(), install1numericheaderitem(), install1textheaderitem(), main(), parseheaderexpr(), readcathead(), and writecathead().
+.SS "\fBitem\fP** \fBcathead::itemlist\fP"
+.PP
+Definition at line 67 of file cat.h.
+.PP
+Referenced by copycontentinfo(), dospecialname(), freecathead(), main(), makeitemlist(), and readlmodel().
+.SS "int \fBcathead::nobjectitems\fP"
+.PP
+Definition at line 65 of file cat.h.
+.PP
+Referenced by addobjectitem(), copycontentinfo(), deleteobjectitem(), dospecialname(), identical(), main(), makeitemlist(), newobject(), readcathead(), and writecathead().
+.SS "\fBitem\fP* \fBcathead::objectitembase\fP"
+.PP
+Definition at line 66 of file cat.h.
+.PP
+Referenced by addobjectitem(), copycontentinfo(), deleteobjectitem(), freecathead(), getobjectitem(), identical(), main(), makeitemlist(), readcathead(), and writecathead().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,48 @@
+.TH "airmass.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+airmass.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../orbitutils/vectors.h'\fP
+.br
+\fC#include '../orbitutils/airmassmin.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	airmass - compute minimum air-mass for observation of \fBa\fP target\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	airmass lon lat min_zd_solar min_zd_lunar dphase nsteps\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	airmass computes, as \fBa\fP function of time,\\\fBn\fP\\	the minimum \fBangle\fP from zenith and airmass for \fBa\fP target at\\\fBn\fP\\	helio-ecliptic coords lon lat when the solar \fBangle\fP from zenith is\\\fBn\fP\\	at least min_zd_solar degrees and the lunar \fBangle\fP from the\\\fBn\fP\\	zenith is at least min_zd_lunar degrees.\\\fBn\fP\\\\\fBn\fP\\	The phase increment dphase is given in degrees relative to winter.\\\fBn\fP\\\\\fBn\fP\\	We output the time (relative to midnight in hours) and the\\\fBn\fP\\	and minimum zenith distance and air-mass of the target.\\\fBn\fP\\\\\fBn\fP\\	If nsteps is negative, then we output the results for \fBa\fP single\\\fBn\fP\\	time = -nsteps * dphase.\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	airmass - compute minimum air-mass for observation of \fBa\fP target\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	airmass lon lat min_zd_solar min_zd_lunar dphase nsteps\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	airmass computes, as \fBa\fP function of time,\\\fBn\fP\\	the minimum \fBangle\fP from zenith and airmass for \fBa\fP target at\\\fBn\fP\\	helio-ecliptic coords lon lat when the solar \fBangle\fP from zenith is\\\fBn\fP\\	at least min_zd_solar degrees and the lunar \fBangle\fP from the\\\fBn\fP\\	zenith is at least min_zd_lunar degrees.\\\fBn\fP\\\\\fBn\fP\\	The phase increment dphase is given in degrees relative to winter.\\\fBn\fP\\\\\fBn\fP\\	We output the time (relative to midnight in hours) and the\\\fBn\fP\\	and minimum zenith distance and air-mass of the target.\\\fBn\fP\\\\\fBn\fP\\	If nsteps is negative, then we output the results for \fBa\fP single\\\fBn\fP\\	time = -nsteps * dphase.\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 7 of file airmass.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 31 of file airmass.c.
+.PP
+References airmassmin(), exit(), and usage.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

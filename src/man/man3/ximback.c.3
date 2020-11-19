@@ -1,0 +1,468 @@
+.TH "ximback.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ximback.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <X11/Xlib.h>\fP
+.br
+\fC#include <X11/Xutil.h>\fP
+.br
+\fC#include <X11/Intrinsic.h>\fP
+.br
+\fC#include <X11/StringDefs.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'ximfront.h'\fP
+.br
+\fC#include 'ximback.h'\fP
+.br
+\fC#include 'ximcolor.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/stats_stuff.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX_SHADES\fP   4096"
+.br
+.ti -1c
+.RI "#define \fBMAX\fP(x, y)   (((x) > (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMIN\fP(x, y)   (((x) < (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   SHORT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBxbgetvalue\fP (int thename)"
+.br
+.ti -1c
+.RI "void \fBxbsetvalue\fP (int thename, int thevalue)"
+.br
+.ti -1c
+.RI "void \fBalloc_shades\fP (void)"
+.br
+.ti -1c
+.RI "void \fBreaddataheader\fP ()"
+.br
+.ti -1c
+.RI "void \fBallocatedata\fP (void)"
+.br
+.ti -1c
+.RI "void \fBreaddata\fP (void)"
+.br
+.ti -1c
+.RI "void \fBmakescrunchedviews\fP (void)"
+.br
+.ti -1c
+.RI "Pixmap \fBcreate_pixmap\fP (int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "void \fBfill_pixmap\fP (void)"
+.br
+.ti -1c
+.RI "void \fBmakepreview\fP (void)"
+.br
+.ti -1c
+.RI "void \fBmakeXImage\fP (int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "short ** \fBalloc_f\fP (int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBGetPixelValue\fP (int pixx, int pixy, int height, int width, int *useri, int *userj, short *pixval)"
+.br
+.ti -1c
+.RI "Pixmap \fBcreatezoompixmap\fP (void)"
+.br
+.ti -1c
+.RI "void \fBfillzoompixmap\fP (void)"
+.br
+.ti -1c
+.RI "void \fBdestroyzoompixmap\fP (void)"
+.br
+.ti -1c
+.RI "int \fBmyworkproc1\fP (XtPointer client_data)"
+.br
+.ti -1c
+.RI "void \fBshowpixmap\fP (void)"
+.br
+.ti -1c
+.RI "int \fBmyworkproc2\fP (XtPointer client_data)"
+.br
+.ti -1c
+.RI "int \fBmyworkproc3\fP (XtPointer client_data)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBlevel\fP"
+.br
+.ti -1c
+.RI "int \fBnlevels\fP"
+.br
+.ti -1c
+.RI "int \fBncolors\fP"
+.br
+.ti -1c
+.RI "int \fBlastuseri\fP"
+.br
+.ti -1c
+.RI "int \fBlastuserj\fP"
+.br
+.ti -1c
+.RI "int \fBblocksize\fP = 1"
+.br
+.ti -1c
+.RI "int \fBmyscreen\fP"
+.br
+.ti -1c
+.RI "int \fBdepth\fP"
+.br
+.ti -1c
+.RI "GC \fBmygc\fP"
+.br
+.ti -1c
+.RI "Window \fBmywindow\fP"
+.br
+.ti -1c
+.RI "XImage * \fBtheimage\fP"
+.br
+.ti -1c
+.RI "int \fBimwidth\fP"
+.br
+.ti -1c
+.RI "int \fBimheight\fP"
+.br
+.ti -1c
+.RI "int \fBzoomi\fP"
+.br
+.ti -1c
+.RI "int \fBzoomj\fP"
+.br
+.ti -1c
+.RI "Pixmap \fBthezoompixmap\fP"
+.br
+.ti -1c
+.RI "Pixmap \fBpixmap\fP [MAX_LEVELS]"
+.br
+.ti -1c
+.RI "char \fBcaption\fP [2048]"
+.br
+.ti -1c
+.RI "Colormap \fBcmap\fP"
+.br
+.ti -1c
+.RI "Display * \fBmydisplay\fP"
+.br
+.ti -1c
+.RI "XColor \fBshade\fP [MAX_SHADES]"
+.br
+.ti -1c
+.RI "unsigned long \fBpixel\fP [MAX_SHADES]"
+.br
+.ti -1c
+.RI "unsigned int \fBn_shades\fP"
+.br
+.ti -1c
+.RI "short ** \fBf\fP [MAX_FITS_DIM][MAX_LEVELS]"
+.br
+.ti -1c
+.RI "int \fBN1\fP [MAX_LEVELS]"
+.br
+.ti -1c
+.RI "int \fBN2\fP [MAX_LEVELS]"
+.br
+.ti -1c
+.RI "\fBfitsheader\fP * \fBgfits\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   SHORT_MAGIC"
+.PP
+Definition at line 26 of file ximback.c.
+.SS "#define MAX(x, y)   (((x) > (y)) ? (x) : (y))"
+.PP
+Definition at line 23 of file ximback.c.
+.SS "#define MAX_SHADES   4096"
+.PP
+Definition at line 21 of file ximback.c.
+.SS "#define MIN(x, y)   (((x) < (y)) ? (x) : (y))"
+.PP
+Definition at line 24 of file ximback.c.
+.SH "Function Documentation"
+.PP 
+.SS "short** alloc_f (int N1, int N2)"
+.PP
+Definition at line 366 of file ximback.c.
+.PP
+References f, i, N1, and N2.
+.PP
+Referenced by allocatedata().
+.SS "void alloc_shades (void)"
+.PP
+Definition at line 99 of file ximback.c.
+.PP
+References cmap, color, depth, error_exit, exit(), False, i, info(), mydisplay, mygc, myscreen, mywindow, n_shades, pixel, set_shades(), setcolorscheme(), shade, TOPLEVEL, and xfgetwidget().
+.SS "void allocatedata (void)"
+.PP
+Definition at line 198 of file ximback.c.
+.PP
+References alloc_f(), color, f, level, N1, N2, ncolors, and nlevels.
+.PP
+Referenced by myworkproc1().
+.SS "Pixmap create_pixmap (int level)"
+.PP
+Definition at line 254 of file ximback.c.
+.PP
+References blocksize, depth, level, mydisplay, mywindow, N1, and N2.
+.SS "Pixmap createzoompixmap (void)"
+.PP
+Definition at line 438 of file ximback.c.
+.PP
+References depth, imheight, imwidth, mydisplay, mywindow, and thezoompixmap.
+.PP
+Referenced by Zoom().
+.SS "void destroyzoompixmap (void)"
+.PP
+Definition at line 482 of file ximback.c.
+.PP
+References mydisplay, and thezoompixmap.
+.PP
+Referenced by UnZoom().
+.SS "void fill_pixmap (void)"
+.PP
+Definition at line 267 of file ximback.c.
+.PP
+References blocksize, color_index(), f, fits, gfmax, gfmin, imheight, imwidth, ix, level, m, MAX, MIN, mydisplay, mygc, n, N1, N2, n_shades, pixmap, readfitsplane(), shade, theimage, x, xx, y, and yy.
+.SS "void fillzoompixmap (void)"
+.PP
+Definition at line 445 of file ximback.c.
+.PP
+References blocksize, color_index(), i, imheight, imwidth, j, LASTUSERI, LASTUSERJ, level, mydisplay, mygc, N1, shade, theimage, thezoompixmap, x, xbgetvalue(), xx, y, yy, zoomi, and zoomj.
+.PP
+Referenced by Zoom().
+.SS "void GetPixelValue (int pixx, int pixy, int height, int width, int * useri, int * userj, short * pixval)"
+.PP
+Definition at line 379 of file ximback.c.
+.PP
+References blocksize, color, f, i, imheight, imwidth, j, level, N1, N2, ncolors, zoomi, and zoomj.
+.PP
+Referenced by picclick().
+.SS "void makepreview (void)"
+.PP
+Definition at line 301 of file ximback.c.
+.PP
+References color, f, fill_pixmap(), i, j, level, N1, N2, and ncolors.
+.PP
+Referenced by myworkproc1().
+.SS "void makescrunchedviews (void)"
+.PP
+Definition at line 219 of file ximback.c.
+.PP
+References color, f, i, j, level, MAGIC, N1, N2, ncolors, and nlevels.
+.PP
+Referenced by myworkproc2().
+.SS "void makeXImage (int N1, int N2)"
+.PP
+Definition at line 328 of file ximback.c.
+.PP
+References blocksize, depth, exit(), imheight, imwidth, malloc(), mydisplay, myscreen, N1, N2, and theimage.
+.SS "int myworkproc1 (XtPointer client_data)"
+.PP
+Definition at line 488 of file ximback.c.
+.PP
+References A_MAX, alloc_shades(), allocatedata(), color, create_pixmap(), error_exit, exit(), fill_pixmap(), fits, FLABEL, frame, level, makepreview(), makeXImage(), MAX_COLORS, mydisplay, fitsheader::n, N1, N2, ncolors, newslidervalue(), nlevels, pixmap, readdata(), readdataheader(), set_shades(), setlabelstring(), setsliderval(), showpixmap(), SLIDER2, timestep, TLABEL, and xfgetwidget().
+.SS "int myworkproc2 (XtPointer client_data)"
+.PP
+Definition at line 566 of file ximback.c.
+.PP
+References makescrunchedviews().
+.PP
+Referenced by main().
+.SS "int myworkproc3 (XtPointer client_data)"
+.PP
+Definition at line 574 of file ximback.c.
+.PP
+References fill_pixmap(), level, nlevels, and showpixmap().
+.PP
+Referenced by main().
+.SS "void readdata (void)"
+.PP
+Definition at line 209 of file ximback.c.
+.PP
+References color, f, gfits, i, N2, ncolors, and readfitsline().
+.PP
+Referenced by myworkproc1().
+.SS "void readdataheader (void)"
+.PP
+Definition at line 140 of file ximback.c.
+.PP
+References fitsheader::basecomment, blocksize, caption, color, error_exit, fits, gfits, GOODSIZE, fitsheader::intpixtype, level, MAX_LEVELS, fitsheader::n, N1, N2, fitscomment::name, NAME_LENGTH, ncolors, fitsheader::ndim, fitscomment::next, nlevels, readfitsheader(), SHORT_PIXTYPE, fitscomment::value, VALUE_LENGTH, and xfgetvalue().
+.PP
+Referenced by myworkproc1().
+.SS "void showpixmap (void)"
+.PP
+Definition at line 544 of file ximback.c.
+.PP
+References blocksize, imheight, imwidth, level, n, N1, N2, PICWIDGET, pixmap, thezoompixmap, and xfgetwidget().
+.SS "int xbgetvalue (int thename)"
+.PP
+Definition at line 52 of file ximback.c.
+.PP
+References error_exit, LASTUSERI, lastuseri, LASTUSERJ, lastuserj, LEVEL, level, NCOLORS, ncolors, NLEVELS, and nlevels.
+.PP
+Referenced by fillzoompixmap(), picclick(), plotclick(), Print(), printclick(), setcolorscheme(), UnZoom(), and Zoom().
+.SS "void xbsetvalue (int thename, int thevalue)"
+.PP
+Definition at line 79 of file ximback.c.
+.PP
+References error_exit, LASTUSERI, lastuseri, LASTUSERJ, lastuserj, LEVEL, and level.
+.PP
+Referenced by picclick(), UnZoom(), and Zoom().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBblocksize\fP = 1\fC [static]\fP"
+.PP
+Definition at line 30 of file ximback.c.
+.PP
+Referenced by create_pixmap(), fill_pixmap(), fillzoompixmap(), GetPixelValue(), makeXImage(), and readdataheader().
+.SS "char \fBcaption\fP[2048]"
+.PP
+Definition at line 38 of file ximback.c.
+.SS "Colormap \fBcmap\fP"
+.PP
+Definition at line 41 of file ximback.c.
+.SS "int \fBdepth\fP\fC [static]\fP"
+.PP
+Definition at line 31 of file ximback.c.
+.PP
+Referenced by alloc_shades(), create_pixmap(), createzoompixmap(), and makeXImage().
+.SS "short** f[MAX_FITS_DIM][MAX_LEVELS]"
+.PP
+Definition at line 46 of file ximback.c.
+.SS "\fBfitsheader\fP* \fBgfits\fP"
+.PP
+Definition at line 48 of file ximback.c.
+.PP
+Referenced by readdata(), and readdataheader().
+.SS "int \fBimheight\fP\fC [static]\fP"
+.PP
+Definition at line 35 of file ximback.c.
+.PP
+Referenced by createzoompixmap(), fill_pixmap(), fillzoompixmap(), GetPixelValue(), makeXImage(), and showpixmap().
+.SS "int \fBimwidth\fP\fC [static]\fP"
+.PP
+Definition at line 35 of file ximback.c.
+.PP
+Referenced by createzoompixmap(), fill_pixmap(), fillzoompixmap(), GetPixelValue(), makeXImage(), and showpixmap().
+.SS "int \fBlastuseri\fP\fC [static]\fP"
+.PP
+Definition at line 30 of file ximback.c.
+.PP
+Referenced by xbgetvalue(), and xbsetvalue().
+.SS "int \fBlastuserj\fP\fC [static]\fP"
+.PP
+Definition at line 30 of file ximback.c.
+.PP
+Referenced by xbgetvalue(), and xbsetvalue().
+.SS "int \fBlevel\fP\fC [static]\fP"
+.PP
+Definition at line 29 of file ximback.c.
+.PP
+Referenced by allocatedata(), create_pixmap(), fill_pixmap(), fillzoompixmap(), GetPixelValue(), makepreview(), makescrunchedviews(), myworkproc1(), myworkproc3(), readdataheader(), showpixmap(), xbgetvalue(), and xbsetvalue().
+.SS "Display* \fBmydisplay\fP"
+.PP
+Definition at line 42 of file ximback.c.
+.SS "GC \fBmygc\fP\fC [static]\fP"
+.PP
+Definition at line 32 of file ximback.c.
+.PP
+Referenced by alloc_shades(), fill_pixmap(), and fillzoompixmap().
+.SS "int \fBmyscreen\fP\fC [static]\fP"
+.PP
+Definition at line 31 of file ximback.c.
+.PP
+Referenced by alloc_shades(), and makeXImage().
+.SS "Window \fBmywindow\fP\fC [static]\fP"
+.PP
+Definition at line 33 of file ximback.c.
+.PP
+Referenced by alloc_shades(), create_pixmap(), and createzoompixmap().
+.SS "int \fBN1\fP[MAX_LEVELS]"
+.PP
+Definition at line 47 of file ximback.c.
+.SS "int \fBN2\fP[MAX_LEVELS]"
+.PP
+Definition at line 47 of file ximback.c.
+.SS "unsigned int \fBn_shades\fP"
+.PP
+Definition at line 45 of file ximback.c.
+.SS "int \fBncolors\fP\fC [static]\fP"
+.PP
+Definition at line 29 of file ximback.c.
+.PP
+Referenced by allocatedata(), GetPixelValue(), makepreview(), makescrunchedviews(), myworkproc1(), readdata(), readdataheader(), and xbgetvalue().
+.SS "int \fBnlevels\fP\fC [static]\fP"
+.PP
+Definition at line 29 of file ximback.c.
+.PP
+Referenced by allocatedata(), makescrunchedviews(), myworkproc1(), myworkproc3(), readdataheader(), and xbgetvalue().
+.SS "unsigned long \fBpixel\fP[MAX_SHADES]"
+.PP
+Definition at line 44 of file ximback.c.
+.SS "Pixmap \fBpixmap\fP[MAX_LEVELS]\fC [static]\fP"
+.PP
+Definition at line 37 of file ximback.c.
+.PP
+Referenced by fill_pixmap(), myworkproc1(), and showpixmap().
+.SS "XColor \fBshade\fP[MAX_SHADES]"
+.PP
+Definition at line 43 of file ximback.c.
+.SS "XImage* \fBtheimage\fP\fC [static]\fP"
+.PP
+Definition at line 34 of file ximback.c.
+.PP
+Referenced by fill_pixmap(), fillzoompixmap(), and makeXImage().
+.SS "Pixmap \fBthezoompixmap\fP\fC [static]\fP"
+.PP
+Definition at line 37 of file ximback.c.
+.PP
+Referenced by createzoompixmap(), destroyzoompixmap(), fillzoompixmap(), and showpixmap().
+.SS "int \fBzoomi\fP\fC [static]\fP"
+.PP
+Definition at line 36 of file ximback.c.
+.PP
+Referenced by fillzoompixmap(), and GetPixelValue().
+.SS "int \fBzoomj\fP\fC [static]\fP"
+.PP
+Definition at line 36 of file ximback.c.
+.PP
+Referenced by fillzoompixmap(), and GetPixelValue().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# tproc :  process a table
+case $# in
+0)	echo "\ntproc :  process a table\n\nusage: tproc action\n\
+	where action is a legal nawk action to be applied\n\
+	to all non comment lines\n\
+	Comment lines are not passed through\n\n\
+examples:\n\
+	tproc '\$1 = 2 * \$1; print'\n\
+	tproc '\$1 = log(\$1); print'\n\
+	tproc 'r = sqrt(\$1*\$1+\$2*\$2); print r, \$1, \$2'\n\
+\n"	1>&2; exit 2
+esac
+
+action=$1
+
+nawk '
+BEGIN {
+	OFS = "\t"
+}
+$0 !~ /^#/ { '"$action"' }
+'
+

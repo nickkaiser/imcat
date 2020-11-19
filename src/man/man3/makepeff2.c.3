@@ -1,0 +1,75 @@
+.TH "makepeff2.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makepeff2.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <float.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/ipbuff.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../utils/args.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	makepeff2 --- compute effective polarisability\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makepeff2 [\fBoptions\fP...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'makepeff2' first reads from stdin \fBa\fP catalogue which\\\fBn\fP\\	must contain at least the following entries:\\\fBn\fP\\		F	# windowed flux\\\fBn\fP\\		q0	# size\\\fBn\fP\\		q[2]	# polarisation\\\fBn\fP\\		R[2]	# flux response\\\fBn\fP\\		P0[2]	# size response\\\fBn\fP\\		P[2][2]	# polarisation response\\\fBn\fP\\	as created by 'getshapes2'.\\\fBn\fP\\	It bins appropriate combinations of these in \fBa\fP cubical\\\fBn\fP\\	array in F, p0, q space and computes P_effective.\\\fBn\fP\\\\\fBn\fP\\OPTIONS\\\fBn\fP\\	Options are\\\fBn\fP\\		-u			# print this message\\\fBn\fP\\		-F logF1 logF2 nF	# range of log_10 F and \fBnumber\fP of bins\\\fBn\fP\\					# defaults to 2 3.6 8\\\fBn\fP\\		-q q1 q2 nq		# range of |q| and \fBnumber\fP of bins\\\fBn\fP\\					# defaults to 0.0 0.5 32\\\fBn\fP\\		-Q q01 q02 nq0		# range of q0 and \fBnumber\fP of bins\\\fBn\fP\\					# defaults to 2.5 3.5 32\\\fBn\fP\\\\\fBn\fP\\OUTPUT\\\fBn\fP\\	Output is \fBa\fP multi-plane \fBFITS\fP file with planes containing\\\fBn\fP\\		plane 0		\fBn\fP	# \fBnumber\fP of objects in cell = sum 1\\\fBn\fP\\		planes 1-2	nR	# sum R[0], R[1]\\\fBn\fP\\		planes 3-4	nP0	# sum P0[0], P0[1]\\\fBn\fP\\		planes 5-8	nP	# sum P[0][0], P[0][1], P[1][0], P[1][1]\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "float *** \fBalloc3Darray\fP (int \fBN1\fP, int \fBN2\fP, int N3)"
+.br
+.ti -1c
+.RI "float *** \fBboxavg3D\fP (float ***f, int \fBN1\fP, int \fBN2\fP, int N3)"
+.br
+.ti -1c
+.RI "float *** \fBgrad3D\fP (float ***f, int \fBdir\fP, double \fBdx\fP, int \fBN1\fP, int \fBN2\fP, int N3)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	makepeff2 --- compute effective polarisability\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makepeff2 [\fBoptions\fP...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'makepeff2' first reads from stdin \fBa\fP catalogue which\\\fBn\fP\\	must contain at least the following entries:\\\fBn\fP\\		F	# windowed flux\\\fBn\fP\\		q0	# size\\\fBn\fP\\		q[2]	# polarisation\\\fBn\fP\\		R[2]	# flux response\\\fBn\fP\\		P0[2]	# size response\\\fBn\fP\\		P[2][2]	# polarisation response\\\fBn\fP\\	as created by 'getshapes2'.\\\fBn\fP\\	It bins appropriate combinations of these in \fBa\fP cubical\\\fBn\fP\\	array in F, p0, q space and computes P_effective.\\\fBn\fP\\\\\fBn\fP\\OPTIONS\\\fBn\fP\\	Options are\\\fBn\fP\\		-u			# print this message\\\fBn\fP\\		-F logF1 logF2 nF	# range of log_10 F and \fBnumber\fP of bins\\\fBn\fP\\					# defaults to 2 3.6 8\\\fBn\fP\\		-q q1 q2 nq		# range of |q| and \fBnumber\fP of bins\\\fBn\fP\\					# defaults to 0.0 0.5 32\\\fBn\fP\\		-Q q01 q02 nq0		# range of q0 and \fBnumber\fP of bins\\\fBn\fP\\					# defaults to 2.5 3.5 32\\\fBn\fP\\\\\fBn\fP\\OUTPUT\\\fBn\fP\\	Output is \fBa\fP multi-plane \fBFITS\fP file with planes containing\\\fBn\fP\\		plane 0		\fBn\fP	# \fBnumber\fP of objects in cell = sum 1\\\fBn\fP\\		planes 1-2	nR	# sum R[0], R[1]\\\fBn\fP\\		planes 3-4	nP0	# sum P0[0], P0[1]\\\fBn\fP\\		planes 5-8	nP	# sum P[0][0], P[0][1], P[1][0], P[1][1]\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file makepeff2.c.
+.SH "Function Documentation"
+.PP 
+.SS "float*** alloc3Darray (int N1, int N2, int N3)"
+.PP
+.SS "float*** boxavg3D (float *** f, int N1, int N2, int N3)"
+.PP
+.SS "float*** grad3D (float *** f, int dir, double dx, int N1, int N2, int N3)"
+.PP
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 60 of file makepeff2.c.
+.PP
+References add_comment(), alloc3Darray(), appendcomment(), argsinit(), buff, error_exit, exit(), F(), fits, flag, FLOAT_PIXTYPE, getargf(), getargi(), getflag(), i, ipf, j, n, newfitsheader(), newnumericcomment(), usage, writefitscube(), writefitsheader(), and writefitstail().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

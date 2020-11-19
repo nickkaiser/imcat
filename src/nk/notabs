@@ -1,0 +1,8 @@
+#!/bin/sh
+
+#script to replace tabs with 2 spaces
+
+for i in $*
+do
+	sed 's/	/  /g' <$i
+done

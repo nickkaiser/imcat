@@ -1,0 +1,54 @@
+.TH "album.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+album.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/arrays.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	album --- paste \fBfits\fP images into \fBa\fP larger image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	album [\fBoptions\fP... ] \fBnx\fP \fBny\fP fits1 fits2 ...\\\fBn\fP\\	album -f offsetsfile [\fBoptions\fP... ] \fBN1\fP \fBN2\fP fits1 fits2 ...\\\fBn\fP\\		-\fBd\fP \fBdx\fP \fBdy\fP	# grid spacing\\\fBn\fP\\		-\fBb\fP		# draw \fBa\fP \fBline\fP around each chip\\\fBn\fP\\		-f file		# file for offsets\\\fBn\fP\\		-\fBM\fP		# initialise to MAGIC.\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'album\\' combines \fBa\fP set of images into an album.\\\fBn\fP\\	With -f option the layout of the image is determined\\\fBn\fP\\	from the'offsetsfile', amd the size of the output\\\fBn\fP\\	image is specified after the \fBoptions\fP.\\\fBn\fP\\	The format of this file should be \fBa\fP single \fBcomment\fP \fBline\fP\\\fBn\fP\\	followed by x,y pairs to define location of bottom left\\\fBn\fP\\	corners of the images to be pasted.\\\fBn\fP\\	Without the -f option, the grid spacing will be\\\fBn\fP\\	equal to the dimensions of the first image (unless\\\fBn\fP\\	you override this with -\fBd\fP option) and the images will\\\fBn\fP\\	be placed on \fBa\fP \fBnx\fP by \fBny\fP grid.\\\fBn\fP\\\\\fBn\fP\\	The output image is initialised to zero, images are painted\\\fBn\fP\\	on sequentially, erasing any previously painted values, except\\\fBn\fP\\	that MAGIC values are not painted.  Us the -\fBM\fP option to\\\fBn\fP\\	intialise to MAGIC instead.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	album --- paste \fBfits\fP images into \fBa\fP larger image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	album [\fBoptions\fP... ] \fBnx\fP \fBny\fP fits1 fits2 ...\\\fBn\fP\\	album -f offsetsfile [\fBoptions\fP... ] \fBN1\fP \fBN2\fP fits1 fits2 ...\\\fBn\fP\\		-\fBd\fP \fBdx\fP \fBdy\fP	# grid spacing\\\fBn\fP\\		-\fBb\fP		# draw \fBa\fP \fBline\fP around each chip\\\fBn\fP\\		-f file		# file for offsets\\\fBn\fP\\		-\fBM\fP		# initialise to MAGIC.\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'album\\' combines \fBa\fP set of images into an album.\\\fBn\fP\\	With -f option the layout of the image is determined\\\fBn\fP\\	from the'offsetsfile', amd the size of the output\\\fBn\fP\\	image is specified after the \fBoptions\fP.\\\fBn\fP\\	The format of this file should be \fBa\fP single \fBcomment\fP \fBline\fP\\\fBn\fP\\	followed by x,y pairs to define location of bottom left\\\fBn\fP\\	corners of the images to be pasted.\\\fBn\fP\\	Without the -f option, the grid spacing will be\\\fBn\fP\\	equal to the dimensions of the first image (unless\\\fBn\fP\\	you override this with -\fBd\fP option) and the images will\\\fBn\fP\\	be placed on \fBa\fP \fBnx\fP by \fBny\fP grid.\\\fBn\fP\\\\\fBn\fP\\	The output image is initialised to zero, images are painted\\\fBn\fP\\	on sequentially, erasing any previously painted values, except\\\fBn\fP\\	that MAGIC values are not painted.  Us the -\fBM\fP option to\\\fBn\fP\\	intialise to MAGIC instead.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file album.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 48 of file album.c.
+.PP
+References add_comment(), allocFloatArray(), COM_LENGTH, dx, dy, error_exit, exit(), fits, FLOAT_MAGIC, i, ipf, j, line, magicinit(), fitsheader::n, N1, N2, nx, ny, read2Dfloatimage(), readfitsheader(), set2Dimagesize(), usage, and write2Dfloatimage().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

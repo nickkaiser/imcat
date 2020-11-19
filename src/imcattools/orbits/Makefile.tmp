@@ -1,0 +1,116 @@
+TOOLS = makeobs_inertial makeobs_circ laplace3 tcl_evolve r2n fitorbit tcl_evolveN evolveorbits orbanim orbs2obs getdet convertorbits getmoid airmass
+
+all : $(TOOLS)
+
+IMCATLIBS = -L$(IMCATDIR)/lib/$(ARCH) -lim -lutils
+
+LIBS = -lf2c kepler_heasley/libkepler.a orbitutils/liborbitutils.a -lm
+
+IMCATINCLUDES = -I$(IMCATDIR)/src
+
+INCLUDES = -Ikepler_heasley -Iorbitutils
+
+libs :
+	cd kepler_heasley ; make
+	cd orbitutils ; make
+
+airmass : airmass.o
+	gcc airmass.o $(ORBITLIBS) -o airmass
+
+airmass.o : airmass.c
+	gcc -c airmass.c $(ORBITINCLUDES) -o airmass.o
+
+makeobs_inertial : makeobs_inertial.o
+	gcc makeobs_inertial.o $(ORBITLIBS) -o makeobs_inertial
+
+makeobs_inertial.o : makeobs_inertial.c
+	gcc -c makeobs_inertial.c $(ORBITINCLUDES) -o makeobs_inertial.o
+
+makeobs_circ : makeobs_circ.o
+	gcc makeobs_circ.o $(ORBITLIBS) -o makeobs_circ
+
+makeobs_circ.o : makeobs_circ.c
+	gcc -c makeobs_circ.c $(ORBITINCLUDES) -o makeobs_circ.o
+
+laplace3 : laplace3.o
+	gcc laplace3.o $(ORBITLIBS) -o laplace3
+
+laplace3.o : laplace3.c
+	gcc -c laplace3.c $(ORBITINCLUDES) -o laplace3.o
+
+tcl_evolve : tcl_evolve.o
+	gcc tcl_evolve.o $(ORBITLIBS) -o tcl_evolve
+
+tcl_evolve.o : tcl_evolve.c
+	gcc -c tcl_evolve.c $(ORBITINCLUDES) -o tcl_evolve.o
+
+r2n : r2n.o
+	gcc r2n.o $(ORBITLIBS) -o r2n
+
+r2n.o : r2n.c
+	gcc -c r2n.c $(ORBITINCLUDES) -o r2n.o
+
+fitorbit : fitorbit.o
+	gcc fitorbit.o $(ORBITLIBS) -o fitorbit
+
+fitorbit.o : fitorbit.c 
+	gcc -c fitorbit.c $(ORBITINCLUDES) -o fitorbit.o
+
+tcl_evolveN : tcl_evolveN.o
+	gcc tcl_evolveN.o $(LIBS) $(ORBITLIBS) -o tcl_evolveN
+
+tcl_evolveN.o : tcl_evolveN.c
+	gcc -c tcl_evolveN.c $(INCLUDES) $(ORBITINCLUDES) -o tcl_evolveN.o
+
+evolveorbits : evolveorbits.o
+	gcc evolveorbits.o $(LIBS) $(ORBITLIBS) -o evolveorbits
+
+evolveorbits.o : evolveorbits.c
+	gcc -c evolveorbits.c $(INCLUDES) $(ORBITINCLUDES) -o evolveorbits.o
+
+orbanim : orbanim.o
+	gcc orbanim.o $(LIBS) $(ORBITLIBS) -o orbanim
+
+orbanim.o : orbanim.c
+	gcc -c orbanim.c $(INCLUDES) $(ORBITINCLUDES) -o orbanim.o
+
+orbs2obs : orbs2obs.o
+	gcc orbs2obs.o $(ORBITLIBS) -o orbs2obs
+
+orbs2obs.o : orbs2obs.c
+	gcc -c orbs2obs.c $(ORBITINCLUDES) -o orbs2obs.o
+
+getdet : getdet.o
+	gcc getdet.o $(ORBITLIBS) -o getdet
+
+getdet.o : getdet.c
+	gcc -c getdet.c $(ORBITINCLUDES) -o getdet.o
+
+convertorbits : convertorbits.o
+	gcc convertorbits.o $(ORBITLIBS) -o convertorbits
+
+convertorbits.o : convertorbits.c
+	gcc -c convertorbits.c $(ORBITINCLUDES) -o convertorbits.o
+
+getmoid : getmoid.o
+	gcc getmoid.o $(ORBITLIBS) -o getmoid
+
+getmoid.o : getmoid.c
+	gcc -c getmoid.c $(ORBITINCLUDES) -o getmoid.o
+
+docs :
+	for i in $(TOOLS) ; do ./makemanpage.pl $$i ; done
+
+printdocs :
+	for i in $(TOOLS) ; do ./makemanpage.pl $$i -print ; done
+
+
+clean :
+	rm -f *.o
+	cd kepler_heasley ; make clean
+	cd orbitutils ; make clean
+
+empty :
+	rm -f $(TOOLS)
+	cd kepler_heasley ; make empty
+	cd orbitutils ; make empty

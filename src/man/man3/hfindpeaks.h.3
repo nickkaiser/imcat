@@ -1,0 +1,159 @@
+.TH "hfindpeaks.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+hfindpeaks.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBline\fP"
+.br
+.ti -1c
+.RI "struct \fBpeak\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBpeak\fP \fBpeak\fP"
+.br
+.ti -1c
+.RI "typedef \fBline\fP \fBline\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBpeak\fP * \fBgetpeaks\fP (int \fBN1\fP, int \fBN2\fP, float **fs, int \fBlevel\fP, float rf, float \fBsigma\fP)"
+.br
+.ti -1c
+.RI "int \fBinstall\fP (\fBpeak\fP *thepeak, \fBline\fP *linehead, float dmax)"
+.br
+.ti -1c
+.RI "void \fBaddnewline\fP (\fBline\fP **lineheadptr, \fBpeak\fP *thepeak)"
+.br
+.ti -1c
+.RI "int \fBneighbours\fP (\fBpeak\fP *peak1, \fBpeak\fP *peak2, float dmax)"
+.br
+.ti -1c
+.RI "void \fBremovedead\fP (\fBline\fP **lineheadptr, int \fBlevel\fP, float nulimit)"
+.br
+.ti -1c
+.RI "void \fBdisposeof\fP (\fBline\fP *\fBtheline\fP, float nulimit)"
+.br
+.ti -1c
+.RI "\fBline\fP *** \fBmakecell\fP (\fBline\fP *linehead, float dmax, int ncells)"
+.br
+.ti -1c
+.RI "void \fBgetcoords\fP (\fBpeak\fP *thepeak, int *icell, int *jcell, float dmax)"
+.br
+.ti -1c
+.RI "void \fBfreecell\fP (\fBline\fP ***cell, int ncells)"
+.br
+.ti -1c
+.RI "float \fBthefilterfunction\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "float \fBinterp\fP (float \fBd\fP, float \fBx1\fP, float \fBx2\fP, float x3)"
+.br
+.ti -1c
+.RI "void \fBoutput\fP (\fBpeak\fP *bestpk, \fBpeak\fP *prevpk, \fBpeak\fP *nextpk)"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBline\fP  \fBline\fP"
+.PP
+Referenced by cdl_getIRAFPixels(), eps_colorHeader(), eps_simpleHeader(), getmodeamplitudes_txt(), getvars(), hgetc(), hputc(), hputcom(), ksearch(), main(), read_fits_head(), read_fits_head_ND(), readamplitudes(), readcathead(), readfitsheader(), readtabheader(), sampleImage(), write_fits_head(), write_fits_head_ND(), and writefitsheader().
+.SS "typedef struct \fBpeak\fP  \fBpeak\fP"
+.PP
+Referenced by main().
+.SH "Function Documentation"
+.PP 
+.SS "void addnewline (\fBline\fP ** lineheadptr, \fBpeak\fP * thepeak)"
+.PP
+Definition at line 410 of file hfindpeaks.c.
+.PP
+References line::head, line::next, peak::next, nlines, and line::tail.
+.PP
+Referenced by main().
+.SS "void disposeof (\fBline\fP * theline, float nulimit)"
+.PP
+Definition at line 461 of file hfindpeaks.c.
+.PP
+References free(), peak::next, nlines, peak::nu, output(), and theline.
+.PP
+Referenced by main(), and removedead().
+.SS "void freecell (\fBline\fP *** cell, int ncells)"
+.PP
+Definition at line 528 of file hfindpeaks.c.
+.PP
+References free().
+.PP
+Referenced by main().
+.SS "void getcoords (\fBpeak\fP * thepeak, int * icell, int * jcell, float dmax)"
+.PP
+Definition at line 538 of file hfindpeaks.c.
+.PP
+References dmax, peak::i, and peak::j.
+.PP
+Referenced by main(), and makecell().
+.SS "\fBpeak\fP* getpeaks (int N1, int N2, float ** fs, int level, float rf, float sigma)"
+.PP
+Definition at line 318 of file hfindpeaks.c.
+.PP
+References peak::e1, peak::e2, f, peak::fs, peak::i, i, peak::j, j, peak::level, N1, N2, peak::next, peak::nu, peak::rf, sigma, TINY, and peak::x.
+.PP
+Referenced by main().
+.SS "int install (\fBpeak\fP * thepeak, \fBline\fP * linehead, float dmax)"
+.PP
+Definition at line 388 of file hfindpeaks.c.
+.PP
+References dmax, neighbours(), peak::next, and theline.
+.SS "float interp (float d, float x1, float x2, float x3)"
+.PP
+Definition at line 569 of file hfindpeaks.c.
+.PP
+References d.
+.SS "\fBline\fP*** makecell (\fBline\fP * linehead, float dmax, int ncells)"
+.PP
+Definition at line 504 of file hfindpeaks.c.
+.PP
+References dmax, exit(), getcoords(), and theline.
+.PP
+Referenced by main().
+.SS "int neighbours (\fBpeak\fP * peak1, \fBpeak\fP * peak2, float dmax)"
+.PP
+Definition at line 426 of file hfindpeaks.c.
+.PP
+References di, dj, dmax, peak::i, and peak::j.
+.PP
+Referenced by install().
+.SS "void output (\fBpeak\fP * bestpk, \fBpeak\fP * prevpk, \fBpeak\fP * nextpk)"
+.PP
+Definition at line 583 of file hfindpeaks.c.
+.PP
+References BUFFSIZE, d, peak::e1, peak::e2, EFACTOR, FFACTOR, peak::fs, interp(), peak::nu, peak::rf, RFACTOR, and peak::x.
+.PP
+Referenced by disposeof(), num1func(), and num2func().
+.SS "void removedead (\fBline\fP ** lineheadptr, int level, float nulimit)"
+.PP
+Definition at line 438 of file hfindpeaks.c.
+.PP
+References disposeof(), line::prev, and theline.
+.PP
+Referenced by main().
+.SS "float thefilterfunction (float ki, float kj)"
+.PP
+Definition at line 87 of file fp.c.
+.PP
+References kk, sigma1, sigma2, z1, z2, and ZMAX.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

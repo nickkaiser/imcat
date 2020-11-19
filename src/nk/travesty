@@ -1,0 +1,66 @@
+#!/usr/bin/perl
+
+# Usage: travesty [files]
+
+# First analyze the input.
+
+while (<>) {
+
+    # Handle article headers and ">>>" quotes.
+
+    next if /^\./;
+    next if /^From / .. /^$/;
+    next if /^Path: / .. /^$/;
+    s/^\W+//;
+
+    # Do each word.
+
+    push(@ary,split(' '));
+    while ($#ary > 1) {
+	$a = $p;
+	$p = $n;
+	$w = shift(@ary);
+	$n = $num{$w};
+	if ($n eq '') {
+	    push(@word,$w);
+	    $n = pack('S',$#word);
+	    $num{$w} = $n;
+	}
+	$lookup{$a . $p} .= $n;
+    }
+}
+
+# Now spew out the words, based on the frequencies.  If there
+# is more than one possibility to choose from, choose one
+# randomly.
+
+for (;;) {
+    $n = $lookup{$a . $p};
+    ($foo,$n) = each(lookup) if $n eq '';       # A bootstrap.
+    $n = substr($n,int(rand(length($n))) & 0177776,2);
+    $a = $p;
+    $p = $n;
+    ($w) = unpack('S',$n);
+    $w = $word[$w];
+
+    # See if word fits on line.
+
+    $col += length($w) + 1;
+    if ($col >= 65) {
+	$col = 0;
+	print "\n";
+    }
+    else {
+	print ' ';
+    }
+    print $w;
+
+    # Paragraph every 10 sentences or so.
+
+    if ($w =~ /\.$/) {
+	if (rand() < .1) {
+	    print "\n";
+	    $col = 80;
+	}
+    }
+}

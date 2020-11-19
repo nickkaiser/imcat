@@ -1,0 +1,205 @@
+#define	usage "\n\n\n\
+NAME\n\
+	acf --- calculates 2-D autocorrelation function of a fits image\n\
+\n\
+SYNOPSIS\n\
+	acf [options...]\n\
+\n\
+DESCRIPTION\n\
+	'acf' reads a fits file from stdin and writes the autocorrelation\n\
+	function to stdout. If the input image is fin(r) then we compute\n\
+		fout(r) = sum_r' fin(r') fin(r' + r) / (N1 * N2)\n\
+	and resulting image is wrapped so that zero lag is at pixel (N1/2, N2/2).\n\
+\n\
+	Options are:\n\
+		-p		# calculate power spectrum instead\n\
+		-c f1 f2	# cross correlate named fits files\n\
+		-P pixtype	# output pixtype (FLOAT_PIXTYPE)\n\
+		-n		# no MAGIC substitution\n\
+		-m magicval	# replacement for MAGIC pixels (0)   \n\
+\n\
+	Power is defined so that white noise with variance sigma2\n\
+	will produce P = sigma2. Power is translated so that zero frequency\n\
+	lies at N1/2, N2/2.\n\
+\n\
+	With '-c fits0 fits1' we compute\n\
+\n\
+		c(r) = sum_r' f0(r') f1(r' + r) / (N1 * N2)\n\
+\n\
+	to compute instead\n\
+\n\
+		c(r) = sum_r' f0(r') f1(r - r') / (N1 * N2)\n\
+\n\
+	you should first rotate the first image by 180 degrees.\n\
+\n\
+	Supply file name '-' to read from stdin.\n\
+\n\
+	Default output image format is BITPIX = -32 (i.e. 4-byte float).\n\
+\n\
+AUTHOR\n\
+	Nick Kaiser:  kaiser@cita.utoronto.ca\n\
+\n\n\n"		
+
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+
+#include "../imlib/fits.h"
+#include "../utils/error.h"
+#include "../utils/args.h"
+#include "../utils/arrays.h"
+#include "../fftlib/myfft.h"
+
+main(int argc, char *argv[])	
+{
+	float 		**theresult, **f1, **f2, mul, magicval;
+	int		arg = 1, N1, N2, M1, M2, dopower, doccf, i, j, fixmagic, oppixtype;
+	fitsheader	*fitsh1, *fitsh2, *fitsho;
+	fft_type	fk1, fk2;
+	FILE		*fits1, *fits2;
+#ifdef DUAL_PROC
+	int		fr_shmid1, fr_shmid2, fk_shmid1, fk_shmid2;
+#endif
+	char		*flag, *fitsname1, *fitsname2;
+	
+	/* defaults */
+	dopower = 0;
+	doccf = 0;
+	magicval = 0.0;
+	fixmagic = 1;
+	oppixtype = FLOAT_PIXTYPE;
+
+	/* parse arguments */
+	argsinit(argc, argv, usage);
+	while (flag = getflag()) {
+		switch (flag[0]) {
+			case 'p':
+				if (doccf)
+					error_exit("acf: error cannot do ccf and P(k)\n");
+				dopower = 1;
+				break;
+			case 'c':
+				if (dopower)
+					error_exit("acf: error cannot do ccf and P(k)\n");
+				doccf = 1;
+				fitsname1 = getargs();
+				fitsname2 = getargs();
+				if (strcmp(fitsname1, "-")) {
+					fits1 = fopen(fitsname1, "r");
+					if (!fits1) {
+						error_exit("acf: failed to open fits file 1\n");
+					}
+				} else {
+					fits1 = stdin;
+				}
+				if (strcmp(fitsname2, "-")) {
+					fits2 = fopen(fitsname2, "r");
+					if (!fits2) {
+						error_exit("acf: failed to open fits file 2\n");
+					}
+				} else {
+					fits2 = stdin;
+				}
+				break;
+			case 'P':
+				oppixtype = getargi();
+				break;
+			case 'n':
+				fixmagic = 0;
+				break;
+			case 'm':
+				magicval = getargf();
+				break;
+			default:
+				error_exit(usage);
+				break;
+		}
+	}
+
+
+	if (doccf) {
+#ifdef DUAL_PROC
+		fr_shmid1 = read2Dfloatimage_shm(&f1, &N1, &N2, &fitsh1, fits1);
+#else
+		read2Dfloatimage(&f1, &N1, &N2, &fitsh1, fits1);
+#endif
+#ifdef DUAL_PROC
+		fr_shmid2 = read2Dfloatimage_shm(&f2, &M1, &M2, &fitsh2, fits2);
+#else
+		read2Dfloatimage(&f2, &M1, &M2, &fitsh2, fits2);
+#endif
+		if (M1 != N1 || M2 != N2)
+			error_exit("acf: fits files must be same size\n");
+		if (fixmagic) {
+			substitute(f1, N1, N2, magicval);
+			substitute(f2, N1, N2, magicval);
+		}
+	} else {
+#ifdef DUAL_PROC
+		fr_shmid1 = read2Dfloatimage_shm(&f1, &N1, &N2, &fitsh1, stdin);
+#else
+		read2Dfloatimage(&f1, &N1, &N2, &fitsh1, stdin);
+#endif
+		if (fixmagic) {
+			substitute(f1, N1, N2, magicval);
+		}
+	}
+
+	fitsho = copyfitsheader(fitsh1);
+	setextpixtype(fitsho, oppixtype);
+	add_comment(argc, argv, fitsho);
+
+#ifdef DUAL_PROC
+	fk_shmid1 = alloc_fft_shm(&fk1, N1, N2);
+	set_shmids(fr_shmid1, fk_shmid1);
+#else
+	alloc_fft(&fk1, N1, N2);
+#endif
+	forward_fft(f1, N1, N2, fk1);
+#ifdef DUAL_PROC
+	fr_shmid2 = allocFloatArray_shm(&theresult, N1, N2);
+#else
+	allocFloatArray(&theresult, N1, N2);
+#endif
+	if (dopower) {
+		power(fk1, N1, N2, theresult, N1/2, N2/2);
+	} else {
+		if (doccf) {
+#ifdef DUAL_PROC
+			fk_shmid2 = alloc_fft_shm(&fk2, N1, N2);
+			set_shmids(fr_shmid1, fk_shmid2);
+#else
+			alloc_fft(&fk2, N1, N2);
+#endif
+			forward_fft(f2, N1, N2, fk2);
+		} else {
+			fk2 = fk1;
+		}
+#ifdef DUAL_PROC
+		set_shmids(fr_shmid2, fk_shmid1);
+#endif
+		ccf(fk1, fk2, N1, N2, theresult, N1/2, N2/2);
+	}
+	write2Dfloatimage(theresult, fitsho);
+#ifdef DUAL_PROC
+	shmfree(fr_shmid1);
+	free_fft_shm(fk1, fk_shmid1);
+	if (doccf) {
+		free_fft_shm(fk2, fk_shmid2);
+	}
+#endif
+	exit(0);
+}
+
+
+
+
+
+
+
+
+
+
+

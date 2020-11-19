@@ -1,0 +1,93 @@
+#!/usr/bin/perl
+
+# script to do psf correction by making a 'smoothed e / smoothed n' image
+
+$usage = "\
+NAME\
+	ecorrect2 -- psf correction using a smoothed e/n image\
+\
+SYNOPSIS\
+	ecorrect2 [options...] starcat\
+	where options are\
+		-o x0 y0	# origin in x-coord units (0 0)\
+		-d dbox		# side of box in x-coord units (2048)\
+		-n N		# size of smoothed images (128)\
+		-r rf		# gaussian smoothing scale in pixels (10)\
+\
+DESCRIPTION\
+	'ecorrect2' is a perl script which invokes 'surfdens' to\
+	construct an image which is a smoothed image of p(r), the\
+	number weighted shear field (from the 'starcat') divided\
+	by the smoothed star number density times the mean 'psm'.\
+	It then invokes 'getfitsval' to import these values into the\
+	catalogue and subtracts from the e-vector a correction\
+		delta_e = psm * p(r)\
+	This procedure can accomodate more complex psf patterns\
+	then 'ecorrect' (which is limited to low-order polynomials)\
+	but watch for problems if smoothing scale is too small (it\
+	should encompass a reasonable number of objects) or if there\
+	are strong gradients of the psf over a smoothing scale.\
+	You should choose the size of the box to have a generous\
+	overlap around the bounding box of the catalogue objects.\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+";
+
+
+
+
+
+# defaults
+$dbox = 2048;
+$N = 128;
+$x1 = $y1 = 0.0;
+$rf = 10.0;
+
+while ($_ = shift(@ARGV)) {
+        if (/^-o/) {
+                $x1 = shift(@ARGV) || die $usage;
+                $y1 = shift(@ARGV) || die $usage;
+        } elsif (/^-d/) {
+                $dbox = shift(@ARGV) || die $usage;
+        } elsif (/^-n/) {
+		$N = shift(@ARGV) || die $usage;
+        } elsif (/^-r/) {
+		$rf = shift(@ARGV) || die $usage;
+        } elsif (/^-/) {
+		die $usage;
+	} else {
+		$starscat = $_;
+		break;
+	}
+}
+
+
+$scale = $N / $dbox;
+$x2 = $x1 + $dbox;
+$y2 = $y1 + $dbox; 
+
+$smooth = "smooth -f 0 0 $rf";
+$xoff = -$x1;
+$yoff = -$y1;
+$getps0 = "getfitsval $$.e0 ps0 -s $scale -d $xoff $yoff";
+$getps1 = "getfitsval $$.e1 ps1 -s $scale -d $xoff $yoff";
+
+$srccat = "gals.cat";
+$dstcat = "corr.cat";
+
+($junk, $psmav) = split(" ", `lc 'psm = %psm[0][0] %psm[1][1] + 0.5 mult' < $starscat | catstats | grep mean`);
+&echosys("surfdens -r $x1 $x2 $y1 $y2 -n $N $N < $starscat | $smooth > $$.n");
+&echosys("surfdens -r $x1 $x2 $y1 $y2 -n $N $N -w \"'w = %e[0] $psmav /'\" < $starscat | $smooth | ic '%1 %2 /' - $$.n > $$.e0");
+&echosys("surfdens -r $x1 $x2 $y1 $y2 -n $N $N -w \"'w = %e[1] $psmav /'\" < $starscat | $smooth | ic '%1 %2 /' - $$.n > $$.e1");
+&echosys("$getps0 | $getps1 | lc -b +all 'ps = %ps0 %ps1 2 vector'  -r ps0 -r ps1 > $$.cat");
+&echosys("lc -b +all 'e = %e %psm[0] %ps dot %psm[1] %ps dot 2 vector vsub' < $$.cat");
+
+&echosys("rm $$.n $$.e0 $$.e1 $$.cat");
+
+sub echosys {
+#       print @_, "\n";
+        system(@_) && die "$0: system call failed\n";
+}
+
+

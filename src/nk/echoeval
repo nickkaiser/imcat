@@ -1,0 +1,26 @@
+#! /bin/sh
+
+case $# in
+0)	echo "\nusage: echoeval command\n\
+	echoes the string command and then executes it with eval.\n\
+	Useful if you want a script to echo what its doing.\n\
+	Be sure to enclose whole command in quotes if there is\n\
+	redirection. For example...\n\
+		> echoeval \"date > temp\"\n\
+		date > temp\n\
+		> more temp\n\
+		Tue Dec  6 10:56:57 EST 1994\n\
+	which is what you wanted
+	whereas...\n\
+		> echoeval date > temp\n\
+		> more temp\n\
+		date\n\
+		Tue Dec  6 10:56:57 EST 1994\n\
+	redirected all the output to temp rather than just the result of\n\
+	the command\n\
+\n" 1>&2; exit 2
+esac
+
+echo $*
+eval $*
+

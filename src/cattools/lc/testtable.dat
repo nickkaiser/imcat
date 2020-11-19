@@ -1,0 +1,6 @@
+# my unformatted data file
+#	X	Y	temp	index	file
+	0.123	0.345	451.2	27	spam
+	0.754	0.923	451.7	15	eggs
+	0.034	0.252	451.0	12	fish
+	0.967	0.204	452.9	30	spam

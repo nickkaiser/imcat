@@ -1,0 +1,86 @@
+.TH "arrays_noncontig.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+arrays_noncontig.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include 'error.h'\fP
+.br
+\fC#include 'arrays.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBallocShortArray\fP (short ***f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBallocFloatArray\fP (float ***f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBfreeShortArray\fP (short **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBfreeFloatArray\fP (float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBcopyFloatToShort\fP (float **fsrc, short **fdst, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBcopyShortToFloat\fP (short **fsrc, float **fdst, int \fBN1\fP, int \fBN2\fP)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void allocFloatArray (float *** f, int N1, int N2)"
+.PP
+Definition at line 34 of file arrays_noncontig.c.
+.PP
+References error_exit, f, i, N1, and N2.
+.PP
+Referenced by fread_fits(), main(), read2Dfloatimage(), readimheader(), start_command(), and surfaceplot().
+.SS "void allocShortArray (short *** f, int N1, int N2)"
+.PP
+routines for allocating, freeing and copying 2-D arrays
+.PP
+these are the old style non-contiguous storage versions no longer used Definition at line 16 of file arrays_noncontig.c.
+.PP
+References error_exit, f, i, N1, and N2.
+.PP
+Referenced by main().
+.SS "void copyFloatToShort (float ** fsrc, short ** fdst, int N1, int N2)"
+.PP
+Definition at line 79 of file arrays_noncontig.c.
+.PP
+References i, j, N1, and N2.
+.SS "void copyShortToFloat (short ** fsrc, float ** fdst, int N1, int N2)"
+.PP
+Definition at line 92 of file arrays_noncontig.c.
+.PP
+References i, j, N1, and N2.
+.SS "void freeFloatArray (float ** f, int N1, int N2)"
+.PP
+Definition at line 66 of file arrays_noncontig.c.
+.PP
+References f, free(), i, and N2.
+.PP
+Referenced by main(), and start_command().
+.SS "void freeShortArray (short ** f, int N1, int N2)"
+.PP
+Definition at line 53 of file arrays_noncontig.c.
+.PP
+References f, free(), i, and N2.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

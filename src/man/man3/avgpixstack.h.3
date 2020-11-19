@@ -1,0 +1,65 @@
+.TH "avgpixstack.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+avgpixstack.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBAPS_STRAIGHT_AVERAGE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBAPS_WEIGHTED_AVERAGE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBAPS_MEDIAN\fP   2"
+.br
+.ti -1c
+.RI "#define \fBAPS_RANK\fP   3"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBavgpixstack\fP (int \fBopmode\fP, int rank, int nplanes, float *f, float *weight, float *ftemp, float *favg, float *weightsum)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define APS_MEDIAN   2"
+.PP
+Definition at line 20 of file avgpixstack.h.
+.PP
+Referenced by avgpixstack(), and main().
+.SS "#define APS_RANK   3"
+.PP
+Definition at line 21 of file avgpixstack.h.
+.PP
+Referenced by avgpixstack(), and main().
+.SS "#define APS_STRAIGHT_AVERAGE   0"
+.PP
+Definition at line 18 of file avgpixstack.h.
+.PP
+Referenced by main().
+.SS "#define APS_WEIGHTED_AVERAGE   1"
+.PP
+Definition at line 19 of file avgpixstack.h.
+.PP
+Referenced by main().
+.SH "Function Documentation"
+.PP 
+.SS "int avgpixstack (int opmode, int rank, int nplanes, float * f, float * weight, float * ftemp, float * favg, float * weightsum)"
+.PP
+Definition at line 21 of file avgpixstack.c.
+.PP
+References APS_MEDIAN, APS_RANK, f, FLOAT_MAGIC, i, j, median(), opmode, and rankedimage().
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

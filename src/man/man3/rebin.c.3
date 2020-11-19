@@ -1,0 +1,42 @@
+.TH "rebin.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+rebin.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	rebin - rebin x-y table to logarithmically spaced intervals in x\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	rebin \fBxname\fP \fByname\fP \fBxmin\fP \fBxmax\fP dlnx\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Rebin reads \fBa\fP from stdin \fBa\fP lc-format catalogue containing\\\fBn\fP\\	x-y pairs, with x values in increasing \fBorder\fP. It then\\\fBn\fP\\	outputs to stdout \fBa\fP table of x and linearly interpolated y values where\\\fBn\fP\\	the x values are now uniformly distributed between \fBxmin\fP and \fBxmax\fP\\\fBn\fP\\	with log spacing dlnx.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	rebin - rebin x-y table to logarithmically spaced intervals in x\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	rebin \fBxname\fP \fByname\fP \fBxmin\fP \fBxmax\fP dlnx\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Rebin reads \fBa\fP from stdin \fBa\fP lc-format catalogue containing\\\fBn\fP\\	x-y pairs, with x values in increasing \fBorder\fP. It then\\\fBn\fP\\	outputs to stdout \fBa\fP table of x and linearly interpolated y values where\\\fBn\fP\\	the x values are now uniformly distributed between \fBxmin\fP and \fBxmax\fP\\\fBn\fP\\	with log spacing dlnx.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 10 of file rebin.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 28 of file rebin.c.
+.PP
+References exit(), i, usage, x, xmax, xmin, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

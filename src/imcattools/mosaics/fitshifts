@@ -1,0 +1,45 @@
+#! /usr/bin/perl
+
+# solve for residual shifts of chips between exposures
+
+
+$usage = "\
+NAME\
+	fitshifts -- solve for residual shifts of chips between exposures\
+\
+SYNOPSIS\
+	fitshifts nchip nexp srcmergecat\
+\
+DESCRIPTION\
+	'fitshifts' reads from file srcmergecat (as created by\
+	'mergemosaiccats1' and possibly subsequently filtered\
+	to remove bad pairs) and for each chip, finds transformations\
+	to map coords in the e'th exposure onto the 0th.
+	'nchip' is the number of chips in the array\
+	'nexp' is the number of exposures.\
+\
+AUTHOR\
+	Nick Kaiser -- kaiser\@cita.utoronto.ca\
+\n";
+
+die $usage if ($#ARGV != 2);
+
+$nchip = shift(@ARGV);
+$nexp = shift(@ARGV);
+$srcmergecat = shift(@ARGV);
+
+printf "%d %d\n", $nchip, $nexp;
+for ($chip = 0; $chip < $nchip; $chip++) {
+	printf "%d\n", $chip;
+	echosys("lc -b -i '%chip[0] $chip == %chip[1] $chip == and' 'x = %r[1] %r[0] 2 vector' exp < $srcmergecat > $$.tmp");
+	printf "%13.7f %13.7f %13.7f %13.7f %13.7f %13.7f\n", 0.0, 0.0, 1.0, 0.0, 0.0, 1.0;
+	for ($exp = 1; $exp < $nexp; $exp++) {
+		printf `lc -b -i '%exp[0] 0 == %exp[1] $exp == and' < $$.tmp | lintransfit`;
+	}
+	echosys("rm $$.tmp");
+}
+
+sub echosys {
+#        print @_, "\n";
+        system(@_) && die "System call $_[0] failed!\n";
+}

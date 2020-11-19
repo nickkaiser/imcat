@@ -1,0 +1,378 @@
+.TH "ximbuttons.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ximbuttons.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <X11/Xlib.h>\fP
+.br
+\fC#include <X11/Intrinsic.h>\fP
+.br
+\fC#include <X11/StringDefs.h>\fP
+.br
+\fC#include <X11/Shell.h>\fP
+.br
+\fC#include <X11/cursorfont.h>\fP
+.br
+\fC#include <X11/Xaw/Dialog.h>\fP
+.br
+\fC#include 'ximbuttons.h'\fP
+.br
+\fC#include 'ximfront.h'\fP
+.br
+\fC#include 'ximback.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX\fP(x, y)   (((x) > (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMIN\fP(x, y)   (((x) < (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBABS\fP(x)   ((x < 0) ? (-x) : (x))"
+.br
+.ti -1c
+.RI "#define \fBCONTOURPLOT\fP   0"
+.br
+.ti -1c
+.RI "#define \fBPROFILEPLOT\fP   1"
+.br
+.ti -1c
+.RI "#define \fBCUSTOMPLOT\fP   2"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   SHORT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBZoom\fP (Widget \fBw\fP, XtPointer client_data, XtPointer call_data)"
+.br
+.ti -1c
+.RI "void \fBUnZoom\fP (Widget \fBw\fP, XtPointer client_data, XtPointer call_data)"
+.br
+.ti -1c
+.RI "void \fBmakepopup\fP (Widget button, XtPointer client_data, XtPointer call_data)"
+.br
+.ti -1c
+.RI "void \fBCancel\fP (Widget button, XtPointer client_data, XtPointer call_data)"
+.br
+.ti -1c
+.RI "void \fBOkPrint\fP (Widget button, XtPointer client_data, XtPointer call_data)"
+.br
+.ti -1c
+.RI "void \fBOkMakemask\fP (Widget button, XtPointer client_data, XtPointer call_data)"
+.br
+.ti -1c
+.RI "void \fBContour\fP (Widget button, XtPointer client_data, XtPointer call_data)"
+.br
+.ti -1c
+.RI "void \fBProfile\fP (Widget button, XtPointer client_data, XtPointer call_data)"
+.br
+.ti -1c
+.RI "void \fBCustom\fP (Widget button, XtPointer client_data, XtPointer call_data)"
+.br
+.ti -1c
+.RI "void \fBMakemask\fP (void)"
+.br
+.ti -1c
+.RI "void \fBPrint\fP (void)"
+.br
+.ti -1c
+.RI "void \fBprintclick\fP (int \fBi\fP, int \fBj\fP)"
+.br
+.ti -1c
+.RI "void \fBplotclick\fP (int \fBi\fP, int \fBj\fP)"
+.br
+.ti -1c
+.RI "void \fBTitle\fP (Widget \fBw\fP, XtPointer client_data, XtPointer call_data)"
+.br
+.ti -1c
+.RI "void \fBpicclick\fP (Widget \fBw\fP, XtPointer client_data, XtPointer call_data)"
+.br
+.ti -1c
+.RI "void \fBopenmaskfile\fP (char *maskfilename)"
+.br
+.ti -1c
+.RI "void \fBclosemaskfile\fP (void)"
+.br
+.ti -1c
+.RI "void \fBaddmaskpoint\fP (int \fBi\fP, int \fBj\fP)"
+.br
+.ti -1c
+.RI "void \fBdoplot\fP (int icentre, int jcentre, int iside, int jside, int \fBlevel\fP, int plottype)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBmakingmask\fP = 0 printing = 0 gotfirstprintclick"
+.br
+.ti -1c
+.RI "int \fBplotting\fP = 0 gotfirstplotclick plottype"
+.br
+.ti -1c
+.RI "int \fBfirstmaskpoint\fP"
+.br
+.ti -1c
+.RI "int \fBhitok\fP"
+.br
+.ti -1c
+.RI "int \fBhitcancel\fP"
+.br
+.ti -1c
+.RI "char \fBfilename\fP [128]"
+.br
+.ti -1c
+.RI "char \fBcustomcommand\fP [256]"
+.br
+.ti -1c
+.RI "FILE * \fBmaskf\fP"
+.br
+.ti -1c
+.RI "int \fBN1\fP []"
+.br
+.ti -1c
+.RI "int \fBN2\fP []"
+.br
+.ti -1c
+.RI "short ** \fBf\fP [MAX_FITS_DIM][MAX_LEVELS]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define ABS(x)   ((x < 0) ? (-x) : (x))"
+.PP
+Definition at line 34 of file ximbuttons.c.
+.SS "#define CONTOURPLOT   0"
+.PP
+Definition at line 36 of file ximbuttons.c.
+.PP
+Referenced by Contour(), and doplot().
+.SS "#define CUSTOMPLOT   2"
+.PP
+Definition at line 38 of file ximbuttons.c.
+.PP
+Referenced by Custom(), and doplot().
+.SS "#define MAGIC   SHORT_MAGIC"
+.PP
+Definition at line 40 of file ximbuttons.c.
+.SS "#define MAX(x, y)   (((x) > (y)) ? (x) : (y))"
+.PP
+Definition at line 32 of file ximbuttons.c.
+.SS "#define MIN(x, y)   (((x) < (y)) ? (x) : (y))"
+.PP
+Definition at line 33 of file ximbuttons.c.
+.SS "#define PROFILEPLOT   1"
+.PP
+Definition at line 37 of file ximbuttons.c.
+.PP
+Referenced by doplot(), and Profile().
+.SH "Function Documentation"
+.PP 
+.SS "void addmaskpoint (int i, int j)"
+.PP
+Definition at line 405 of file ximbuttons.c.
+.PP
+References b, firstmaskpoint, i, j, l, maskf, r, and t.
+.PP
+Referenced by picclick().
+.SS "void Cancel (Widget button, XtPointer client_data, XtPointer call_data)"
+.PP
+Definition at line 165 of file ximbuttons.c.
+.PP
+References hitcancel, and hitok.
+.PP
+Referenced by makepopup().
+.SS "void closemaskfile (void)"
+.PP
+Definition at line 396 of file ximbuttons.c.
+.PP
+References maskf.
+.PP
+Referenced by Makemask().
+.SS "void Contour (Widget button, XtPointer client_data, XtPointer call_data)"
+.PP
+Definition at line 200 of file ximbuttons.c.
+.PP
+References CONTOURPLOT, and plotting.
+.PP
+Referenced by makepopup().
+.SS "void Custom (Widget button, XtPointer client_data, XtPointer call_data)"
+.PP
+Definition at line 223 of file ximbuttons.c.
+.PP
+References customcommand, CUSTOMPLOT, and plotting.
+.PP
+Referenced by makepopup().
+.SS "void doplot (int icentre, int jcentre, int iside, int jside, int level, int plottype)"
+.PP
+Definition at line 437 of file ximbuttons.c.
+.PP
+References ABS, appendcomment(), CONTOURPLOT, customcommand, CUSTOMPLOT, di, dj, error_exit, f, ff, fits, free(), i, fitsheader::intpixtype, j, MAGIC, MAX, MIN, N, N1, N2, new2Dfitsheader(), newtextcomment(), fitsheader::opstream, PROFILEPLOT, SHORT_PIXTYPE, writefitsheader(), writefitsline(), and writefitstail().
+.PP
+Referenced by plotclick().
+.SS "void Makemask (void)"
+.PP
+Definition at line 236 of file ximbuttons.c.
+.PP
+References closemaskfile(), filename, hitok, makingmask, and openmaskfile().
+.PP
+Referenced by makepopup(), and OkMakemask().
+.SS "void makepopup (Widget button, XtPointer client_data, XtPointer call_data)"
+.PP
+Definition at line 78 of file ximbuttons.c.
+.PP
+References Cancel(), Contour(), Custom(), error_exit, MAKEMASK, Makemask(), makingmask, n, OkMakemask(), OkPrint(), PLOT, PRINT, Print(), Profile(), TITLE, x, xfgetwidgetnumber(), and y.
+.PP
+Referenced by main(), and Title().
+.SS "void OkMakemask (Widget button, XtPointer client_data, XtPointer call_data)"
+.PP
+Definition at line 187 of file ximbuttons.c.
+.PP
+References filename, hitcancel, hitok, and Makemask().
+.PP
+Referenced by makepopup().
+.SS "void OkPrint (Widget button, XtPointer client_data, XtPointer call_data)"
+.PP
+Definition at line 175 of file ximbuttons.c.
+.PP
+References filename, hitcancel, hitok, and Print().
+.PP
+Referenced by makepopup().
+.SS "void openmaskfile (char * maskfilename)"
+.PP
+Definition at line 385 of file ximbuttons.c.
+.PP
+References error_exit, firstmaskpoint, and maskf.
+.PP
+Referenced by Makemask().
+.SS "void picclick (Widget w, XtPointer client_data, XtPointer call_data)"
+.PP
+Definition at line 321 of file ximbuttons.c.
+.PP
+References addmaskpoint(), color, GetPixelValue(), i, j, LASTUSERI, LASTUSERJ, MAGIC, makingmask, MAX_COLORS, n, NCOLORS, PICWIDGET, PIXVALLABEL, plotclick(), plotting, POSLABEL, printclick(), setlabelstring(), TOPLEVEL, xbgetvalue(), xbsetvalue(), and xfgetwidget().
+.PP
+Referenced by main().
+.SS "void plotclick (int i, int j)"
+.PP
+Definition at line 294 of file ximbuttons.c.
+.PP
+References doplot(), i, j, LEVEL, plotting, and xbgetvalue().
+.PP
+Referenced by picclick().
+.SS "void Print (void)"
+.PP
+Definition at line 251 of file ximbuttons.c.
+.PP
+References filename, hitok, LEVEL, printall(), and xbgetvalue().
+.PP
+Referenced by makepopup(), and OkPrint().
+.SS "void printclick (int i, int j)"
+.PP
+Definition at line 268 of file ximbuttons.c.
+.PP
+References filename, i, j, LEVEL, printselection(), and xbgetvalue().
+.PP
+Referenced by picclick().
+.SS "void Profile (Widget button, XtPointer client_data, XtPointer call_data)"
+.PP
+Definition at line 211 of file ximbuttons.c.
+.PP
+References plotting, and PROFILEPLOT.
+.PP
+Referenced by makepopup().
+.SS "void Title (Widget w, XtPointer client_data, XtPointer call_data)"
+.PP
+Definition at line 313 of file ximbuttons.c.
+.PP
+References makepopup(), and w.
+.PP
+Referenced by main().
+.SS "void UnZoom (Widget w, XtPointer client_data, XtPointer call_data)"
+.PP
+Definition at line 60 of file ximbuttons.c.
+.PP
+References destroyzoompixmap(), LEVEL, NLEVELS, showpixmap(), xbgetvalue(), and xbsetvalue().
+.PP
+Referenced by main().
+.SS "void Zoom (Widget w, XtPointer client_data, XtPointer call_data)"
+.PP
+Definition at line 42 of file ximbuttons.c.
+.PP
+References createzoompixmap(), fillzoompixmap(), LEVEL, showpixmap(), xbgetvalue(), and xbsetvalue().
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "char \fBcustomcommand\fP[256]\fC [static]\fP"
+.PP
+Definition at line 26 of file ximbuttons.c.
+.PP
+Referenced by Custom(), and doplot().
+.SS "short** f[MAX_FITS_DIM][MAX_LEVELS]"
+.PP
+Definition at line 30 of file ximbuttons.c.
+.SS "char \fBfilename\fP[128]\fC [static]\fP"
+.PP
+Definition at line 26 of file ximbuttons.c.
+.PP
+Referenced by Makemask(), OkMakemask(), OkPrint(), Print(), and printclick().
+.SS "int \fBfirstmaskpoint\fP\fC [static]\fP"
+.PP
+Definition at line 24 of file ximbuttons.c.
+.PP
+Referenced by addmaskpoint(), and openmaskfile().
+.SS "int \fBhitcancel\fP\fC [static]\fP"
+.PP
+Definition at line 25 of file ximbuttons.c.
+.PP
+Referenced by Cancel(), OkMakemask(), and OkPrint().
+.SS "int \fBhitok\fP\fC [static]\fP"
+.PP
+Definition at line 25 of file ximbuttons.c.
+.PP
+Referenced by Cancel(), Makemask(), OkMakemask(), OkPrint(), and Print().
+.SS "int \fBmakingmask\fP = 0 printing = 0 gotfirstprintclick\fC [static]\fP"
+.PP
+Definition at line 22 of file ximbuttons.c.
+.PP
+Referenced by Makemask(), makepopup(), and picclick().
+.SS "FILE* \fBmaskf\fP\fC [static]\fP"
+.PP
+Definition at line 27 of file ximbuttons.c.
+.PP
+Referenced by addmaskpoint(), closemaskfile(), and openmaskfile().
+.SS "int \fBN1\fP[]"
+.PP
+Definition at line 29 of file ximbuttons.c.
+.SS "int \fBN2\fP[]"
+.PP
+Definition at line 29 of file ximbuttons.c.
+.SS "int \fBplotting\fP = 0 gotfirstplotclick plottype\fC [static]\fP"
+.PP
+Definition at line 23 of file ximbuttons.c.
+.PP
+Referenced by Contour(), Custom(), picclick(), plotclick(), and Profile().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

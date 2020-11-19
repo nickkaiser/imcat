@@ -1,0 +1,94 @@
+.TH "makegridcat.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makegridcat.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/args.h'\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\        makegridcat - generate catalogue containing \fBa\fP grid of \fBpoints\fP\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\        makegridcat [ -u | -\fBb\fP ] \fBnx\fP [\fBny\fP [nz ....]]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Makegridcat generates \fBa\fP lc-format catalogue containing \fBa\fP unit spaced\\\fBn\fP\\	grid of \fBpoints\fP for testing purposes.\\\fBn\fP\\\\\fBn\fP\\	If invoked with \fBa\fP single argument \fBnx\fP, makegridcat generates \fBa\fP catalogue\\\fBn\fP\\	containing \fBnx\fP objects consisting of \fBa\fP numerical scalar x with values\\\fBn\fP\\	0,1...(\fBnx\fP-1).\\\fBn\fP\\	If invoked with two arguments \fBnx\fP, \fBny\fP, it generates \fBa\fP catalogue\\\fBn\fP\\	containing \fBnx\fP * \fBny\fP objects consisting of \fBa\fP 2-vector x[]\\\fBn\fP\\	where x[0] runs from 0 through \fBnx\fP-1 and x[1] runs from 0 through \fBny\fP-1.\\\fBn\fP\\	If invoked with three arguments \fBnx\fP, \fBny\fP, nz, it generates \fBa\fP catalogue\\\fBn\fP\\	containing \fBnx\fP * \fBny\fP * nz objects consisting of \fBa\fP 3-vector x[]\\\fBn\fP\\	where x[0] runs from 0 through \fBnx\fP-1 and x[1] runs from 0 through \fBny\fP-1\\\fBn\fP\\	and x[2] runs from 0 through nz-1, and so on.\\\fBn\fP\\\\\fBn\fP\\	Default is text format output.  Use -\fBb\fP option to generate \fBa\fP binary\\\fBn\fP\\	format catalogue.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\        Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBwritegridcat\fP (int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBndim\fP"
+.br
+.ti -1c
+.RI "int * \fBdim\fP"
+.br
+.ti -1c
+.RI "int \fBbinarycat\fP"
+.br
+.ti -1c
+.RI "double * \fBx\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\        makegridcat - generate catalogue containing \fBa\fP grid of \fBpoints\fP\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\        makegridcat [ -u | -\fBb\fP ] \fBnx\fP [\fBny\fP [nz ....]]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Makegridcat generates \fBa\fP lc-format catalogue containing \fBa\fP unit spaced\\\fBn\fP\\	grid of \fBpoints\fP for testing purposes.\\\fBn\fP\\\\\fBn\fP\\	If invoked with \fBa\fP single argument \fBnx\fP, makegridcat generates \fBa\fP catalogue\\\fBn\fP\\	containing \fBnx\fP objects consisting of \fBa\fP numerical scalar x with values\\\fBn\fP\\	0,1...(\fBnx\fP-1).\\\fBn\fP\\	If invoked with two arguments \fBnx\fP, \fBny\fP, it generates \fBa\fP catalogue\\\fBn\fP\\	containing \fBnx\fP * \fBny\fP objects consisting of \fBa\fP 2-vector x[]\\\fBn\fP\\	where x[0] runs from 0 through \fBnx\fP-1 and x[1] runs from 0 through \fBny\fP-1.\\\fBn\fP\\	If invoked with three arguments \fBnx\fP, \fBny\fP, nz, it generates \fBa\fP catalogue\\\fBn\fP\\	containing \fBnx\fP * \fBny\fP * nz objects consisting of \fBa\fP 3-vector x[]\\\fBn\fP\\	where x[0] runs from 0 through \fBnx\fP-1 and x[1] runs from 0 through \fBny\fP-1\\\fBn\fP\\	and x[2] runs from 0 through nz-1, and so on.\\\fBn\fP\\\\\fBn\fP\\	Default is text format output.  Use -\fBb\fP option to generate \fBa\fP binary\\\fBn\fP\\	format catalogue.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\        Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 11 of file makegridcat.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 45 of file makegridcat.c.
+.PP
+References argsinit(), argsToString(), binarycat, dim, error_exit, exit(), flag, FLAG_ARG, getargi(), getflag(), i, ndim, nextargtype(), NO_ARG, usage, writegridcat(), and x.
+.SS "void writegridcat (int level)"
+.PP
+Definition at line 92 of file makegridcat.c.
+.PP
+References binarycat, dim, i, LC_NUM_FMT, ndim, and x.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBbinarycat\fP\fC [static]\fP"
+.PP
+Definition at line 40 of file makegridcat.c.
+.PP
+Referenced by main(), and writegridcat().
+.SS "int * \fBdim\fP\fC [static]\fP"
+.PP
+Definition at line 40 of file makegridcat.c.
+.PP
+Referenced by main(), and writegridcat().
+.SS "int \fBndim\fP\fC [static]\fP"
+.PP
+Definition at line 40 of file makegridcat.c.
+.PP
+Referenced by main(), and writegridcat().
+.SS "double* x\fC [static]\fP"
+.PP
+Definition at line 41 of file makegridcat.c.
+.PP
+Referenced by main(), and writegridcat().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

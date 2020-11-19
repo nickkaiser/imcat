@@ -1,0 +1,64 @@
+.TH "apphot.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+apphot.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBpixel\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBpixel\fP \fBpixel\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBapphot\fP (double *flux, double *\fBrh\fP, double *rql, double *rqu, double *rp, double *nbad, double *\fBfmax\fP, double *x, double rap, double *fb0, double *dfb, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "double \fBrpetrosian\fP (double *x, float **f, int \fBN1\fP, int \fBN2\fP, double *fb0, double *dfb)"
+.br
+.ti -1c
+.RI "int \fBpixcmp\fP (\fBpixel\fP *pix1, \fBpixel\fP *pix2)"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBpixel\fP  \fBpixel\fP"
+.PP
+Referenced by alloc_grays(), alloc_shades(), set_grays(), and set_shades().
+.SH "Function Documentation"
+.PP 
+.SS "int apphot (double * flux, double * rh, double * rql, double * rqu, double * rp, double * nbad, double * fmax, double * x, double rap, double * fb0, double * dfb, float ** f, int N1, int N2)"
+.PP
+Definition at line 19 of file apphot.c.
+.PP
+References dr, dx, dy, f, ff, free(), i, ix, MAGIC, N1, N2, P_MIN, pix, pixcmp(), r, R_SOFTEN, rh, and x.
+.PP
+Referenced by main().
+.SS "int pixcmp (\fBpixel\fP * pix1, \fBpixel\fP * pix2)"
+.PP
+Definition at line 187 of file apphot.c.
+.PP
+References pixel::r.
+.PP
+Referenced by apphot().
+.SS "double rpetrosian (double * x, float ** f, int N1, int N2, double * fb0, double * dfb)"
+.PP
+Definition at line 140 of file apphot.c.
+.PP
+References dx, dy, f, ff, GC_MAX, ix, MAGIC, N1, N2, and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#  Report true full pathname of file(s)
+
+for file in $@; do
+	if test -d $file; then
+		( cd $file; /bin/pwd )
+	else
+		( cd `dirname $file`; echo `/bin/pwd`/`basename $file` )
+	fi
+done

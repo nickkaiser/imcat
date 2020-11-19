@@ -1,0 +1,49 @@
+.TH "op_rand.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+op_rand.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBrandinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBranddoit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBgrandinit\fP (\fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBgranddoit\fP (\fBitem\fP *operator)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void granddoit (\fBitem\fP * operator)"
+.PP
+Definition at line 45 of file op_rand.c.
+.PP
+References gasdev().
+.SS "void grandinit (\fBitem\fP * operator)"
+.PP
+Definition at line 34 of file op_rand.c.
+.PP
+References item::addr, gasdev(), and NUM_TYPE.
+.SS "void randdoit (\fBitem\fP * operator)"
+.PP
+Definition at line 25 of file op_rand.c.
+.PP
+References drand48().
+.SS "void randinit (\fBitem\fP * operator)"
+.PP
+Definition at line 14 of file op_rand.c.
+.PP
+References item::addr, drand48(), and NUM_TYPE.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,72 @@
+.TH "growmagic.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+growmagic.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/args.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	growmagic --- expand MAGIC \fBregions\fP of an image\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	growmagic [-\fBn\fP \fBn\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'growmagic\\' reads \fBa\fP source image from stdin. It makes\\\fBn\fP\\	\fBa\fP copy and then sets to MAGIC any \fBpixel\fP for which any\\\fBn\fP\\	of its eight neighbours have the MAGIC value.\\\fBn\fP\\\\\fBn\fP\\	With '-\fBn\fP \fBn\fP' option it performs this operation \fBn\fP times.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBmax\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP)<(\fBb\fP)?(\fBb\fP):(\fBa\fP))"
+.br
+.ti -1c
+.RI "#define \fBmin\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP)<(\fBb\fP)?(\fBa\fP):(\fBb\fP))"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 32 of file growmagic.c.
+.SS "#define max(\fBa\fP, \fBb\fP)   ((\fBa\fP)<(\fBb\fP)?(\fBb\fP):(\fBa\fP))"
+.PP
+Definition at line 29 of file growmagic.c.
+.SS "#define min(\fBa\fP, \fBb\fP)   ((\fBa\fP)<(\fBb\fP)?(\fBa\fP):(\fBb\fP))"
+.PP
+Definition at line 30 of file growmagic.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	growmagic --- expand MAGIC \fBregions\fP of an image\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	growmagic [-\fBn\fP \fBn\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'growmagic\\' reads \fBa\fP source image from stdin. It makes\\\fBn\fP\\	\fBa\fP copy and then sets to MAGIC any \fBpixel\fP for which any\\\fBn\fP\\	of its eight neighbours have the MAGIC value.\\\fBn\fP\\\\\fBn\fP\\	With '-\fBn\fP \fBn\fP' option it performs this operation \fBn\fP times.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file growmagic.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 34 of file growmagic.c.
+.PP
+References add_comment(), allocFloatArray(), argsinit(), error_exit, exit(), fits, flag, getargi(), getflag(), ix, MAGIC, max, min, N1, N2, read2Dfloatimage(), usage, and write2Dfloatimage().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

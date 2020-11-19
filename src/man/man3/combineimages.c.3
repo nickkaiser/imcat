@@ -1,0 +1,104 @@
+.TH "combineimages.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+combineimages.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/args.h'\fP
+.br
+\fC#include 'avgpixstack.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	combineimages - create mean, median, avsigclip of \fBa\fP \fBstack\fP of images\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	combineimages [\fBoptions\fP....] infile1 infile2....\\\fBn\fP\\		-\fBa\fP clip		# reject pixels with |f - f_median| > clip * \fBsigma\fP\\\fBn\fP\\		-\fBr\fP \fBr\fP		# output the \fBr\fP'th image\\\fBn\fP\\		-s		# get sigmas from \fBfits\fP headers\\\fBn\fP\\		-\fBe\fP		# get sigmas from exposure map images\\\fBn\fP\\		-f \fBf1\fP f2	# allow all pixels with \fBf1\fP < (f - fmedian) / |fmedian| < f2\\\fBn\fP\\		-\fBv\fP		# \fBverbose\fP \fBmode\fP.\\\fBn\fP\\		-o name		# output average (.\fBfits\fP) and exposure (.exp) images\\\fBn\fP\\		-O name		# output average (.\fBfits\fP), exposure (.exp) and bad planes (.bp) images\\\fBn\fP\\		-F		# force 4 byte float format output image\\\fBn\fP\\		-I bscale bzero	# force 2-byte output with \fBb\fP-scaling\\\fBn\fP\\		-\fBm\fP bscale	# bscale factor for \fBsigma\fP image (0.0001)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'combineimages\\' reads \fBa\fP collection of \fBfits\fP images (which\\\fBn\fP\\	must have identical sizes) and writes an average image\\\fBn\fP\\	to stdout.  Default behaviour is to calculate the median.\\\fBn\fP\\\\\fBn\fP\\	Use -\fBa\fP option for various types of averaging.\\\fBn\fP\\	With -\fBa\fP option we do avsigclip style rejection, rejecting pixels with\\\fBn\fP\\	f - fmedian > clip * \fBsigma\fP, and take the weighted average of what's left.\\\fBn\fP\\	With negative clip we take straight mean.\\\fBn\fP\\\\\fBn\fP\\	With -s option we read \fBsigma\fP's from 'SIGMA' value in \fBfits\fP header.\\\fBn\fP\\	With -\fBe\fP option we get \fBsigma\fP's from exposure map images containing 1/\fBsigma\fP^2.\\\fBn\fP\\	These images must have the same names as the source images, but with\\\fBn\fP\\	suffix '.exp'.\\\fBn\fP\\\\\fBn\fP\\	With (-s or -\fBe\fP) and -\fBa\fP \fBoptions\fP we reject pixels which differ from\\\fBn\fP\\	the median by more than clip * \fBsigma\fP and also lie outside the range\\\fBn\fP\\	\fBf1\fP < (f - fmedian) / |fmedian| < f2. The extra tolerance for large\\\fBn\fP\\	|fmedian| values is to allow for variations in the shapes of stars\\\fBn\fP\\	due to seeing variations.  Sensible values for \fBa\fP range of 3:5 in seeing\\\fBn\fP\\	(eg 0.6'' - 1.0'') are \fBf1\fP = -0.5, f2 = 1.0. \\\fBn\fP\\\\\fBn\fP\\	With (-s or -\fBe\fP) but without the -\fBa\fP option we take the weighted mean\\\fBn\fP\\	with no rejection.\\\fBn\fP\\\\\fBn\fP\\	If \fBsigma\fP values are supplied (with -s or -\fBe\fP \fBoptions\fP) then the pixels\\\fBn\fP\\	which survive selection are averaged with weight proportional\\\fBn\fP\\	to 1 / \fBsigma\fP^2.\\\fBn\fP\\\\\fBn\fP\\	With '-o foo' option (and -s or -\fBe\fP) we output two images:\\\fBn\fP\\		foo.\fBfits\fP	# the average image\\\fBn\fP\\		foo.exp		# the exposure map = sum 1/\fBsigma\fP^2   \\\fBn\fP\\\\\fBn\fP\\	With '-O foo' option (and -s or -\fBe\fP) we output three images:\\\fBn\fP\\		foo.\fBfits\fP	# the average image\\\fBn\fP\\		foo.exp		# the exposure map = sum 1/\fBsigma\fP^2   \\\fBn\fP\\		foo.bp		# bad-planes image: \fBn\fP'th bit set if \fBn\fP'th image rejected\\\fBn\fP\\\\\fBn\fP\\	With -\fBr\fP option we output the \fBpixel\fP value of \fBa\fP certain rank.\\\fBn\fP\\	With rank = \fBn\fP and \fBn\fP > 0 we output the \fBn\fP'th lowest image, unless\\\fBn\fP\\	there are fewer than \fBn\fP non-MAGIC values in which case we output\\\fBn\fP\\	the highest \fBpixel\fP.\\\fBn\fP\\	With rank = -\fBn\fP and \fBn\fP > 0 we output the \fBn\fP'th highest image, unless\\\fBn\fP\\	there are fewer than \fBn\fP non-MAGIC values in which case we output\\\fBn\fP\\	the lowest \fBpixel\fP.\\\fBn\fP\\\\\fBn\fP\\	With -\fBv\fP option we print the SIGMA values to stderr.\\\fBn\fP\\	Use -F option to generate float format image -- otherwise\\\fBn\fP\\	we inherit the value from the first input image.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMEDIAN_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBSTRAIGHT_AVG_MODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBWEIGHTED_AVG_MODE\fP   2"
+.br
+.ti -1c
+.RI "#define \fBAVSIGCLIP_MODE\fP   3"
+.br
+.ti -1c
+.RI "#define \fBRANK_MODE\fP   4"
+.br
+.ti -1c
+.RI "#define \fBBATCH_SIZE\fP   64"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define AVSIGCLIP_MODE   3"
+.PP
+Definition at line 89 of file combineimages.c.
+.PP
+Referenced by main().
+.SS "#define BATCH_SIZE   64"
+.PP
+Definition at line 92 of file combineimages.c.
+.PP
+Referenced by main().
+.SS "#define MEDIAN_MODE   0"
+.PP
+Definition at line 86 of file combineimages.c.
+.PP
+Referenced by main().
+.SS "#define RANK_MODE   4"
+.PP
+Definition at line 90 of file combineimages.c.
+.PP
+Referenced by main().
+.SS "#define STRAIGHT_AVG_MODE   1"
+.PP
+Definition at line 87 of file combineimages.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	combineimages - create mean, median, avsigclip of \fBa\fP \fBstack\fP of images\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	combineimages [\fBoptions\fP....] infile1 infile2....\\\fBn\fP\\		-\fBa\fP clip		# reject pixels with |f - f_median| > clip * \fBsigma\fP\\\fBn\fP\\		-\fBr\fP \fBr\fP		# output the \fBr\fP'th image\\\fBn\fP\\		-s		# get sigmas from \fBfits\fP headers\\\fBn\fP\\		-\fBe\fP		# get sigmas from exposure map images\\\fBn\fP\\		-f \fBf1\fP f2	# allow all pixels with \fBf1\fP < (f - fmedian) / |fmedian| < f2\\\fBn\fP\\		-\fBv\fP		# \fBverbose\fP \fBmode\fP.\\\fBn\fP\\		-o name		# output average (.\fBfits\fP) and exposure (.exp) images\\\fBn\fP\\		-O name		# output average (.\fBfits\fP), exposure (.exp) and bad planes (.bp) images\\\fBn\fP\\		-F		# force 4 byte float format output image\\\fBn\fP\\		-I bscale bzero	# force 2-byte output with \fBb\fP-scaling\\\fBn\fP\\		-\fBm\fP bscale	# bscale factor for \fBsigma\fP image (0.0001)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'combineimages\\' reads \fBa\fP collection of \fBfits\fP images (which\\\fBn\fP\\	must have identical sizes) and writes an average image\\\fBn\fP\\	to stdout.  Default behaviour is to calculate the median.\\\fBn\fP\\\\\fBn\fP\\	Use -\fBa\fP option for various types of averaging.\\\fBn\fP\\	With -\fBa\fP option we do avsigclip style rejection, rejecting pixels with\\\fBn\fP\\	f - fmedian > clip * \fBsigma\fP, and take the weighted average of what's left.\\\fBn\fP\\	With negative clip we take straight mean.\\\fBn\fP\\\\\fBn\fP\\	With -s option we read \fBsigma\fP's from 'SIGMA' value in \fBfits\fP header.\\\fBn\fP\\	With -\fBe\fP option we get \fBsigma\fP's from exposure map images containing 1/\fBsigma\fP^2.\\\fBn\fP\\	These images must have the same names as the source images, but with\\\fBn\fP\\	suffix '.exp'.\\\fBn\fP\\\\\fBn\fP\\	With (-s or -\fBe\fP) and -\fBa\fP \fBoptions\fP we reject pixels which differ from\\\fBn\fP\\	the median by more than clip * \fBsigma\fP and also lie outside the range\\\fBn\fP\\	\fBf1\fP < (f - fmedian) / |fmedian| < f2. The extra tolerance for large\\\fBn\fP\\	|fmedian| values is to allow for variations in the shapes of stars\\\fBn\fP\\	due to seeing variations.  Sensible values for \fBa\fP range of 3:5 in seeing\\\fBn\fP\\	(eg 0.6'' - 1.0'') are \fBf1\fP = -0.5, f2 = 1.0. \\\fBn\fP\\\\\fBn\fP\\	With (-s or -\fBe\fP) but without the -\fBa\fP option we take the weighted mean\\\fBn\fP\\	with no rejection.\\\fBn\fP\\\\\fBn\fP\\	If \fBsigma\fP values are supplied (with -s or -\fBe\fP \fBoptions\fP) then the pixels\\\fBn\fP\\	which survive selection are averaged with weight proportional\\\fBn\fP\\	to 1 / \fBsigma\fP^2.\\\fBn\fP\\\\\fBn\fP\\	With '-o foo' option (and -s or -\fBe\fP) we output two images:\\\fBn\fP\\		foo.\fBfits\fP	# the average image\\\fBn\fP\\		foo.exp		# the exposure map = sum 1/\fBsigma\fP^2   \\\fBn\fP\\\\\fBn\fP\\	With '-O foo' option (and -s or -\fBe\fP) we output three images:\\\fBn\fP\\		foo.\fBfits\fP	# the average image\\\fBn\fP\\		foo.exp		# the exposure map = sum 1/\fBsigma\fP^2   \\\fBn\fP\\		foo.bp		# bad-planes image: \fBn\fP'th bit set if \fBn\fP'th image rejected\\\fBn\fP\\\\\fBn\fP\\	With -\fBr\fP option we output the \fBpixel\fP value of \fBa\fP certain rank.\\\fBn\fP\\	With rank = \fBn\fP and \fBn\fP > 0 we output the \fBn\fP'th lowest image, unless\\\fBn\fP\\	there are fewer than \fBn\fP non-MAGIC values in which case we output\\\fBn\fP\\	the highest \fBpixel\fP.\\\fBn\fP\\	With rank = -\fBn\fP and \fBn\fP > 0 we output the \fBn\fP'th highest image, unless\\\fBn\fP\\	there are fewer than \fBn\fP non-MAGIC values in which case we output\\\fBn\fP\\	the lowest \fBpixel\fP.\\\fBn\fP\\\\\fBn\fP\\	With -\fBv\fP option we print the SIGMA values to stderr.\\\fBn\fP\\	Use -F option to generate float format image -- otherwise\\\fBn\fP\\	we inherit the value from the first input image.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file combineimages.c.
+.SS "#define WEIGHTED_AVG_MODE   2"
+.PP
+Definition at line 88 of file combineimages.c.
+.PP
+Referenced by main().
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 95 of file combineimages.c.
+.PP
+References add_comment(), APS_MEDIAN, APS_RANK, APS_STRAIGHT_AVERAGE, APS_WEIGHTED_AVERAGE, argsinit(), avgpixstack(), AVSIGCLIP_MODE, BATCH_SIZE, fitsheader::bscale, fitsheader::bscaling, fitsheader::bzero, c, clip, copyfitsheader(), error_exit, fitsheader::extpixtype, fits, flag, FLAG_ARG, FLOAT_MAGIC, FLOAT_PIXTYPE, getargf(), getargi(), getargs(), getcommentbyname(), getflag(), getnumericvalue(), INT_PIXTYPE, fitsheader::intpixtype, ipf, MEDIAN_MODE, fitsheader::n, N1, N2, fitsheader::ndim, nextargtype(), opmode, fitsheader::opstream, pix, RANK_MODE, readfitsheader(), readfitsline(), SHORT_PIXTYPE, sigma, STRAIGHT_AVG_MODE, UCHAR_PIXTYPE, usage, verbose, WEIGHTED_AVG_MODE, writefitsheader(), writefitsline(), and writefitstail().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

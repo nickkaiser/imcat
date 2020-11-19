@@ -1,0 +1,304 @@
+.TH "mergecatsmain.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+mergecatsmain.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include 'grid.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBntuplet\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	mergecats - merge catalogues of objects by position\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	mergecats [\fBoptions\fP...] \fBd\fP \fBa\fP.cat \fBb\fP.cat ....\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'mergecats' reads \fBN\fP catalogues of objects and outputs \fBa\fP single\\\fBn\fP\\	merged catalogue of objects whose positions match to\\\fBn\fP\\	within tolerance \fBd\fP.\\\fBn\fP\\\\\fBn\fP\\	We first read all the catalogues\\\fBn\fP\\	and then for each \fBobject\fP in turn construct an \fBN\fP-tuplet\\\fBn\fP\\	consisting of it and any neighbours which meet the\\\fBn\fP\\	positional tolerance criterion.  We then rank the \fBN\fP-tuplets\\\fBn\fP\\	in \fBorder\fP of \fBquality\fP of match (an \fBN\fP-tuplet\\\fBn\fP\\	with all slots filled ranks higher than one with one\\\fBn\fP\\	empty slot etc., otherwise rank is the sum of the\\\fBn\fP\\	\fBN\fP (\fBN\fP - 1) / 2 separations).  We then output the\\\fBn\fP\\	\fBN\fP-tuplets (as objects with same named items as\\\fBn\fP\\	the input catalogue but where each \fBitem\fP is \fBa\fP \fBN\fP-vector\\\fBn\fP\\	of the input values) in \fBorder\fP of decreasing rank, but\\\fBn\fP\\	only using the objects which were not contained in \fBa\fP previously\\\fBn\fP\\	output \fBN\fP-tuplet.\\\fBn\fP\\\\\fBn\fP\\	By default, mergecats will only output complete ntuplets (\fBi\fP.\fBe\fP\\\fBn\fP\\	those with detections in all input catalogues).\\\fBn\fP\\\\\fBn\fP\\	The idea here is that if one has three input catalogues\\\fBn\fP\\	containing positionally coincidental objects \fBB\fP,V,I say, plus\\\fBn\fP\\	an extra nearby neighbour \fBN\fP detected in \fBB\fP only,\\\fBn\fP\\	then the algorithm will construct four triplets BVI, VIB, IBV and\\\fBn\fP\\	NVI, it will then output whichever of the first 3 triplets\\\fBn\fP\\	is tightest and then output an extra \fBobject\fP \fBN\fP-- with\\\fBn\fP\\	two empty slots.\\\fBn\fP\\\\\fBn\fP\\	For efficiency we read the objects from each catalogue into\\\fBn\fP\\	\fBa\fP checkerboard grid of null terminated linked lists of objects.\\\fBn\fP\\	Options are:\\\fBn\fP\\\\\fBn\fP\\	-x \fBxname\fP	Supply name for the 2-vector spatial coord ('x')\\\fBn\fP\\\\\fBn\fP\\	-\fBn\fP nmin		Output only objects with >= nmin detections.\\\fBn\fP\\			With this it may be useful to use -\fBm\fP option:\\\fBn\fP\\\\\fBn\fP\\	-\fBN\fP nmax		Output only objects with <= nmax detections.\\\fBn\fP\\			With this it may be useful to use -\fBm\fP option:\\\fBn\fP\\\\\fBn\fP\\	-\fBm\fP		Prepend the output \fBobject\fP items with \fBa\fP mask which\\\fBn\fP\\		 	is \fBa\fP binary representation of the detections. E.g\\\fBn\fP\\			mask = '10010' indicates \fBa\fP detection in the zeroth\\\fBn\fP\\			and third catalogues of \fBa\fP five catalogue merge.\\\fBn\fP\\			Leading zeros are not printed.\\\fBn\fP\\\\\fBn\fP\\	-\fBM\fP mask		Output only objects which match the specified mask.\\\fBn\fP\\\\\fBn\fP\\	-s		Prepend the output cat with \fBa\fP column containing\\\fBn\fP\\			the 'size' of the \fBobject\fP (sum of the \fBN\fP (\fBN\fP - 1) / 2\\\fBn\fP\\			separations.\\\fBn\fP\\\\\fBn\fP\\	-\fBd\fP		Prepend the output cat with \fBa\fP column containing\\\fBn\fP\\			the \fBnumber\fP of detections.\\\fBn\fP\\\\\fBn\fP\\	-\fBe\fP		Exclude zero separation ntuplets\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBBIG_POS\fP   1.e100"
+.br
+.ti -1c
+.RI "#define \fBBIG_NEG\fP   -1.e100"
+.br
+.ti -1c
+.RI "#define \fBquery\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) > (\fBb\fP) ? 1 : ((\fBa\fP) < (\fBb\fP) ? -1 : 0))"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBntuplet\fP \fBntuplet\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBidentical\fP (\fBcathead\fP *cat1, \fBcathead\fP *cat2)"
+.br
+.ti -1c
+.RI "void \fBfan\fP (int \fBj\fP)"
+.br
+.ti -1c
+.RI "int \fBvalid\fP (\fBobject\fP **\fBobj\fP)"
+.br
+.ti -1c
+.RI "double \fBsep2\fP (\fBobject\fP *obj1, \fBobject\fP *obj2)"
+.br
+.ti -1c
+.RI "double \fBgetsize\fP (\fBobject\fP **\fBobj\fP)"
+.br
+.ti -1c
+.RI "int \fBgetnobjs\fP (\fBobject\fP **\fBobj\fP)"
+.br
+.ti -1c
+.RI "int \fBntupletcmp\fP (const void *ptr1, const void *ptr2)"
+.br
+.ti -1c
+.RI "void \fBdispose\fP (\fBntuplet\fP **ntuparray, \fBobject\fP *opobj)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBN\fP"
+.br
+.ti -1c
+.RI "int * \fBnneighbours\fP"
+.br
+.ti -1c
+.RI "int \fBxindex\fP"
+.br
+.ti -1c
+.RI "int \fBnntuplets\fP"
+.br
+.ti -1c
+.RI "int \fBnobjsmin\fP"
+.br
+.ti -1c
+.RI "int \fBnobjsmax\fP"
+.br
+.ti -1c
+.RI "int \fBdomask\fP"
+.br
+.ti -1c
+.RI "int \fBnprepends\fP"
+.br
+.ti -1c
+.RI "int \fBdosize\fP"
+.br
+.ti -1c
+.RI "int \fBdondet\fP"
+.br
+.ti -1c
+.RI "int \fBnozerosep\fP"
+.br
+.ti -1c
+.RI "int \fBthemask\fP"
+.br
+.ti -1c
+.RI "double \fBd\fP"
+.br
+.ti -1c
+.RI "\fBobject\fP *** \fBneighbourobj\fP"
+.br
+.ti -1c
+.RI "\fBobject\fP ** \fBobj\fP"
+.br
+.ti -1c
+.RI "\fBobject\fP * \fBnullipobj\fP"
+.br
+.ti -1c
+.RI "\fBntuplet\fP * \fBntupletbase\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define BIG_NEG   -1.e100"
+.PP
+Definition at line 84 of file mergecatsmain.c.
+.SS "#define BIG_POS   1.e100"
+.PP
+Definition at line 83 of file mergecatsmain.c.
+.SS "#define query(\fBa\fP, \fBb\fP)   ((\fBa\fP) > (\fBb\fP) ? 1 : ((\fBa\fP) < (\fBb\fP) ? -1 : 0))"
+.PP
+Definition at line 501 of file mergecatsmain.c.
+.PP
+Referenced by ntupletcmp().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	mergecats - merge catalogues of objects by position\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	mergecats [\fBoptions\fP...] \fBd\fP \fBa\fP.cat \fBb\fP.cat ....\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'mergecats' reads \fBN\fP catalogues of objects and outputs \fBa\fP single\\\fBn\fP\\	merged catalogue of objects whose positions match to\\\fBn\fP\\	within tolerance \fBd\fP.\\\fBn\fP\\\\\fBn\fP\\	We first read all the catalogues\\\fBn\fP\\	and then for each \fBobject\fP in turn construct an \fBN\fP-tuplet\\\fBn\fP\\	consisting of it and any neighbours which meet the\\\fBn\fP\\	positional tolerance criterion.  We then rank the \fBN\fP-tuplets\\\fBn\fP\\	in \fBorder\fP of \fBquality\fP of match (an \fBN\fP-tuplet\\\fBn\fP\\	with all slots filled ranks higher than one with one\\\fBn\fP\\	empty slot etc., otherwise rank is the sum of the\\\fBn\fP\\	\fBN\fP (\fBN\fP - 1) / 2 separations).  We then output the\\\fBn\fP\\	\fBN\fP-tuplets (as objects with same named items as\\\fBn\fP\\	the input catalogue but where each \fBitem\fP is \fBa\fP \fBN\fP-vector\\\fBn\fP\\	of the input values) in \fBorder\fP of decreasing rank, but\\\fBn\fP\\	only using the objects which were not contained in \fBa\fP previously\\\fBn\fP\\	output \fBN\fP-tuplet.\\\fBn\fP\\\\\fBn\fP\\	By default, mergecats will only output complete ntuplets (\fBi\fP.\fBe\fP\\\fBn\fP\\	those with detections in all input catalogues).\\\fBn\fP\\\\\fBn\fP\\	The idea here is that if one has three input catalogues\\\fBn\fP\\	containing positionally coincidental objects \fBB\fP,V,I say, plus\\\fBn\fP\\	an extra nearby neighbour \fBN\fP detected in \fBB\fP only,\\\fBn\fP\\	then the algorithm will construct four triplets BVI, VIB, IBV and\\\fBn\fP\\	NVI, it will then output whichever of the first 3 triplets\\\fBn\fP\\	is tightest and then output an extra \fBobject\fP \fBN\fP-- with\\\fBn\fP\\	two empty slots.\\\fBn\fP\\\\\fBn\fP\\	For efficiency we read the objects from each catalogue into\\\fBn\fP\\	\fBa\fP checkerboard grid of null terminated linked lists of objects.\\\fBn\fP\\	Options are:\\\fBn\fP\\\\\fBn\fP\\	-x \fBxname\fP	Supply name for the 2-vector spatial coord ('x')\\\fBn\fP\\\\\fBn\fP\\	-\fBn\fP nmin		Output only objects with >= nmin detections.\\\fBn\fP\\			With this it may be useful to use -\fBm\fP option:\\\fBn\fP\\\\\fBn\fP\\	-\fBN\fP nmax		Output only objects with <= nmax detections.\\\fBn\fP\\			With this it may be useful to use -\fBm\fP option:\\\fBn\fP\\\\\fBn\fP\\	-\fBm\fP		Prepend the output \fBobject\fP items with \fBa\fP mask which\\\fBn\fP\\		 	is \fBa\fP binary representation of the detections. E.g\\\fBn\fP\\			mask = '10010' indicates \fBa\fP detection in the zeroth\\\fBn\fP\\			and third catalogues of \fBa\fP five catalogue merge.\\\fBn\fP\\			Leading zeros are not printed.\\\fBn\fP\\\\\fBn\fP\\	-\fBM\fP mask		Output only objects which match the specified mask.\\\fBn\fP\\\\\fBn\fP\\	-s		Prepend the output cat with \fBa\fP column containing\\\fBn\fP\\			the 'size' of the \fBobject\fP (sum of the \fBN\fP (\fBN\fP - 1) / 2\\\fBn\fP\\			separations.\\\fBn\fP\\\\\fBn\fP\\	-\fBd\fP		Prepend the output cat with \fBa\fP column containing\\\fBn\fP\\			the \fBnumber\fP of detections.\\\fBn\fP\\\\\fBn\fP\\	-\fBe\fP		Exclude zero separation ntuplets\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file mergecatsmain.c.
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBntuplet\fP  \fBntuplet\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "void dispose (\fBntuplet\fP ** ntuparray, \fBobject\fP * opobj)"
+.PP
+Definition at line 515 of file mergecatsmain.c.
+.PP
+References object::addrlist, object::cathead, domask, dondet, dosize, exit(), i, j, N, object::nitems, nntuplets, nobjsmax, nobjsmin, nprepends, nullipobj, themask, and writeobject().
+.PP
+Referenced by main().
+.SS "void fan (int j)"
+.PP
+Definition at line 391 of file mergecatsmain.c.
+.PP
+References getnobjs(), getsize(), i, j, ntuplet::mask, mult(), N, neighbourobj, ntuplet::next, nneighbours, nntuplets, ntuplet::nobjs, ntupletbase, ntuplet::obj, obj, ntuplet::size, and valid().
+.PP
+Referenced by main().
+.SS "int getnobjs (\fBobject\fP ** obj)"
+.PP
+Definition at line 488 of file mergecatsmain.c.
+.PP
+References i, N, and obj.
+.PP
+Referenced by fan().
+.SS "double getsize (\fBobject\fP ** obj)"
+.PP
+Definition at line 470 of file mergecatsmain.c.
+.PP
+References i, j, N, obj, sep2(), and size.
+.PP
+Referenced by fan().
+.SS "int identical (\fBcathead\fP * cat1, \fBcathead\fP * cat2)"
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 110 of file mergecatsmain.c.
+.PP
+References addargscomment(), addobjectitem(), item::addr, object::addrlist, allocgrid(), allocitemcontents(), allocobjectcontents(), BIG_NEG, BIG_POS, BINARY_FILE_TYPE, copyheaderinfo(), d, item::dim, dispose(), domask, dondet, dosize, error_exit, exit(), fan(), getcatipfiletype(), getgridcoords(), getneighbours(), getobjectitem(), getobjectitemindex(), getobjects(), cathead::headeritembase, i, identical(), installitem(), item::itype, ix, j, MAX_NEIGHBOURS, N, item::name, item::ndim, neighbourobj, newitem(), newobject(), ntuplet::next, object::next, item::next, nneighbours, nntuplets, nobj, nobjsmax, nobjsmin, nozerosep, nprepends, ntupletbase, ntupletcmp(), nullipobj, NUM_TYPE, obj, cathead::objectitembase, readcathead(), readobject(), setcatipf(), setcatipfiletype(), setcatopfiletype(), setgridsize(), TEXT_TYPE, themask, usage, writecathead(), x, xindex, xmax, and xmin.
+.SS "int ntupletcmp (const void * ptr1, const void * ptr2)"
+.PP
+Definition at line 502 of file mergecatsmain.c.
+.PP
+References query.
+.PP
+Referenced by main().
+.SS "double sep2 (\fBobject\fP * obj1, \fBobject\fP * obj2)"
+.PP
+Definition at line 457 of file mergecatsmain.c.
+.PP
+References object::addrlist, dx, dy, and xindex.
+.PP
+Referenced by getsize(), main(), and valid().
+.SS "int valid (\fBobject\fP ** obj)"
+.PP
+Definition at line 433 of file mergecatsmain.c.
+.PP
+References d, i, j, N, nozerosep, obj, and sep2().
+.PP
+Referenced by fan().
+.SH "Variable Documentation"
+.PP 
+.SS "double \fBd\fP\fC [static]\fP"
+.PP
+Definition at line 105 of file mergecatsmain.c.
+.PP
+Referenced by main(), and valid().
+.SS "int \fBdomask\fP\fC [static]\fP"
+.PP
+Definition at line 103 of file mergecatsmain.c.
+.PP
+Referenced by dispose(), and main().
+.SS "int \fBdondet\fP\fC [static]\fP"
+.PP
+Definition at line 103 of file mergecatsmain.c.
+.PP
+Referenced by dispose(), and main().
+.SS "int \fBdosize\fP\fC [static]\fP"
+.PP
+Definition at line 103 of file mergecatsmain.c.
+.PP
+Referenced by dispose(), and main().
+.SS "int \fBN\fP\fC [static]\fP"
+.PP
+Definition at line 103 of file mergecatsmain.c.
+.SS "\fBobject\fP*** \fBneighbourobj\fP\fC [static]\fP"
+.PP
+Definition at line 106 of file mergecatsmain.c.
+.PP
+Referenced by fan(), and main().
+.SS "int * \fBnneighbours\fP\fC [static]\fP"
+.PP
+Definition at line 103 of file mergecatsmain.c.
+.PP
+Referenced by fan(), and main().
+.SS "int \fBnntuplets\fP\fC [static]\fP"
+.PP
+Definition at line 103 of file mergecatsmain.c.
+.PP
+Referenced by dispose(), fan(), and main().
+.SS "int \fBnobjsmax\fP\fC [static]\fP"
+.PP
+Definition at line 103 of file mergecatsmain.c.
+.PP
+Referenced by dispose(), and main().
+.SS "int \fBnobjsmin\fP\fC [static]\fP"
+.PP
+Definition at line 103 of file mergecatsmain.c.
+.PP
+Referenced by dispose(), and main().
+.SS "int \fBnozerosep\fP\fC [static]\fP"
+.PP
+Definition at line 103 of file mergecatsmain.c.
+.PP
+Referenced by main(), and valid().
+.SS "int \fBnprepends\fP\fC [static]\fP"
+.PP
+Definition at line 103 of file mergecatsmain.c.
+.PP
+Referenced by dispose(), and main().
+.SS "\fBntuplet\fP* \fBntupletbase\fP\fC [static]\fP"
+.PP
+Definition at line 107 of file mergecatsmain.c.
+.PP
+Referenced by fan(), and main().
+.SS "\fBobject\fP * \fBnullipobj\fP\fC [static]\fP"
+.PP
+Definition at line 106 of file mergecatsmain.c.
+.PP
+Referenced by dispose(), and main().
+.SS "\fBobject\fP ** \fBobj\fP\fC [static]\fP"
+.PP
+Definition at line 106 of file mergecatsmain.c.
+.PP
+Referenced by fan(), getnobjs(), getsize(), main(), and valid().
+.SS "int \fBthemask\fP\fC [static]\fP"
+.PP
+Definition at line 103 of file mergecatsmain.c.
+.PP
+Referenced by dispose(), and main().
+.SS "int \fBxindex\fP\fC [static]\fP"
+.PP
+Definition at line 103 of file mergecatsmain.c.
+.PP
+Referenced by main(), and sep2().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

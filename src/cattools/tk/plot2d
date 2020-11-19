@@ -1,0 +1,154 @@
+#! /usr/local/bin/wish -f
+
+set auto_path "[set env(IMCATDIR)]/src/cattools/tk $auto_path"
+
+
+global _xname _x1 _x2 _yname _y1 _y2 _plotlabel CanvasWidth CanvasHeight
+global _plottype _dobox _dolabels _datafile _hasdatafile
+global BottomMargin TopMargin LeftMargin RightMargin
+global c mbar
+
+# defaults
+setcanvassize 800 800
+setmargins 100 70 30 60
+setuserlimits 0.0 0.0 1.0 1.0
+set _xname "x"
+set _yname "y"
+set _plotlabel ""
+set _plottype "xyscatterplot"
+set _dobox 1
+set _dolabels 1
+set _hasdatafile 0
+set _needscanvaswindow 1
+
+# parse args
+set arg 0
+while {$arg < $argc} {
+	if {[string match -xl* [lindex $argv $arg]]} {
+		set _xname [lindex $argv [incr arg]]
+	} elseif {[string match -xr* [lindex $argv $arg]]} {
+		scan [lindex $argv [incr arg]] "%f" _x1
+		scan [lindex $argv [incr arg]] "%f" _x2
+	} elseif {[string match -yl* [lindex $argv $arg]]} {
+		set _yname [lindex $argv [incr arg]]
+	} elseif {[string match -yr* [lindex $argv $arg]]} {
+		scan [lindex $argv [incr arg]] "%f" _y1
+		scan [lindex $argv [incr arg]] "%f" _y2
+	} elseif {[string match -plotl* [lindex $argv $arg]]} {
+		set _plotlabel [lindex $argv [incr arg]]
+	} elseif {[string match -c* [lindex $argv $arg]]} {
+		scan [lindex $argv [incr arg]] "%d" CanvasWidth
+		scan [lindex $argv [incr arg]] "%d" CanvasHeight
+	} elseif {[string match -m* [lindex $argv $arg]]} {
+		scan [lindex $argv [incr arg]] "%d" LeftMargin
+		scan [lindex $argv [incr arg]] "%d" BottomMargin
+		scan [lindex $argv [incr arg]] "%d" RightMargin
+		scan [lindex $argv [incr arg]] "%d" TopMargin
+	} elseif {[string match -plott* [lindex $argv $arg]]} {
+		set _plottype [lindex $argv [incr arg]]
+	} elseif {[string match -nob* [lindex $argv $arg]]} {
+		set _dobox 0
+	} elseif {[string match -nol* [lindex $argv $arg]]} {
+		set _dolabels 0
+	} elseif {[string match -d* [lindex $argv $arg]]} {
+		set _datafile [lindex $argv [incr arg]]
+		set _hasdatafile 1
+	} else {
+		puts [exec cat [set env(IMCATDIR)]/src/cattools/tk/plot2d.hlp]
+		exit
+	}
+	incr arg
+}
+
+# create the plot2d window
+frame .plottype -relief raised -bd 2
+label .plottypelabel -text "plot type:"
+radiobutton .xyscatterplot -text "xyscatterplot" -variable _plottype \
+	-value "xyscatterplot" -anchor w
+radiobutton .ellipseplot -text "ellipseplot" -variable _plottype \
+	-value "ellipseplot" -anchor w 
+
+frame .labels -relief raised -bd 2
+label .labelslabel -text "labels:"
+frame .xlabel
+label .xlabellabel -text "   x:"
+entry .xlabelentry -width 20 -relief sunken -bd 2 -textvariable _xname
+frame .ylabel
+label .ylabellabel -text "   y:"
+entry .ylabelentry -width 20 -relief sunken -bd 2 -textvariable _yname
+frame .plotlabel
+label .plotlabellabel -text "plot:"
+entry .plotlabelentry -width 20 -relief sunken -bd 2 -textvariable _plotlabel
+
+frame .userlimits -relief raised -bd 2
+label .userlimitslabel -text "user limits:"
+frame .xlimits
+label .x1label -text "x1:"
+entry .x1entry -width 6 -relief sunken -bd 2 -textvariable _x1
+label .x2label -text "x2:"
+entry .x2entry -width 6 -relief sunken -bd 2 -textvariable _x2
+frame .ylimits
+label .y1label -text "y1:"
+entry .y1entry -width 6 -relief sunken -bd 2 -textvariable _y1
+label .y2label -text "y2:"
+entry .y2entry -width 6 -relief sunken -bd 2 -textvariable _y2
+
+frame .canvassize -relief raised -bd 2
+label .canvassizelabel -text "canvas size:"
+frame .canvasheightandwidth
+label .canvaswidthlabel -text "width:"
+entry .canvaswidthentry -width 6 -relief sunken -bd 2 -textvariable CanvasWidth
+label .canvasheightlabel -text "height:"
+entry .canvasheightentry -width 6 -relief sunken -bd 2 -textvariable CanvasHeight
+
+# create the command window
+toplevel .cmd 
+wm title .cmd "plot2d command:"
+entry .cmd.entry -width 100 -relief sunken -bd 2 -textvariable _datafile
+frame .cmd.frame -borderwidth 4
+scrollbar .cmd.frame.scroll -relief sunken -command ".cmd.frame.list yview"
+listbox .cmd.frame.list -yscroll ".cmd.frame.scroll set" -relief sunken \
+	-setgrid 1
+pack .cmd.entry -side top
+pack .cmd.frame -side top -expand yes -fill both
+pack .cmd.frame.scroll -side right -fill y
+pack .cmd.frame.list -side left -expand yes -fill both
+.cmd.frame.list insert end "hello"
+bind .cmd.frame.list <Double-Button-1> {
+	set _datafile [selection get]
+}
+bind .cmd.entry <Return> {
+	if {$_needscanvaswindow} {
+		toplevel .canvaswindow
+		wm title .canvaswindow "plot2d canvas:"
+		set c .canvaswindow.c
+		set mbar .canvaswindow.mbar
+		createmenus
+		createcanvas
+		pack $mbar $c -side top -fill x
+		set _needscanvaswindow 0
+	}
+	box
+	xlabel $_xname
+	ylabel $_yname
+	plotlabel $_plotlabel
+	.cmd.frame.list insert 0 $_datafile
+}
+
+pack .plottype -side top -fill x
+pack .plottypelabel .xyscatterplot .ellipseplot -in .plottype -side top -anchor w
+pack .labels -side top -fill x
+pack .labelslabel .xlabel .ylabel .plotlabel -in .labels -side top -anchor w
+pack .xlabellabel .xlabelentry -in .xlabel -side left -padx 1m -pady 2m
+pack .ylabellabel .ylabelentry -in .ylabel -side left -padx 1m -pady 2m
+pack .plotlabellabel .plotlabelentry -in .plotlabel -side left -padx 1m -pady 2m
+pack .userlimits -side top -fill x
+pack .userlimitslabel .xlimits .ylimits -in .userlimits -side top -anchor w
+pack .x1label .x1entry .x2label .x2entry -in .xlimits -side left -padx 1m -pady 2m
+pack .y1label .y1entry .y2label .y2entry -in .ylimits -side left -padx 1m -pady 2m
+pack .canvassize -side top -fill x
+pack .canvassizelabel .canvasheightandwidth -in .canvassize -side top -anchor w
+pack .canvaswidthlabel .canvaswidthentry .canvasheightlabel .canvasheightentry \
+	-in .canvasheightandwidth -side left -padx 1m -pady 2m
+
+

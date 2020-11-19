@@ -1,0 +1,51 @@
+#! /usr/bin/perl
+
+# perl script to recircularise an image
+
+# force flushing
+$| = 1;
+
+$usage = "\
+NAME\
+	recirc --- recircularise an image\
+\
+SYNOPSIS\
+	recirc rg srcfits srcpsf dstfits\
+\
+DESCRIPTION\
+	'recirc' convolves 'srcfits' with a psf which is the ratio,\
+	in fourier space, of goalpsf / (srcpsf + eps) where 'goalpsf'\
+	is a gaussian of scale length 'rg' and places\
+	the result in 'dstfits'.\
+\
+";
+
+$rg = shift(@ARGV) || die $usage;
+$rg2 = $rg * $rg;
+$srcfits = shift(@ARGV) || die $usage;
+$srcpsf = shift(@ARGV) || die $usage;
+$dstfits = shift(@ARGV) || die $usage;
+
+$PSFsize = 256;
+$half = $PSFsize / 2;
+
+# get the size of the psf
+$N1 = `imhead < $srcpsf | grep NAXIS1 | tproc 'print \$3'`;
+chop $N1;
+print $N1, "\n";
+$x0 = -($PSFsize - $N1) / 2;
+&sys("makesubimage $x0 $x0 $PSFsize $PSFsize -o < $srcpsf | fft > $$.src.fft");
+&sys("ic -f -c $PSFsize $PSFsize 'xp $half - enter mult yp $half - enter mult + -0.5 mult $rg2 / exp' | fft > $$.goal.fft");
+
+$srcfftmax = `stats < $$.src.fft | grep min | tproc 'print \$6'`;
+chop $srcfftmax;
+$eps = 0.001 * $srcfftmax;
+&sys("ic '%1 %2 fabs $eps + /' $$.goal.fft $$.src.fft | fft -I > $$.recirc.psf");
+&sys("convolve -n $srcfits $$.recirc.psf > $dstfits");
+&sys("rm $$.*.psf $$.*.fft");
+
+sub sys {
+        print ($_[0], "\n");
+        system($_[0]) && die "recirc: system call ($_[0]) failed\n";
+}
+

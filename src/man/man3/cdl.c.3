@@ -1,0 +1,402 @@
+.TH "cdl.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cdl.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include <sys/stat.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'cdl.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCDL_LIBRARY_SOURCE\fP"
+.br
+.ti -1c
+.RI "#define \fBCDL_NEED_COLORMAPS\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBcdl_applyZscale\fP ()"
+.br
+.ti -1c
+.RI "void \fBcdl_flip\fP ()"
+.br
+.ti -1c
+.RI "\fBCDLPtr\fP \fBcdl_open\fP (char *\fBimtdev\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_displayPix\fP (\fBCDLPtr\fP cdl, \fBuchar\fP *\fBpix\fP, int \fBnx\fP, int \fBny\fP, int \fBbitpix\fP, int \fBframe\fP, int \fBfbconfig\fP, int \fBzscale\fP)"
+.br
+.ti -1c
+.RI "char \fBcdl_readCursor\fP (\fBCDLPtr\fP cdl, int sample, float *x, float *y, char *\fBkey\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_setCursor\fP (\fBCDLPtr\fP cdl, int x, int y, int \fBwcs\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_setWCS\fP (\fBCDLPtr\fP cdl, char *imname, char *imtitle, float \fBa\fP, float \fBb\fP, float \fBc\fP, float \fBd\fP, float \fBtx\fP, float \fBty\fP, float \fBz1\fP, float \fBz2\fP, int \fBzt\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_getWCS\fP (\fBCDLPtr\fP cdl, char *name, char *\fBtitle\fP, float *\fBa\fP, float *\fBb\fP, float *\fBc\fP, float *\fBd\fP, float *\fBtx\fP, float *\fBty\fP, float *\fBz1\fP, float *\fBz2\fP, int *\fBzt\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_clearFrame\fP (\fBCDLPtr\fP cdl)"
+.br
+.ti -1c
+.RI "void \fBcdl_selectFB\fP (\fBCDLPtr\fP cdl, int \fBnx\fP, int \fBny\fP, int *\fBfb\fP, int *\fBw\fP, int *\fBh\fP, int *\fBnf\fP, int \fBreset\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_close\fP (\fBCDLPtr\fP cdl)"
+.br
+.ti -1c
+.RI "int \fBcdl_readImage\fP (\fBCDLPtr\fP cdl, \fBuchar\fP **\fBpix\fP, int *\fBnx\fP, int *\fBny\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_readFrameBuffer\fP (\fBCDLPtr\fP cdl, \fBuchar\fP **\fBpix\fP, int *\fBnx\fP, int *\fBny\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_computeZscale\fP (\fBCDLPtr\fP cdl, \fBuchar\fP *\fBpix\fP, int \fBnx\fP, int \fBny\fP, int \fBbitpix\fP, float *\fBz1\fP, float *\fBz2\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_zscaleImage\fP (\fBCDLPtr\fP cdl, \fBuchar\fP **\fBpix\fP, int \fBnx\fP, int \fBny\fP, int \fBbitpix\fP, float \fBz1\fP, float \fBz2\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_printPix\fP (\fBCDLPtr\fP cdl, char *cmd, \fBuchar\fP *\fBpix\fP, int \fBnx\fP, int \fBny\fP, int \fBannotate\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_printPixToFile\fP (\fBCDLPtr\fP cdl, char *fname, \fBuchar\fP *\fBpix\fP, int \fBnx\fP, int \fBny\fP, int \fBannotate\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_readSubRaster\fP (\fBCDLPtr\fP cdl, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP, \fBuchar\fP **\fBpix\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_writeSubRaster\fP (\fBCDLPtr\fP cdl, int lx, int \fBly\fP, int \fBnx\fP, int \fBny\fP, \fBuchar\fP *\fBpix\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_setFBConfig\fP (\fBCDLPtr\fP cdl, int configno)"
+.br
+.ti -1c
+.RI "void \fBcdl_getFBConfig\fP (\fBCDLPtr\fP cdl, int *configno, int *\fBw\fP, int *\fBh\fP, int *\fBnframes\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_lookupFBSize\fP (\fBCDLPtr\fP cdl, int configno, int *\fBw\fP, int *\fBh\fP, int *\fBnf\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_setFrame\fP (\fBCDLPtr\fP cdl, int \fBframe\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_setZTrans\fP (\fBCDLPtr\fP cdl, int ztrans)"
+.br
+.ti -1c
+.RI "void \fBcdl_setZScale\fP (\fBCDLPtr\fP cdl, float \fBz1\fP, float \fBz2\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_setSample\fP (\fBCDLPtr\fP cdl, int nsample)"
+.br
+.ti -1c
+.RI "void \fBcdl_setSampleLines\fP (\fBCDLPtr\fP cdl, int \fBnlines\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_setContrast\fP (\fBCDLPtr\fP cdl, float contrast)"
+.br
+.ti -1c
+.RI "void \fBcdl_setName\fP (\fBCDLPtr\fP cdl, char *imname)"
+.br
+.ti -1c
+.RI "void \fBcdl_setTitle\fP (\fBCDLPtr\fP cdl, char *imtitle)"
+.br
+.ti -1c
+.RI "void \fBcdl_getFrame\fP (\fBCDLPtr\fP cdl, int *\fBframe\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_getZTrans\fP (\fBCDLPtr\fP cdl, int *ztrans)"
+.br
+.ti -1c
+.RI "void \fBcdl_getZScale\fP (\fBCDLPtr\fP cdl, float *\fBz1\fP, float *\fBz2\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_getSample\fP (\fBCDLPtr\fP cdl, int *nsample)"
+.br
+.ti -1c
+.RI "void \fBcdl_getSampleLines\fP (\fBCDLPtr\fP cdl, int *\fBnlines\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_getContrast\fP (\fBCDLPtr\fP cdl, float *contrast)"
+.br
+.ti -1c
+.RI "void \fBcdl_getName\fP (\fBCDLPtr\fP cdl, char *imname)"
+.br
+.ti -1c
+.RI "void \fBcdl_getTitle\fP (\fBCDLPtr\fP cdl, char *imtitle)"
+.br
+.ti -1c
+.RI "void \fBcdl_setDebug\fP (int state)"
+.br
+.ti -1c
+.RI "void \fBcdl_applyZscale\fP (\fBCDLPtr\fP cdl, \fBuchar\fP **\fBpix\fP, int \fBnx\fP, int \fBny\fP, int \fBbitpix\fP)"
+.br
+.ti -1c
+.RI "void \fBcdl_flip\fP (\fBuchar\fP *buffer, int \fBnx\fP, int \fBny\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBDLHead\fP [MAX_FRAMES]"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBDLTail\fP [MAX_FRAMES]"
+.br
+.ti -1c
+.RI "int \fBcdl_debug\fP = 0"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CDL_LIBRARY_SOURCE"
+.PP
+Definition at line 6 of file cdl.c.
+.SS "#define CDL_NEED_COLORMAPS"
+.PP
+Definition at line 7 of file cdl.c.
+.SH "Function Documentation"
+.PP 
+.SS "void cdl_applyZscale (\fBCDLPtr\fP cdl, \fBuchar\fP   ** pix, int nx, int ny, int bitpix)\fC [static]\fP"
+.PP
+Definition at line 1503 of file cdl.c.
+.PP
+References bitpix, cdl_debug, cdl_getZScale(), cdl_getZTrans(), CDL_LINEAR, CDL_LOG, CDL_UNITARY, CDLPtr, free(), i, malloc(), max, min, n, nx, ny, pix, scale, uchar, z1, z2, and zt.
+.SS "void cdl_applyZscale ()\fC [static]\fP"
+.PP
+Referenced by cdl_zscaleImage().
+.SS "int cdl_clearFrame (\fBCDLPtr\fP cdl)"
+.PP
+Definition at line 489 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, and imd_clearFrame().
+.SS "void cdl_close (\fBCDLPtr\fP cdl)"
+.PP
+Definition at line 586 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, free(), and imd_close().
+.SS "void cdl_computeZscale (\fBCDLPtr\fP cdl, \fBuchar\fP   * pix, int nx, int ny, int bitpix, float   * z1, float * z2)"
+.PP
+Definition at line 692 of file cdl.c.
+.PP
+References bitpix, cdl_debug, cdl_zscale(), CDLPtr, nx, ny, pix, uchar, z1, and z2.
+.SS "int cdl_displayPix (\fBCDLPtr\fP cdl, \fBuchar\fP	* pix, int nx, int ny, int bitpix, int frame, int fbconfig, int zscale)"
+.PP
+Definition at line 253 of file cdl.c.
+.PP
+References bitpix, cdl_computeZscale(), cdl_debug, cdl_freeDisplayList(), cdl_selectFB(), cdl_setFBConfig(), cdl_setZScale(), cdl_zscaleImage(), CDLPtr, DLHead, fb, FB_AUTO, fbconfig, frame, h, imd_displayImage(), INDEF, MarkerPtr, max, nframes, nx, ny, pix, True, uchar, w, z1, z2, and zscale.
+.SS "void cdl_flip (\fBuchar\fP 	* buffer, int nx, int ny)\fC [static]\fP"
+.PP
+Definition at line 1671 of file cdl.c.
+.PP
+References i, j, nx, ny, uchar, and v.
+.SS "void cdl_flip ()"
+.PP
+Referenced by cdl_printPix(), and cdl_printPixToFile().
+.SS "void cdl_getContrast (\fBCDLPtr\fP cdl, float   * contrast)"
+.PP
+Definition at line 1393 of file cdl.c.
+.PP
+References cdl_debug, and CDLPtr.
+.SS "void cdl_getFBConfig (\fBCDLPtr\fP cdl, int     * configno, int	* w, int * h, int	* nframes)"
+.PP
+Definition at line 998 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, h, nframes, and w.
+.SS "void cdl_getFrame (\fBCDLPtr\fP cdl, int	* frame)"
+.PP
+Definition at line 1266 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, and frame.
+.SS "void cdl_getName (\fBCDLPtr\fP cdl, char    * imname)"
+.PP
+Definition at line 1418 of file cdl.c.
+.PP
+References cdl_debug, and CDLPtr.
+.SS "void cdl_getSample (\fBCDLPtr\fP cdl, int     * nsample)"
+.PP
+Definition at line 1343 of file cdl.c.
+.PP
+References cdl_debug, and CDLPtr.
+.SS "void cdl_getSampleLines (\fBCDLPtr\fP cdl, int     * nlines)"
+.PP
+Definition at line 1368 of file cdl.c.
+.PP
+References cdl_debug, and CDLPtr.
+.SS "void cdl_getTitle (\fBCDLPtr\fP cdl, char    * imtitle)"
+.PP
+Definition at line 1444 of file cdl.c.
+.PP
+References cdl_debug, and CDLPtr.
+.SS "int cdl_getWCS (\fBCDLPtr\fP cdl, char    * name, char    * title, float   * a, float * b, float * c, float * d, float   * tx, float * ty, float   * z1, float * z2, int     * zt)"
+.PP
+Definition at line 453 of file cdl.c.
+.PP
+References a, b, c, cdl_debug, CDLPtr, d, imd_getWCS(), title, tx, ty, z1, z2, and zt.
+.SS "void cdl_getZScale (\fBCDLPtr\fP cdl, float   * z1, float * z2)"
+.PP
+Definition at line 1317 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, z1, and z2.
+.SS "void cdl_getZTrans (\fBCDLPtr\fP cdl, int     * ztrans)"
+.PP
+Definition at line 1291 of file cdl.c.
+.PP
+References cdl_debug, and CDLPtr.
+.SS "void cdl_lookupFBSize (\fBCDLPtr\fP cdl, int configno, int	* w, int * h, int	* nf)"
+.PP
+Definition at line 1031 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, h, nf, and w.
+.SS "\fBCDLPtr\fP cdl_open (char	* imtdev)"
+.PP
+Definition at line 158 of file cdl.c.
+.PP
+References CDL::a, CDL::b, CDL::c, cdl_debug, CDL_LINEAR, cdl_setDebug(), CDL_VERSION, CDLPtr, CDL::contrast, CDL::d, DEF_CONTRAST, DEF_NSAMPLE, DEF_NSAMPLINES, DLHead, DLTail, F_ROMAN, CDL::fbconfig, CDL::fbheight, CDL::fbnf, CDL::fbwidth, CDL::font, CDL::frame, i, CDL::im_nx, CDL::im_ny, imd_open(), imd_setFBConfig(), imd_setFrame(), IMDPtr, CDL::imname, imtdev, CDL::imtitle, L_SOLID, CDL::linestyle, CDL::linewidth, MarkerPtr, MAX_FRAMES, CDL::nsample, CDL::nsamplines, SZ_NAME, CDL::textwidth, CDL::tx, CDL::ty, CDL::z1, CDL::z2, and CDL::ztrans.
+.SS "int cdl_printPix (\fBCDLPtr\fP cdl, char	* cmd, \fBuchar\fP	* pix, int nx, int ny, int annotate)"
+.PP
+Definition at line 764 of file cdl.c.
+.PP
+References annotate, cdl_debug, cdl_flip(), CDLPtr, eps_close(), eps_init(), eps_print(), EPS_PSEUDOCOLOR, eps_setCmap(), eps_setColorType(), eps_setCorners(), eps_setLabel(), ERR, nx, ny, OK, pix, PSImagePtr, SZ_NAME, and uchar.
+.SS "int cdl_printPixToFile (\fBCDLPtr\fP cdl, char	* fname, \fBuchar\fP	* pix, int nx, int ny, int annotate)"
+.PP
+Definition at line 834 of file cdl.c.
+.PP
+References annotate, cdl_debug, cdl_flip(), CDLPtr, eps_close(), eps_init(), eps_print(), EPS_PSEUDOCOLOR, eps_setCmap(), eps_setColorType(), eps_setCorners(), eps_setLabel(), ERR, nx, ny, OK, pix, PSImagePtr, and uchar.
+.SS "char cdl_readCursor (\fBCDLPtr\fP cdl, int sample, float   * x, float * y, char    * key)"
+.PP
+Definition at line 320 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, imd_readCursor(), key, x, and y.
+.SS "int cdl_readFrameBuffer (\fBCDLPtr\fP cdl, \fBuchar\fP   ** pix, int     * nx, int * ny)"
+.PP
+Definition at line 654 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, imd_readFrameBuffer(), malloc(), nx, ny, pix, and uchar.
+.SS "int cdl_readImage (\fBCDLPtr\fP cdl, \fBuchar\fP   ** pix, int     * nx, int * ny)"
+.PP
+Definition at line 619 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, imd_readImage(), malloc(), nx, ny, pix, and uchar.
+.SS "int cdl_readSubRaster (\fBCDLPtr\fP cdl, int lx, int ly, int nx, int ny, \fBuchar\fP   ** pix)"
+.PP
+Definition at line 895 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, imd_readSubRaster(), ly, malloc(), nx, ny, pix, and uchar.
+.SS "void cdl_selectFB (\fBCDLPtr\fP cdl, int nx, int ny, int	* fb, int	* w, int * h, int	* nf, int reset)"
+.PP
+Definition at line 521 of file cdl.c.
+.PP
+References cdl_debug, cdl_setFBConfig(), CDLPtr, FBTab::config, edges, fb, h, FBTab::height, i, MAX_FBCONFIG, nf, FBTab::nframes, nx, ny, reset, w, and FBTab::width.
+.SS "void cdl_setContrast (\fBCDLPtr\fP cdl, float contrast)"
+.PP
+Definition at line 1191 of file cdl.c.
+.PP
+References cdl_debug, and CDLPtr.
+.SS "int cdl_setCursor (\fBCDLPtr\fP cdl, int x, int y, int wcs)"
+.PP
+Definition at line 354 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, imd_setCursor(), wcs, x, and y.
+.SS "void cdl_setDebug (int state)"
+.PP
+Definition at line 1473 of file cdl.c.
+.PP
+References cdl_debug, com_setDebug(), and imd_setDebug().
+.SS "void cdl_setFBConfig (\fBCDLPtr\fP cdl, int configno)"
+.PP
+Definition at line 964 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, imd_setFBConfig(), and max.
+.SS "void cdl_setFrame (\fBCDLPtr\fP cdl, int frame)"
+.PP
+Definition at line 1063 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, frame, and imd_setFrame().
+.SS "void cdl_setName (\fBCDLPtr\fP cdl, char	* imname)"
+.PP
+Definition at line 1216 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, and imd_setName().
+.SS "void cdl_setSample (\fBCDLPtr\fP cdl, int nsample)"
+.PP
+Definition at line 1141 of file cdl.c.
+.PP
+References cdl_debug, and CDLPtr.
+.SS "void cdl_setSampleLines (\fBCDLPtr\fP cdl, int nlines)"
+.PP
+Definition at line 1166 of file cdl.c.
+.PP
+References cdl_debug, and CDLPtr.
+.SS "void cdl_setTitle (\fBCDLPtr\fP cdl, char	* imtitle)"
+.PP
+Definition at line 1241 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, and imd_setTitle().
+.SS "int cdl_setWCS (\fBCDLPtr\fP cdl, char    * imname, char    * imtitle, float a, float b, float c, float d, float tx, float ty, float z1, float z2, int zt)"
+.PP
+Definition at line 397 of file cdl.c.
+.PP
+References a, b, c, cdl_debug, CDLPtr, d, imd_setWCS(), tx, ty, z1, z2, and zt.
+.SS "void cdl_setZScale (\fBCDLPtr\fP cdl, float z1, float z2)"
+.PP
+Definition at line 1115 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, z1, and z2.
+.SS "void cdl_setZTrans (\fBCDLPtr\fP cdl, int ztrans)"
+.PP
+Definition at line 1089 of file cdl.c.
+.PP
+References cdl_debug, and CDLPtr.
+.SS "int cdl_writeSubRaster (\fBCDLPtr\fP cdl, int lx, int ly, int nx, int ny, \fBuchar\fP   * pix)"
+.PP
+Definition at line 935 of file cdl.c.
+.PP
+References cdl_debug, CDLPtr, imd_writeSubRaster(), ly, nx, ny, pix, and uchar.
+.SS "void cdl_zscaleImage (\fBCDLPtr\fP cdl, \fBuchar\fP   ** pix, int nx, int ny, int bitpix, float z1, float z2)"
+.PP
+Definition at line 729 of file cdl.c.
+.PP
+References bitpix, cdl_applyZscale(), cdl_debug, cdl_setZScale(), CDLPtr, nx, ny, pix, uchar, z1, and z2.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBcdl_debug\fP = 0"
+.PP
+Definition at line 141 of file cdl.c.
+.PP
+Referenced by cdl_applyZscale(), cdl_clearFrame(), cdl_clearOverlay(), cdl_close(), cdl_computeZscale(), cdl_deleteMark(), cdl_displayFITS(), cdl_displayIRAF(), cdl_displayPix(), cdl_doDashedLine(), cdl_doPolygonMark(), cdl_findNearest(), cdl_freeDisplayList(), cdl_getContrast(), cdl_getFBConfig(), cdl_getFrame(), cdl_getName(), cdl_getSample(), cdl_getSampleLines(), cdl_getTitle(), cdl_getWCS(), cdl_getZScale(), cdl_getZTrans(), cdl_lookupFBSize(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_open(), cdl_printPix(), cdl_printPixToFile(), cdl_readCursor(), cdl_readFITS(), cdl_readFITSHdr(), cdl_readFrameBuffer(), cdl_readImage(), cdl_readImageHdr(), cdl_readIRAF(), cdl_readSubRaster(), cdl_redrawOverlay(), cdl_selectFB(), cdl_setContrast(), cdl_setCursor(), cdl_setDebug(), cdl_setFBConfig(), cdl_setFrame(), cdl_setName(), cdl_setSample(), cdl_setSampleLines(), cdl_setTitle(), cdl_setWCS(), cdl_setZScale(), cdl_setZTrans(), cdl_writeSubRaster(), cdl_zscale(), cdl_zscaleImage(), and sampleImage().
+.SS "\fBMarkerPtr\fP \fBDLHead\fP[MAX_FRAMES]"
+.PP
+Definition at line 137 of file cdl.c.
+.PP
+Referenced by cdl_clearOverlay(), cdl_deleteMark(), cdl_displayPix(), cdl_insertMarker(), cdl_open(), cdl_redrawOverlay(), and cdl_removeMarker().
+.SS "\fBMarkerPtr\fP \fBDLTail\fP[MAX_FRAMES]"
+.PP
+Definition at line 138 of file cdl.c.
+.PP
+Referenced by cdl_clearOverlay(), cdl_insertMarker(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_open(), and cdl_removeMarker().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

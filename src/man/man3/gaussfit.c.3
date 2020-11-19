@@ -1,0 +1,88 @@
+.TH "gaussfit.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+gaussfit.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../../utils/stats_stuff.h'\fP
+.br
+\fC#include '../../../utils/frprmn.h'\fP
+.br
+\fC#include '../../../utils/fitstatus.h'\fP
+.br
+\fC#include '../../../utils/powell.h'\fP
+.br
+\fC#include '../../../utils/nrutil.h'\fP
+.br
+\fC#include 'gaussfit.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBgaussfit\fP (float **\fBff\fP, int \fBN1\fP, int \fBN2\fP, float *\fBf0\fP, float *\fBd\fP, float *\fBa\fP, float *\fBb\fP, float *\fBphi\fP)"
+.br
+.ti -1c
+.RI "float \fBfunc\fP (float *p)"
+.br
+.ti -1c
+.RI "void \fBmakemodel\fP (float **\fBff\fP, int \fBN1\fP, int \fBN2\fP, float \fBf0\fP, float *\fBd\fP, float \fBa\fP, float \fBb\fP, float \fBphi\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBn1\fP"
+.br
+.ti -1c
+.RI "int \fBn2\fP"
+.br
+.ti -1c
+.RI "float ** \fBf\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "float func (float * p)"
+.PP
+Definition at line 69 of file gaussfit.c.
+.PP
+References a, b, c, chi2(), f, ix, n1, n2, phi, x, xp(), y, and yp().
+.SS "int gaussfit (float ** ff, int N1, int N2, float * f0, float * d, float * a, float * b, float * phi)"
+.PP
+Definition at line 23 of file gaussfit.c.
+.SS "void makemodel (float ** ff, int N1, int N2, float f0, float * d, float a, float b, float phi)"
+.PP
+Definition at line 95 of file gaussfit.c.
+.SH "Variable Documentation"
+.PP 
+.SS "float** f\fC [static]\fP"
+.PP
+Definition at line 21 of file gaussfit.c.
+.SS "int \fBn1\fP\fC [static]\fP"
+.PP
+function for fitting a Gaussian ellipsiod Definition at line 20 of file gaussfit.c.
+.PP
+Referenced by func(), gaussfit(), and makemodel().
+.SS "int \fBn2\fP\fC [static]\fP"
+.PP
+function for fitting a Gaussian ellipsiod Definition at line 20 of file gaussfit.c.
+.PP
+Referenced by func(), gaussfit(), and makemodel().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

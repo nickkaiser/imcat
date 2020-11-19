@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# tsort :  sort a table
+
+case $# in
+0)	echo "\ntsort :  sort a table\n\nusage: tsort c\n\
+	where we sort on the c'th column\n\
+	Comment lines are discarded\n\n\
+\n"	1>&2; exit 2
+esac
+
+n=$1
+
+nawk ' {
+if ($0 ~ /^#/)
+	print
+else {
+	temp = $'"$n"'
+	$'"$n"' = $1
+	$1 = temp
+	print
+}
+}' | sort -n | nawk '
+BEGIN {
+	OFS = "\t"
+}
+{
+if ($0 ~ /^#/)
+	print
+else {
+	temp = $'"$n"'
+	$'"$n"' = $1
+	$1 = temp
+	print
+}
+}'
+
+

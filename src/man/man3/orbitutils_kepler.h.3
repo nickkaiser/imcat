@@ -1,0 +1,75 @@
+.TH "kepler.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+kepler.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBkeplerorbit\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBkeplerorbit\fP \fBkeplerorbit\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBassignkeplerorbitfrombuffer\fP (\fBkeplerorbit\fP *orbit, double *buffer)"
+.br
+.ti -1c
+.RI "void \fBfillbufferfromkeplerorbit\fP (\fBkeplerorbit\fP *orbit, double *buffer)"
+.br
+.ti -1c
+.RI "int \fBkeplertocartesian\fP (\fBkeplerorbit\fP *\fBtheorbit\fP, double *\fBr\fP, double *\fBv\fP)"
+.br
+.ti -1c
+.RI "int \fBcartesiantokepler\fP (double *\fBr\fP, double *\fBv\fP, \fBkeplerorbit\fP *\fBtheorbit\fP)"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBkeplerorbit\fP  \fBkeplerorbit\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "void assignkeplerorbitfrombuffer (\fBkeplerorbit\fP * orbit, double * buffer)"
+.PP
+Definition at line 14 of file kepler_heasley/kepler.c.
+.PP
+References keplerorbit::a, keplerorbit::e, keplerorbit::i, keplerorbit::M, keplerorbit::Omega, and keplerorbit::omega.
+.PP
+Referenced by main().
+.SS "int cartesiantokepler (double * r, double * v, \fBkeplerorbit\fP * theorbit)"
+.PP
+Definition at line 34 of file kepler_heasley/kepler.c.
+.PP
+References keplerorbit::a, copy(), keplerorbit::e, EMU, keplerorbit::i, ilmnts_(), K, keplerorbit::M, keplerorbit::omega, keplerorbit::Omega, r, scale(), t, theorbit, and v.
+.PP
+Referenced by chisquared(), and main().
+.SS "void fillbufferfromkeplerorbit (\fBkeplerorbit\fP * orbit, double * buffer)"
+.PP
+Definition at line 24 of file kepler_heasley/kepler.c.
+.PP
+References keplerorbit::a, keplerorbit::e, keplerorbit::i, keplerorbit::M, keplerorbit::Omega, and keplerorbit::omega.
+.PP
+Referenced by main().
+.SS "int keplertocartesian (\fBkeplerorbit\fP * theorbit, double * r, double * v)"
+.PP
+Definition at line 71 of file kepler_heasley/kepler.c.
+.PP
+References keplerorbit::a, copy(), keplerorbit::e, EMU, keplerorbit::i, irrdot_(), K, keplerorbit::M, keplerorbit::omega, keplerorbit::Omega, r, scale(), t, theorbit, and v.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,109 @@
+#!/usr/bin/perl
+
+$| = 1;
+
+$usage = "\
+NAME\
+	mergestack --- perl script to merge a stack of catalogues\
+\
+SYNOPSIS\
+	mergestack [options...]\
+\
+DESCRIPTION\
+	Mergestack  makes a first attempt at merging a stack of cats\
+	which should each contain position vector 'x', and\
+	magnitude 'mag'.  For each pair of cats\
+	we run 'registercats' to get approximate transformations\
+	which we apply to the 1st of each pair and then run 'mergecats'\
+	with specified linking length d.  The results of all these\
+	merges is written to the file mergestack1.out by default\
+	It reads a database file (default: exp.db) containing the\
+	names of the catalogues (without extensions) one per line.\
+	The result can be fed to 'fitstack' which will make a first\
+	solution for pointing and telescope distortion parameters.\
+	Options are:
+		-d d		# linking length (10)\
+		-c catdir	# directory containing the mosaic cats (./images)\
+		-t		# just calculate transformation parameters\
+		-s suffix	# suffix for cats ('.cat')\
+		-i N		# size of image used by acfregister (128)\
+		-e expnames	# specify alternative to 'exp.db'\
+		-o outfile	# specify alternative to 'mergestack1.out'\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+";
+
+# defaults
+$catdir = "./images";
+$d = 10.0;
+$outfile = "mergestack1.out";
+$paramsonly = 0;
+$suffix = ".cat";
+$N = 128;
+$expnamesfile = "exp.db";
+
+
+while ($_ = shift(@ARGV)) {
+	if (/^-d/) {
+		$d = shift(@ARGV) || die $usage;
+	} elsif (/^-c/) {
+		$catdir = shift(@ARGV) || die $usage;
+	} elsif (/^-s/) {
+		$suffix = shift(@ARGV) || die $usage;
+	} elsif (/^-t/) {
+		$paramsonly = 1;
+	} elsif (/^-i/) {
+		$N = shift(@ARGV) || die $usage;
+	} elsif (/^-e/) {
+		$expnamesfile = shift(@ARGV) || die $usage;
+	} elsif (/^-o/) {
+		$outfile = shift(@ARGV) || die $usage;
+	} else {
+		die $usage;
+	}
+}
+
+
+		
+open(EXPNAMES, $expnamesfile) || die "mergestack1: can't open $expnamesfile\n";
+$Nexp = 0;
+while (<EXPNAMES>) {
+	 chop($expname[$Nexp++] = $_);
+}
+print "# mergestack1: merging $Nexp exposures\n";
+
+
+$lcflag = "";
+
+&echosys("rm -f $outfile");
+
+for ($exp1 = 0; $exp1 < $Nexp; $exp1++) {
+	for ($exp2 = 0; $exp2 < $Nexp; $exp2++) {
+		next if ($exp2 <= $exp1);
+		$cat1 = "$catdir/$expname[$exp1]$suffix";
+		$cat2 = "$catdir/$expname[$exp2]$suffix";
+		print "combining catalogues: ", $cat1, " ", $cat2, "\n";
+		print "# calculating transformation....\n";
+		$params = `registercats $cat1 $cat2  -i $N -t $d`;
+		if ($paramsonly) {
+			print $exp1, " ", $exp2, " ", $params;
+		} else {
+			chop $params;
+			if ($params) {
+				&echosys("scalerottrans $params < $cat1 > $$.1.tmp");
+				&echosys("mergecats $d $$.1.tmp $cat2  > $$.2.tmp");
+				&echosys("lc -b -x +all 'x = %x[0]' 'temp = %x[1]' < $$.2.tmp | scalerottrans $params -i > $$.3.tmp");
+				&echosys("lc $lcflag -x 'x = %x %temp 2 vector' 'exp = $exp1 $exp2 2 vector' mag < $$.3.tmp >> $outfile");
+				$lcflag = "-o";
+			}
+		}
+	}
+}
+&echosys("rm $$.[123].tmp");
+
+
+sub echosys {
+        print @_, "\n";
+        system(@_) && die "System call failed!\n";
+}

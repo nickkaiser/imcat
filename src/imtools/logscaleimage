@@ -1,0 +1,52 @@
+#!/usr/bin/perl
+
+# force flushing
+$| = 1;
+
+$usage = "\
+NAME\
+	logscaleimage --- scale image for printing\
+\
+SYNOPSIS\
+	logscaleimage [options...] sigma\
+	where options are\
+		-b b 		# b-parameter (1.0)\
+		-a a		# a-parameter (2.0)\
+		-f f0		# scale parameter (30)\
+\
+DESCRIPTION\
+	'logscaleimag' reads a fits image f from stdin and calculates\
+		f0 * (b + a * log(1 + f / (a * sigma)))\
+	which is linear in f for small values (|f| < a few sigma)\
+	but compresses higher values.\
+	Useful for printing images.\
+\
+AUTHOR\
+	Nick Kaiser:  kaiser\@cita.utoronto.ca\
+";
+
+#defaults:
+$a = 2.0;
+$b = 1.0;
+$f0 = 30.0;
+
+while ($_ = shift(@ARGV)) {
+	if (/^-f/) {
+		$f0 = shift(@ARGV) || die $usage;
+	} elsif (/^-b/) {
+		$b = shift(@ARGV) || die $usage;
+	} elsif (/^-a/) {
+		$a = shift(@ARGV) || die $usage;
+	} elsif (/^-/) {
+		die $usage;
+	} else {
+		$sigma = $_;
+		break;
+	}
+}
+
+$mul = $f0 * $a;
+$add = $f0 * $b;
+$div = $sigma * $a;
+
+system("ic '%1 $div / 1 + fabs log $mul mult $add +' -") && die "logscaleimage: ic system call failed\n";

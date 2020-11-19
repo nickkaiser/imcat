@@ -1,0 +1,46 @@
+#!/usr/bin/perl
+
+# force flushing
+$| = 1;
+
+$usage = "\
+NAME\
+	statstocat --- convert stats output to lc cat format\
+\
+SYNOPSIS\
+	statstocat\
+\
+DESCRIPTION\
+	statstocat reads single image stats output from stdin and\
+	writes a lc cat format file to stdout\
+\
+AUTHOR\
+	Nick Kaiser:  kaiser\@cita.utoronto.ca\
+";
+
+die $usage if ($#ARGV >= 0);
+
+open(OP, "| lc -C -n N1 -n N2 -n BITPIX -n min -n max -n mean -n mode -n median -n qlo -n qhi -n sigma -n goodpix -n samplesize -n badpix");
+
+$i;
+while ($line = <>) {
+	if ($i == 0) {		# imsize
+		($N1, $j1, $N2) = split(" ", $line);
+		print OP "$N1 $N2\n";
+	} elsif ($i == 2) {	# min max
+		($w1, $w2) = split(";", $line);
+		@s = split(" ", $w1);
+		print OP "$s[2]\n";
+		@s = split(" ", $w2);
+		print OP "$s[2]\n";
+	} elsif ($i == 6) {	# quartiles
+		($j1, $j2, $qlo, $qhi) = split(" ", $line);
+		print OP "$qlo $qhi\n";
+	} else {
+		($j1, $j2, $val) = split(" ", $line);
+		print OP "$val\n";
+	}
+	$i++;
+}
+
+exit;

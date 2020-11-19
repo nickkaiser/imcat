@@ -1,0 +1,96 @@
+.TH "massmap.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+massmap.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	massmap --- direct summation massmap\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	massmap [option...] \\\fBn\fP\\		-g \fBng\fP			# output grid size (64)\\\fBn\fP\\		-s rs			# gaussian smoothing \fBradius\fP in output grid size units (2.0)\\\fBn\fP\\		-\fBn\fP \fBN\fP			# input image size	(2048)\\\fBn\fP\\		-o \fBxo\fP \fByo\fP		# origin of cat in pixels (0,0)\\\fBn\fP\\		-R R			# \fBradius\fP for determining n_bar (\fBN\fP/4)\\\fBn\fP\\		-\fBe\fP pol			# output smoothed (\fBn\fP * \fBe\fP[pol] / nbar) map\\\fBn\fP\\		-\fBd\fP 			# output D.s\\\fBn\fP\\		-\fBc\fP 			# output D x s\\\fBn\fP\\		-\fBl\fP lossfactor		# divide final mass-map by lossfactor (1.0)\\\fBn\fP\\		-E ename		# name for 2-vector ellipticity (\fBe\fP)\\\fBn\fP\\		-x \fBxname\fP		# name for 2-vector spatial coordinate (x)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'massmap\\' reads \fBe\fP[2], x[2] from \fBa\fP catalogue and calculates foreground\\\fBn\fP\\	surface mass density field from \fBbackground\fP galaxy ellipticities \fBa\fP la KS.\\\fBn\fP\\	Calculates mean galaxy \fBnumber\fP density in disk \fBradius\fP R around field centre\\\fBn\fP\\	Outputs Sigma / Sigma_crit unless -\fBe\fP option set in which case it\\\fBn\fP\\	outputs \fBa\fP gaussian smoothed map of (\fBn\fP * \fBe\fP[pol] / nbar) for pol = 0 or 1\\\fBn\fP\\	Use lossfactor (< 1.0) to correct for seeing\\\fBn\fP\\	Uses W(theta) = (0.1 y^4 / (1 + 0.1 y^4)) / theta^2 (where y = theta / \fBsigma\fP)\\\fBn\fP\\	as truly excellent approximation to bessel function window for gaussian T(\fBk\fP)\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBTINY\fP   1.\fBe\fP-8"
+.br
+.ti -1c
+.RI "#define \fBDO_MASS_MAP\fP   0"
+.br
+.ti -1c
+.RI "#define \fBDO_E_MAP\fP   1"
+.br
+.ti -1c
+.RI "#define \fBDO_DOT_MAP\fP   2"
+.br
+.ti -1c
+.RI "#define \fBDO_CROSS_MAP\fP   3"
+.br
+.ti -1c
+.RI "#define \fBPI\fP   M_PI"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define DO_CROSS_MAP   3"
+.PP
+Definition at line 46 of file massmap.c.
+.PP
+Referenced by main().
+.SS "#define DO_DOT_MAP   2"
+.PP
+Definition at line 45 of file massmap.c.
+.PP
+Referenced by main().
+.SS "#define DO_E_MAP   1"
+.PP
+Definition at line 44 of file massmap.c.
+.PP
+Referenced by main().
+.SS "#define DO_MASS_MAP   0"
+.PP
+Definition at line 43 of file massmap.c.
+.PP
+Referenced by main().
+.SS "#define PI   M_PI"
+.PP
+Definition at line 48 of file massmap.c.
+.SS "#define TINY   1.\fBe\fP-8"
+.PP
+Definition at line 41 of file massmap.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	massmap --- direct summation massmap\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	massmap [option...] \\\fBn\fP\\		-g \fBng\fP			# output grid size (64)\\\fBn\fP\\		-s rs			# gaussian smoothing \fBradius\fP in output grid size units (2.0)\\\fBn\fP\\		-\fBn\fP \fBN\fP			# input image size	(2048)\\\fBn\fP\\		-o \fBxo\fP \fByo\fP		# origin of cat in pixels (0,0)\\\fBn\fP\\		-R R			# \fBradius\fP for determining n_bar (\fBN\fP/4)\\\fBn\fP\\		-\fBe\fP pol			# output smoothed (\fBn\fP * \fBe\fP[pol] / nbar) map\\\fBn\fP\\		-\fBd\fP 			# output D.s\\\fBn\fP\\		-\fBc\fP 			# output D x s\\\fBn\fP\\		-\fBl\fP lossfactor		# divide final mass-map by lossfactor (1.0)\\\fBn\fP\\		-E ename		# name for 2-vector ellipticity (\fBe\fP)\\\fBn\fP\\		-x \fBxname\fP		# name for 2-vector spatial coordinate (x)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'massmap\\' reads \fBe\fP[2], x[2] from \fBa\fP catalogue and calculates foreground\\\fBn\fP\\	surface mass density field from \fBbackground\fP galaxy ellipticities \fBa\fP la KS.\\\fBn\fP\\	Calculates mean galaxy \fBnumber\fP density in disk \fBradius\fP R around field centre\\\fBn\fP\\	Outputs Sigma / Sigma_crit unless -\fBe\fP option set in which case it\\\fBn\fP\\	outputs \fBa\fP gaussian smoothed map of (\fBn\fP * \fBe\fP[pol] / nbar) for pol = 0 or 1\\\fBn\fP\\	Use lossfactor (< 1.0) to correct for seeing\\\fBn\fP\\	Uses W(theta) = (0.1 y^4 / (1 + 0.1 y^4)) / theta^2 (where y = theta / \fBsigma\fP)\\\fBn\fP\\	as truly excellent approximation to bessel function window for gaussian T(\fBk\fP)\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file massmap.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 51 of file massmap.c.
+.PP
+References add_comment(), allocFloatArray(), DO_CROSS_MAP, DO_DOT_MAP, DO_E_MAP, DO_MASS_MAP, dx, dy, e, error_exit, fits, FLOAT_PIXTYPE, g(), lcpipe, line, N, new2Dfitsheader(), PI, scale, sigma, TINY, usage, w, write2Dfloatimage(), x, xo, y, yo, and z.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

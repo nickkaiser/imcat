@@ -1,0 +1,76 @@
+.TH "combinestamps.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+combinestamps.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include 'combine_stuff.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	combinestamps --- take mean, median etc of \fBa\fP \fBstack\fP of images\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	combinestamps [\fBoptions\fP...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'combinestamps' reads \fBa\fP set of Nim images in the form of \fBa\fP\\\fBn\fP\\	Nim x \fBN2\fP x \fBN1\fP \fBfits\fP image (as created by 'makestamps' for\\\fBn\fP\\	instance) and performs some kind of\\\fBn\fP\\	average.  By default it takes the median. Options are:\\\fBn\fP\\		-\fBm\fP	# take mean instead\\\fBn\fP\\		-\fBa\fP clip	# take average clipping at +- clip * \fBsigma\fP   \\\fBn\fP\\	Input images must have identical sizes.  Combinestamps is\\\fBn\fP\\	functionally very similar to 'combineimages', but is unsuitable\\\fBn\fP\\	for large images as it reads all of the images into memory.\\\fBn\fP\\	However, it is therefore capable for reading very large\\\fBn\fP\\	*numbers* of images unlike 'combinimages' which reads images\\\fBn\fP\\	\fBline\fP by \fBline\fP and must therefore have \fBa\fP file open for each\\\fBn\fP\\	input image.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMEAN_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBMEDIAN_MODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBASG_MODE\fP   2"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define ASG_MODE   2"
+.PP
+Definition at line 41 of file combinestamps.c.
+.PP
+Referenced by main().
+.SS "#define MEAN_MODE   0"
+.PP
+Definition at line 39 of file combinestamps.c.
+.PP
+Referenced by main().
+.SS "#define MEDIAN_MODE   1"
+.PP
+Definition at line 40 of file combinestamps.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	combinestamps --- take mean, median etc of \fBa\fP \fBstack\fP of images\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	combinestamps [\fBoptions\fP...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'combinestamps' reads \fBa\fP set of Nim images in the form of \fBa\fP\\\fBn\fP\\	Nim x \fBN2\fP x \fBN1\fP \fBfits\fP image (as created by 'makestamps' for\\\fBn\fP\\	instance) and performs some kind of\\\fBn\fP\\	average.  By default it takes the median. Options are:\\\fBn\fP\\		-\fBm\fP	# take mean instead\\\fBn\fP\\		-\fBa\fP clip	# take average clipping at +- clip * \fBsigma\fP   \\\fBn\fP\\	Input images must have identical sizes.  Combinestamps is\\\fBn\fP\\	functionally very similar to 'combineimages', but is unsuitable\\\fBn\fP\\	for large images as it reads all of the images into memory.\\\fBn\fP\\	However, it is therefore capable for reading very large\\\fBn\fP\\	*numbers* of images unlike 'combinimages' which reads images\\\fBn\fP\\	\fBline\fP by \fBline\fP and must therefore have \fBa\fP file open for each\\\fBn\fP\\	input image.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file combinestamps.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 43 of file combinestamps.c.
+.PP
+References add_comment(), allocFloatArray(), ASG_MODE, avsigclip(), clip, error_exit, f, fits, FLOAT_MAGIC, ipf, fitsheader::ipstream, mean(), MEAN_MODE, median(), MEDIAN_MODE, fitsheader::n, N1, N2, fitsheader::ndim, readfitsheader(), readfitsline(), usage, write2Dfloatimage(), x, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

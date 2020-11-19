@@ -1,0 +1,63 @@
+#! /usr/bin/perl
+
+# apply inverse transformations determined by mosaicfit a merged mosaiccat file
+$usage = "transformmergedmosaiccat: apply inverse transformations\
+determined by mosaicfit a merged mosaiccat file\n";
+$| = 1;
+die $usage if ($#ARGV > -1);
+
+require "chips.db";
+require "fields.db";
+
+@keys = keys %chipname;
+$nchips = $#keys + 1;
+@keys = keys %fieldname;
+$nfields = $#keys + 1;
+
+
+# read the transformation coefficients
+open(COEFFTS, "mosaicfit.par") || die "Can't open mosaicfit.par";
+($alpha) = split(' ', <COEFFTS>);
+for ($fieldno = 0; $fieldno < $nfields; $fieldno++) {
+	($Phi[$fieldno], $dX[$fieldno], $dY[$fieldno]) = split(' ', <COEFFTS>);
+}
+for ($chipno = 0; $chipno < $nchips; $chipno++) {
+	($phi[$chipno], $dx[$chipno], $dy[$chipno]) = split(' ', <COEFFTS>);
+}
+close(COEFFTS);
+
+
+# printf "%g\n", $alpha;
+# for ($fieldno = 0; $fieldno < $nfields; $fieldno++) {
+# 	printf "%g %g %g\n", $Phi[$fieldno], $dX[$fieldno], $dY[$fieldno];
+# }
+# for ($chipno = 0; $chipno < $nchips; $chipno++) {
+# 	printf "%g %g %g\n", $phi[$chipno], $dx[$chipno], $dy[$chipno];
+# }
+
+open(LCIN, "lc -o x chip exp mag|") || die "Can't open lc-pipe for input";
+open(LCOUT, "| lc -C -b -N '2 2 2 x' -N '2 2 1 chip' -N '2 2 1 exp' -N '2 2 1 mag'") ||
+	 die "Can't open lc-pipe for output";
+while (<LCIN>) {
+	($X[0], $Y[0], $X[1], $Y[1], $c[0], $c[1], $e[0], $e[1], $mag[0], $mag[1]) = split(' ');
+	foreach $i (0,1) {
+		$X[$i] -= $dX[$e[$i]];
+		$Y[$i] -= $dY[$e[$i]];
+		$Xe = $X[$i] - $Phi[$e[$i]] * $Y[$i];
+		$Ye = $Y[$i] + $Phi[$e[$i]] * $X[$i];
+		$rr = $Xe * $Xe + $Ye * $Ye;
+		$xe = (1 - $alpha * $rr) * $Xe;
+		$ye = (1 - $alpha * $rr) * $Ye;
+		$xe -= $dx[$c[$i]];
+		$ye -= $dy[$c[$i]];
+		$X[$i] = $xe - $phi[$c[$i]] * $ye;
+		$Y[$i] = $ye + $phi[$c[$i]] * $xe;
+ 	}
+	printf LCOUT "%13g %13g %13g %13g %2d %2d %2d %2d %13g %13g\n", $X[0], $Y[0], $X[1], $Y[1], $c[0], $c[1], $e[0], $e[1], $mag[0], $mag[1];
+}
+
+
+sub echosys {
+	print @_, "\n";
+	system(@_) && die "$0: System call $_[0] failed!\n";
+}

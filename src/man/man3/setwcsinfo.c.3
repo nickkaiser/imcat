@@ -1,0 +1,84 @@
+.TH "setwcsinfo.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+setwcsinfo.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	setwcsinfo --- insert world coordinate system info into \fBfits\fP header\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	setwcsinfo CTYPE1 CDELT1 CRVAL1 CRPIX1 CTYPE2 CDELT2 CRVAL2 CRPIX2 CROTA2 [-\fBc\fP | -p] [-\fBe\fP EPOCH EQUINOX]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	setwcsinfo reads \fBa\fP \fBfits\fP image from stdin, removes\\\fBn\fP\\	any existing WCS info; inserts new ones; and writes\\\fBn\fP\\	out the \fBdata\fP.\\\fBn\fP\\\\\fBn\fP\\	Rotation \fBangle\fP CROTA2 must be given in degrees.\\\fBn\fP\\\\\fBn\fP\\	With -\fBc\fP option we encode the rotation and scaling in the CDn_m matrix.  However,\\\fBn\fP\\	this practice is deprecated.\\\fBn\fP\\\\\fBn\fP\\	With -p option we encode the rotation \fBangle\fP in the PCnnnmmm matrix.\\\fBn\fP\\\\\fBn\fP\\	Refer to Greisen and Calabretta, 96 for description\\\fBn\fP\\	of \fBFITS\fP WCS convention.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser	kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBNNAMES\fP   32"
+.br
+.ti -1c
+.RI "#define \fBCROTA2_ENCODING\fP   0"
+.br
+.ti -1c
+.RI "#define \fBCD_ENCODING\fP   1"
+.br
+.ti -1c
+.RI "#define \fBPC_ENCODING\fP   2"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CD_ENCODING   1"
+.PP
+Definition at line 45 of file setwcsinfo.c.
+.PP
+Referenced by main().
+.SS "#define CROTA2_ENCODING   0"
+.PP
+Definition at line 44 of file setwcsinfo.c.
+.PP
+Referenced by main().
+.SS "#define NNAMES   32"
+.PP
+Definition at line 42 of file setwcsinfo.c.
+.PP
+Referenced by main().
+.SS "#define PC_ENCODING   2"
+.PP
+Definition at line 46 of file setwcsinfo.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	setwcsinfo --- insert world coordinate system info into \fBfits\fP header\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	setwcsinfo CTYPE1 CDELT1 CRVAL1 CRPIX1 CTYPE2 CDELT2 CRVAL2 CRPIX2 CROTA2 [-\fBc\fP | -p] [-\fBe\fP EPOCH EQUINOX]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	setwcsinfo reads \fBa\fP \fBfits\fP image from stdin, removes\\\fBn\fP\\	any existing WCS info; inserts new ones; and writes\\\fBn\fP\\	out the \fBdata\fP.\\\fBn\fP\\\\\fBn\fP\\	Rotation \fBangle\fP CROTA2 must be given in degrees.\\\fBn\fP\\\\\fBn\fP\\	With -\fBc\fP option we encode the rotation and scaling in the CDn_m matrix.  However,\\\fBn\fP\\	this practice is deprecated.\\\fBn\fP\\\\\fBn\fP\\	With -p option we encode the rotation \fBangle\fP in the PCnnnmmm matrix.\\\fBn\fP\\\\\fBn\fP\\	Refer to Greisen and Calabretta, 96 for description\\\fBn\fP\\	of \fBFITS\fP WCS convention.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser	kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file setwcsinfo.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 48 of file setwcsinfo.c.
+.PP
+References argsinit(), c, CD_ENCODING, CROTA2_ENCODING, error_exit, exit(), fitsheader::extpixtype, f, fits, flag, FLAG_ARG, getargs(), getflag(), i, fitsheader::intpixtype, fitsheader::n, newnumericcomment(), newtextcomment(), nextargtype(), NNAMES, PC_ENCODING, pixsize(), prependcomment(), readfitsheader(), readfitsline(), removenamedcomments(), S, usage, writefitsheader(), writefitsline(), and writefitstail().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

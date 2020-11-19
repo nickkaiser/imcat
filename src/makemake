@@ -1,0 +1,288 @@
+#!/usr/bin/perl
+
+$usage = "\
+	usage: makemake arch fft_type [-pgplot pgplotlibdir] [-geomview geomviewlibdir] [-orbfit orbfitlibdir] [-fink finklibdir]\
+\
+	Run makemake to generate 'Makefile'.\
+\
+	The first argument should be one of\
+		IRIX IRIX64 OSF1 SunOS solaris Linux Linux_RH6 Linux_gfortran Darwin\
+	for other architectures you will need to fiddle
+	with the Makefile. See also instructions in Makefile.\
+\
+	The second argument should be one of\
+		NR FFTPACK_C FFTPACK_F FFTW\
+	for numerical recipes (NR), FFTPACK fft routines\
+	(in c- or fortran- versions) or FFTW\
+	Source code for NR and FFTPACK is included - if you\
+	want to use FFTW then you must build and install it\
+	in /usr/local/lib and /usr/local/include first.\
+\
+	The optional arguments are the paths to the\
+	pgplot, geomview and orbfit libraries.\	
+	If these are not defined then the sections\
+		imcattools_pgplot\
+		imcattools_geomview\
+		imcattools_orbits\
+	will not be built.  The tools in imcattools_pgplot\
+	are particularly useful.\n";
+
+if ($#ARGV < 1){
+	print $usage;
+	exit;
+}
+
+$arch 		= shift(@ARGV);
+$ffttype  	= shift(@ARGV);
+$finklibdir	= "/sw/lib";
+while ($arg = shift(@ARGV)) {
+	if ($arg =~ /^-pgplot$/) {
+		$pgplotlibdir 	= shift(@ARGV) || die $usage;
+	} elsif ($arg =~ /^-geomview$/) {
+		$geomviewlibdir = shift(@ARGV) || die $usage;
+	} elsif ($arg =~ /^-orbfit$/) {
+		$orbfitlibdir = shift(@ARGV) || die $usage;
+	} elsif ($arg =~ /^-fink$/) {
+		$finklibdir = shift(@ARGV) || die $usage;
+	} else {
+		die $usage;
+	}
+}
+
+$fftlib{"NR"} = "";
+$fftlib{"FFTPACK_C"} = "-L\$(IMCATDIR)/lib/\$(ARCH) -lfftpack_c";
+$fftlib{"FFTPACK_F"} = "-L\$(IMCATDIR)/lib/\$(ARCH) -lfftpack_f";
+$fftlib{"FFTW"} = "-L\$(HOME)/local/lib -lsrfftw -lsfftw";
+$fftlibdir{"NR"} = "foo";
+$fftlibdir{"FFTPACK_C"} = "fftpack_c";
+$fftlibdir{"FFTPACK_F"} = "fftpack_f";
+$fftlibdir{"FFTW"} = "foo";
+
+system("rm -f Makefile");
+system("cat makestuff/Make.1 > Makefile");
+
+open(MAKEFILE, ">>Makefile");
+
+print MAKEFILE "# based on arch=$arch ffttype=$ffttype pgplotlibdir=$pgplotlibdir geomviewlibdir=$geomviewlibdir orbfitlibdir=$orbfitlibdir\n\n\n";
+
+FFT: {
+	if ($ffttype eq "NR") {
+		$fftflag = "NR_FFT";
+		print MAKEFILE "IMCATFFT = NR\n";
+	} elsif ($ffttype eq "FFTW") {
+		$fftflag = "FFTW_FFT";
+		print MAKEFILE "IMCATFFT = FFTW\n";
+		$fftinclude = "-I\$(HOME)/local/include";
+	} else {
+		$fftflag = "FFTPACK_FFT";
+		print MAKEFILE "IMCATFFT = FFTPACK\n";
+	}
+	print MAKEFILE "IMCATFFTLIB = \"$fftlib{$ffttype}\"\n";
+	print MAKEFILE "FFTLIBDIR = $fftlibdir{$ffttype}\n";
+}
+
+
+CFLAGS: {
+	if ($arch eq "solaris") {
+		if ($ENV{"CC"} eq "gcc") {
+			print MAKEFILE  "CFLAGS = \"-O2 -I/usr/X/include -I\$(IMCATDIR)/src -Dsun $fftinclude -DSVR4 -D$fftflag\"\n";
+		} else {
+			print MAKEFILE  "CFLAGS = \"-fast -I/usr/X/include -I\$(IMCATDIR)/src $fftinclude -Dsun -DSVR4 -D$fftflag\"\n";
+		}
+	} elsif ($arch eq "Linux_gfortran") {
+		print MAKEFILE  "CFLAGS = \"-O2 -fno-strength-reduce -I/usr/X11R6/include -I\$(IMCATDIR)/src $fftinclude -Dlinux -DLITTLEENDIAN -D$fftflag\"\n";
+	} elsif ($arch =~ /^Linux/) {
+		print MAKEFILE  "CFLAGS = \"-O2 -fno-strength-reduce -m486 -I/usr/X11R6/include -I\$(IMCATDIR)/src $fftinclude -Dlinux -DLITTLEENDIAN -D$fftflag\"\n";
+	} elsif ($arch eq "SunOS") {
+		print MAKEFILE  "CFLAGS = \"-O2  -I/aux/local/X11R6/include -I\$(IMCATDIR)/src -D$fftflag\"\n";
+	} elsif ($arch eq "Darwin") {
+                $XINC = "-I/usr/X11R6/include";
+                if ($pgplotlibdir) {
+                        $pgplotmakefile = "$pgplotlibdir/makefile";
+                        if (-f $pgplotmakefile) {
+                                $XINC = `grep ^XINCL= $pgplotmakefile`;
+                                $XINC =~ s/XINCL=//;
+                                $XINC =~ s/\n//;
+                        }
+                }
+                print MAKEFILE  "CFLAGS = \"-O2 $XINC -I\$(IMCATDIR)/src -DDarwin -D$fftflag\"\n";
+ 	} else {
+		print MAKEFILE  "CFLAGS = \"-O2 -I\$(IMCATDIR)/src -D$fftflag\"\n";
+	}
+}
+
+XLIBS: {
+        if ($arch = "Darwin") {
+                $Xlibdir = "/usr/X11R6/lib";
+                $Xtoolkit = "-lXt -lX11";
+                if (-f $pgplotmakefile) {
+                        $XLIBS = `grep ^LIBS= $pgplotmakefile`;
+                        $XLIBS =~ s/LIBS=//g;
+                        $XLIBS =~ s/\n//g;
+                        print MAKEFILE "XLIBS = \"$XLIBS\"\n";
+                        # $XAWLIBS = `grep ^ATHENA_LIBS= $pgplotmakefile`;
+                        # $XAWLIBS =~ s/ATHENA_LIBS=//g;
+                        # $XAWLIBS =~ s/\n//g;
+			$XAWLIBS = "$XLIBS -lXaw -lXmu -lXext -lXt";
+                        print MAKEFILE "XAWLIBS = \"$XAWLIBS\"\n";
+                        $XMLIBS = `grep ^MOTIF_LIBS= $pgplotmakefile`;
+                        $XMLIBS =~ s/MOTIF_LIBS=//g;
+                        $XMLIBS =~ s/\n//g;
+                        print MAKEFILE "XMLIBS = $XMLIBS\n";
+                        last XLIBS;
+                }                               
+        } elsif ($arch eq "solaris") {
+		# $Xlibdir = "/opt/X11R6.1/lib";
+		$Xlibdir = "/usr/X/lib";
+		$Xtoolkit = "-lXt -lSM -lICE -lXext -lX11 -lsocket -lnsl";
+	} elsif ($arch  =~ /^Linux/){
+		$Xlibdir = "/usr/X11R6/lib";
+		$Xtoolkit = "-lXt -lSM -lICE -lXext -lX11";
+	} elsif ($arch eq "SunOS"){
+		$Xlibdir = "/aux/local/X11R6/lib ";
+		$Xtoolkit = "-lXt -lSM -lICE -lXext -lX11";
+	} elsif ($arch  =~ /^Darwin/){
+		$Xlibdir = "/usr/X11R6/lib";
+		$Xtoolkit = "-lXt -lX11";
+	} else {
+		$Xlibdir = "/usr/local/X11/lib";
+		$Xtoolkit = "-lXt -lX11";
+	}
+	print MAKEFILE "XAWLIBS = \"-L$Xlibdir -lXaw -lXmu -lXext $Xtoolkit\"\n";
+	print MAKEFILE "XMLIBS = \"-lXm $Xtoolkit -lPW\"\n";
+	print MAKEFILE "XLIBS = \"-L$Xlibdir $Xtoolkit\"\n";
+}
+
+
+FCOMP: {
+	if ($arch eq "Linux_gfortran") {
+		print MAKEFILE "FCOMP = \"gfortran\"\n";
+		$FCOMPL = "gfortran";
+	} elsif ($arch eq "Darwin") {
+                if (-f $pgplotmakefile) {
+                        $FCOMPL = `grep ^FCOMPL= $pgplotmakefile`;
+                        $FCOMPL =~ s/FCOMPL=//g;
+                        $FCOMPL =~ s/\n//g;
+		} else {
+			$FCOMPL = "g77";
+		}
+	} else {
+		$FCOMPL = "g77";
+	}
+	print MAKEFILE "FCOMP = $FCOMPL\n";
+}
+
+PGLIBS: {
+	if ($pgplotlibdir) {
+		print MAKEFILE "PGLIBDIR = $pgplotlibdir\n";
+	} 
+#	if ($arch eq "solaris") {
+#		print MAKEFILE "PGEXTRAS = \"-L/usr/ucblib -lucb\"\n";
+#	}
+}
+
+GEOMVIEW: {
+	if ($geomviewlibdir) {
+		print MAKEFILE "GEOMVIEWLIBDIR = $geomviewlibdir\n";		
+	}
+}
+
+ORBITS: {
+	if ($orbfitlibdir) {
+		print MAKEFILE "ORBFITLIBDIR = $orbfitlibdir\n";		
+	}
+}
+
+RANLIB: {
+	if ($arch =~ "^IRIX") {
+		print MAKEFILE "RANLIB =\n";
+	} else {
+		print MAKEFILE "RANLIB = ranlib\n";
+	}
+}
+
+
+FLIBS: {
+	if ($arch eq "IRIX") {
+		print MAKEFILE "FLIBS = \"-lF77 -lm -lU77 -lI77 -lisam -lmpc\"\n";
+		last FLIBS;
+	} elsif ($arch eq "OSF1") {
+		print MAKEFILE "FLIBS = \"-lUfor -lfor -lFutil -lm -lots\"\n";
+		last FLIBS;
+	} elsif ($arch eq "solaris") {
+		$g77libpath = `makestuff/libg77_path`;
+		print MAKEFILE "FLIBS = \"\$(IMCATDIR)/lib/\$(ARCH)/dummy_MAIN.o $g77libpath -lg2c -lm\"\n";
+		# print MAKEFILE "FLIBS = \"-L/opt/SUNWspro/SC4.0/lib -lM77 -lF77 -lsunmath -lm -lcx -lc\"\n";
+ 		# print MAKEFILE "FLIBS = \"/opt/SUNWspro/SC2.0.1/cg92/__fnonstd.o -L/opt/SUNWspro/SC2.0.1 -lF77 -lM77 -lm -lc\"\n";
+		last FLIBS;
+	} elsif ($arch =~ /^Linux/) {
+		$g77libpath = `makestuff/libg77_path`;
+		if ($arch =~ /RH/) {
+			print MAKEFILE "FLIBS = \"\$(IMCATDIR)/lib/\$(ARCH)/dummy_MAIN.o $g77libpath -lg2c -lm\"\n";
+		} elsif ($arch =~ /gfortran/) {
+			$gfortranlibpath = `makestuff/libgfortran_path`;
+			print MAKEFILE "FLIBS = \"\$(IMCATDIR)/lib/\$(ARCH)/dummy_MAIN.o $gfortranlibpath -lgfortran -lpng -lz -lm\"\n";
+		} else {
+			print MAKEFILE "FLIBS = \"\$(IMCATDIR)/lib/\$(ARCH)/dummy_MAIN.o $g77libpath -lf2c -lm -lgcc -lc\"\n";
+		}
+		last FLIBS;
+	} elsif ($arch =~ /^Darwin/) {
+		$fortranlibpath = `makestuff/fortranlibpath $FCOMPL`;
+		print MAKEFILE "FLIBS = \"\$(IMCATDIR)/lib/\$(ARCH)/dummy_MAIN.o $fortranlibpath -L$finklibdir -lpng -lf2c -lm\"\n";
+		last FLIBS;
+	} elsif ($arch =~ /^IRIX64/) {
+		$g77libpath = `makestuff/libg77_path`;
+		print MAKEFILE "FLIBS = \"\$(IMCATDIR)/lib/\$(ARCH)/dummy_MAIN.o $g77libpath -lg2c -lm\"\n";
+		last FLIBS;
+	} elsif ($arch eq "SunOS") {
+		print MAKEFILE "FLIBS = \"\$(IMCATDIR)/lib/\$(ARCH)/dummy_MAIN.o -L/usr/lang/SC1.0/cg87 -L/usr/lang/SC1.0 -lF77\"\n";
+		last FLIBS;
+	}
+}
+
+FFLAGS: {
+	if (($arch eq "solaris") || ($arch eq "SunOS")) {
+		print MAKEFILE "FFLAGS = \"-fast\"\n";
+	} else {
+		print MAKEFILE "FFLAGS = \"-O\"\n";
+	}
+}
+
+SOCKET: {
+	if ($arch eq "solaris") {
+		print MAKEFILE "SOCKET = \"-lsocket\"\n";
+	} else {
+		print MAKEFILE "SOCKET = \"\"\n";
+	}
+}
+
+
+print MAKEFILE "\n\n";
+
+close(MAKEFILE);
+system("cat makestuff/Make.2 >> Makefile");
+if ($pgplotlibdir) {
+	system("cat makestuff/Make.pgplot >> Makefile");
+} else {
+	system("echo 'imcattools_pgplot :' >> Makefile");
+}
+if ($geomviewlibdir) {
+	system("cat makestuff/Make.geomview >> Makefile");
+} else {
+	system("echo 'imcattools_geomview :' >> Makefile");
+}
+if ($orbfitlibdir) {
+	system("cat makestuff/Make.orbits >> Makefile");
+} else {
+	system("echo 'imcattools_orbits :' >> Makefile");
+}
+
+FIXTEST: {
+	if ($arch eq "IRIX") {
+		system("./makestuff/fixmakefilesforirix");
+	}
+}
+
+exit;
+
+

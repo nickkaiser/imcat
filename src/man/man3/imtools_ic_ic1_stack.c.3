@@ -1,0 +1,80 @@
+.TH "stack.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stack.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include 'stack.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTACK_DEPTH\fP   100"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBpush\fP (double \fBnumber\fP)"
+.br
+.ti -1c
+.RI "double \fBpop\fP (void)"
+.br
+.ti -1c
+.RI "void \fBresetstack\fP (void)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double \fBstack\fP [STACK_DEPTH]"
+.br
+.ti -1c
+.RI "int \fBstackpos\fP = 0"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define STACK_DEPTH   100"
+.PP
+Definition at line 10 of file imtools/ic/ic1/stack.c.
+.SH "Function Documentation"
+.PP 
+.SS "double pop (void)"
+.PP
+Definition at line 28 of file imtools/ic/ic1/stack.c.
+.PP
+References error_exit, stack, and stackpos.
+.SS "void push (double number)"
+.PP
+Definition at line 15 of file imtools/ic/ic1/stack.c.
+.SS "void resetstack (void)"
+.PP
+Definition at line 41 of file imtools/ic/ic1/stack.c.
+.PP
+References stackpos.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "double \fBstack\fP[STACK_DEPTH]"
+.PP
+Definition at line 12 of file imtools/ic/ic1/stack.c.
+.PP
+Referenced by constfunc(), imvalfunc(), num0func(), num1func(), num2func(), pop(), and push().
+.SS "int \fBstackpos\fP = 0"
+.PP
+Definition at line 13 of file imtools/ic/ic1/stack.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

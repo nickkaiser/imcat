@@ -1,0 +1,248 @@
+/*
+ *	getshapesmain.c - a heavily documented example of front end for catalogue processing 
+ */
+
+#define	usage "\n\n\n\
+NAME\n\
+	getshapes --- calculate ellipticities etc. for catalogue of objects\n\
+\n\
+SYNOPSIS\n\
+	getshapes	[options...]\n\
+		-r rname	# name for window radius ('rg')\n\
+		-m rmult	# multiplier: r_window = rmult * rname (1.0)\n\
+		-f fitsfile	# specify fits file explicitly\n\
+		-i 		# ignore the sky background information.\n\
+		-Z r mul	# ignore pixels within mul * r of other objects\n\
+		-R		# always output object\n\
+\n\
+DESCRIPTION\n\
+	\"getshapes\" calculates second moments of sky brightness\n\
+	(and related quantities) for objects detected by (h)findpeaks,\n\
+	though possibly after having been processed by getsky and/or\n\
+	apphot.  It uses a gaussian window of size determined by\n\
+	flags -r, -m.  Use '-r unity' for r_window = rmult.\n\
+	It adds the following items to the catalogue:\n\
+		e[2]		# ellipticity or polarisation\n\
+		psm[2][2]	# 'smear polarizability tensor'\n\
+		psh[2][2]	# 'shear polarizability tensor'\n\
+		d[2] 		# centroid\n\
+	Sometimes trace of quadrupole moment tensor is negative.\n\
+	The default behaviour is not to output such objects, but\n\
+	with -R option (for 'Rambo mode') we output an object\n\
+	with zero polarization and polarizability.\n\
+\n\
+	getshapes uses the iostream library.\n\
+\n\
+AUTHOR\n\
+	Nick Kaiser --- kaiser@cita.utoronto.ca\n\
+\n\n\n"		
+
+
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+
+#include "../../catlib/cat.h"					/* READ THIS! */
+#include "../../imlib/fits.h"
+#include "../../utils/error.h"
+#include "../../utils/arrays.h"
+#include "../../utils/iostream.h"
+#include "../../utils/stats_stuff.h"
+#include "getshape.h"
+#include "zap.h"
+
+
+main(int argc, char *argv[])	
+{
+	int		arg = 1, mode, needfitsname, useunitradius, usesky, dozap, ix, iy, rambomode;
+	double		rwindow, rmult;
+	char		fitsfile[128];	/* fits stuff */
+	char		*rzapname, tempfilename[L_tmpnam];
+	int		N1, N2;
+	fitsheader	*fits;
+	FILE		*fitsf, *tempf;
+	float		**f, **fzap;
+	short		**nzap;
+	cathead		*inputcathead, *outputcathead;		/* catalogue stuff... */
+	object		*inputobject, *outputobject;
+	double		*has_sky;				/* will point to header item */
+	item		*ditem, *eitem, *psmitem, *pshitem;			/* new items we create here... */
+	int		dindex, eindex, psmindex, pshindex;			/* we'll want their indices... */
+	double		*d, *e, **psm, **psh;				/* and local handles */
+	double		*x, *r, *fb0, *dfb, unity[1] = {1.0}, *rzap, zapmul, *flux;		/* handles for input variables we want */
+	char		*rname, defrname[3] = "rg";
+
+	/* defaults */
+	rname = defrname;
+	rmult = 1.0;
+	needfitsname = 1;
+	usesky = 1;
+	useunitradius = 0;
+	dozap = 0;
+	rambomode = 0;
+	
+	/* parse args */
+	while (arg < argc) {
+		if (argv[arg][0] != '-') {
+			error_exit(usage);
+		} else {
+			switch (argv[arg++][1]) {
+				case 'r':
+					if (strcmp(argv[arg], "unity")) {
+						rname = argv[arg++];
+					} else {
+						useunitradius = 1;
+						arg++;
+					}
+					break;
+				case 'm':
+					sscanf(argv[arg++], "%lf", &rmult);
+					break;
+				case 'f':
+					sscanf(argv[arg++], "%s", fitsfile);
+					needfitsname = 0;
+					break;
+				case 'i':
+					usesky = 0;
+					break;
+				case 'Z':
+					rzapname = argv[arg++];
+					sscanf(argv[arg++], "%lf", &zapmul);
+					dozap = 1;
+					break;
+				case 'R':
+					rambomode = 1;
+					break;
+				default:
+					error_exit(usage);
+					break;
+			}
+		}
+	}
+
+	/* if the fits file has been specified then read it now */
+	/* this way we can work with apphot -o mode */
+        if (!needfitsname) {
+                fitsiostream = openiostream(fitsfile, "r");
+                fitsf = fitsiostream->f;
+                read2Dfloatimage(&f, &N1, &N2, &fits, fitsf);
+        } 
+
+	setcatopfiletype(BINARY_FILE_TYPE);
+	inputcathead = readcathead();			/* read the cat head */
+	inputobject = newobject(inputcathead);		/* make the input object */
+	connectobjecttocathead(inputobject);		/* obj addresses point back to cathead */
+	allocobjectcontents(inputobject);		/* and allocate space for obj data */
+
+	outputcathead = (cathead *) calloc(1, sizeof(cathead));			/* new cathead */
+	copyheaderinfo(outputcathead, inputcathead);				/* copy header stuff */
+
+	if (!(outputcathead->headeritembase)) {
+		fprintf(stderr, "# getshapes: warning - no headeritems - usuing no sky correction\n");
+		usesky = 0;
+	} else {
+		has_sky = (double *) getheaderitemaddress("has_sky", outputcathead);
+		if (!(*has_sky))
+			usesky = 0;
+	}
+	addargscomment(argc, argv, outputcathead);		/* add history */
+
+	if (needfitsname) {		/* get the fits file name from the header */
+		strcpy(fitsfile, *((char **) getheaderitemaddress("fits_name", inputcathead)));
+                fitsiostream = openiostream(fitsfile, "r");
+                fitsf = fitsiostream->f;
+                read2Dfloatimage(&f, &N1, &N2, &fits, fitsf);
+	}
+
+	copycontentinfo(outputcathead, inputcathead);		/* copy over pre-exisiting object items */
+	eitem = newitem("e", NUM_TYPE, 1, 2);			/* add a new object item */
+	addobjectitem(eitem, outputcathead);
+	psmitem = newitem("psm", NUM_TYPE, 2, 2, 2);			/* add a new object item */
+	addobjectitem(psmitem, outputcathead);
+	pshitem = newitem("psh", NUM_TYPE, 2, 2, 2);			/* add a new object item */
+	addobjectitem(pshitem, outputcathead);
+	ditem = newitem("d", NUM_TYPE, 1, 2);			/* add a new object item */
+	addobjectitem(ditem, outputcathead);
+	writecathead(outputcathead);				/* and write cathead out */			
+
+	outputobject = newobject(outputcathead);		/* make the output object */
+	eindex = getobjectitemindex("e", outputobject);	/* get indices for new items */
+	psmindex = getobjectitemindex("psm", outputobject);
+	pshindex = getobjectitemindex("psh", outputobject);
+	dindex = getobjectitemindex("d", outputobject);
+	inheritcontents(outputobject, inputobject);		/* pre-existing output object addresses point back to inputobject */
+	allocitemcontents(eitem, &((outputobject->addrlist)[eindex]), 0);	/* allocate space for new data */
+	allocitemcontents(psmitem, &((outputobject->addrlist)[psmindex]), 0);
+	allocitemcontents(pshitem, &((outputobject->addrlist)[pshindex]), 0);
+	allocitemcontents(ditem, &((outputobject->addrlist)[dindex]), 0);
+	e = (double *) ((outputobject->addrlist)[eindex]);	/* get local handles for the new items. */
+	psm = (double **) ((outputobject->addrlist)[psmindex]);
+	psh = (double **) ((outputobject->addrlist)[pshindex]);
+	d = (double *) ((outputobject->addrlist)[dindex]);
+
+	/* now we get the handles to the input object items we will need */
+	x = (double *) ((inputobject->addrlist)[getobjectitemindex("x", inputobject)]);
+	if (useunitradius) {
+		r = unity;
+	} else {
+	  	r = (double *) ((inputobject->addrlist)[getobjectitemindex(rname, inputobject)]);
+	}
+	if (usesky) {
+	  	fb0 = (double *) ((inputobject->addrlist)[getobjectitemindex("fb0", inputobject)]);
+	  	dfb = (double *) ((inputobject->addrlist)[getobjectitemindex("dfb", inputobject)]);
+	} else {
+		fb0 = dfb = NULL;
+	}
+	flux = (double *) ((inputobject->addrlist)[getobjectitemindex("flux", inputobject)]);
+
+	/* if we want to ignore pixels around other objects we need to create */
+	/* fzap, and nzap and spool the cat into a temporary file for re-reading later */
+	if (dozap) {
+		rzap = (double *) ((inputobject->addrlist)[getobjectitemindex(rzapname, inputobject)]);
+		allocFloatArray(&fzap, N1, N2);
+		allocShortArray(&nzap, N1, N2);
+		for (iy = 0; iy < N2; iy++) {
+			for (ix = 0; ix < N1; ix++) {
+				fzap[iy][ix] = f[iy][ix];
+			}
+		}
+		tmpnam(tempfilename); 
+		if (!(tempf = fopen(tempfilename, "w"))) {
+			error_exit("apphot: unable to open temporary file for writing\n");
+		}
+		setcatopf(tempf);
+		while (readobject(inputobject)) {
+			zap(ZAP_MODE, *rzap * zapmul, x, f, fzap, nzap, N1, N2);
+			writeobject(inputobject);
+		}
+		fclose(tempf);
+		if (!(tempf = fopen(tempfilename, "r"))) {
+			error_exit("apphot: unable to open temporary file for reading\n");
+		}
+		setcatipf(tempf);
+		setcatopf(stdout);
+	} else {
+		fzap = f;
+	}
+
+
+	while (readobject(inputobject)) {					/* big loop */
+		rwindow = *r * rmult;
+		if (dozap)
+			zap(UNZAP_MODE, *rzap * zapmul, x, f, fzap, nzap, N1, N2);
+		if (getshape(x, fb0, dfb, rwindow, flux, d, e, psm, psh, fzap, N1, N2)) {	/* do the biz...*/
+			writeobject(outputobject);
+		} else {
+			if (rambomode)
+				writeobject(outputobject);
+		}
+		if (dozap)
+			zap(ZAP_MODE, *rzap * zapmul, x, f, fzap, nzap, N1, N2);
+	}
+	remove (tempfilename);
+	
+	exit(0);
+}
+

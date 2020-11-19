@@ -1,0 +1,56 @@
+.TH "getshape3.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getshape3.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'getshape3.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBgetshape3\fP (double *x, double *fb0, double *dfb, double *F, double *q0, double *q, double *P0, double **P, double **Z, double *R, float **f, float **fs, int \fBN1\fP, int \fBN2\fP, float **\fBw\fP, float ***W, float ***RR, float ****K, float ****ZZ, int \fBM1\fP, int \fBM2\fP)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 15 of file getshape3.c.
+.SH "Function Documentation"
+.PP 
+.SS "int getshape3 (double * x, double * fb0, double * dfb, double * F, double * q0, double * q, double * P0, double ** P, double ** Z, double * R, float ** f, float ** fs, int N1, int N2, float ** w, float *** W, float *** RR, float **** K, float **** ZZ, int M1, int M2)"
+.PP
+this is changed wrt getshape2 in that we use the smoothed image to measure polarisation * Definition at line 19 of file getshape3.c.
+.PP
+References dx, dy, error_exit, F(), f, ix, K, l, m, M1, M2, MAGIC, N1, N2, w, W, and x.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,132 @@
+#! /usr/bin/perl
+
+# generate a stack of images for a given region of X,Y sky coords
+$usage = "NAME\
+	makemosaicstack - tool for registering mosaic CCD data\
+SYNOPSIS\
+	makemosaicstack X Y dX dY scalefac destdir imdir [mapmode]\
+DESCRIPTION\
+	warp images to create a stack for sub-image of size dX, dY at X, Y\
+	It expects to find images in imdir/chip?\
+	It is a driver for 'mosaicmap'.\
+	'scalefac' gives the linear size of the target image pixels relative\
+	to those of the source image.\
+	Note that X, Y, dX, dY are given in units of target image pixel size\
+	The optional argument 'mapmode' controls the type of mapping (see\
+	manpage for mosaicmap).  Default is mapmode = 1 for linear interpolation.\
+";
+
+$| = 1;
+
+# defaults 
+$mapmode = 1;
+
+die $usage if ($#ARGV < 6);
+$X[0] = shift @ARGV;
+$Y[0] = shift @ARGV;
+$dXtarget = shift @ARGV;
+$dYtarget = shift @ARGV;
+die "non-positive sub-image size\n" if ($dXtarget <= 0 || $dYtarget <= 0);
+$scalefac = shift @ARGV;
+$destdir = shift @ARGV;
+$basedir = shift @ARGV;
+$mapmode = shift(@ARGV) if ($#ARGV == 0);
+
+
+
+# convert X, Y, dXtarget, dYtarget to source pixel units
+$dX = $dXtarget * $scalefac;
+$dY = $dYtarget * $scalefac;
+$X[0] *= $scalefac;
+$Y[0] *= $scalefac;
+$X[1] = $X[0] + $dX;
+$Y[1] = $Y[0] + $dX;
+
+
+require "chips.db";
+require "fields.db";
+require "nominal.db";
+
+@keys = keys %chipname;
+$nchips = $#keys + 1;
+@keys = keys %fieldname;
+$nfields = $#keys + 1;
+
+
+# read the transformation coefficients
+open(COEFFTS, "mosaicfit.par") || die "Can't open mosaicfit.par";
+($alpha) = split(' ', <COEFFTS>);
+for ($fieldno = 0; $fieldno < $nfields; $fieldno++) {
+	($Phi00[$fieldno], $Phi01[$fieldno], $Phi10[$fieldno], $Phi11[$fieldno], 
+		$dX[$fieldno], $dY[$fieldno], $dM[$fieldno]) = split(' ', <COEFFTS>);
+}
+for ($chipno = 0; $chipno < $nchips; $chipno++) {
+	($phi[$chipno], $dx[$chipno], $dy[$chipno], $dm[$chipno]) = split(' ', <COEFFTS>);
+}
+close(COEFFTS);
+
+# loop over exposures
+foreach $f (keys %fieldname) {
+	$target = "$destdir/$fieldname{$f}.fits";
+	foreach $c (keys %chipname) {
+		$use[$c] = 0;
+	}
+	$useany = 0;
+	# first we map the corner pixels to see which images, if any, contribute
+	foreach $c (keys %chipname) {
+		foreach $h (0,1) {
+			foreach $v (0,1) {
+				$x = $X[$h] - $dX[$f];
+				$y = $Y[$v] - $dY[$f];
+				$xx = $x - $Phi00[$f] * $x - $Phi01[$f] * $y;
+				$yy = $y - $Phi10[$f] * $x - $Phi11[$f] * $y;
+				$rr = $xx * $xx + $yy * $yy;
+				$x = (1 - $alpha * $rr) * $xx;
+				$y = (1 - $alpha * $rr) * $yy;
+				$x -= $dx[$c];
+				$y -= $dy[$c];
+				$xx = $x - $phi[$c] * $y;
+				$yy = $y + $phi[$c] * $x;
+				$x = $xx - $ix{$c} * $Xsize - $xmargin;
+				$y = $yy - $iy{$c} * $Ysize - $ymargin;
+				if (($x >= 0.0 && $x < $xsize) && ($y >= 0.0 && $y < $ysize)) {
+					$use[$c]++;
+					$useany = 1;
+				}
+			}
+		}
+	}
+	if ($useany) {
+		&echosys("ic -c $dXtarget $dYtarget 'MAGIC' > $target");
+		$sigmasum = $nsum = 0.0;
+		foreach $c (keys %chipname) {
+			if ($use[$c] > 0) {
+				$src = "$basedir/chip$chipname{$c}/$fieldname{$f}.fits";
+				$sky = "$basedir/chip$chipname{$c}/$fieldname{$f}.sky";
+				$DX = $ix{$c} * $Xsize + $xmargin;
+				$DY = $iy{$c} * $Ysize + $ymargin;
+				$magfactor = 10.0 ** (0.4 * ($dM[$f] + $dm[$c]));
+				&echosys("ic '%1 $magfactor *' $src > $destdir/temp.fits");
+				$sigmasum += `stats -v sigma < $destdir/temp.fits`;
+				$nsum ++;
+				&echosys("mosaicmap  $alpha $Phi00[$f] $Phi01[$f] $Phi10[$f] $Phi11[$f] $dX[$f] $dY[$f] $phi[$c] $dx[$c] $dy[$c] ".
+					"$DX $DY $X[0] $Y[0] $scalefac $xsize $ysize $target $mapmode < $destdir/temp.fits");
+			}
+		}
+		$sigma = $sigmasum / $nsum;
+		$sigma /= $scalefac;
+		&echosys("addfitscomment $target SIGMA $sigma");
+	} else {
+		&echosys("rm -f $target");
+		&echosys("ln -s ../magic.fits $target");
+	}
+}
+&echosys("rm -f $destdir/temp.fits");
+
+
+
+sub echosys {
+        print @_, "\n";
+        system(@_) && die "$0: System call $_[0] failed!\n";
+}
+

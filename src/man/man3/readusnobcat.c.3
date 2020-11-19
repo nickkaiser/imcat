@@ -1,0 +1,99 @@
+.TH "readusnobcat.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+readusnobcat.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'getxfromradecfunc.h'\fP
+.br
+\fC#include 'radecio.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	readusnobcat --- extract lc-format sub-catalogue from USNO-\fBB\fP database\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	readusnobcat \fBra\fP dec \fBdr\fP [-all]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Readusnobcat extracts \fBa\fP lc-format catalogue from the\\\fBn\fP\\	US Naval Observatory all-sky astrometric catalogue (version \fBB\fP).\\\fBn\fP\\\\\fBn\fP\\	Objects are selected if they lie within stereographic distance\\\fBn\fP\\	\fBdr\fP (in degrees) of the tangent \fBpoint\fP \fBra\fP dec.\\\fBn\fP\\\\\fBn\fP\\	Arguments \fBra\fP, dec may be given in decimal notation, in\\\fBn\fP\\	which case they are interpreted as degrees, or as\\\fBn\fP\\	colon separated triplets, in which case they are interpreted\\\fBn\fP\\	as h:m:s (for \fBra\fP, dra) and d:m:s (dec, ddec)\\\fBn\fP\\\\\fBn\fP\\	Readusnobcat expects to find an environment variable\\\fBn\fP\\	USNOBDIR telling it the directory containing the source\\\fBn\fP\\	catalogue files.\\\fBn\fP\\\\\fBn\fP\\	We do not output objects that are flagged as likely false\\\fBn\fP\\	unless the optional argument -all is provided.\\\fBn\fP\\\\\fBn\fP\\	The output catalogue contains the following entries:\\\fBn\fP\\		x[2]		# stereographic sky coords\\\fBn\fP\\		RA		# right ascension [deg]\\\fBn\fP\\		DEC		# declination [deg]\\\fBn\fP\\		muRA		# proper motion in RA [\fBarcsec\fP/yr]\\\fBn\fP\\		muDEC		# proper motion in DEC [\fBarcsec\fP/yr]\\\fBn\fP\\		sigmaRA		# uncertainty in RA [deg]\\\fBn\fP\\		sigmaDEC	# uncertainty in DEC [deg]\\\fBn\fP\\		sigmamuRA	# uncertainty in proper motion in RA [\fBarcsec\fP/yr]\\\fBn\fP\\		sigmamuDEC	# uncertainty in proper motion in DEC [\fBarcsec\fP/yr]\\\fBn\fP\\		ndet		# \fBnumber\fP of detections\\\fBn\fP\\		\fBmag\fP[5]		# magnitudes, [B1, R1, B2, R2, \fBN\fP]\\\fBn\fP\\		stargal[5]	# star/galaxy classifier (0=galaxy, 11=star)\\\fBn\fP\\	See the USNO-\fBB\fP readme files for more information on the\\\fBn\fP\\	meaning of the flags.\\\fBn\fP\\\\\fBn\fP\\	x[2] is \fBa\fP stereographic projection (in units of degrees).\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser	kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBSPDBANDWIDTH\fP   1.0"
+.br
+.ti -1c
+.RI "#define \fBswap_word\fP(\fBa\fP)"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBgetobjects\fP (char *basefilename, double ra0, double ra1, double dec0, double dec1, double rao, double deco, double \fBdr\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBoutputallobjects\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define SPDBANDWIDTH   1.0"
+.PP
+Definition at line 64 of file readusnobcat.c.
+.SS "#define swap_word(\fBa\fP)"
+.PP
+\fBValue:\fP.nf
+( ((a) << 24) | \
+                      (((a) << 8) & 0x00ff0000) | \
+                      (((a) >> 8) & 0x0000ff00) | \
+        ((unsigned int)(a) >>24) )
+.fi
+.PP
+Definition at line 66 of file readusnobcat.c.
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	readusnobcat --- extract lc-format sub-catalogue from USNO-\fBB\fP database\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	readusnobcat \fBra\fP dec \fBdr\fP [-all]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Readusnobcat extracts \fBa\fP lc-format catalogue from the\\\fBn\fP\\	US Naval Observatory all-sky astrometric catalogue (version \fBB\fP).\\\fBn\fP\\\\\fBn\fP\\	Objects are selected if they lie within stereographic distance\\\fBn\fP\\	\fBdr\fP (in degrees) of the tangent \fBpoint\fP \fBra\fP dec.\\\fBn\fP\\\\\fBn\fP\\	Arguments \fBra\fP, dec may be given in decimal notation, in\\\fBn\fP\\	which case they are interpreted as degrees, or as\\\fBn\fP\\	colon separated triplets, in which case they are interpreted\\\fBn\fP\\	as h:m:s (for \fBra\fP, dra) and d:m:s (dec, ddec)\\\fBn\fP\\\\\fBn\fP\\	Readusnobcat expects to find an environment variable\\\fBn\fP\\	USNOBDIR telling it the directory containing the source\\\fBn\fP\\	catalogue files.\\\fBn\fP\\\\\fBn\fP\\	We do not output objects that are flagged as likely false\\\fBn\fP\\	unless the optional argument -all is provided.\\\fBn\fP\\\\\fBn\fP\\	The output catalogue contains the following entries:\\\fBn\fP\\		x[2]		# stereographic sky coords\\\fBn\fP\\		RA		# right ascension [deg]\\\fBn\fP\\		DEC		# declination [deg]\\\fBn\fP\\		muRA		# proper motion in RA [\fBarcsec\fP/yr]\\\fBn\fP\\		muDEC		# proper motion in DEC [\fBarcsec\fP/yr]\\\fBn\fP\\		sigmaRA		# uncertainty in RA [deg]\\\fBn\fP\\		sigmaDEC	# uncertainty in DEC [deg]\\\fBn\fP\\		sigmamuRA	# uncertainty in proper motion in RA [\fBarcsec\fP/yr]\\\fBn\fP\\		sigmamuDEC	# uncertainty in proper motion in DEC [\fBarcsec\fP/yr]\\\fBn\fP\\		ndet		# \fBnumber\fP of detections\\\fBn\fP\\		\fBmag\fP[5]		# magnitudes, [B1, R1, B2, R2, \fBN\fP]\\\fBn\fP\\		stargal[5]	# star/galaxy classifier (0=galaxy, 11=star)\\\fBn\fP\\	See the USNO-\fBB\fP readme files for more information on the\\\fBn\fP\\	meaning of the flags.\\\fBn\fP\\\\\fBn\fP\\	x[2] is \fBa\fP stereographic projection (in units of degrees).\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser	kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file readusnobcat.c.
+.SH "Function Documentation"
+.PP 
+.SS "int getobjects (char * basefilename, double ra0, double ra1, double dec0, double dec1, double rao, double deco, double dr)"
+.PP
+Definition at line 160 of file readusnobcat.c.
+.PP
+References catfile, dr, exit(), getxcoords(), i, nobj, outputallobjects, ra, swap_word, and x.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 75 of file readusnobcat.c.
+.PP
+References argsToString(), dr, error_exit, exit(), getdec(), getobjects(), getra(), i, outputallobjects, ra, SPDBANDWIDTH, type, and usage.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBoutputallobjects\fP\fC [static]\fP"
+.PP
+Definition at line 73 of file readusnobcat.c.
+.PP
+Referenced by getobjects(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

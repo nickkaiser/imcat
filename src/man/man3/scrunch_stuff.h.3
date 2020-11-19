@@ -1,0 +1,57 @@
+.TH "scrunch_stuff.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+scrunch_stuff.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMEAN\fP   1"
+.br
+.ti -1c
+.RI "#define \fBMEDIAN\fP   2"
+.br
+.ti -1c
+.RI "#define \fBCMEAN\fP   3"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBscrunch_stream\fP (\fBfitsheader\fP *\fBfitsin\fP, \fBfitsheader\fP *\fBfitsout\fP, int \fBmode\fP)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CMEAN   3"
+.PP
+Definition at line 3 of file scrunch_stuff.h.
+.PP
+Referenced by main(), and scrunch_stream().
+.SS "#define MEAN   1"
+.PP
+Definition at line 1 of file scrunch_stuff.h.
+.PP
+Referenced by main(), and scrunch_stream().
+.SS "#define MEDIAN   2"
+.PP
+Definition at line 2 of file scrunch_stuff.h.
+.PP
+Referenced by main(), and scrunch_stream().
+.SH "Function Documentation"
+.PP 
+.SS "void scrunch_stream (\fBfitsheader\fP * fitsin, \fBfitsheader\fP * fitsout, int mode)"
+.PP
+Definition at line 20 of file scrunch_stuff.c.
+.PP
+References CMEAN, error_exit, f, FLOAT_MAGIC, free(), i, j, k, MEAN, MEDIAN, fitsheader::n, readfitsline(), writefitsline(), and xfloatcmp().
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

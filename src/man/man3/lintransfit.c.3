@@ -1,0 +1,42 @@
+.TH "lintransfit.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+lintransfit.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	lintransfit - determine accurate transformation coefficients\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	lintransfit [\fBoptions\fP...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'lintransfit' reads \fBa\fP merged catalogue (created\\\fBn\fP\\	by 'mergecats' and containing \fBa\fP \fBpair\fP of vector\\\fBn\fP\\	coordinates in x[2][2] as x[0] = (x,y), x[1] = (x',y')\\\fBn\fP\\	from stdin and \fBfits\fP \fBa\fP linear transformation model:\\\fBn\fP\\		x' = \fBx0\fP + Pxx x + Pxy y\\\fBn\fP\\		y' = y0 + Pyx x + Pyy y\\\fBn\fP\\	by least squares.\\\fBn\fP\\	Outputs \fBdx\fP, \fBdy\fP, Pxx, Pxy, Pyx, Pyy to stdout by default.\\\fBn\fP\\	Options are:\\\fBn\fP\\		-\fBr\fP	Output catalogue containing x[2][2], \fBdx\fP[2]\\\fBn\fP\\			where \fBdx\fP = x' - x'_model.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	lintransfit - determine accurate transformation coefficients\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	lintransfit [\fBoptions\fP...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'lintransfit' reads \fBa\fP merged catalogue (created\\\fBn\fP\\	by 'mergecats' and containing \fBa\fP \fBpair\fP of vector\\\fBn\fP\\	coordinates in x[2][2] as x[0] = (x,y), x[1] = (x',y')\\\fBn\fP\\	from stdin and \fBfits\fP \fBa\fP linear transformation model:\\\fBn\fP\\		x' = \fBx0\fP + Pxx x + Pxy y\\\fBn\fP\\		y' = y0 + Pyx x + Pyy y\\\fBn\fP\\	by least squares.\\\fBn\fP\\	Outputs \fBdx\fP, \fBdy\fP, Pxx, Pxy, Pyx, Pyy to stdout by default.\\\fBn\fP\\	Options are:\\\fBn\fP\\		-\fBr\fP	Output catalogue containing x[2][2], \fBdx\fP[2]\\\fBn\fP\\			where \fBdx\fP = x' - x'_model.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 6 of file lintransfit.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 33 of file lintransfit.c.
+.PP
+References B, d, dx, dy, error_exit, exit(), indx, lcpipe, line, m, mylubksb(), myludcmp(), n, usage, x, xp(), y, and yp().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

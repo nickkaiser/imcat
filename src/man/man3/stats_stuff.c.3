@@ -1,0 +1,153 @@
+.TH "stats_stuff.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stats_stuff.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'stats_stuff.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+\fC#include 'ran1.h'\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBgood\fP(x)   (x != SHRT_MIN && x != SHRT_MAX && x != SHORT_MAGIC)"
+.br
+.ti -1c
+.RI "#define \fBfgood\fP(x)   (x != FLOAT_MAGIC)"
+.br
+.ti -1c
+.RI "#define \fBDEFSAMPLEFRAC\fP   0.1"
+.br
+.ti -1c
+.RI "#define \fBHUGE_VAL\fP   1.0e20"
+.br
+.ti -1c
+.RI "#define \fBMAX_SAMPLE_SIZE\fP   10000"
+.br
+.ti -1c
+.RI "#define \fBBINS\fP   1000"
+.br
+.ti -1c
+.RI "#define \fBSIG_FACTOR\fP   1.0"
+.br
+.ti -1c
+.RI "#define \fBBIG_FACTOR\fP   4"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBdrand48\fP ()"
+.br
+.ti -1c
+.RI "void \fBfdo_stats\fP (float **f, int \fBN1\fP, int \fBN2\fP, int margin, \fBfstatsrec\fP *srec)"
+.br
+.ti -1c
+.RI "int \fBliststats\fP (float *fsample, int samplesize, float *medianptr, float *lquartptr, float *uquartptr, float *sigmaptr)"
+.br
+.ti -1c
+.RI "int \fBfloatcmp\fP (float *\fBf1\fP, float *f2)"
+.br
+.ti -1c
+.RI "int \fBfindmode\fP (float **f, int \fBN1\fP, int \fBN2\fP, float lquart, float uquart, float *\fBmode\fP, float *flquart)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define BIG_FACTOR   4"
+.PP
+Definition at line 171 of file stats_stuff.c.
+.PP
+Referenced by findmode().
+.SS "#define BINS   1000"
+.PP
+Definition at line 169 of file stats_stuff.c.
+.PP
+Referenced by findmode().
+.SS "#define DEFSAMPLEFRAC   0.1"
+.PP
+Definition at line 40 of file stats_stuff.c.
+.PP
+Referenced by fdo_stats().
+.SS "#define fgood(x)   (x != FLOAT_MAGIC)"
+.PP
+Definition at line 36 of file stats_stuff.c.
+.PP
+Referenced by fdo_stats().
+.SS "#define good(x)   (x != SHRT_MIN && x != SHRT_MAX && x != SHORT_MAGIC)"
+.PP
+routines for calulating statistics of fields:
+.PP
+mostly straightforward 'cept for the mode & sigma where we first make a crude estimate of the mode as the most frequently occuring value and estimate sigma from sub-mode f values. We then refine this by making a least squares fit to the mode ± sigma / 2 region
+.PP
+aug 4th '92: revised fdo_stats now estimates quartiles and median from a random sample calculates sigma from width of inner 25 percent range Fri Aug 7 09:29:37 EDT 1992 do_stats also converted to sampling technique mode determined by smoothed histogram method incorporates \fBfindmode()\fP - formerly in \fBanalyse.c\fP general purpose routine \fBliststats()\fP to return mode, medians, quartiles from an unsorted list.
+.PP
+Tue Nov 25 11:21:48 HST 2003 fixed the mean bug in fdo_stats Definition at line 35 of file stats_stuff.c.
+.PP
+Referenced by main().
+.SS "#define HUGE_VAL   1.0e20"
+.PP
+Definition at line 41 of file stats_stuff.c.
+.PP
+Referenced by fdo_stats().
+.SS "#define MAX_SAMPLE_SIZE   10000"
+.PP
+Definition at line 42 of file stats_stuff.c.
+.PP
+Referenced by fdo_stats().
+.SS "#define SIG_FACTOR   1.0"
+.PP
+Definition at line 170 of file stats_stuff.c.
+.PP
+Referenced by findmode().
+.SH "Function Documentation"
+.PP 
+.SS "double drand48 ()"
+.PP
+.SS "void fdo_stats (float ** f, int N1, int N2, int margin, \fBfstatsrec\fP * srec)"
+.PP
+Definition at line 48 of file stats_stuff.c.
+.PP
+References fstatsrec::badpix, DEFSAMPLEFRAC, f, fgood, findmode(), fstatsrec::flowerquartile, fstatsrec::fmax, fstatsrec::fmean, fstatsrec::fmedian, fmin, fstatsrec::fmin, fstatsrec::fmode, free(), fstatsrec::fupperquartile, fstatsrec::goodpix, HUGE_VAL, i, j, liststats(), MAX_SAMPLE_SIZE, median(), N1, N2, fstatsrec::samplesize, sigma, and fstatsrec::sigma.
+.PP
+Referenced by main().
+.SS "int findmode (float ** f, int N1, int N2, float lquart, float uquart, float * mode, float * flquart)"
+.PP
+Definition at line 184 of file stats_stuff.c.
+.PP
+References b, BIG_FACTOR, BINS, f, fmin, free(), i, j, N1, N2, and SIG_FACTOR.
+.PP
+Referenced by fdo_stats(), and main().
+.SS "int floatcmp (float * f1, float * f2)"
+.PP
+Definition at line 164 of file stats_stuff.c.
+.SS "int liststats (float * fsample, int samplesize, float * medianptr, float * lquartptr, float * uquartptr, float * sigmaptr)"
+.PP
+Definition at line 133 of file stats_stuff.c.
+.PP
+References floatcmp(), median(), and sigma.
+.PP
+Referenced by dosky(), fdo_stats(), getsky(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,78 @@
+.TH "linmin_dbl.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+linmin_dbl.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'nrutil.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBNRANSI\fP"
+.br
+.ti -1c
+.RI "#define \fBTOL\fP   2.0\fBe\fP-4"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBlinmin\fP (double p[], double xi[], int \fBn\fP, double *fret, double(*func)(double[]))"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBncom\fP"
+.br
+.ti -1c
+.RI "double * \fBpcom\fP"
+.br
+.ti -1c
+.RI "double * \fBxicom\fP"
+.br
+.ti -1c
+.RI "double(* \fBnrfunc\fP )(double[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define NRANSI"
+.PP
+Definition at line 10 of file orbits/orbitutils/linmin_dbl.c.
+.SS "#define TOL   2.0\fBe\fP-4"
+.PP
+Definition at line 12 of file orbits/orbitutils/linmin_dbl.c.
+.PP
+Referenced by linmin().
+.SH "Function Documentation"
+.PP 
+.SS "void linmin (double p[], double xi[], int n, double * fret, double(* func)(double[]))"
+.PP
+Definition at line 17 of file orbits/orbitutils/linmin_dbl.c.
+.PP
+References brent(), f, f1dim(), fb, free(), func(), j, mnbrak(), n, ncom, nrfunc, pcom, TOL, x, xicom, xmin, and xx.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBncom\fP"
+.PP
+Definition at line 14 of file orbits/orbitutils/linmin_dbl.c.
+.SS "double(* \fBnrfunc\fP)(double [])"
+.PP
+Definition at line 15 of file orbits/orbitutils/linmin_dbl.c.
+.SS "double* \fBpcom\fP"
+.PP
+Definition at line 15 of file orbits/orbitutils/linmin_dbl.c.
+.SS "double * \fBxicom\fP"
+.PP
+Definition at line 15 of file orbits/orbitutils/linmin_dbl.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

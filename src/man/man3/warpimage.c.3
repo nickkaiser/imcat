@@ -1,0 +1,152 @@
+.TH "warpimage.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+warpimage.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../imlib/map.h'\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/modefunc.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	warpimage - apply spatial transformation to \fBa\fP \fBFITS\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	warpimage [\fBoptions\fP...] distparfile\\\fBn\fP\\		-\fBn\fP \fBN1\fP \fBN2\fP	# size of output image\\\fBn\fP\\		-g sf \fBN1\fP \fBN2\fP 	# generate distortion image\\\fBn\fP\\		-\fBm\fP		# initialise image to magic\\\fBn\fP\\		-\fBM\fP \fBmode\fP		# mapping \fBmode\fP (1)\\\fBn\fP\\		-q qparfile	# recircularise\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'warpimage\\' reads \fBa\fP \fBfits\fP file from stdin and applies \fBa\fP\\\fBn\fP\\	spatial transformation according\\\fBn\fP\\	to the parameters in 'distparfile' such that:\\\fBn\fP\\		\fBr\fP = x + sum_m a_m f_m(x)\\\fBn\fP\\	where \fBmode\fP functions are polynomials in x[0], x[1].\\\fBn\fP\\	Use -p and -\fBd\fP \fBoptions\fP to apply \fBa\fP further linear transformation:\\\fBn\fP\\		r_i => phi_ij r_j + d_j\\\fBn\fP\\	By default output image = input image size.\\\fBn\fP\\	Output image is initialised to zero, unless you use -\fBm\fP option.\\\fBn\fP\\\\\fBn\fP\\	Use -\fBM\fP option to specify \fBmode\fP, where these are (in \fBorder\fP of expense)\\\fBn\fP\\		\fBmode\fP = 0:	# nearest \fBpixel\fP\\\fBn\fP\\		\fBmode\fP = 1:	# linear interpolation\\\fBn\fP\\		\fBmode\fP = 2:	# sum over \fBtriangles\fP   \\\fBn\fP\\\\\fBn\fP\\	With -g option (and s = 0) we generate \fBa\fP \fBN1\fP by (2 * \fBN2\fP) image\\\fBn\fP\\	whose lower and upper halves contain the x, y components\\\fBn\fP\\	of the distortion \fBd\fP = \fBr\fP-x. Set 'sf' to be some small\\\fBn\fP\\	\fBinteger\fP to create \fBa\fP deflection image which has been demagnified\\\fBn\fP\\	by \fBa\fP factor 2^sf, but \fBN1\fP, \fBN2\fP are given in source image \fBpixel\fP\\\fBn\fP\\	scale, so '-g 3 1024 1024' will generate \fBa\fP 128 x 256 \fBpixel\fP image.\\\fBn\fP\\\\\fBn\fP\\	With -q option we read \fBa\fP parameter file for \fBa\fP model of the field\\\fBn\fP\\	q = \fBe\fP / P_sm and then make appropriate additional deflections\\\fBn\fP\\	to recircularise the psf.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBdeflection\fP (float ri, float rj, float *\fBdi\fP, float *\fBdj\fP)"
+.br
+.ti -1c
+.RI "void \fBrecircdef\fP (float ri, float rj, float *\fBdi\fP, float *\fBdj\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBnmodes\fP"
+.br
+.ti -1c
+.RI "int * \fBl\fP"
+.br
+.ti -1c
+.RI "int * \fBm\fP"
+.br
+.ti -1c
+.RI "double ** \fBa\fP"
+.br
+.ti -1c
+.RI "int \fBnqmodes\fP"
+.br
+.ti -1c
+.RI "int * \fBlq\fP"
+.br
+.ti -1c
+.RI "int * \fBmq\fP"
+.br
+.ti -1c
+.RI "int \fBdefsign\fP"
+.br
+.ti -1c
+.RI "double ** \fBqpar\fP"
+.br
+.ti -1c
+.RI "double \fBscalefac\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	warpimage - apply spatial transformation to \fBa\fP \fBFITS\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	warpimage [\fBoptions\fP...] distparfile\\\fBn\fP\\		-\fBn\fP \fBN1\fP \fBN2\fP	# size of output image\\\fBn\fP\\		-g sf \fBN1\fP \fBN2\fP 	# generate distortion image\\\fBn\fP\\		-\fBm\fP		# initialise image to magic\\\fBn\fP\\		-\fBM\fP \fBmode\fP		# mapping \fBmode\fP (1)\\\fBn\fP\\		-q qparfile	# recircularise\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'warpimage\\' reads \fBa\fP \fBfits\fP file from stdin and applies \fBa\fP\\\fBn\fP\\	spatial transformation according\\\fBn\fP\\	to the parameters in 'distparfile' such that:\\\fBn\fP\\		\fBr\fP = x + sum_m a_m f_m(x)\\\fBn\fP\\	where \fBmode\fP functions are polynomials in x[0], x[1].\\\fBn\fP\\	Use -p and -\fBd\fP \fBoptions\fP to apply \fBa\fP further linear transformation:\\\fBn\fP\\		r_i => phi_ij r_j + d_j\\\fBn\fP\\	By default output image = input image size.\\\fBn\fP\\	Output image is initialised to zero, unless you use -\fBm\fP option.\\\fBn\fP\\\\\fBn\fP\\	Use -\fBM\fP option to specify \fBmode\fP, where these are (in \fBorder\fP of expense)\\\fBn\fP\\		\fBmode\fP = 0:	# nearest \fBpixel\fP\\\fBn\fP\\		\fBmode\fP = 1:	# linear interpolation\\\fBn\fP\\		\fBmode\fP = 2:	# sum over \fBtriangles\fP   \\\fBn\fP\\\\\fBn\fP\\	With -g option (and s = 0) we generate \fBa\fP \fBN1\fP by (2 * \fBN2\fP) image\\\fBn\fP\\	whose lower and upper halves contain the x, y components\\\fBn\fP\\	of the distortion \fBd\fP = \fBr\fP-x. Set 'sf' to be some small\\\fBn\fP\\	\fBinteger\fP to create \fBa\fP deflection image which has been demagnified\\\fBn\fP\\	by \fBa\fP factor 2^sf, but \fBN1\fP, \fBN2\fP are given in source image \fBpixel\fP\\\fBn\fP\\	scale, so '-g 3 1024 1024' will generate \fBa\fP 128 x 256 \fBpixel\fP image.\\\fBn\fP\\\\\fBn\fP\\	With -q option we read \fBa\fP parameter file for \fBa\fP model of the field\\\fBn\fP\\	q = \fBe\fP / P_sm and then make appropriate additional deflections\\\fBn\fP\\	to recircularise the psf.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file warpimage.c.
+.SH "Function Documentation"
+.PP 
+.SS "void deflection (float ri, float rj, float * di, float * dj)"
+.PP
+Definition at line 142 of file lensmap.c.
+.PP
+References di, dj, ic, jc, nclusters, rc, and re.
+.PP
+Referenced by fastmap(), main(), map(), and ultrafastmap().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 67 of file warpimage.c.
+.PP
+References a, add_comment(), allocFloatArray(), deflection(), defsign, di, dj, dx, dy, error_exit, exit(), FAST_MAP_MODE, fastmap(), fits, FLOAT_MAGIC, FLOAT_PIXTYPE, get2Dpolymodel(), ix, l, lq, m, M1, M2, magicinit(), map(), MODEFUNC_MAX_VARS, mq, fitsheader::n, N1, N2, newfitsheader(), nmodes, nqmodes, qpar, read2Dfloatimage(), recircdef(), scalefac, TRIANGLE_MAP_MODE, ULTRAFAST_MAP_MODE, ultrafastmap(), usage, write2Dfloatimage(), writefitsheader(), writefitsplane(), and writefitstail().
+.SS "void recircdef (float ri, float rj, float * di, float * dj)"
+.PP
+Definition at line 269 of file warpimage.c.
+.PP
+References a, d, defsign, di, dj, f(), i, l, lq, m, mq, nmodes, nqmodes, phi, qpar, r, and x.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "double** \fBa\fP"
+.PP
+Definition at line 62 of file warpimage.c.
+.SS "int \fBdefsign\fP"
+.PP
+Definition at line 63 of file warpimage.c.
+.PP
+Referenced by main(), and recircdef().
+.SS "int * \fBl\fP"
+.PP
+Definition at line 61 of file warpimage.c.
+.SS "int * \fBlq\fP"
+.PP
+Definition at line 63 of file warpimage.c.
+.PP
+Referenced by main(), and recircdef().
+.SS "int * \fBm\fP"
+.PP
+Definition at line 61 of file warpimage.c.
+.SS "int * \fBmq\fP"
+.PP
+Definition at line 63 of file warpimage.c.
+.PP
+Referenced by main(), and recircdef().
+.SS "int \fBnmodes\fP"
+.PP
+Definition at line 61 of file warpimage.c.
+.SS "int \fBnqmodes\fP"
+.PP
+Definition at line 63 of file warpimage.c.
+.PP
+Referenced by main(), and recircdef().
+.SS "double** \fBqpar\fP"
+.PP
+Definition at line 64 of file warpimage.c.
+.PP
+Referenced by main(), and recircdef().
+.SS "double \fBscalefac\fP"
+.PP
+Definition at line 65 of file warpimage.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

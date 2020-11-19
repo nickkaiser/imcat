@@ -1,0 +1,522 @@
+<html>
+<head>
+<title> imcat utils library</title>
+</head>
+<body bgcolor="#FFFFFF">
+<h1>imcat utils library</h1><hr>
+<p>
+The imcat utils library contains various utility functions.
+The header files declaring these functions are listed below.
+<hr>
+<h2><a name="INDEX">Index:</a></h2>
+<ul>
+<li> <a href="#arrays.h">arrays.h</a>
+<li> <a href="#error.h">error.h</a>
+<li> <a href="#fmedian.h">fmedian.h</a>
+<li> <a href="#linmodel.h">linmodel.h</a>
+<li> <a href="#lu.h">lu.h</a>
+<li> <a href="#nrutil.h">nrutil.h</a>
+<li> <a href="#ran1.h">ran1.h</a>
+<li> <a href="#smpopup.h">smpopup.h</a>
+<li> <a href="#stats_stuff.h">stats_stuff.h</a>
+<li> <a href="#mnbrak.h">mnbrak.h</a>
+<li> <a href="#brent.h">brent.h</a>
+<li> <a href="#linmin.h">linmin.h</a>
+<li> <a href="#f1dim.h">f1dim.h</a>
+<li> <a href="#frprmn.h">frprmn.h</a>
+<li> <a href="#powell.h">powell.h</a>
+</ul>
+<hr>
+<p>back to <a href="../mainindex.html">main index</a>
+<hr>
+<h2><a name="arrays.h">arrays.h</a></h2><pre>
+void	*checkalloc(int nel, int size);
+void	allocShortArray(short ***f, int N1, int N2);
+void	allocFloatArray(float ***f, int N1, int N2);
+void	freeShortArray(short **f, int N1, int N2);
+void	freeFloatArray(float **f, int N1, int N2);
+void	copyFloatToShort(float **fsrc, short **fdst, int N1, int N2);
+void	copyShortToFloat(short **fsrc, float **fdst, int N1, int N2);
+float	***alloc3DFloatArray(int N1, int N2, int N3);
+void	free3DFloatArray(float ***f, int N1, int N2, int N3);
+
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="error.h">error.h</a></h2><pre>
+void	error_exit(char *message);
+
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="fmedian.h">fmedian.h</a></h2><pre>
+float	fmedian(float *farray, int nel);	
+int	descfloatcmp(void *f1, void *f2);
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="linmodel.h">linmodel.h</a></h2><pre>
+/*
+ * linmodel.h
+ *
+ * functions to fit a stream of data as a linear combination of parameters
+ *
+ * sample usage:
+ *	linmodelinit(np);			allocate space for np-parameter fit
+ * 	for (....)
+ *		linmodelincrement(f, p);	f = data value: p[0], p[1] ... are parameters
+ *	linmodelsolve(F);			fmodel = sum F[i] p[i], free memory
+ *
+ */
+ 
+ 
+ void	linmodelinit(int np);
+ void	linmodelincrement(double f, double *p);
+ void	linmodelsolve(double *F);
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="lu.h">lu.h</a></h2><pre>
+void ludcmp(double **a, int n, int *indx, double *d);
+void lubksb(double **a, int n, int *indx, double *b);
+void myludcmp(double **a, int n,int *indx, double *d);
+void mylubksb(double **a, int n, int *indx, double *b);
+void invertmatrix(double **a, double **ainv, int n);
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="nrutil.h">nrutil.h</a></h2><pre>
+#ifndef _NR_UTILS_H_
+#define _NR_UTILS_H_
+
+static float sqrarg;
+#define SQR(a) ((sqrarg=(a)) == 0.0 ? 0.0 : sqrarg*sqrarg)
+
+static double dsqrarg;
+#define DSQR(a) ((dsqrarg=(a)) == 0.0 ? 0.0 : dsqrarg*dsqrarg)
+
+static double dmaxarg1,dmaxarg2;
+#define DMAX(a,b) (dmaxarg1=(a),dmaxarg2=(b),(dmaxarg1) > (dmaxarg2) ?\
+        (dmaxarg1) : (dmaxarg2))
+
+static double dminarg1,dminarg2;
+#define DMIN(a,b) (dminarg1=(a),dminarg2=(b),(dminarg1) < (dminarg2) ?\
+        (dminarg1) : (dminarg2))
+
+static float maxarg1,maxarg2;
+#define FMAX(a,b) (maxarg1=(a),maxarg2=(b),(maxarg1) > (maxarg2) ?\
+        (maxarg1) : (maxarg2))
+
+static float minarg1,minarg2;
+#define FMIN(a,b) (minarg1=(a),minarg2=(b),(minarg1) < (minarg2) ?\
+        (minarg1) : (minarg2))
+
+static long lmaxarg1,lmaxarg2;
+#define LMAX(a,b) (lmaxarg1=(a),lmaxarg2=(b),(lmaxarg1) > (lmaxarg2) ?\
+        (lmaxarg1) : (lmaxarg2))
+
+static long lminarg1,lminarg2;
+#define LMIN(a,b) (lminarg1=(a),lminarg2=(b),(lminarg1) < (lminarg2) ?\
+        (lminarg1) : (lminarg2))
+
+static int imaxarg1,imaxarg2;
+#define IMAX(a,b) (imaxarg1=(a),imaxarg2=(b),(imaxarg1) > (imaxarg2) ?\
+        (imaxarg1) : (imaxarg2))
+
+static int iminarg1,iminarg2;
+#define IMIN(a,b) (iminarg1=(a),iminarg2=(b),(iminarg1) < (iminarg2) ?\
+        (iminarg1) : (iminarg2))
+
+#define SIGN(a,b) ((b) > 0.0 ? fabs(a) : -fabs(a))
+
+#if defined(__STDC__) || defined(ANSI) || defined(NRANSI) /* ANSI */
+
+void nrerror(char error_text[]);
+float *vector(long nl, long nh);
+int *ivector(long nl, long nh);
+unsigned char *cvector(long nl, long nh);
+unsigned long *lvector(long nl, long nh);
+double *dvector(long nl, long nh);
+float **matrix(long nrl, long nrh, long ncl, long nch);
+double **dmatrix(long nrl, long nrh, long ncl, long nch);
+int **imatrix(long nrl, long nrh, long ncl, long nch);
+float **submatrix(float **a, long oldrl, long oldrh, long oldcl, long oldch,
+	long newrl, long newcl);
+float **convert_matrix(float *a, long nrl, long nrh, long ncl, long nch);
+float ***f3tensor(long nrl, long nrh, long ncl, long nch, long ndl, long ndh);
+void free_vector(float *v, long nl, long nh);
+void free_ivector(int *v, long nl, long nh);
+void free_cvector(unsigned char *v, long nl, long nh);
+void free_lvector(unsigned long *v, long nl, long nh);
+void free_dvector(double *v, long nl, long nh);
+void free_matrix(float **m, long nrl, long nrh, long ncl, long nch);
+void free_dmatrix(double **m, long nrl, long nrh, long ncl, long nch);
+void free_imatrix(int **m, long nrl, long nrh, long ncl, long nch);
+void free_submatrix(float **b, long nrl, long nrh, long ncl, long nch);
+void free_convert_matrix(float **b, long nrl, long nrh, long ncl, long nch);
+void free_f3tensor(float ***t, long nrl, long nrh, long ncl, long nch,
+	long ndl, long ndh);
+
+#else /* ANSI */
+/* traditional - K&R */
+
+void nrerror();
+float *vector();
+float **matrix();
+float **submatrix();
+float **convert_matrix();
+float ***f3tensor();
+double *dvector();
+double **dmatrix();
+int *ivector();
+int **imatrix();
+unsigned char *cvector();
+unsigned long *lvector();
+void free_vector();
+void free_dvector();
+void free_ivector();
+void free_cvector();
+void free_lvector();
+void free_matrix();
+void free_submatrix();
+void free_convert_matrix();
+void free_dmatrix();
+void free_imatrix();
+void free_f3tensor();
+
+#endif /* ANSI */
+
+#endif /* _NR_UTILS_H_ */
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="ran1.h">ran1.h</a></h2><pre>
+/*
+ * ran1.h numerical recipes random number gnerator
+ */
+
+float ran1(int *idum);
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="smpopup.h">smpopup.h</a></h2><pre>
+/*
+ * smpopup.h
+ */
+
+void	smpopup(void (*drawfn)(void), void (*cursorfn)(float x, float y, int key), char *geomstring);
+void	drawfn(void);
+void	cursorfn(float x, float y, int key);
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="stats_stuff.h">stats_stuff.h</a></h2><pre>
+typedef struct fstatsrec {
+	float 	fmin;
+	float 	fmax;
+	float 	fmean;
+	float 	fmedian;
+	float 	fupperquartile;
+	float 	flowerquartile;
+	float 	fmode;
+	float 	sigma;
+	long	badpix;
+	long	goodpix;
+	long	samplesize;
+} fstatsrec;
+
+/*
+void		do_stats(short **f, int N1, int N2, int margin, statsrec *srec);
+*/
+void		fdo_stats(float **f, int N1, int N2, int margin, fstatsrec *fsrec);
+int		liststats(	float 	*fsample, 
+				int	samplesize, 
+				float	*median, 
+				float	*lquart, 
+				float	*uquart, 
+				float	*sigma);
+int		findmode(float **f, int N1, int N2, float lquart, float uquart, float *mode, float*flquart);
+
+
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="brent.h">brent.h</a></h2><pre>
+/*
+ * brent.h
+ *
+ * copied from num rec + ansified by Nick Kaiser
+ */
+
+float brent(float ax, float bx, float cx, float (*f)(float), 
+float tol, float *xmin);
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="f1dim.h">f1dim.h</a></h2><pre>
+/*
+ * f1dim.h
+ *
+ * copied from num rec + ansified by Nick Kaiser
+ */
+
+float f1dim(float x);
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="frprmn.h">frprmn.h</a></h2><pre>
+/*
+ * frprmn.h
+ *
+ * copied from num rec + ansified by Nick Kaiser
+ */
+
+void frprmn(float p[], int n,float ftol,int *iter,float *fret,
+float (*func)(float []), void (*dfunc)(float [], float []));
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="linmin.h">linmin.h</a></h2><pre>
+/*
+ * linmin.h
+ *
+ * copied from num rec + ansified by Nick Kaiser
+ */
+
+void linmin(float p[], float xi[], int n, float *fret, float (*func)(float []));
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="mnbrak.h">mnbrak.h</a></h2><pre>
+/*
+ * mnbrak.h
+ *
+ * copied from num rec + ansified by Nick Kaiser
+ */
+
+void mnbrak(float *ax,float *bx,float *cx,float *fa,float *fb,float *fc, float (*func)(float));
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="powell.h">powell.h</a></h2><pre>
+/*
+ * powell.h
+ */
+
+void powell(float p[], float **xi, int n, float ftol, int *iter, float *fret,
+  float (*func)(float []));
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="modefunc.h">modefunc.h</a></h2><pre>
+/*
+ * modefunc.h
+ */
+
+#define MODEFUNC_MAX_VARS 100
+
+double	f(int l, int m, double *x);
+void	get2Dpolymodel(char *filename, int **lptr, int**mptr, int *asize, double ***aptr, int *nmodesptr, int *nvar, char *vardef[], char **xname);
+void	getmodeamplitudes_txt(char *filename, int **lptr, int**mptr, double ***aptr, int *nmodesptr);
+void	getmodeamplitudes_lc(char *filename, int **lptr, int**mptr, int *asize, double ***aptr, int *nmodesptr, int *nvar, char *vardef[], char **xname);
+void	setorigin(double *x);
+int	write2Dpolymodel(char *parfile, int nmodes, int *l, int *m, int asize, double **a, int nvar, char *vardef[], char *xvar);
+void	modefunc_addargcomment(int argc, char *argv[]);
+int	getvars(FILE *lcpipe, int *nvar, char *vardef[], int *size);
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="fitstatus.h">fitstatus.h</a></h2><pre>
+/*
+ * fitstatus.h
+ *
+ * defines the values for the status value
+ * and declares functions for getting and setting it
+ */
+
+#define DET_NEG                 1
+#define TRACE_NEG               2
+#define TOO_MANY_ITERATIONS     4
+
+int	getfitstatus(void);
+void	setfitstatus(int thestatus);
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="ipbuff.h">ipbuff.h</a></h2><pre>
+/*
+ * ipbuff.h
+ */
+
+double	**readdoublebuff(int width, FILE *stream, int *np);
+/* returns address of array of *np pointers to input records of size width * sizeof(double) */
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="args.h">args.h</a></h2><pre>
+/*
+ * args.h
+ *
+ * Nick Kaiser 1998
+ */
+
+#define	CURRENT_ARG 	0
+#define PREVIOUS_ARG	-1
+
+#define NO_ARG 		0
+#define FLAG_ARG	1
+#define INUM_ARG	2
+#define FNUM_ARG	3
+#define TEXT_ARG	4
+#define STDSTREAM_ARG	5
+
+/* initialise globals garg, gargc, gragv */
+int	argsinit(int argc, char *argv[], char *theusage);
+
+/* check next arg exists and begins with '-' and return the rest of the string */
+char	*getflag(void);
+
+/* print progname, string and exit with non-zero error status */
+void	argserror(char *errorstring, int argshift);
+
+/* get argument string */
+char	*getargs(void);
+
+/* get integer argument */
+int	getargi(void);
+
+/* get float argument */
+float	getargf(void);
+
+/* get double argument */
+double	getargd(void);
+
+/* test value of next argument */
+int	nextargtype(void);
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="colormaps.h">colormaps.h</a></h2><pre>
+/*
+ * colormaps.h
+ */
+
+int	getcolormap(float **lp, float **rp, float **gp, float **bp, float *contra, float *bright, int *n, int index);
+
+int getrgbfromcmap(float **r, float **g, float **b, int n, int cmapindex);
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="gaussdev.h">gaussdev.h</a></h2><pre>
+double	gaussdev(void);
+void	seedgaussdev(int seed);
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="lmodel.h">lmodel.h</a></h2><pre>
+/* 
+ * lmodel.h -- declare lmodel structure and related functions
+ */
+
+typedef struct lmodel {
+	/* generic lmodel elements */
+	int	modeltype;
+	cathead	*cat;
+	item	*xitem, *aitem;
+	int 	xdim;
+	char	*xname, *aname;
+	int 	nmodes, asize, j;
+	int	hasxorigin;
+	double	*xorigin;
+	void	**a;
+	double	**aflat;
+	double	hascovar;
+	double	**covar;
+	/* polynomial stuff */
+	int	lmin, lmax;
+	int	*pp;
+	double	**p, **l;
+	/* zernike stuff */
+	int	nmin, nmax;
+	double	*n, *m, **R;
+	/* fourier stuff */
+	int	kmin, kmax, boxlimits;
+	int	*kk;
+	double	**k, *i, lbox;
+} lmodel;
+
+#define POLYNOMIAL_LMODEL 	0
+#define ZERNIKE_LMODEL 		1
+#define	FOURIER_LMODEL		2
+
+
+
+/* lmodel.c */
+
+/* newlmodel only creates modeltype independent parts of lmodel structure */
+lmodel *newlmodel(item *xitem, item *aitem);
+
+
+
+/* create a full polymodel l-model structure */
+lmodel *newpolylmodel(item *xitem, item *aitem, int lmin, int lmax);
+
+/* recursive function to loop over all polynomial modes of order l */
+int	polyloop(lmodel *themodel, int l, int i);
+
+
+
+/* create a full zernike l-model structure */
+lmodel *newzernikelmodel(item *xitem, item *aitem, int nmin, int nmax);
+
+/* recursive function to loop over all zernike modes of order n */
+int	zernikeloop(lmodel *themodel, int n, int i);
+
+/* generate the R array */
+int	makezernikeR(lmodel *themodel);
+
+
+
+/* create a full fourier l-model structure */
+lmodel *newfourierlmodel(item *xitem, item *aitem, int kmin, int kmax, int boxlimits, double lbox);
+
+/* recursive function to loop over all fourier modes */
+int	fourierloop(lmodel *themodel, int i);
+
+
+
+/* the mode functions */
+double	lmodelfunc(lmodel *themodel, int m, double *x);
+
+/* functions to convert from a[m][][]... to aflat[j][m] and vice versa */
+int	flatten_a(lmodel *themodel);
+int	rflatten_a(lmodel *themodel, void *a, int m, int level);
+int	unflatten_a(lmodel *themodel);
+int	runflatten_a(lmodel *themodel, void *a, int m, int level);
+
+/* recursive function to add fac times asrc to adst */
+int	addtomatrix(void *adst, void *asrc, double fac, int ndim, int *dim, int level);
+
+/* recursive function to zero a matrix */
+int	zeromatrix(void *a, int ndim, int *dim, int level);
+
+/* factorial */
+int	bang(int n);
+
+
+
+/* lmodelio.c */
+
+/* write out a lmodel structure as lc-format cat */
+int	writelmodel(lmodel *themodel, FILE *opstream);
+
+/* read a lmodel structure */
+lmodel	*readlmodel(FILE *ipstream);
+
+
+
+
+/* lmodelcalculus.c */
+
+/* create derivative of an lmodel */
+lmodel	*difflmodel(lmodel *iplmodel, int integratemode);
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="iostream.h">iostream.h</a></h2><pre>
+/*
+ * iostream.h - utilities for opening files, pipes
+ *
+ * programs which use these routines to open/close input/output streams
+ * will transparently recognise '-' as indicating stdin or stdout
+ *
+ * they also recognise the syntax
+ *	'command |' and '| command' for piping from/to a command
+ */
+
+/* structure to define a stream */
+typedef struct iostream {
+	FILE 	*f;
+	char	*mode;
+	int	type;
+} iostream;
+
+/* definition of various stream types */
+#define	STD_IOSTREAM_TYPE	0
+#define FILE_IOSTREAM_TYPE	1
+#define PIPE_IOSTREAM_TYPE	2
+
+
+iostream *openiostream(char *iostreamstring, char *mode);
+int	closeiostream(iostream *theiostream);
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<p><a href="../mainindex.html">main index</a>
+</body>
+</html>

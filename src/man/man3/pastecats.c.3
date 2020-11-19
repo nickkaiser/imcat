@@ -1,0 +1,48 @@
+.TH "pastecats.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+pastecats.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../catlib/cat.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	pastecats - combine catalogues \\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	pastecats \fBa\fP.cat \fBb\fP.cat ....\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'pastecats' reads \fBa\fP set of catalogues and combines them\\\fBn\fP\\	\fBline\fP by \fBline\fP into \fBa\fP single catalogue.\\\fBn\fP\\	It reads the \fBobject\fP contents information from each of\\\fBn\fP\\	the input headers in turn, and installs each \fBitem\fP into\\\fBn\fP\\	the output catalogue's list of \fBobject\fP items.  If no \fBobject\fP\\\fBn\fP\\	\fBitem\fP names are repeated then the result is essentially the same\\\fBn\fP\\	as using the unix 'paste' facility.  If an \fBitem\fP name appears\\\fBn\fP\\	more than once then the output catalogue will contain \fBa\fP single\\\fBn\fP\\	\fBobject\fP \fBitem\fP of that name, whose value comes from the last input\\\fBn\fP\\	\fBobject\fP \fBitem\fP of that name (though the position of the \fBobject\fP\\\fBn\fP\\	in the list of items is determined by the first occurrence).\\\fBn\fP\\	The input catalogues will normally have the same length\\\fBn\fP\\	and be in some ordered correspondence with each other.\\\fBn\fP\\	Pastecats will return with exit value -1 if it appears\\\fBn\fP\\	that the catalogues do not have identical numbers of objects.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	pastecats - combine catalogues \\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	pastecats \fBa\fP.cat \fBb\fP.cat ....\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'pastecats' reads \fBa\fP set of catalogues and combines them\\\fBn\fP\\	\fBline\fP by \fBline\fP into \fBa\fP single catalogue.\\\fBn\fP\\	It reads the \fBobject\fP contents information from each of\\\fBn\fP\\	the input headers in turn, and installs each \fBitem\fP into\\\fBn\fP\\	the output catalogue's list of \fBobject\fP items.  If no \fBobject\fP\\\fBn\fP\\	\fBitem\fP names are repeated then the result is essentially the same\\\fBn\fP\\	as using the unix 'paste' facility.  If an \fBitem\fP name appears\\\fBn\fP\\	more than once then the output catalogue will contain \fBa\fP single\\\fBn\fP\\	\fBobject\fP \fBitem\fP of that name, whose value comes from the last input\\\fBn\fP\\	\fBobject\fP \fBitem\fP of that name (though the position of the \fBobject\fP\\\fBn\fP\\	in the list of items is determined by the first occurrence).\\\fBn\fP\\	The input catalogues will normally have the same length\\\fBn\fP\\	and be in some ordered correspondence with each other.\\\fBn\fP\\	Pastecats will return with exit value -1 if it appears\\\fBn\fP\\	that the catalogues do not have identical numbers of objects.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file pastecats.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 42 of file pastecats.c.
+.PP
+References addargscomment(), addobjectitem(), item::addr, allocitemcontents(), BINARY_FILE_TYPE, connectobjecttocathead(), copyheaderinfo(), copyitem(), error_exit, exit(), i, newobject(), item::next, readcathead(), readobject(), setcatipf(), setcatopfiletype(), usage, writecathead(), and writeobject().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

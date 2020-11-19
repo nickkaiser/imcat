@@ -1,0 +1,242 @@
+.TH "hfindpeaks.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+hfindpeaks.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../fftlib/myfft.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/args.h'\fP
+.br
+\fC#include '../../imlib/filters.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../utils/stats_stuff.h'\fP
+.br
+\fC#include 'hfindpeaks.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	hfindpeaks --- hierarchical \fBobject\fP finder\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	hfindpeaks fitsfile [option...] > catalogue \\\fBn\fP\\ 		-\fBr\fP rf1 rf2	# range of filter radii (0.5 20.0)\\\fBn\fP\\		-\fBd\fP dlnrf	# step in log(rf) (0.2)\\\fBn\fP\\		-\fBl\fP flink	# linking parameter(1.0)\\\fBn\fP\\		-\fBn\fP nu		# significance threshold (4.0)\\\fBn\fP\\		-s \fBsigma\fP \fBmode\fP	# sky statistics\\\fBn\fP\\		-\fBa\fP noiseacf	# supply noise autocorrelation function\\\fBn\fP\\		-\fBN\fP \fBN1\fP \fBN2\fP	# set working image size\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'hfindpeaks\\' --- a heirarchical \fBobject\fP finder\\\fBn\fP\\	fft gaussian filters an image with sequence of progressively\\\fBn\fP\\	larger smoothing \fBradius\fP mexican hat filters and computes\\\fBn\fP\\	the significance nu(x; rf) (defined to be the smoothed field at x divided\\\fBn\fP\\	by the rms noise fluctuation for smoothing \fBradius\fP rf).\\\fBn\fP\\	It then finds peaks of the nu field links these together to\\\fBn\fP\\	construct \fBpeak\fP trajectories x_pk(rf). We define an \fBobject\fP to be the\\\fBn\fP\\	\fBpoint\fP of highest significance along such \fBa\fP trajectory.\\\fBn\fP\\	rf1, rf2 are min and max filter radii and we filter\\\fBn\fP\\	with logarithmic steps in rf defined by dlnrf\\\fBn\fP\\	Peaks at adjacent smoothing levels are connected if their\\\fBn\fP\\	separation is less than flink * rf.\\\fBn\fP\\	Use -s option to supply sky \fBmode\fP, \fBsigma\fP rather than have\\\fBn\fP\\	them calculated from the image.\\\fBn\fP\\	The catalogue is in 'lc' format.\\\fBn\fP\\	The position 'x' is measured relative to the bottom left\\\fBn\fP\\	corner of the bottom left \fBpixel\fP (so \fBe\fP.g. \fBa\fP single 'hot' \fBpixel\fP\\\fBn\fP\\	at (\fBix\fP,\fBiy\fP) = (23,67), would generate an \fBobject\fP with x = (23.5, 67.5)\\\fBn\fP\\	The rms noise at smoothing scale rf is computed assuming that the\\\fBn\fP\\	noise is incoherent.  If the noise is correlated (from resampling\\\fBn\fP\\	say) you can supply \fBa\fP noise psf with the -p option.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBTINY\fP   1.\fBe\fP-20"
+.br
+.ti -1c
+.RI "#define \fBZMAX\fP   10"
+.br
+.ti -1c
+.RI "#define \fBRFACTOR\fP   0.66"
+.br
+.ti -1c
+.RI "#define \fBFFACTOR\fP   15.41"
+.br
+.ti -1c
+.RI "#define \fBEFACTOR\fP   1.50"
+.br
+.ti -1c
+.RI "#define \fBBUFFSIZE\fP   8"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "\fBpeak\fP * \fBgetpeaks\fP (int \fBN1\fP, int \fBN2\fP, float **fs, int \fBlevel\fP, float rf, float \fBsigma\fP)"
+.br
+.ti -1c
+.RI "int \fBinstall\fP (\fBpeak\fP *thepeak, \fBline\fP *linehead, float dmax)"
+.br
+.ti -1c
+.RI "void \fBaddnewline\fP (\fBline\fP **lineheadptr, \fBpeak\fP *thepeak)"
+.br
+.ti -1c
+.RI "int \fBneighbours\fP (\fBpeak\fP *peak1, \fBpeak\fP *peak2, float dmax)"
+.br
+.ti -1c
+.RI "void \fBremovedead\fP (\fBline\fP **lineheadptr, int \fBlevel\fP, float nulimit)"
+.br
+.ti -1c
+.RI "void \fBdisposeof\fP (\fBline\fP *\fBtheline\fP, float nulimit)"
+.br
+.ti -1c
+.RI "\fBline\fP *** \fBmakecell\fP (\fBline\fP *linehead, float dmax, int ncells)"
+.br
+.ti -1c
+.RI "void \fBfreecell\fP (\fBline\fP ***cell, int ncells)"
+.br
+.ti -1c
+.RI "void \fBgetcoords\fP (\fBpeak\fP *thepeak, int *icell, int *jcell, float dmax)"
+.br
+.ti -1c
+.RI "float \fBthefilterfunction\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "float \fBinterp\fP (float \fBd\fP, float \fBx1\fP, float \fBx2\fP, float x3)"
+.br
+.ti -1c
+.RI "void \fBoutput\fP (\fBpeak\fP *bestpk, \fBpeak\fP *prevpk, \fBpeak\fP *nextpk)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float \fBsigma1\fP"
+.br
+.ti -1c
+.RI "float \fBsigma2\fP"
+.br
+.ti -1c
+.RI "int \fBnlines\fP = 0 npeaks = 0"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define BUFFSIZE   8"
+.PP
+Definition at line 581 of file hfindpeaks.c.
+.SS "#define EFACTOR   1.50"
+.PP
+Definition at line 580 of file hfindpeaks.c.
+.SS "#define FFACTOR   15.41"
+.PP
+Definition at line 579 of file hfindpeaks.c.
+.SS "#define RFACTOR   0.66"
+.PP
+Definition at line 578 of file hfindpeaks.c.
+.SS "#define TINY   1.\fBe\fP-20"
+.PP
+Definition at line 81 of file hfindpeaks.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	hfindpeaks --- hierarchical \fBobject\fP finder\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	hfindpeaks fitsfile [option...] > catalogue \\\fBn\fP\\ 		-\fBr\fP rf1 rf2	# range of filter radii (0.5 20.0)\\\fBn\fP\\		-\fBd\fP dlnrf	# step in log(rf) (0.2)\\\fBn\fP\\		-\fBl\fP flink	# linking parameter(1.0)\\\fBn\fP\\		-\fBn\fP nu		# significance threshold (4.0)\\\fBn\fP\\		-s \fBsigma\fP \fBmode\fP	# sky statistics\\\fBn\fP\\		-\fBa\fP noiseacf	# supply noise autocorrelation function\\\fBn\fP\\		-\fBN\fP \fBN1\fP \fBN2\fP	# set working image size\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'hfindpeaks\\' --- a heirarchical \fBobject\fP finder\\\fBn\fP\\	fft gaussian filters an image with sequence of progressively\\\fBn\fP\\	larger smoothing \fBradius\fP mexican hat filters and computes\\\fBn\fP\\	the significance nu(x; rf) (defined to be the smoothed field at x divided\\\fBn\fP\\	by the rms noise fluctuation for smoothing \fBradius\fP rf).\\\fBn\fP\\	It then finds peaks of the nu field links these together to\\\fBn\fP\\	construct \fBpeak\fP trajectories x_pk(rf). We define an \fBobject\fP to be the\\\fBn\fP\\	\fBpoint\fP of highest significance along such \fBa\fP trajectory.\\\fBn\fP\\	rf1, rf2 are min and max filter radii and we filter\\\fBn\fP\\	with logarithmic steps in rf defined by dlnrf\\\fBn\fP\\	Peaks at adjacent smoothing levels are connected if their\\\fBn\fP\\	separation is less than flink * rf.\\\fBn\fP\\	Use -s option to supply sky \fBmode\fP, \fBsigma\fP rather than have\\\fBn\fP\\	them calculated from the image.\\\fBn\fP\\	The catalogue is in 'lc' format.\\\fBn\fP\\	The position 'x' is measured relative to the bottom left\\\fBn\fP\\	corner of the bottom left \fBpixel\fP (so \fBe\fP.g. \fBa\fP single 'hot' \fBpixel\fP\\\fBn\fP\\	at (\fBix\fP,\fBiy\fP) = (23,67), would generate an \fBobject\fP with x = (23.5, 67.5)\\\fBn\fP\\	The rms noise at smoothing scale rf is computed assuming that the\\\fBn\fP\\	noise is incoherent.  If the noise is correlated (from resampling\\\fBn\fP\\	say) you can supply \fBa\fP noise psf with the -p option.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 20 of file hfindpeaks.c.
+.SS "#define ZMAX   10"
+.PP
+Definition at line 545 of file hfindpeaks.c.
+.SH "Function Documentation"
+.PP 
+.SS "void addnewline (\fBline\fP ** lineheadptr, \fBpeak\fP * thepeak)"
+.PP
+Definition at line 410 of file hfindpeaks.c.
+.PP
+References line::head, peak::next, line::next, nlines, and line::tail.
+.PP
+Referenced by main().
+.SS "void disposeof (\fBline\fP * theline, float nulimit)"
+.PP
+Definition at line 461 of file hfindpeaks.c.
+.PP
+References free(), peak::next, nlines, peak::nu, output(), and theline.
+.PP
+Referenced by main(), and removedead().
+.SS "void freecell (\fBline\fP *** cell, int ncells)"
+.PP
+Definition at line 528 of file hfindpeaks.c.
+.PP
+References free().
+.PP
+Referenced by main().
+.SS "void getcoords (\fBpeak\fP * thepeak, int * icell, int * jcell, float dmax)"
+.PP
+Definition at line 538 of file hfindpeaks.c.
+.PP
+References dmax, peak::i, and peak::j.
+.PP
+Referenced by main(), and makecell().
+.SS "\fBpeak\fP* getpeaks (int N1, int N2, float ** fs, int level, float rf, float sigma)"
+.PP
+Definition at line 318 of file hfindpeaks.c.
+.PP
+References peak::e1, peak::e2, f, peak::fs, i, peak::i, j, peak::j, peak::level, N1, N2, peak::next, peak::nu, peak::rf, sigma, TINY, and peak::x.
+.PP
+Referenced by main().
+.SS "int install (\fBpeak\fP * thepeak, \fBline\fP * linehead, float dmax)"
+.PP
+Definition at line 388 of file hfindpeaks.c.
+.SS "float interp (float d, float x1, float x2, float x3)"
+.PP
+Definition at line 569 of file hfindpeaks.c.
+.PP
+References d.
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 83 of file hfindpeaks.c.
+.PP
+References acf(), addnewline(), alloc_fft(), allocFloatArray(), argsinit(), argsToString(), copy_fft(), disposeof(), dmax, error_exit, exit(), fdo_stats(), fft_type, filter(), fits, flag, FLAG_ARG, FLOAT_MAGIC, fstatsrec::fmode, forward_fft(), freecell(), getargf(), getargi(), getargs(), getcoords(), getflag(), getpeaks(), i, install(), inverse_fft(), j, M1, M2, makecell(), fitsheader::n, N1, N2, peak::next, nextargtype(), NO_ARG, readfitsheader(), readfitsline(), readfitsplane(), removedead(), fstatsrec::sigma, sigma, sigma1, sigma2, substitute(), thefilterfunction(), theline, and usage.
+.SS "\fBline\fP*** makecell (\fBline\fP * linehead, float dmax, int ncells)"
+.PP
+Definition at line 504 of file hfindpeaks.c.
+.PP
+References dmax, exit(), getcoords(), and theline.
+.PP
+Referenced by main().
+.SS "int neighbours (\fBpeak\fP * peak1, \fBpeak\fP * peak2, float dmax)"
+.PP
+Definition at line 426 of file hfindpeaks.c.
+.PP
+References di, dj, dmax, peak::i, and peak::j.
+.PP
+Referenced by install().
+.SS "void output (\fBpeak\fP * bestpk, \fBpeak\fP * prevpk, \fBpeak\fP * nextpk)"
+.PP
+Definition at line 583 of file hfindpeaks.c.
+.PP
+References BUFFSIZE, d, peak::e1, peak::e2, EFACTOR, FFACTOR, peak::fs, interp(), peak::nu, peak::rf, RFACTOR, and peak::x.
+.PP
+Referenced by disposeof(), num1func(), and num2func().
+.SS "void removedead (\fBline\fP ** lineheadptr, int level, float nulimit)"
+.PP
+Definition at line 438 of file hfindpeaks.c.
+.PP
+References disposeof(), line::prev, and theline.
+.PP
+Referenced by main().
+.SS "float thefilterfunction (float ki, float kj)"
+.PP
+Definition at line 550 of file hfindpeaks.c.
+.PP
+References kk, sigma1, sigma2, z1, z2, and ZMAX.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBnlines\fP = 0 npeaks = 0\fC [static]\fP"
+.PP
+Definition at line 79 of file hfindpeaks.c.
+.PP
+Referenced by addnewline(), and disposeof().
+.SS "float \fBsigma1\fP\fC [static]\fP"
+.PP
+Definition at line 77 of file hfindpeaks.c.
+.PP
+Referenced by main(), and thefilterfunction().
+.SS "float \fBsigma2\fP\fC [static]\fP"
+.PP
+Definition at line 77 of file hfindpeaks.c.
+.PP
+Referenced by main(), and thefilterfunction().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,127 @@
+#!/usr/bin/perl
+
+$| = 1;			# force flushing
+
+$usage = "\
+NAME\
+	maketexmanpage --- perl script to generate a tex man page\
+\
+SYNOPSIS\
+	maketexmanpage [n] [-u]\
+\
+DESCRIPTION\
+	'maketexmanpage' reads a groff-style man page from stdin and converts to\
+	latex.\
+\
+	Optional integer argument 'n' shifts sub-section level up by n.\
+\
+	Use -u option to print this man page.\
+\
+";
+
+$n = shift(@ARGV);
+die $usage if ($n =~ /^-u$/);
+
+open(IP, "-");
+
+$indented = 0;
+
+$vsp = "\\vskip 0.3cm";
+
+while ($line = <IP>) {
+	cleanline();
+	if ($line =~ /^\.\\\"/) {		# a comment
+	} elsif ($line =~ /^\.TH/) {		# title
+		@words = split(" ", $line);
+		shift(@words);			# toss the .TH string
+		$command = shift(@words);
+		$mansection = shift(@words);
+		$date = shift(@words);
+		while ($word = shift(@words)) {
+			$date = $date." ".$word;
+			last if ($word =~ /\"$/);
+		}
+		$date =~ s/\"//g;
+		$imcatsection = shift(@words);
+		@words = split("_", $imcatsection);
+		$level = $#words + 1;
+		$level -= $n;
+		if ($level == 0) {
+			print "\\section{$command($mansection)}\n";
+		} elsif ($level == 1) {
+			print "\\subsection{$command($mansection)}\n";
+		} else {
+			print "\\subsubsection{$command($mansection)}\n";
+		}
+		print "{\\tt\n";
+	} elsif ($line =~ /^\.SH/) {		# section heading
+		$pagesection = "GENERIC";
+		$line =~ s/\.SH //;
+		chop($line);
+		print "$vsp\n\\noindent{\\bf $line }\n\n$vsp\n\\noindent\n";
+		if ($line =~ /^NAME/) {
+			$pagesection = "NAME";
+			chop($line = <IP>);
+			$line =~ s/\\//;
+			cleanline();
+			print "$vsp\n\\begin{quotation}\n$line\n\\end{quotation}\n";
+		}
+		if ($line =~ /^SYNOPSIS/) {
+			$pagesection = "SYNOPSIS";
+			chop($line = <IP>);
+			cleanline();
+			$line =~ s/\.B//;
+			print "$vsp\n\\begin{quotation}\n{\\bf $line}\n\\end{quotation}\n";
+		}
+		if ($line =~ /^AUTHOR/) {
+			$pagesection = "AUTHOR";
+			chop($line = <IP>);
+			cleanline();
+			print "\\begin{quotation}\n$line\n\\end{quotation}\n";
+		}
+		if ($line =~ /^COMMANDS/) {
+			$pagesection = "COMMANDS";
+		}
+		if ($line =~ /^SECTIONS/) {
+			$pagesection = "SECTIONS";
+		}
+		if ($line =~ /^SEE ALSO/) {
+			$pagesection = "SEE ALSO";
+		}
+	} else {
+		if ($line =~ /^\.IP /) {		# start indented paragraph
+			$line =~ s/\.IP //;
+			if ($indented) {
+				print "\\end{quotation}\n"
+			}
+			print "\\begin{quotation}\n";
+			print $line;
+			$indented = 1;
+		} elsif ($line =~ /^$/ || $line=~ /^\.PP/) {		# empty line
+			if ($indented) {
+				print "\\end{quotation}\n";
+				$indented = 0;
+			} else {
+				print "\n$vsp\n\\noindent\n";
+			}
+		} else {
+			print $line;
+		}
+	}
+}
+print "}\n\\clearpage\n";
+
+close(IP);
+exit;
+
+
+sub cleanline {
+	$line =~ s/\\'/'/g; 			# unescape single quotes
+	$line =~ s/_/\\_/g;			# escape underscores
+	$line =~ s/&/\\&/g;			# escape &
+	$line =~ s/%/\\%/g;			# escape %
+	$line =~ s/#/\\#/g;			# escape #
+	$line =~ s/\^/\\\^\\ /g;		# escape ^	
+	$line =~ s/\$/\\\$/g;			# escape $
+	$line =~ s/\|/\$\|\$/g;			# escape |	
+}

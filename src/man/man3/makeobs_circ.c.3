@@ -1,0 +1,50 @@
+.TH "makeobs_circ.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makeobs_circ.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+\fC#include 'Ffunc.h'\fP
+.br
+\fC#include 'orbitutils/gaussdev.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	makeobs_circ - make observations for \fBa\fP circular orbit\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makeobs_circ parfile\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	makeobs_circ generates \fBa\fP catalog containing triplets of observations\\\fBn\fP\\	consisting of:\\\fBn\fP\\		\fBt\fP     the time \fBt\fP\\\fBn\fP\\		\fBre\fP[]  the position of the earth\\\fBn\fP\\		ve[]  velocity of the earth\\\fBn\fP\\		\fBra\fP[]  position of the asteroid\\\fBn\fP\\		\fBva\fP[]  velocity of the asteroid \fBva\fP\\\fBn\fP\\		\fBrho\fP[] the position of the observor relative to \fBre\fP[]\\\fBn\fP\\		\fBn\fP[]   the direction vector\\\fBn\fP\\\\\fBn\fP\\	It generates these according to parameters in 'parfile', another lc cat.\\\fBn\fP\\	These are:\\\fBn\fP\\		pe    the phase of the earths orbit (degrees, winter = 0.0)\\\fBn\fP\\		\fBt0\fP    the local time of the central observation (hours, midnight = 0.0)\\\fBn\fP\\		dt    the interval between the observations (hours)\\\fBn\fP\\		\fBra\fP    the \fBradius\fP of the asteroid's orbit (AU)\\\fBn\fP\\		ia    the inclination (deg)\\\fBn\fP\\		la    the longitude of the ascending node (deg)\\\fBn\fP\\		pa    the phase of the asteroid in its orbit (deg)\\\fBn\fP\\		\fBsigma\fP the uncertainty astrometry (\fBarcsec\fP)\\\fBn\fP\\		nreal the \fBnumber\fP of realizations\\\fBn\fP\\\\\fBn\fP\\	Both the earth and asteroid are in circular orbits.\\\fBn\fP\\\\\fBn\fP\\	Both observatory latitude and tilt of earth's axis are\\\fBn\fP\\	hard-wired to 20 deg.\\\fBn\fP\\\\\fBn\fP\\	We use an idealised model where the year has precisely 360 days\\\fBn\fP\\\\\fBn\fP\\	Output times are given in units of earths dynamical time (approx 58 days).\\\fBn\fP\\\\\fBn\fP\\	Distances are in AU.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	makeobs_inertial laplace3\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	makeobs_circ - make observations for \fBa\fP circular orbit\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makeobs_circ parfile\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	makeobs_circ generates \fBa\fP catalog containing triplets of observations\\\fBn\fP\\	consisting of:\\\fBn\fP\\		\fBt\fP     the time \fBt\fP\\\fBn\fP\\		\fBre\fP[]  the position of the earth\\\fBn\fP\\		ve[]  velocity of the earth\\\fBn\fP\\		\fBra\fP[]  position of the asteroid\\\fBn\fP\\		\fBva\fP[]  velocity of the asteroid \fBva\fP\\\fBn\fP\\		\fBrho\fP[] the position of the observor relative to \fBre\fP[]\\\fBn\fP\\		\fBn\fP[]   the direction vector\\\fBn\fP\\\\\fBn\fP\\	It generates these according to parameters in 'parfile', another lc cat.\\\fBn\fP\\	These are:\\\fBn\fP\\		pe    the phase of the earths orbit (degrees, winter = 0.0)\\\fBn\fP\\		\fBt0\fP    the local time of the central observation (hours, midnight = 0.0)\\\fBn\fP\\		dt    the interval between the observations (hours)\\\fBn\fP\\		\fBra\fP    the \fBradius\fP of the asteroid's orbit (AU)\\\fBn\fP\\		ia    the inclination (deg)\\\fBn\fP\\		la    the longitude of the ascending node (deg)\\\fBn\fP\\		pa    the phase of the asteroid in its orbit (deg)\\\fBn\fP\\		\fBsigma\fP the uncertainty astrometry (\fBarcsec\fP)\\\fBn\fP\\		nreal the \fBnumber\fP of realizations\\\fBn\fP\\\\\fBn\fP\\	Both the earth and asteroid are in circular orbits.\\\fBn\fP\\\\\fBn\fP\\	Both observatory latitude and tilt of earth's axis are\\\fBn\fP\\	hard-wired to 20 deg.\\\fBn\fP\\\\\fBn\fP\\	We use an idealised model where the year has precisely 360 days\\\fBn\fP\\\\\fBn\fP\\	Output times are given in units of earths dynamical time (approx 58 days).\\\fBn\fP\\\\\fBn\fP\\	Distances are in AU.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	makeobs_inertial laplace3\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 8 of file makeobs_circ.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 55 of file makeobs_circ.c.
+.PP
+References assign(), exit(), fprintvec(), gaussdev(), i, ipf, length(), n, nt, ra, re, rho, rotx(), roty(), rotz(), scale(), sigma, t, t0, usage, and va.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

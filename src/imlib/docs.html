@@ -1,0 +1,313 @@
+<html>
+<head>
+<title> imcat imlib library</title>
+</head>
+<body bgcolor="#FFFFFF">
+<h1>imcat imlib library</h1><hr>
+<p>
+The imcat imlib library contains various functions concerning images.
+The header files declaring these functions are listed below.
+<hr>
+<h2><a name="INDEX">Index:</a></h2>
+<ul>
+<li> <a href="#fits.h">fits.h</a>
+<li> <a href="#filters.h">filters.h</a>
+<li> <a href="#map.h">map.h</a>
+<li> <a href="#map_private.h">map_private.h</a>
+<li> <a href="#print_stuff.h">print_stuff.h</a>
+<li> <a href="#sm_stuff.h">sm_stuff.h</a>
+<li> <a href="#scrunch_stuff.h">scrunch_stuff.h</a>
+</ul>
+<hr>
+<p>back to <a href="../mainindex.html">main index</a>
+<hr>
+<h2><a name="fits.h">fits.h</a></h2><pre>
+/*
+ * fits.h
+ *
+ * functions to implement FITS I/O
+ */
+
+
+#define MAX_FITS_DIM	7
+#define COM_LENGTH      80
+#define COM_LENGTH1     81
+#define NAME_LENGTH	8
+#define NAME_LENGTH1	9
+#define VALUE_LENGTH	70
+#define VALUE_LENGTH1	71
+
+#define FITS_REC_SIZE	2880
+
+#define UCHAR_PIXTYPE	8
+#define SHORT_PIXTYPE   16
+#define INT_PIXTYPE     32
+#define FLOAT_PIXTYPE   -32
+#define DBL_PIXTYPE     -64
+
+#define UCHAR_MAGIC   UCHAR_MAX
+#define SHORT_MAGIC   SHRT_MIN
+#define INT_MAGIC     INT_MIN
+#define FLOAT_MAGIC   (-((float)  0x80000000) * ((float)  0x80000000))
+#define DBL_MAGIC     (-((double) 0x80000000) * ((double) 0x80000000))
+
+#define BIG_ENDIAN_BYTE_ORDER		0
+#define LITTLE_ENDIAN_BYTE_ORDER	1
+#ifdef LITTLEENDIAN
+#define	NATIVE_BYTE_ORDER	LITTLE_ENDIAN_BYTE_ORDER
+#define	NON_NATIVE_BYTE_ORDER	BIG_ENDIAN_BYTE_ORDER
+#else
+#define	NATIVE_BYTE_ORDER	BIG_ENDIAN_BYTE_ORDER
+#define	NON_NATIVE_BYTE_ORDER	LITTLE_ENDIAN_BYTE_ORDER
+#endif
+
+/* We define the following structures for headers 
+ * 
+ * null terminated doubly linked lists of comments
+ *
+ */
+
+typedef struct fitscomment {
+	char			name[NAME_LENGTH1];
+	char			value[VALUE_LENGTH1];
+	struct fitscomment 	*next, *prev;
+} fitscomment;
+
+/* the header, containing the information needed to convert from
+ * disk to internal format and vice versa, and the comments.
+ */
+
+typedef struct fitsheader {
+	int			extpixtype;
+	int			intpixtype;		/* defaults to FLOAT_PIXTYPE */
+	int			ndim;
+	int			n[MAX_FITS_DIM];
+	int			bscaling;
+	double			bscale,  bzero;
+	FILE			*ipstream, *opstream;	/* default to stdin, stdout */
+	char			*linebuffer;
+	int			linebuffersize;	
+	int			ipbyteorder, opbyteorder;
+	int			convertnans;
+	struct fitscomment 	*basecomment;
+	int			hasextensions, isextension, nextensions, pcount, gcount;
+} fitsheader;
+
+
+
+fitsheader 	*readfitsheader(FILE *stream);
+fitsheader 	*copyfitsheader(fitsheader *theheader);
+int		writefitsheader(fitsheader *theheader);
+int		writefitstail(fitsheader *theheader);
+int		copycommenttostring(fitscomment *thecomment, char *string);
+fitscomment	*newtextcomment(char *name, char *val, char *comment);
+fitscomment	*newnumericcomment(char *name, double value, char *comment);
+fitscomment	*getcommentbyname(char *name, fitsheader *theheader);
+double		getnumericvalue(fitscomment *thecomment);
+char		*gettextvalue(fitscomment *thecomment);
+void		readfitsline(void *f, fitsheader *theheader);
+void		writefitsline(void *f, fitsheader *theheader);
+void		readfitsplane(void **f, fitsheader *theheader);
+void		writefitsplane(void **f, fitsheader *theheader);
+void		readfitscube(void ***f, fitsheader *theheader);
+void		writefitscube(void ***f, fitsheader *theheader);
+void		removecomment(fitscomment *thecomment, fitsheader *fitshead);
+void		removenamedcomments(char *name, fitsheader *fitshead);
+int		pixsize(int pixtype);
+
+int		read2Dfloatimage(float ***f, int *N1, int *N2, fitsheader **fits, FILE *stream);
+int		read2Dfloatimage_shm(float ***f, int *N1, int *N2, fitsheader **fits, FILE *stream);
+int		write2Dfloatimage(float **f, fitsheader *fits);
+fitsheader 	*newfitsheader(int ndim, int *dim, int extpixtype);
+fitsheader 	*new2Dfitsheader(int N1, int N2, int extpixtype);
+
+void		argsToString(int argc, char **argv, char *string);
+void		add_comment(int argc, char **argv, fitsheader *fitshead);
+void		appendcomment(fitscomment *newcomment, fitsheader *fitshead);
+void		prependcomment(fitscomment *newcomment, fitsheader *fitshead);
+void		setextpixtype(fitsheader *fits, int pixtype);
+void		set2Dimagesize(fitsheader *fits, int N1, int N2);
+int		skiplines(fitsheader *fits, int nlines);
+int		updatelinebuffer(fitsheader *theheader);
+
+int		byteswapline(void *data, int nel, int pixsize);
+int		convertmagictonans(void	*data, int nel, int pixsize);
+int		convertnanstomagic(void *data, int nel, int pixsize);
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="convertarray.h">convertarray.h</a></h2><pre>
+/*
+ * convertarray.h -- written by makeconvertarray.pl
+ */
+
+int	convertarray(char *fsrc, char *fdst, int srcpixtype, int dstpixtype, int nel, int bscaling, double bscale, double bzero);
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="filters.h">filters.h</a></h2><pre>
+void	gaussian_kernel_filter(float **f, float **fs, int N1, int N2, int m, float rf);
+void	kernel_filter(float **f, float **fs, int N1, int N2, int m, float (*filterfunc)(int di, int dj));
+void	block_filter(float **f, float **fs, int N1, int N2, int m);
+void	tukey(float **f, int N1, int N2);
+void	schecterfilter(float **f, 
+		int N1, int N2, 
+		float **fs, 
+		float sigma1, 
+		float sigma2,
+		float alpha,
+		float magicsubstitute);
+void	kolmogorovfilter(float **f, 
+		int N1, int N2, 
+		float **fs, 
+		float sigma,
+		float magicsubstitute);
+void	gaussfilter(float **f, 
+		int N1, int N2, 
+		float **fs, 
+		float A, 
+		float B,
+		float phi,
+		float magicsubstitute);
+void	mexicanfilter(float **f, 
+		int N1, int N2, 
+		float **fs, 
+		float sigma1, 
+		float sigma2,
+		float magicsubstitute);
+void	powerlawfilter(float **f, 
+		int N1, int N2, 
+		float **fs, 
+		float alpha,
+		float magicsubstitute);
+void	exponentialfilter(float **f, 
+		int N1, int N2, 
+		float **fs, 
+		float sigma,
+		float gamma,
+		float magicsubstitute);
+void	acf(float **f, int N1, int N2, float **theacf, float magicsubstitute);
+void	powerspectrum(float **f, int N1, int N2, float **P, int **nmodes);
+float   gaussianfilterfunc(int i, int j);
+float   schecterfilterfunction(float ki, float kj);
+float   kolmogorovfilterfunction(float ki, float kj);
+float   gaussballfunction(float ki, float kj);
+float   gaussellipsoidfunction(float ki, float kj);
+float	mexicanfilterfunction(float ki, float kj);
+float	powerlawfilterfunction(float ki, float kj);
+float   exponentialfilterfunction(float ki, float kj);
+
+
+#ifndef PI
+#define PI M_PI
+#endif
+
+
+
+
+
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="map.h">map.h</a></h2><pre>
+/*
+ * map.h - declares map(), fastmap(), ultrafastmap(), trianglecount();
+ */
+
+#define	ULTRAFAST_MAP_MODE	0
+#define FAST_MAP_MODE 		1
+#define	TRIANGLE_MAP_MODE	2
+
+ 
+/*
+ * various functions to map a M2 x M1 source image fsource[i][j] onto an N2 x N1 target 
+ * image ftarget[i][j] with the mapping 
+ *		ftarget(r) = fsource(r + d(r))
+ * where the deflection d = (di, dj) is given as a function
+ * of target coordinates, is supplied by function deflection()
+ * return value of this function is 1/0 for good/MAGIC deflection
+ *
+ */
+
+/* 
+ * map() decomposes target pixel image into triangles
+ * slow, but in some sense the best one can do, and can handle
+ * inverse mapping - see below.
+ */
+void	map(float **ftarget, int N1, int N2, float **fsource, int M1, int M2,
+			int (*deflection)(float ri, float rj, float *di, float *dj));
+long	trianglecount(void);
+
+/*
+ * fastmap() uses bi-linear interpolation
+ */  
+void    fastmap(float **ftarget, int N1, int N2, float **fsource, int M1, int M2,
+                        int (*deflection)(float ri, float rj, float *di, float *dj));
+
+/*
+ * ultrafastmap() uses nearest pixel
+ */  
+void    ultrafastmap(float **ftarget, int N1, int N2, float **fsource, int M1, int M2,
+                        int (*deflection)(float ri, float rj, float *di, float *dj));
+
+
+/*
+ * 4/19/97: have added these so we can do inverse mapping with map(): The calls
+ *	set_triangle_map_mode(INVERSEMAPMODE);
+ *	map(fsource, N1, N2, ftarget, M1, M2, def);
+ * map the N1 x N2 image fsource onto M1 x M2 image according to
+ *	ftarget(x + def(x)) = fsource(x)
+ * where the deflection is now given as a function of source coords
+ */
+#define	FORWARDMAPMODE 1
+#define INVERSEMAPMODE 0
+void	set_triangle_map_mode(int mapmode);
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="map_private.h">map_private.h</a></h2><pre>
+/*
+ * map_private.h
+ */
+ 
+typedef struct vert {
+	float	x, y;
+	struct vert	*next, *prev;
+} vert;
+
+vert	*makevertex(float x, float y);
+void	makering(vert **basevertex, vert **point, int npoints);
+void	decompose(vert *basevertex);
+void	printpolygon(vert *basevertex);
+void	printvertex(vert * thevert);
+void	smprintpolygon(vert *basevertex);
+void	freepolygon(vert *basevert);
+void	dopolygon(vert *basevert);
+void	makebreakpoints(vert *v1, vert *v2, vert **V1, vert **V2, int dir, float cut);
+void	switchxy(vert *v);
+void	link(vert *r1, vert *r2, vert *l1, vert *l2, vert *R1, vert *R2, vert *L1, vert *L2);
+void	dotriangle(vert *basevert);
+float	trianglearea(vert *basevert);
+void	getsourceij(vert *basevert, int *ix, int *iy);
+void	addarea(int ix, int iy, float area);
+vert	*allocvert(void);
+void	freeverts(void);
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="sm_stuff.h">sm_stuff.h</a></h2><pre>
+/*
+ * contour_stuff.h
+ */
+
+
+void	smcontour(float **f, int N1, int N2, int df, int nplus, int nminus, int comc, char *comv[]);
+void	smprofile(float **f, int N1, int N2, int ic, int jc);
+
+
+
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<h2><a name="scrunch_stuff.h">scrunch_stuff.h</a></h2><pre>
+#define	MEAN	1
+#define	MEDIAN	2
+#define CMEAN	3
+
+void		scrunch_stream(fitsheader *fitsin, fitsheader *fitsout, int mode);
+
+</pre><p>back to <a href="#INDEX">index</a><hr>
+<p><a href="../mainindex.html">main index</a>
+</body>
+</html>

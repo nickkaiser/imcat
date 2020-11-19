@@ -1,0 +1,64 @@
+.TH "getshapesmain.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getshapesmain.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../utils/iostream.h'\fP
+.br
+\fC#include '../../utils/stats_stuff.h'\fP
+.br
+\fC#include 'getshape.h'\fP
+.br
+\fC#include 'zap.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	getshapes --- calculate ellipticities etc. for catalogue of objects\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getshapes	[\fBoptions\fP...]\\\fBn\fP\\		-\fBr\fP rname	# name for window \fBradius\fP ('rg')\\\fBn\fP\\		-\fBm\fP rmult	# multiplier: r_window = rmult * rname (1.0)\\\fBn\fP\\		-f fitsfile	# specify \fBfits\fP file explicitly\\\fBn\fP\\		-\fBi\fP 		# ignore the sky \fBbackground\fP information.\\\fBn\fP\\		-Z \fBr\fP \fBmul\fP	# ignore pixels within \fBmul\fP * \fBr\fP of other objects\\\fBn\fP\\		-R		# always output \fBobject\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'getshapes\\' calculates second moments of sky brightness\\\fBn\fP\\	(and related quantities) for objects detected by (\fBh\fP)findpeaks,\\\fBn\fP\\	though possibly after having been processed by getsky and/or\\\fBn\fP\\	apphot.  It uses \fBa\fP gaussian window of size determined by\\\fBn\fP\\	flags -\fBr\fP, -\fBm\fP.  Use '-\fBr\fP unity' for r_window = rmult.\\\fBn\fP\\	It adds the following items to the catalogue:\\\fBn\fP\\		\fBe\fP[2]		# ellipticity or polarisation\\\fBn\fP\\		psm[2][2]	# 'smear polarizability tensor'\\\fBn\fP\\		psh[2][2]	# 'shear polarizability tensor'\\\fBn\fP\\		\fBd\fP[2] 		# centroid\\\fBn\fP\\	Sometimes trace of quadrupole moment tensor is negative.\\\fBn\fP\\	The default behaviour is not to output such objects, but\\\fBn\fP\\	with -R option (for 'Rambo \fBmode\fP') we output an \fBobject\fP\\\fBn\fP\\	with zero polarization and polarizability.\\\fBn\fP\\\\\fBn\fP\\	getshapes uses the \fBiostream\fP library.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	getshapes --- calculate ellipticities etc. for catalogue of objects\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getshapes	[\fBoptions\fP...]\\\fBn\fP\\		-\fBr\fP rname	# name for window \fBradius\fP ('rg')\\\fBn\fP\\		-\fBm\fP rmult	# multiplier: r_window = rmult * rname (1.0)\\\fBn\fP\\		-f fitsfile	# specify \fBfits\fP file explicitly\\\fBn\fP\\		-\fBi\fP 		# ignore the sky \fBbackground\fP information.\\\fBn\fP\\		-Z \fBr\fP \fBmul\fP	# ignore pixels within \fBmul\fP * \fBr\fP of other objects\\\fBn\fP\\		-R		# always output \fBobject\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'getshapes\\' calculates second moments of sky brightness\\\fBn\fP\\	(and related quantities) for objects detected by (\fBh\fP)findpeaks,\\\fBn\fP\\	though possibly after having been processed by getsky and/or\\\fBn\fP\\	apphot.  It uses \fBa\fP gaussian window of size determined by\\\fBn\fP\\	flags -\fBr\fP, -\fBm\fP.  Use '-\fBr\fP unity' for r_window = rmult.\\\fBn\fP\\	It adds the following items to the catalogue:\\\fBn\fP\\		\fBe\fP[2]		# ellipticity or polarisation\\\fBn\fP\\		psm[2][2]	# 'smear polarizability tensor'\\\fBn\fP\\		psh[2][2]	# 'shear polarizability tensor'\\\fBn\fP\\		\fBd\fP[2] 		# centroid\\\fBn\fP\\	Sometimes trace of quadrupole moment tensor is negative.\\\fBn\fP\\	The default behaviour is not to output such objects, but\\\fBn\fP\\	with -R option (for 'Rambo \fBmode\fP') we output an \fBobject\fP\\\fBn\fP\\	with zero polarization and polarizability.\\\fBn\fP\\\\\fBn\fP\\	getshapes uses the \fBiostream\fP library.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file getshapesmain.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 57 of file getshapesmain.c.
+.PP
+References addargscomment(), addobjectitem(), object::addrlist, allocFloatArray(), allocitemcontents(), allocobjectcontents(), allocShortArray(), BINARY_FILE_TYPE, connectobjecttocathead(), copycontentinfo(), copyheaderinfo(), d, e, error_exit, exit(), iostream::f, f, fits, getheaderitemaddress(), getobjectitemindex(), getshape(), cathead::headeritembase, inheritcontents(), ix, N1, N2, newitem(), newobject(), NUM_TYPE, openiostream(), r, read2Dfloatimage(), readcathead(), readobject(), setcatipf(), setcatopf(), setcatopfiletype(), UNZAP_MODE, usage, writecathead(), writeobject(), x, zap(), and ZAP_MODE.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

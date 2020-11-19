@@ -1,0 +1,68 @@
+.TH "avgpixstack.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+avgpixstack.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'avgpixstack.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBthefloatcmp\fP ()"
+.br
+.ti -1c
+.RI "float \fBmedian\fP (float *f, int nel)"
+.br
+.ti -1c
+.RI "float \fBrankedimage\fP (float *f, int nel, int rank)"
+.br
+.ti -1c
+.RI "int \fBavgpixstack\fP (int \fBopmode\fP, int rank, int nplanes, float *f, float *weight, float *ftemp, float *favg, float *weightsum)"
+.br
+.ti -1c
+.RI "int \fBthefloatcmp\fP (float *s1, float *s2)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int avgpixstack (int opmode, int rank, int nplanes, float * f, float * weight, float * ftemp, float * favg, float * weightsum)"
+.PP
+Definition at line 21 of file avgpixstack.c.
+.PP
+References APS_MEDIAN, APS_RANK, f, FLOAT_MAGIC, i, j, median(), opmode, and rankedimage().
+.PP
+Referenced by main().
+.SS "float median (float * f, int nel)"
+.PP
+Definition at line 74 of file avgpixstack.c.
+.PP
+References error_exit, f, and thefloatcmp().
+.SS "float rankedimage (float * f, int nel, int rank)"
+.PP
+Definition at line 90 of file avgpixstack.c.
+.PP
+References error_exit, f, and thefloatcmp().
+.SS "int thefloatcmp (float * s1, float * s2)"
+.PP
+Definition at line 109 of file avgpixstack.c.
+.SS "int thefloatcmp ()"
+.PP
+Referenced by avsigclip(), median(), and rankedimage().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

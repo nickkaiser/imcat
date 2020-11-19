@@ -1,0 +1,54 @@
+.TH "deproject.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+deproject.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/ipbuff.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	deproject - deproject an image of an assumed spherically symmetric \fBobject\fP\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	deproject rmin rmax nbins [\fBoptions\fP....] \\\fBn\fP\\		-\fBc\fP xc yc	# spatial origin (\fBN1\fP/2 + 0.5, \fBN2\fP/2 + 0.5)\\\fBn\fP\\		-s \fBd\fP		# spacing of \fBpoints\fP for volume integration (0.1)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'deproject\\' computes deprojection of an assumed spherically\\\fBn\fP\\	symmetric structure from \fBa\fP \fBFITS\fP image in the style of\\\fBn\fP\\	Fabian et al.\\\fBn\fP\\\\\fBn\fP\\	The model is\\\fBn\fP\\		f_2D = int dz f_3D(sqrt(rp^2 + \fBz\fP^2)).\\\fBn\fP\\\\\fBn\fP\\	Input image is read from stdin through profile (which generates\\\fBn\fP\\	an lc-format version of the asimuthal sum of the image F(\fBr\fP)\\\fBn\fP\\	in nbins log-spaced shells ranging from rmin to rmax.\\\fBn\fP\\\\\fBn\fP\\	We then work inward from outermost shell, computing first the\\\fBn\fP\\	volumes\\\fBn\fP\\		V[ir] = 2 pi int int dz drp rp\\\fBn\fP\\	where integrals are over volumes such that \fBr\fP = sqrt(rp^2 + \fBz\fP^2)\\\fBn\fP\\	falls in some given bin \fBr\fP, and where we use spacing of \fBd\fP times \fBr\fP\\\fBn\fP\\	to perform the integrals.\\\fBn\fP\\\\\fBn\fP\\	We then compute:\\\fBn\fP\\		f_3D[\fBi\fP] = (F[\fBi\fP] - sum_j>\fBi\fP V[\fBj\fP] f[\fBj\fP]) / V[\fBi\fP]\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	deproject - deproject an image of an assumed spherically symmetric \fBobject\fP\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	deproject rmin rmax nbins [\fBoptions\fP....] \\\fBn\fP\\		-\fBc\fP xc yc	# spatial origin (\fBN1\fP/2 + 0.5, \fBN2\fP/2 + 0.5)\\\fBn\fP\\		-s \fBd\fP		# spacing of \fBpoints\fP for volume integration (0.1)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'deproject\\' computes deprojection of an assumed spherically\\\fBn\fP\\	symmetric structure from \fBa\fP \fBFITS\fP image in the style of\\\fBn\fP\\	Fabian et al.\\\fBn\fP\\\\\fBn\fP\\	The model is\\\fBn\fP\\		f_2D = int dz f_3D(sqrt(rp^2 + \fBz\fP^2)).\\\fBn\fP\\\\\fBn\fP\\	Input image is read from stdin through profile (which generates\\\fBn\fP\\	an lc-format version of the asimuthal sum of the image F(\fBr\fP)\\\fBn\fP\\	in nbins log-spaced shells ranging from rmin to rmax.\\\fBn\fP\\\\\fBn\fP\\	We then work inward from outermost shell, computing first the\\\fBn\fP\\	volumes\\\fBn\fP\\		V[ir] = 2 pi int int dz drp rp\\\fBn\fP\\	where integrals are over volumes such that \fBr\fP = sqrt(rp^2 + \fBz\fP^2)\\\fBn\fP\\	falls in some given bin \fBr\fP, and where we use spacing of \fBd\fP times \fBr\fP\\\fBn\fP\\	to perform the integrals.\\\fBn\fP\\\\\fBn\fP\\	We then compute:\\\fBn\fP\\		f_3D[\fBi\fP] = (F[\fBi\fP] - sum_j>\fBi\fP V[\fBj\fP] f[\fBj\fP]) / V[\fBi\fP]\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file deproject.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 49 of file deproject.c.
+.PP
+References d, dr, error_exit, exit(), F(), i, ipf, j, r, readdoublebuff(), usage, and z.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

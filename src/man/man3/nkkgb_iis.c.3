@@ -1,0 +1,68 @@
+.TH "iis.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+iis.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <float.h>\fP
+.br
+\fC#include 'libiis.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	iis - pipe \fBfits\fP image \fBdata\fP into saopipe\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	iis [\fBoptions\fP...]\\\fBn\fP\\	where \fBoptions\fP are:\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\		-f \fBfmin\fP \fBfmax\fP	# limits for \fBpixel\fP values\\\fBn\fP\\		-p pipename	# supply FIFO pipe name\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'iis\\' reads \fBa\fP \fBfits\fP image from stdin, prepends an iis header\\\fBn\fP\\	and writes the output to \fBa\fP FIFO pipe /dev/imt1o so that saoimage can\\\fBn\fP\\	display it.\\\fBn\fP\\	If the standard FIFO does not exist (it typically won'\fBt\fP unless\\\fBn\fP\\	you have IRAF installed) then create one with \fBe\fP.g.\\\fBn\fP\\		'mknod ~/dev/saopipe p'\\\fBn\fP\\	and then fire up saoimage with\\\fBn\fP\\		'saoimage -idev ~/dev/saopipe &'\\\fBn\fP\\	Beware: some old versions of saoimage crash when you try to\\\fBn\fP\\	supply 'idev' argument.\\\fBn\fP\\	Many thanks to Karl Glazebrook for refinements\\\fBn\fP\\	to original code.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser (kaiser@cita.utoronto.ca)\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.ti -1c
+.RI "#define \fBMINFLOAT\fP   FLT_MIN"
+.br
+.ti -1c
+.RI "#define \fBMAXFLOAT\fP   FLT_MAX"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 44 of file nkkgb/iis.c.
+.SS "#define MAXFLOAT   FLT_MAX"
+.PP
+Definition at line 46 of file nkkgb/iis.c.
+.SS "#define MINFLOAT   FLT_MIN"
+.PP
+Definition at line 45 of file nkkgb/iis.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	iis - pipe \fBfits\fP image \fBdata\fP into saopipe\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	iis [\fBoptions\fP...]\\\fBn\fP\\	where \fBoptions\fP are:\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\		-f \fBfmin\fP \fBfmax\fP	# limits for \fBpixel\fP values\\\fBn\fP\\		-p pipename	# supply FIFO pipe name\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'iis\\' reads \fBa\fP \fBfits\fP image from stdin, prepends an iis header\\\fBn\fP\\	and writes the output to \fBa\fP FIFO pipe /dev/imt1o so that saoimage can\\\fBn\fP\\	display it.\\\fBn\fP\\	If the standard FIFO does not exist (it typically won'\fBt\fP unless\\\fBn\fP\\	you have IRAF installed) then create one with \fBe\fP.g.\\\fBn\fP\\		'mknod ~/dev/saopipe p'\\\fBn\fP\\	and then fire up saoimage with\\\fBn\fP\\		'saoimage -idev ~/dev/saopipe &'\\\fBn\fP\\	Beware: some old versions of saoimage crash when you try to\\\fBn\fP\\	supply 'idev' argument.\\\fBn\fP\\	Many thanks to Karl Glazebrook for refinements\\\fBn\fP\\	to original code.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser (kaiser@cita.utoronto.ca)\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 8 of file nkkgb/iis.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 48 of file nkkgb/iis.c.
+.PP
+References exit(), f, fb, fits, fmin, frame, iis_close(), iis_display(), iis_open(), MAGIC, MAXFLOAT, MINFLOAT, N1, N2, read2Dfloatimage(), usage, x, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

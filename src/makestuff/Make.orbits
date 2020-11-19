@@ -1,0 +1,4 @@
+imcattools_orbits :
+	cd imcattools/orbits ; make $(MODE) XLIBS=$(XLIBS) FLIBS=$(FLIBS) \
+		ORBFITLIBDIR=$(ORBFITLIBDIR) CFLAGS=$(CFLAGS)
+

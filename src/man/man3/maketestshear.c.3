@@ -1,0 +1,76 @@
+.TH "maketestshear.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+maketestshear.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	maketestshear --- make \fBa\fP test shear field\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	maketestshear [\fBoptions\fP...]\\\fBn\fP\\		-\fBn\fP \fBN\fP	 	# image size (256)\\\fBn\fP\\		-o i0 j0	# lens position (128,128)\\\fBn\fP\\		-\fBc\fP \fBrc\fP		# core \fBradius\fP (50)\\\fBn\fP\\		-\fBk\fP		# generate kappa\\\fBn\fP\\		-g		# generate gradkappa\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'maketestshear' generates \fBa\fP float format \fBfits\fP image of shear\\\fBn\fP\\	for kappa = exp(-\fBr\fP^2 / 2 r_c^2) model\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBEPS\fP   1.\fBe\fP-10"
+.br
+.ti -1c
+.RI "#define \fBGAMMA_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBKAPPA_MODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBGRAD_KAPPA_MODE\fP   2"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define EPS   1.\fBe\fP-10"
+.PP
+Definition at line 32 of file maketestshear.c.
+.SS "#define GAMMA_MODE   0"
+.PP
+Definition at line 34 of file maketestshear.c.
+.PP
+Referenced by main().
+.SS "#define GRAD_KAPPA_MODE   2"
+.PP
+Definition at line 36 of file maketestshear.c.
+.PP
+Referenced by main().
+.SS "#define KAPPA_MODE   1"
+.PP
+Definition at line 35 of file maketestshear.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	maketestshear --- make \fBa\fP test shear field\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	maketestshear [\fBoptions\fP...]\\\fBn\fP\\		-\fBn\fP \fBN\fP	 	# image size (256)\\\fBn\fP\\		-o i0 j0	# lens position (128,128)\\\fBn\fP\\		-\fBc\fP \fBrc\fP		# core \fBradius\fP (50)\\\fBn\fP\\		-\fBk\fP		# generate kappa\\\fBn\fP\\		-g		# generate gradkappa\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'maketestshear' generates \fBa\fP float format \fBfits\fP image of shear\\\fBn\fP\\	for kappa = exp(-\fBr\fP^2 / 2 r_c^2) model\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 5 of file maketestshear.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 38 of file maketestshear.c.
+.PP
+References add_comment(), allocFloatArray(), EPS, exit(), fits, FLOAT_PIXTYPE, gamma1(), gamma2(), GAMMA_MODE, GRAD_KAPPA_MODE, i, j, KAPPA_MODE, fitsheader::n, N, fitsheader::ndim, new2Dfitsheader(), usage, write2Dfloatimage(), writefitsheader(), writefitsline(), writefitstail(), x, Y, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

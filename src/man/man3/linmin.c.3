@@ -1,0 +1,70 @@
+.TH "linmin.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+linmin.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include 'linmin.h'\fP
+.br
+\fC#include 'brent.h'\fP
+.br
+\fC#include 'mnbrak.h'\fP
+.br
+\fC#include 'f1dim.h'\fP
+.br
+\fC#include 'nrutil.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBTOL\fP   2.0\fBe\fP-4"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBlinmin\fP (float p[], float xi[], int \fBn\fP, float *fret, float(*func)(float[]))"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBncom\fP = 0"
+.br
+.ti -1c
+.RI "float * \fBpcom\fP = 0*\fBxicom\fP=0(*\fBnrfunc\fP)()"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define TOL   2.0\fBe\fP-4"
+.PP
+Definition at line 15 of file linmin.c.
+.SH "Function Documentation"
+.PP 
+.SS "void linmin (float p[], float xi[], int n, float * fret, float(* func)(float[]))"
+.PP
+Definition at line 20 of file linmin.c.
+.PP
+References brent(), f1dim(), fb, free_vector(), func(), j, mnbrak(), n, ncom, nrfunc, pcom, TOL, vector(), xicom, xmin, and xx.
+.PP
+Referenced by frprmn(), and powell().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBncom\fP = 0"
+.PP
+Definition at line 17 of file linmin.c.
+.SS "float* \fBpcom\fP = 0*\fBxicom\fP=0(*\fBnrfunc\fP)()"
+.PP
+Definition at line 18 of file linmin.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+
+warp=0.1
+echoeval "maketestcat 100 3 | lc -C -N '1 2 x' -n mag > test0.cat"
+
+# echoeval "lc +all 'x = %x 0.1 0.2 2 vector vsub' < test0.cat > test1.cat"
+echoeval "lc +all 'x = %x 0.1 0.2 2 vector vsub 1.0 0.05 -0.05 1.0 lintrans' < test0.cat > test1.cat"
+echoeval "lc +all 'x = %x 0.3 0.4 2 vector vsub 1.0 -0.05 0.05 1.0 lintrans' < test0.cat > test2.cat"
+echoeval "lc +all 'x = %x 0.05 0.25 2 vector vsub 1.0 0.05 -0.05 1.0 lintrans' < test0.cat > test3.cat"
+echoeval "lc +all 'x = %x 0.15 0.35 2 vector vsub 1.0 -0.05 0.05 1.0 lintrans' < test0.cat > test4.cat"
+
+echoeval "lc +all 'x = %x[0] 1 %x[0] $warp mult + mult %x[1] 2 vector' < test0.cat > test_0.cat" 
+echoeval "lc 'x = %x[0] 1 %x[0] $warp mult + mult %x[1] 2 vector' 'mag = %mag 0.2 +' < test1.cat > test_1.cat"
+echoeval "lc 'x = %x[0] 1 %x[0] $warp mult + mult %x[1] 2 vector' 'mag = %mag 0.4 +' < test2.cat > test_2.cat"
+echoeval "lc 'x = %x[0] 1 %x[0] $warp mult + mult %x[1] 2 vector' 'mag = %mag 0.2 +' < test3.cat > test_3.cat"
+echoeval "lc 'x = %x[0] 1 %x[0] $warp mult + mult %x[1] 2 vector' 'mag = %mag 0.4 +' < test4.cat > test_4.cat"
+
+echoeval "mergestack1 -c . -d 0.1"
+# echoeval "pastecats test2.cat test3.cat | lc 'x = %x %xp 2 vector' 'exp = 0 1 2 vector' 'mag = %mag %magp 2 vector' > testmerge.cat"
+

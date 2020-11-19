@@ -1,0 +1,88 @@
+.TH "pvmloop.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+pvmloop.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'pvm3.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'pvmpack.h'\fP
+.br
+\fC#include 'pvmspawn.h'\fP
+.br
+\fC#include 'pvmtags.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	pvmloop - execute shell commands across \fBa\fP parallel virtual machine running PVM.\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	pvmloop [-u] [-\fBd\fP] [-\fBv\fP] [-q] [-s slavelist] [-f ifmt] [-\fBi\fP initcom] niter commandformatstring\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'pvmloop' executes shell commands across \fBa\fP parallel virtual machine.\\\fBn\fP\\\\\fBn\fP\\	'pvmloop' first attempts to enroll in pvm, assumed to be running,\\\fBn\fP\\	and issues an error message and exits if it fails. See\\\fBn\fP\\	http://www.epm.ornl.gov/pvm/pvm_home.html for more information about PVM.\\\fBn\fP\\\\\fBn\fP\\	'pvmloop' then reads \fBa\fP table of slaves from 'pvmslaves.lst' (or\\\fBn\fP\\	from 'slavelist' with the -s option). The first \fBline\fP of\\\fBn\fP\\	this table should contain ns, the \fBnumber\fP of slaves to be used,\\\fBn\fP\\	followed by ns lines containing two strings: nodetag and nodename.\\\fBn\fP\\	For example:\\\fBn\fP\\\\\fBn\fP\\		3\\\fBn\fP\\		01	node01\\\fBn\fP\\		02	node02\\\fBn\fP\\		03	node03\\\fBn\fP\\\\\fBn\fP\\	'pvmloop' then spawns \fBa\fP set of 'pvmserver' proceses, one per slave,\\\fBn\fP\\	which are then send \fBa\fP sequence of shell commands of the form:\\\fBn\fP\\\\\fBn\fP\\		( ( command ) | topvm ...) 2>&1 topvm ...\\\fBn\fP\\\\\fBn\fP\\	where 'command' is generated from the 'commandformatstring' as\\\fBn\fP\\	described below.  The purpose of the 'topvm' processes is to\\\fBn\fP\\	send the stdout and stderr of 'command' back to the master\\\fBn\fP\\	process as pvm messages where they are decoded and merged into\\\fBn\fP\\	the master process stdout and stderr streams.\\\fBn\fP\\	By default, each complete command is echoed to stderr, but you\\\fBn\fP\\	can switch this off with the -q option.\\\fBn\fP\\\\\fBn\fP\\	The commandformatstring has \fBa\fP syntax similar to \fBa\fP printf format\\\fBn\fP\\	string. On each iteration it is processed and each occurence\\\fBn\fP\\	of %%\fBi\fP is replaced by the iteration \fBnumber\fP \fBi\fP = 0...ni-1,\\\fBn\fP\\	%%I is replaced by \fBa\fP fixed length textual representation of \fBi\fP\\\fBn\fP\\	%%\fBn\fP is replaced by the node \fBnumber\fP, and %%\fBN\fP is replaced by the\\\fBn\fP\\	nodetag, and %%%% is replaced by %%.  The result\\\fBn\fP\\	may be \fBa\fP compound command of subprocesses linked by the\\\fBn\fP\\	pipe symbol '|', and the output of the command may be\\\fBn\fP\\	redirected into \fBa\fP disk file on the slave (in which case the master process\\\fBn\fP\\	will receive, and generate, no standard output).\\\fBn\fP\\	The command thus generated is then sent to \fBa\fP 'pvmserver'\\\fBn\fP\\	to be executed.\\\fBn\fP\\\\\fBn\fP\\EXAMPLES\\\fBn\fP\\	These examples assume the pvmslaves.lst file above, and that each\\\fBn\fP\\	slave has \fBa\fP disk named /dnn, where \fBnn\fP is the nodetag.\\\fBn\fP\\\\\fBn\fP\\	To check on the status of the slaves:\\\fBn\fP\\		pvmloop 3 \fBw\fP\\\fBn\fP\\\\\fBn\fP\\	To clear \fBa\fP scratch directory on each slave:\\\fBn\fP\\		pvmloop 3 'rm /\fBd\fP%%\fBN\fP/\fBtmp\fP/*'\\\fBn\fP\\\\\fBn\fP\\	To generate \fBa\fP set of 1000 Monte Carlo simulations with some command 'monty'\\\fBn\fP\\	which takes as an argument \fBa\fP \fBseed\fP (given here by the iteration \fBnumber\fP):\\\fBn\fP\\		pvmloop 1000 \\'monty -\fBseed\fP %%\fBi\fP > /\fBd\fP%%\fBN\fP/\fBtmp\fP/monty%%I.dat\\'\\n\\	This would cause the following commands to be executed:\\\fBn\fP\\		monty -\fBseed\fP 0   > /d01/\fBtmp\fP/monty000.dat   (on node01)\\\fBn\fP\\		monty -\fBseed\fP 1   > /d02/\fBtmp\fP/monty001.dat   (on node02)\\\fBn\fP\\		monty -\fBseed\fP 2   > /d03/\fBtmp\fP/monty002.dat   (on node03)\\\fBn\fP\\		monty -\fBseed\fP 3   > /d01/\fBtmp\fP/monty003.dat   (on node01)\\\fBn\fP\\		......\\\fBn\fP\\		monty -\fBseed\fP 998 > /d01/\fBtmp\fP/monty998.dat   (on node03)\\\fBn\fP\\		monty -\fBseed\fP 999 > /d01/\fBtmp\fP/monty999.dat   (on node01)\\\fBn\fP\\\\\fBn\fP\\OPTIONS\\\fBn\fP\\	With -u \fBflag\fP we output this man page and exit.\\\fBn\fP\\	With -\fBd\fP \fBflag\fP we just output the series of commands that would otherwise be executed\\\fBn\fP\\	and exit. This is highly recommended with commands that delete files etc.\\\fBn\fP\\	Use -\fBv\fP \fBflag\fP to invoke \fBverbose\fP \fBmode\fP, or -q to run quietly.\\\fBn\fP\\	Use -f ifmt to specify \fBa\fP format string for the iteration \fBnumber\fP,\\\fBn\fP\\	otherwise we use '%%.nd' specification where \fBn\fP is just large\\\fBn\fP\\	enough to hold the \fBnumber\fP ni-1.\\\fBn\fP\\	With '-\fBi\fP inticom' option the shell command string 'initcom' is executed\\\fBn\fP\\	on the master node using system(initcom) before any other output is collected.\\\fBn\fP\\	This allows you to generate \fBa\fP header, to which the output\\\fBn\fP\\	of the slave processes can be prepended.  For example,\\\fBn\fP\\	pvmloop -q -\fBi\fP 'lc -\fBC\fP -\fBn\fP x < /dev/null' 10 'makerandcat 1000 -\fBseed\fP 2 -\fBdim\fP 1 | lc -o'\\\fBn\fP\\	generates \fBa\fP catalogue containing 10 x 1000 random numbers.  The effect of the 'lc -o'\\\fBn\fP\\	call is to chop the headers off the slave output.\\\fBn\fP\\	Similarly you can use 'imhead -g ....' to generate \fBa\fP \fBfits\fP header and pipe\\\fBn\fP\\	the output of the slaves through 'imhead -\fBd\fP'.\\\fBn\fP\\\\\fBn\fP\\BUGS\\\fBn\fP\\	'pvmloop' does not die if the remote shell commands fail.\\\fBn\fP\\\\\fBn\fP\\	'pvmloop' does not do any load balancing.\\\fBn\fP\\\\\fBn\fP\\FILES\\\fBn\fP\\	pvmslaves.lst\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	pvmserver, topvm, apply.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAX_ARGS\fP   128"
+.br
+.ti -1c
+.RI "#define \fBMAX_ARG_LEN\fP   1024"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBmakefullcommand\fP (char *srccom, char *dstcom, int mtid, int opmsgtag, int errmsgtag)"
+.br
+.ti -1c
+.RI "void \fBmakecommand\fP (char *srccom, char *dstcom, int \fBi\fP, char *ifmt, int s, char *nodetag)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX_ARG_LEN   1024"
+.PP
+Definition at line 125 of file pvmloop.c.
+.SS "#define MAX_ARGS   128"
+.PP
+Definition at line 124 of file pvmloop.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	pvmloop - execute shell commands across \fBa\fP parallel virtual machine running PVM.\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	pvmloop [-u] [-\fBd\fP] [-\fBv\fP] [-q] [-s slavelist] [-f ifmt] [-\fBi\fP initcom] niter commandformatstring\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'pvmloop' executes shell commands across \fBa\fP parallel virtual machine.\\\fBn\fP\\\\\fBn\fP\\	'pvmloop' first attempts to enroll in pvm, assumed to be running,\\\fBn\fP\\	and issues an error message and exits if it fails. See\\\fBn\fP\\	http://www.epm.ornl.gov/pvm/pvm_home.html for more information about PVM.\\\fBn\fP\\\\\fBn\fP\\	'pvmloop' then reads \fBa\fP table of slaves from 'pvmslaves.lst' (or\\\fBn\fP\\	from 'slavelist' with the -s option). The first \fBline\fP of\\\fBn\fP\\	this table should contain ns, the \fBnumber\fP of slaves to be used,\\\fBn\fP\\	followed by ns lines containing two strings: nodetag and nodename.\\\fBn\fP\\	For example:\\\fBn\fP\\\\\fBn\fP\\		3\\\fBn\fP\\		01	node01\\\fBn\fP\\		02	node02\\\fBn\fP\\		03	node03\\\fBn\fP\\\\\fBn\fP\\	'pvmloop' then spawns \fBa\fP set of 'pvmserver' proceses, one per slave,\\\fBn\fP\\	which are then send \fBa\fP sequence of shell commands of the form:\\\fBn\fP\\\\\fBn\fP\\		( ( command ) | topvm ...) 2>&1 topvm ...\\\fBn\fP\\\\\fBn\fP\\	where 'command' is generated from the 'commandformatstring' as\\\fBn\fP\\	described below.  The purpose of the 'topvm' processes is to\\\fBn\fP\\	send the stdout and stderr of 'command' back to the master\\\fBn\fP\\	process as pvm messages where they are decoded and merged into\\\fBn\fP\\	the master process stdout and stderr streams.\\\fBn\fP\\	By default, each complete command is echoed to stderr, but you\\\fBn\fP\\	can switch this off with the -q option.\\\fBn\fP\\\\\fBn\fP\\	The commandformatstring has \fBa\fP syntax similar to \fBa\fP printf format\\\fBn\fP\\	string. On each iteration it is processed and each occurence\\\fBn\fP\\	of %%\fBi\fP is replaced by the iteration \fBnumber\fP \fBi\fP = 0...ni-1,\\\fBn\fP\\	%%I is replaced by \fBa\fP fixed length textual representation of \fBi\fP\\\fBn\fP\\	%%\fBn\fP is replaced by the node \fBnumber\fP, and %%\fBN\fP is replaced by the\\\fBn\fP\\	nodetag, and %%%% is replaced by %%.  The result\\\fBn\fP\\	may be \fBa\fP compound command of subprocesses linked by the\\\fBn\fP\\	pipe symbol '|', and the output of the command may be\\\fBn\fP\\	redirected into \fBa\fP disk file on the slave (in which case the master process\\\fBn\fP\\	will receive, and generate, no standard output).\\\fBn\fP\\	The command thus generated is then sent to \fBa\fP 'pvmserver'\\\fBn\fP\\	to be executed.\\\fBn\fP\\\\\fBn\fP\\EXAMPLES\\\fBn\fP\\	These examples assume the pvmslaves.lst file above, and that each\\\fBn\fP\\	slave has \fBa\fP disk named /dnn, where \fBnn\fP is the nodetag.\\\fBn\fP\\\\\fBn\fP\\	To check on the status of the slaves:\\\fBn\fP\\		pvmloop 3 \fBw\fP\\\fBn\fP\\\\\fBn\fP\\	To clear \fBa\fP scratch directory on each slave:\\\fBn\fP\\		pvmloop 3 'rm /\fBd\fP%%\fBN\fP/\fBtmp\fP/*'\\\fBn\fP\\\\\fBn\fP\\	To generate \fBa\fP set of 1000 Monte Carlo simulations with some command 'monty'\\\fBn\fP\\	which takes as an argument \fBa\fP \fBseed\fP (given here by the iteration \fBnumber\fP):\\\fBn\fP\\		pvmloop 1000 \\'monty -\fBseed\fP %%\fBi\fP > /\fBd\fP%%\fBN\fP/\fBtmp\fP/monty%%I.dat\\'\\n\\	This would cause the following commands to be executed:\\\fBn\fP\\		monty -\fBseed\fP 0   > /d01/\fBtmp\fP/monty000.dat   (on node01)\\\fBn\fP\\		monty -\fBseed\fP 1   > /d02/\fBtmp\fP/monty001.dat   (on node02)\\\fBn\fP\\		monty -\fBseed\fP 2   > /d03/\fBtmp\fP/monty002.dat   (on node03)\\\fBn\fP\\		monty -\fBseed\fP 3   > /d01/\fBtmp\fP/monty003.dat   (on node01)\\\fBn\fP\\		......\\\fBn\fP\\		monty -\fBseed\fP 998 > /d01/\fBtmp\fP/monty998.dat   (on node03)\\\fBn\fP\\		monty -\fBseed\fP 999 > /d01/\fBtmp\fP/monty999.dat   (on node01)\\\fBn\fP\\\\\fBn\fP\\OPTIONS\\\fBn\fP\\	With -u \fBflag\fP we output this man page and exit.\\\fBn\fP\\	With -\fBd\fP \fBflag\fP we just output the series of commands that would otherwise be executed\\\fBn\fP\\	and exit. This is highly recommended with commands that delete files etc.\\\fBn\fP\\	Use -\fBv\fP \fBflag\fP to invoke \fBverbose\fP \fBmode\fP, or -q to run quietly.\\\fBn\fP\\	Use -f ifmt to specify \fBa\fP format string for the iteration \fBnumber\fP,\\\fBn\fP\\	otherwise we use '%%.nd' specification where \fBn\fP is just large\\\fBn\fP\\	enough to hold the \fBnumber\fP ni-1.\\\fBn\fP\\	With '-\fBi\fP inticom' option the shell command string 'initcom' is executed\\\fBn\fP\\	on the master node using system(initcom) before any other output is collected.\\\fBn\fP\\	This allows you to generate \fBa\fP header, to which the output\\\fBn\fP\\	of the slave processes can be prepended.  For example,\\\fBn\fP\\	pvmloop -q -\fBi\fP 'lc -\fBC\fP -\fBn\fP x < /dev/null' 10 'makerandcat 1000 -\fBseed\fP 2 -\fBdim\fP 1 | lc -o'\\\fBn\fP\\	generates \fBa\fP catalogue containing 10 x 1000 random numbers.  The effect of the 'lc -o'\\\fBn\fP\\	call is to chop the headers off the slave output.\\\fBn\fP\\	Similarly you can use 'imhead -g ....' to generate \fBa\fP \fBfits\fP header and pipe\\\fBn\fP\\	the output of the slaves through 'imhead -\fBd\fP'.\\\fBn\fP\\\\\fBn\fP\\BUGS\\\fBn\fP\\	'pvmloop' does not die if the remote shell commands fail.\\\fBn\fP\\\\\fBn\fP\\	'pvmloop' does not do any load balancing.\\\fBn\fP\\\\\fBn\fP\\FILES\\\fBn\fP\\	pvmslaves.lst\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	pvmserver, topvm, apply.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 18 of file pvmloop.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 130 of file pvmloop.c.
+.PP
+References flag, and FLAG_ARG.
+.SS "void makecommand (char * srccom, char * dstcom, int i, char * ifmt, int s, char * nodetag)"
+.PP
+Definition at line 342 of file pvmloop.c.
+.PP
+References error_exit, and i.
+.SS "void makefullcommand (char * srccom, char * dstcom, int mtid, int opmsgtag, int errmsgtag)"
+.PP
+Definition at line 379 of file pvmloop.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,156 @@
+.TH "fft_NR.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fft_NR.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../utils/nrutil.h'\fP
+.br
+\fC#include 'myfft.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBPI\fP   M_PI"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBrlft3\fP (float ***\fBdata\fP, float **speq, unsigned long nn1, unsigned long nn2, unsigned long nn3, int isign)"
+.br
+.ti -1c
+.RI "void \fBfft_size\fP (int \fBNx\fP, int \fBNy\fP, int *NFFTx, int *NFFTy)"
+.br
+.ti -1c
+.RI "void \fBrotate\fP (float *\fBa\fP, float *\fBb\fP, float \fBphi\fP)"
+.br
+.ti -1c
+.RI "void \fBforward_fft\fP (float **f, int \fBNx\fP, int \fBNy\fP, \fBfft_type\fP fk)"
+.br
+.ti -1c
+.RI "void \fBinverse_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **f)"
+.br
+.ti -1c
+.RI "void \fBfilter\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float(*filterfunc)(float ki, float kj))"
+.br
+.ti -1c
+.RI "void \fBcfilter\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float(*rfunc)(float ki, float kj), float(*ifunc)(float ki, float kj))"
+.br
+.ti -1c
+.RI "void \fBccf\fP (\fBfft_type\fP fk1, \fBfft_type\fP fk2, int \fBNx\fP, int \fBNy\fP, float **ff12, int \fBx0\fP, int y0)"
+.br
+.ti -1c
+.RI "void \fBpower\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **p, int \fBx0\fP, int y0)"
+.br
+.ti -1c
+.RI "void \fBfree_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP)"
+.br
+.ti -1c
+.RI "void \fBalloc_fft\fP (\fBfft_type\fP *fk, int \fBNx\fP, int \fBNy\fP)"
+.br
+.ti -1c
+.RI "void \fBcopy_fft\fP (\fBfft_type\fP fksrc, int \fBNx\fP, int \fBNy\fP, \fBfft_type\fP fkdest)"
+.br
+.ti -1c
+.RI "void \fBget_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **fdest)"
+.br
+.ti -1c
+.RI "void \fBset_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **fsrc)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define PI   M_PI"
+.PP
+Definition at line 15 of file fft_NR.c.
+.SH "Function Documentation"
+.PP 
+.SS "void alloc_fft (\fBfft_type\fP * fk, int Nx, int Ny)"
+.PP
+Definition at line 208 of file fft_NR.c.
+.PP
+References f3tensor(), fft_size(), fft_type, matrix(), Nx, and Ny.
+.SS "void ccf (\fBfft_type\fP fk1, \fBfft_type\fP fk2, int Nx, int Ny, float ** ff12, int x0, int y0)"
+.PP
+Definition at line 105 of file fft_NR.c.
+.PP
+References a1, a2, b1, b2, fft_size(), fft_type, inverse_fft(), Nx, Ny, phi, PI, and rotate().
+.SS "void cfilter (\fBfft_type\fP fk, int Nx, int Ny, float(* rfunc)(float ki, float kj), float(* ifunc)(float ki, float kj))"
+.PP
+Definition at line 76 of file fft_NR.c.
+.PP
+References fft_size(), fft_type, ifunc(), Nx, Ny, PI, and rfunc().
+.SS "void copy_fft (\fBfft_type\fP fksrc, int Nx, int Ny, \fBfft_type\fP fkdest)"
+.PP
+Definition at line 219 of file fft_NR.c.
+.PP
+References fft_size(), fft_type, Nx, and Ny.
+.SS "void fft_size (int Nx, int Ny, int * NFFTx, int * NFFTy)"
+.PP
+Definition at line 183 of file fft_NR.c.
+.PP
+References Nx, and Ny.
+.PP
+Referenced by alloc_fft(), ccf(), cfilter(), copy_fft(), filter(), forward_fft(), free_fft(), get_fft(), inverse_fft(), power(), and set_fft().
+.SS "void filter (\fBfft_type\fP fk, int Nx, int Ny, float(* filterfunc)(float ki, float kj))"
+.PP
+Definition at line 54 of file fft_NR.c.
+.PP
+References fft_size(), fft_type, Nx, Ny, and PI.
+.SS "void forward_fft (float ** f, int Nx, int Ny, \fBfft_type\fP fk)"
+.PP
+Definition at line 23 of file fft_NR.c.
+.PP
+References f, fft_size(), fft_type, Nx, Ny, rlft3(), x, and y.
+.SS "void free_fft (\fBfft_type\fP fk, int Nx, int Ny)"
+.PP
+Definition at line 171 of file fft_NR.c.
+.PP
+References fft_size(), fft_type, free(), free_f3tensor(), free_matrix(), Nx, and Ny.
+.SS "void get_fft (\fBfft_type\fP fk, int Nx, int Ny, float ** fdest)"
+.PP
+Definition at line 236 of file fft_NR.c.
+.PP
+References exit(), fft_size(), fft_type, ix, Nx, and Ny.
+.SS "void inverse_fft (\fBfft_type\fP fk, int Nx, int Ny, float ** f)"
+.PP
+Definition at line 40 of file fft_NR.c.
+.PP
+References f, fft_size(), fft_type, Nx, Ny, rlft3(), x, and y.
+.SS "void power (\fBfft_type\fP fk, int Nx, int Ny, float ** p, int x0, int y0)"
+.PP
+Definition at line 140 of file fft_NR.c.
+.PP
+References a, b, cycleimage(), fft_size(), fft_type, Nx, Ny, x, y, and yy.
+.SS "void rlft3 (float *** data, float ** speq, unsigned long nn1, unsigned long nn2, unsigned long nn3, int isign)"
+.PP
+Definition at line 3 of file rlft3.c.
+.PP
+References fourn(), and nrerror().
+.PP
+Referenced by forward_fft(), and inverse_fft().
+.SS "void rotate (float * a, float * b, float phi)"
+.PP
+Definition at line 195 of file fft_NR.c.
+.PP
+References a, A, b, B, c, and phi.
+.PP
+Referenced by ccf(), main(), and wcsset().
+.SS "void set_fft (\fBfft_type\fP fk, int Nx, int Ny, float ** fsrc)"
+.PP
+Definition at line 269 of file fft_NR.c.
+.PP
+References exit(), fft_size(), fft_type, ix, Nx, and Ny.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

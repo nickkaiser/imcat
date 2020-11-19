@@ -1,0 +1,342 @@
+.TH "lc.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+lc.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include 'getop.h'\fP
+.br
+\fC#include 'stack.h'\fP
+.br
+\fC#include 'operators.h'\fP
+.br
+\fC#include 'rpn.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+\fC#include 'lc.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTD_INPUT_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBTAB_INPUT_MODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBSTD_OUTPUT_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBCOUNT_MODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBSORT_MODE\fP   2"
+.br
+.ti -1c
+.RI "#define \fBHEADER_ONLY_MODE\fP   3"
+.br
+.ti -1c
+.RI "#define \fBNO_HEADER_MODE\fP   4"
+.br
+.ti -1c
+.RI "#define \fBFULL_HEADER_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBLABELS_ONLY_MODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBNO_CHOP_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBCHOP_HEAD_MODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBCHOP_TAIL_MODE\fP   2"
+.br
+.ti -1c
+.RI "#define \fBSORT_ASCENDING\fP   0"
+.br
+.ti -1c
+.RI "#define \fBSORT_DESCENDING\fP   1"
+.br
+.ti -1c
+.RI "#define \fBMAX_FUNCTIONS\fP   1024"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "void \fBparsename\fP (char *string)"
+.br
+.ti -1c
+.RI "void \fBparseheaderexpr\fP (char *string)"
+.br
+.ti -1c
+.RI "void \fBaddheadercontents\fP (\fBitem\fP *theitem, char *string, \fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "char * \fBquote\fP (char *string)"
+.br
+.ti -1c
+.RI "void \fBreadtabheader\fP (void)"
+.br
+.ti -1c
+.RI "void \fBdospecialname\fP (char *string)"
+.br
+.ti -1c
+.RI "void \fBchopcomments\fP (\fBcathead\fP *thecathead, int \fBmode\fP, int nchop)"
+.br
+.ti -1c
+.RI "void \fBadddate\fP (void)"
+.br
+.ti -1c
+.RI "int \fBobjcmp\fP (const void *ptr1, const void *ptr2)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBcathead\fP * \fBinputcathead\fP"
+.br
+.ti -1c
+.RI "\fBcathead\fP * \fBoutputcathead\fP"
+.br
+.ti -1c
+.RI "\fBobject\fP * \fBinputobject\fP = NULL *outputobject"
+.br
+.ti -1c
+.RI "int \fBnrpn\fP = 0 copycomments sortmode"
+.br
+.ti -1c
+.RI "char \fBcommenttag\fP = '#'"
+.br
+.ti -1c
+.RI "double \fBinputobjectcount\fP = 0 outputobjectcount = 0"
+.br
+.ti -1c
+.RI "char * \fBinputcountname\fP = NULL *outputcountname = NULL"
+.br
+.ti -1c
+.RI "\fBrpnfunc\fP * \fBrpnfunction\fP [MAX_FUNCTIONS]"
+.br
+.ti -1c
+.RI "char * \fBrpnname\fP [MAX_FUNCTIONS]"
+.br
+.ti -1c
+.RI "char * \fBrpnstring\fP [MAX_FUNCTIONS]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CHOP_HEAD_MODE   1"
+.PP
+Definition at line 35 of file lc.c.
+.PP
+Referenced by chopcomments(), and main().
+.SS "#define CHOP_TAIL_MODE   2"
+.PP
+Definition at line 36 of file lc.c.
+.PP
+Referenced by chopcomments(), and main().
+.SS "#define COUNT_MODE   1"
+.PP
+Definition at line 24 of file lc.c.
+.PP
+Referenced by main().
+.SS "#define FULL_HEADER_MODE   0"
+.PP
+Definition at line 30 of file lc.c.
+.PP
+Referenced by main().
+.SS "#define HEADER_ONLY_MODE   3"
+.PP
+Definition at line 26 of file lc.c.
+.PP
+Referenced by main().
+.SS "#define LABELS_ONLY_MODE   1"
+.PP
+Definition at line 31 of file lc.c.
+.PP
+Referenced by main().
+.SS "#define MAX_FUNCTIONS   1024"
+.PP
+Definition at line 42 of file lc.c.
+.PP
+Referenced by parsename().
+.SS "#define NO_CHOP_MODE   0"
+.PP
+Definition at line 34 of file lc.c.
+.PP
+Referenced by main().
+.SS "#define NO_HEADER_MODE   4"
+.PP
+Definition at line 27 of file lc.c.
+.PP
+Referenced by main().
+.SS "#define SORT_ASCENDING   0"
+.PP
+Definition at line 39 of file lc.c.
+.PP
+Referenced by main(), and objcmp().
+.SS "#define SORT_DESCENDING   1"
+.PP
+Definition at line 40 of file lc.c.
+.PP
+Referenced by main().
+.SS "#define SORT_MODE   2"
+.PP
+Definition at line 25 of file lc.c.
+.PP
+Referenced by main().
+.SS "#define STD_INPUT_MODE   0"
+.PP
+Definition at line 19 of file lc.c.
+.PP
+Referenced by main().
+.SS "#define STD_OUTPUT_MODE   0"
+.PP
+Definition at line 23 of file lc.c.
+.PP
+Referenced by main().
+.SS "#define TAB_INPUT_MODE   1"
+.PP
+Definition at line 20 of file lc.c.
+.PP
+Referenced by main().
+.SH "Function Documentation"
+.PP 
+.SS "void adddate (void)"
+.PP
+Definition at line 567 of file lc.c.
+.PP
+References item::addr, allocitemcontents(), error_exit, cathead::headeritembase, installitem(), newitem(), outputcathead, pos, and TEXT_TYPE.
+.PP
+Referenced by main().
+.SS "void addheadercontents (\fBitem\fP * theitem, char * string, \fBcathead\fP * thecathead)"
+.PP
+Definition at line 457 of file lc.c.
+.PP
+References item::addr, allocitemcontents(), cathead::headeritembase, installitem(), and sscanitem().
+.SS "void chopcomments (\fBcathead\fP * thecathead, int mode, int nchop)"
+.PP
+Definition at line 535 of file lc.c.
+.PP
+References CHOP_HEAD_MODE, CHOP_TAIL_MODE, cathead::commentbase, error_exit, and comment::next.
+.PP
+Referenced by main().
+.SS "void dospecialname (char * string)"
+.PP
+Definition at line 502 of file lc.c.
+.PP
+References addobjectitem(), item::addr, copyitem(), error_exit, inputcathead, inputobjectcount, cathead::itemlist, newitem(), cathead::nobjectitems, NUM_TYPE, and outputcathead.
+.PP
+Referenced by parsename().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 57 of file lc.c.
+.PP
+References addargscomment(), addcomment(), adddate(), addobjectitem(), item::addr, object::addrlist, allocitemcontents(), BINARY_FILE_TYPE, CHOP_HEAD_MODE, CHOP_TAIL_MODE, chopcomments(), commenttag, connectobjecttocathead(), copyheaderinfo(), copyitem(), copyitemcontents(), COUNT_MODE, deleteheaderitem(), deleteobjectitem(), error_exit, evalrpnfunction(), exit(), FULL_HEADER_MODE, getcatipfiletype(), getcatopfiletype(), getheaderitem(), HEADER_ONLY_MODE, inputcathead, inputobject, inputobjectcount, cathead::itemlist, LABELS_ONLY_MODE, newitem(), newobject(), newrpnfunction(), sortobject::next, item::next, NO_CHOP_MODE, NO_HEADER_MODE, cathead::nobjectitems, nrpn, NUM_TYPE, sortobject::obj, objcmp(), cathead::objectitembase, outputcathead, parseheaderexpr(), parsename(), quote(), readcathead(), readobject(), readtabheader(), rpnfunc::result, rpnfunction, setcatopfiletype(), setsourcecathead(), SORT_ASCENDING, SORT_DESCENDING, SORT_MODE, sortobject::sortval, sscannewitem(), STD_INPUT_MODE, STD_OUTPUT_MODE, item::swapbytesi, TAB_INPUT_MODE, TEXT_FILE_TYPE, TEXT_TYPE, writecathead(), writeitem(), writelabel(), and writeobject().
+.SS "int objcmp (const void * ptr1, const void * ptr2)"
+.PP
+Definition at line 595 of file lc.c.
+.PP
+References SORT_ASCENDING.
+.PP
+Referenced by main().
+.SS "void parseheaderexpr (char * string)"
+.PP
+Definition at line 436 of file lc.c.
+.PP
+References error_exit, evalrpnfunction(), getword(), cathead::headeritembase, installitem(), newrpnfunction(), outputcathead, and rpnfunc::result.
+.PP
+Referenced by main().
+.SS "void parsename (char * string)"
+.PP
+Definition at line 403 of file lc.c.
+.PP
+References addobjectitem(), item::addr, copyitem(), dospecialname(), error_exit, evalrpnfunction(), getobjectitem(), getword(), inputcathead, MAX_FUNCTIONS, newrpnfunction(), nrpn, outputcathead, rpnfunction, rpnname, and rpnstring.
+.PP
+Referenced by main().
+.SS "char* quote (char * string)"
+.PP
+Definition at line 464 of file lc.c.
+.PP
+Referenced by main().
+.SS "void readtabheader (void)"
+.PP
+Definition at line 475 of file lc.c.
+.PP
+References addcomment(), c, commenttag, line, and outputcathead.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "char \fBcommenttag\fP = '#'\fC [static]\fP"
+.PP
+Definition at line 51 of file lc.c.
+.PP
+Referenced by main(), and readtabheader().
+.SS "\fBcathead\fP* \fBinputcathead\fP\fC [static]\fP"
+.PP
+Definition at line 48 of file lc.c.
+.PP
+Referenced by dospecialname(), main(), and parsename().
+.SS "char* \fBinputcountname\fP = NULL *outputcountname = NULL\fC [static]\fP"
+.PP
+Definition at line 53 of file lc.c.
+.SS "\fBobject\fP* \fBinputobject\fP = NULL *outputobject\fC [static]\fP"
+.PP
+Definition at line 49 of file lc.c.
+.PP
+Referenced by main().
+.SS "double \fBinputobjectcount\fP = 0 outputobjectcount = 0\fC [static]\fP"
+.PP
+Definition at line 52 of file lc.c.
+.PP
+Referenced by dospecialname(), and main().
+.SS "int \fBnrpn\fP = 0 copycomments sortmode\fC [static]\fP"
+.PP
+Definition at line 50 of file lc.c.
+.PP
+Referenced by main(), and parsename().
+.SS "\fBcathead\fP * \fBoutputcathead\fP\fC [static]\fP"
+.PP
+Definition at line 48 of file lc.c.
+.PP
+Referenced by adddate(), dospecialname(), main(), parseheaderexpr(), parsename(), and readtabheader().
+.SS "\fBrpnfunc\fP* \fBrpnfunction\fP[MAX_FUNCTIONS]\fC [static]\fP"
+.PP
+Definition at line 54 of file lc.c.
+.PP
+Referenced by main(), and parsename().
+.SS "char* \fBrpnname\fP[MAX_FUNCTIONS]\fC [static]\fP"
+.PP
+Definition at line 55 of file lc.c.
+.PP
+Referenced by parsename().
+.SS "char * \fBrpnstring\fP[MAX_FUNCTIONS]\fC [static]\fP"
+.PP
+Definition at line 55 of file lc.c.
+.PP
+Referenced by parsename().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

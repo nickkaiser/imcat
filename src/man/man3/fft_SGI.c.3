@@ -1,0 +1,136 @@
+.TH "fft_SGI.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fft_SGI.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../lib/sgi_fft/sgi_fft.h'\fP
+.br
+\fC#include 'myfft.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBforward_fft\fP (float **f, int \fBNx\fP, int \fBNy\fP, \fBfft_type\fP fk)"
+.br
+.ti -1c
+.RI "void \fBinverse_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **f)"
+.br
+.ti -1c
+.RI "void \fBfilter\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float(*filterfunc)(float ki, float kj))"
+.br
+.ti -1c
+.RI "void \fBcfilter\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float(*rfunc)(float ki, float kj), float(*ifunc)(float ki, float kj))"
+.br
+.ti -1c
+.RI "void \fBccf\fP (\fBfft_type\fP fk1, \fBfft_type\fP fk2, int \fBNx\fP, int \fBNy\fP, float **ff12, int \fBx0\fP, int y0)"
+.br
+.ti -1c
+.RI "void \fBpower\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **p, int \fBx0\fP, int y0)"
+.br
+.ti -1c
+.RI "void \fBalloc_fft\fP (\fBfft_type\fP *fk, int \fBNx\fP, int \fBNy\fP)"
+.br
+.ti -1c
+.RI "void \fBfree_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP)"
+.br
+.ti -1c
+.RI "void \fBcopy_fft\fP (\fBfft_type\fP fksrc, int \fBNx\fP, int \fBNy\fP, \fBfft_type\fP fkdest)"
+.br
+.ti -1c
+.RI "void \fBget_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **fdest)"
+.br
+.ti -1c
+.RI "void \fBset_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **fsrc)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void alloc_fft (\fBfft_type\fP * fk, int Nx, int Ny)"
+.PP
+Definition at line 158 of file fft_SGI.c.
+.PP
+References error_exit, fft_type, n, Nx, Ny, and y.
+.PP
+Referenced by exponentialfilter(), gaussfilter(), kolmogorovfilter(), main(), mexicanfilter(), powerlawfilter(), and schecterfilter().
+.SS "void ccf (\fBfft_type\fP fk1, \fBfft_type\fP fk2, int Nx, int Ny, float ** ff12, int x0, int y0)"
+.PP
+Definition at line 103 of file fft_SGI.c.
+.PP
+References a1, a2, b1, b2, cycleimage(), fft_type, inverse_fft(), ix, n, Nx, and Ny.
+.PP
+Referenced by main().
+.SS "void cfilter (\fBfft_type\fP fk, int Nx, int Ny, float(* rfunc)(float ki, float kj), float(* ifunc)(float ki, float kj))"
+.PP
+Definition at line 80 of file fft_SGI.c.
+.PP
+References fft_type, ifunc(), ix, n, Nx, Ny, PI, and rfunc().
+.PP
+Referenced by main().
+.SS "void copy_fft (\fBfft_type\fP fksrc, int Nx, int Ny, \fBfft_type\fP fkdest)"
+.PP
+Definition at line 179 of file fft_SGI.c.
+.PP
+References fft_type, n, Nx, Ny, x, and y.
+.PP
+Referenced by main().
+.SS "void filter (\fBfft_type\fP fk, int Nx, int Ny, float(* filterfunc)(float ki, float kj))"
+.PP
+Definition at line 61 of file fft_SGI.c.
+.PP
+References fft_type, ix, n, Nx, Ny, and PI.
+.PP
+Referenced by exponentialfilter(), gaussfilter(), kolmogorovfilter(), main(), mexicanfilter(), powerlawfilter(), and schecterfilter().
+.SS "void forward_fft (float ** f, int Nx, int Ny, \fBfft_type\fP fk)"
+.PP
+Definition at line 19 of file fft_SGI.c.
+.PP
+References cfftf_(), cffti_(), exit(), f, fft_type, FORWARD_X, FORWARD_Y, free(), n, nx, Nx, ny, Ny, r, rfftf_(), rffti_(), shmfree(), x, and y.
+.PP
+Referenced by exponentialfilter(), gaussfilter(), kolmogorovfilter(), main(), mexicanfilter(), powerlawfilter(), and schecterfilter().
+.SS "void free_fft (\fBfft_type\fP fk, int Nx, int Ny)"
+.PP
+Definition at line 171 of file fft_SGI.c.
+.PP
+References fft_type, and free().
+.PP
+Referenced by exponentialfilter(), gaussfilter(), kolmogorovfilter(), mexicanfilter(), powerlawfilter(), and schecterfilter().
+.SS "void get_fft (\fBfft_type\fP fk, int Nx, int Ny, float ** fdest)"
+.PP
+Definition at line 194 of file fft_SGI.c.
+.PP
+References fft_type, ix, n, Nx, and Ny.
+.PP
+Referenced by main().
+.SS "void inverse_fft (\fBfft_type\fP fk, int Nx, int Ny, float ** f)"
+.PP
+Definition at line 41 of file fft_SGI.c.
+.PP
+References cfftb_(), cffti_(), exit(), f, fft_type, free(), INVERSE_X, INVERSE_Y, n, nx, Nx, ny, Ny, r, rfftb_(), rffti_(), shmfree(), x, and y.
+.PP
+Referenced by ccf(), exponentialfilter(), gaussfilter(), kolmogorovfilter(), main(), mexicanfilter(), powerlawfilter(), and schecterfilter().
+.SS "void power (\fBfft_type\fP fk, int Nx, int Ny, float ** p, int x0, int y0)"
+.PP
+Definition at line 127 of file fft_SGI.c.
+.PP
+References a, b, cycleimage(), fft_type, ix, n, Nx, Ny, x, and y.
+.PP
+Referenced by main().
+.SS "void set_fft (\fBfft_type\fP fk, int Nx, int Ny, float ** fsrc)"
+.PP
+Definition at line 220 of file fft_SGI.c.
+.PP
+References fft_type, ix, n, Nx, and Ny.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

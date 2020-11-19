@@ -1,0 +1,80 @@
+.TH "fitgeometry.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitgeometry.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../utils/modefunc.h'\fP
+.br
+\fC#include '../../utils/lu.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitgeometry --- \fBfit\fP layout of \fBa\fP set of images\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitgeometry \\\fBn\fP\\		-\fBc\fP nimages	# \fBnumber\fP of images (8)\\\fBn\fP\\		-\fBl\fP \fBlmax\fP		# max \fBorder\fP for distortion polynomials (1)\\\fBn\fP\\		-\fBd\fP parfilebase	# basename for transformation parameter files\\\fBn\fP\\		-\fBw\fP weightfac	# relative weight for pairs involving reference cat (1)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fitgeometry' reads from stdin the result of merging \fBa\fP set of\\\fBn\fP\\	overlapping catalogues, which must contain at least entries for\\\fBn\fP\\	\fBa\fP \fBpair\fP of spatial coordinate vectors 'x[2][2]' and image numbers \fBc\fP[2].\\\fBn\fP\\	It then \fBfits\fP \fBa\fP model in which the coordinates of the \fBobject\fP on\\\fBn\fP\\	the zeroth image (the 'reference image') are related to those on\\\fBn\fP\\	the \fBc\fP'th image by\\\fBn\fP\\			x_0 = x_c + sum_m a_cm f_m(x_c)\\\fBn\fP\\	where \fBmode\fP function f_m are polynomials up to \fBorder\fP \fBlmax\fP in x.\\\fBn\fP\\\\\fBn\fP\\	The solution is obtained by minimising squared residuals in x_0 space.\\\fBn\fP\\\\\fBn\fP\\	'fitgeometry' can be used in various ways.  One application is to\\\fBn\fP\\	generate accurately registered (but generally somewhat distorted) images from\\\fBn\fP\\	\fBa\fP set of dithered images from \fBa\fP mosaic camera. To do this one must\\\fBn\fP\\	first generate \fBa\fP set of overlapping catalogues, one for each chip,\\\fBn\fP\\	by 'growing' the coordinate system for some reference exposure. This is done\\\fBn\fP\\	by finding \fBa\fP low \fBorder\fP polynomial transformation which maps successive\\\fBn\fP\\	exposures onto the reference exposure.  Once this is done the overlapping\\\fBn\fP\\	catalogues can be merged in pairs and the concatenation of all the merges\\\fBn\fP\\	fed to 'fitgeometry' which will then find \fBa\fP solution for the layout of\\\fBn\fP\\	the chips on some idealised 'detector plane' (whose coordinates coincide\\\fBn\fP\\	with \fBpixel\fP coordinates on one of the chips --- the zeroth chip ---  which may\\\fBn\fP\\	be chosen arbitrarily).  This does not take out telescope distortion, and\\\fBn\fP\\	(especially with small offsets between the dithered exposures) the process is\\\fBn\fP\\	liable to introduce additional distortion.\\\fBn\fP\\\\\fBn\fP\\	\fBA\fP second application is to register \fBa\fP set of CCD images to some external\\\fBn\fP\\	'reference' catalogue --- such as \fBa\fP catalogue derived from the digital\\\fBn\fP\\	sky survey or from the USNOA catalogue.  In this case it may be useful to\\\fBn\fP\\	use the '-\fBw\fP' option with \fBa\fP small argument to downweight the contribution\\\fBn\fP\\	to the 'chi-squared' from pairs with one element in the reference\\\fBn\fP\\	catalogue to reflect their relatively poor precision.\\\fBn\fP\\\\\fBn\fP\\	By default, the transformation parameters a_{lm} are written to stdout\\\fBn\fP\\	as \fBa\fP concatenation of '.par' format files (which is not particularly\\\fBn\fP\\	useful), but with the -\fBd\fP option you can specify \fBa\fP basename\\\fBn\fP\\	 and fitgeometry will create \fBa\fP set of files\\\fBn\fP\\	'parfilebase'\fBc\fP.par for \fBc\fP = 0, nimages - 1, where the first of these\\\fBn\fP\\	contains \fBmode\fP coefficients which are all zero. You will likely\\\fBn\fP\\	want to make 'parfilebase' \fBa\fP directory, in which case make\\\fBn\fP\\	sure you terminate it with '/' and remember to 'mkdir' it first.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBSCALE\fP   1.0"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBI\fP (int \fBc\fP, int \fBm\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBnm\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define SCALE   1.0"
+.PP
+Definition at line 70 of file fitgeometry.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitgeometry --- \fBfit\fP layout of \fBa\fP set of images\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitgeometry \\\fBn\fP\\		-\fBc\fP nimages	# \fBnumber\fP of images (8)\\\fBn\fP\\		-\fBl\fP \fBlmax\fP		# max \fBorder\fP for distortion polynomials (1)\\\fBn\fP\\		-\fBd\fP parfilebase	# basename for transformation parameter files\\\fBn\fP\\		-\fBw\fP weightfac	# relative weight for pairs involving reference cat (1)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fitgeometry' reads from stdin the result of merging \fBa\fP set of\\\fBn\fP\\	overlapping catalogues, which must contain at least entries for\\\fBn\fP\\	\fBa\fP \fBpair\fP of spatial coordinate vectors 'x[2][2]' and image numbers \fBc\fP[2].\\\fBn\fP\\	It then \fBfits\fP \fBa\fP model in which the coordinates of the \fBobject\fP on\\\fBn\fP\\	the zeroth image (the 'reference image') are related to those on\\\fBn\fP\\	the \fBc\fP'th image by\\\fBn\fP\\			x_0 = x_c + sum_m a_cm f_m(x_c)\\\fBn\fP\\	where \fBmode\fP function f_m are polynomials up to \fBorder\fP \fBlmax\fP in x.\\\fBn\fP\\\\\fBn\fP\\	The solution is obtained by minimising squared residuals in x_0 space.\\\fBn\fP\\\\\fBn\fP\\	'fitgeometry' can be used in various ways.  One application is to\\\fBn\fP\\	generate accurately registered (but generally somewhat distorted) images from\\\fBn\fP\\	\fBa\fP set of dithered images from \fBa\fP mosaic camera. To do this one must\\\fBn\fP\\	first generate \fBa\fP set of overlapping catalogues, one for each chip,\\\fBn\fP\\	by 'growing' the coordinate system for some reference exposure. This is done\\\fBn\fP\\	by finding \fBa\fP low \fBorder\fP polynomial transformation which maps successive\\\fBn\fP\\	exposures onto the reference exposure.  Once this is done the overlapping\\\fBn\fP\\	catalogues can be merged in pairs and the concatenation of all the merges\\\fBn\fP\\	fed to 'fitgeometry' which will then find \fBa\fP solution for the layout of\\\fBn\fP\\	the chips on some idealised 'detector plane' (whose coordinates coincide\\\fBn\fP\\	with \fBpixel\fP coordinates on one of the chips --- the zeroth chip ---  which may\\\fBn\fP\\	be chosen arbitrarily).  This does not take out telescope distortion, and\\\fBn\fP\\	(especially with small offsets between the dithered exposures) the process is\\\fBn\fP\\	liable to introduce additional distortion.\\\fBn\fP\\\\\fBn\fP\\	\fBA\fP second application is to register \fBa\fP set of CCD images to some external\\\fBn\fP\\	'reference' catalogue --- such as \fBa\fP catalogue derived from the digital\\\fBn\fP\\	sky survey or from the USNOA catalogue.  In this case it may be useful to\\\fBn\fP\\	use the '-\fBw\fP' option with \fBa\fP small argument to downweight the contribution\\\fBn\fP\\	to the 'chi-squared' from pairs with one element in the reference\\\fBn\fP\\	catalogue to reflect their relatively poor precision.\\\fBn\fP\\\\\fBn\fP\\	By default, the transformation parameters a_{lm} are written to stdout\\\fBn\fP\\	as \fBa\fP concatenation of '.par' format files (which is not particularly\\\fBn\fP\\	useful), but with the -\fBd\fP option you can specify \fBa\fP basename\\\fBn\fP\\	 and fitgeometry will create \fBa\fP set of files\\\fBn\fP\\	'parfilebase'\fBc\fP.par for \fBc\fP = 0, nimages - 1, where the first of these\\\fBn\fP\\	contains \fBmode\fP coefficients which are all zero. You will likely\\\fBn\fP\\	want to make 'parfilebase' \fBa\fP directory, in which case make\\\fBn\fP\\	sure you terminate it with '/' and remember to 'mkdir' it first.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 6 of file fitgeometry.c.
+.SH "Function Documentation"
+.PP 
+.SS "int I (int c, int m)"
+.PP
+Definition at line 268 of file fitgeometry.c.
+.PP
+References c, m, and nm.
+.PP
+Referenced by drawellipse(), main(), and zapellipse().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 75 of file fitgeometry.c.
+.PP
+References A, a, B, c, det(), error_exit, exit(), f(), I(), i, indx, j, l, lcpipe, ll, M, m, modefunc_addargcomment(), mylubksb(), myludcmp(), n, nm, usage, w, write2Dpolymodel(), and x.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBnm\fP\fC [static]\fP"
+.PP
+Definition at line 72 of file fitgeometry.c.
+.PP
+Referenced by I(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

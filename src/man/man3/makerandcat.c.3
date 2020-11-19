@@ -1,0 +1,54 @@
+.TH "makerandcat.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makerandcat.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/args.h'\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\        makerandcat - generate catalogue containing random values\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\        makerandcat \fBn\fP [-\fBseed\fP \fBseed\fP] [-\fBdim\fP \fBdim\fP] [-\fBb\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Makerandcat generates \fBa\fP lc-format catalogue containing random values\\\fBn\fP\\	for testing purposes.  By default the catalogue contains \fBn\fP objects consisting\\\fBn\fP\\	of \fBa\fP 2-vector x[2], with values x[0], x[1] uniformly distributed\\\fBn\fP\\	on the interval 0,1 and is in text format.\\\fBn\fP\\\\\fBn\fP\\	Options:\\\fBn\fP\\		-\fBseed\fP 	\fBseed\fP	# supply an \fBinteger\fP \fBseed\fP for random \fBnumber\fP generator (1)\\\fBn\fP\\		-\fBdim\fP	\fBdim\fP	# specify alternative dimension for x-vector (2)\\\fBn\fP\\		-\fBb\fP		# generate \fBa\fP binary format catalogue.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\        Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBdrand48\fP ()"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\        makerandcat - generate catalogue containing random values\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\        makerandcat \fBn\fP [-\fBseed\fP \fBseed\fP] [-\fBdim\fP \fBdim\fP] [-\fBb\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Makerandcat generates \fBa\fP lc-format catalogue containing random values\\\fBn\fP\\	for testing purposes.  By default the catalogue contains \fBn\fP objects consisting\\\fBn\fP\\	of \fBa\fP 2-vector x[2], with values x[0], x[1] uniformly distributed\\\fBn\fP\\	on the interval 0,1 and is in text format.\\\fBn\fP\\\\\fBn\fP\\	Options:\\\fBn\fP\\		-\fBseed\fP 	\fBseed\fP	# supply an \fBinteger\fP \fBseed\fP for random \fBnumber\fP generator (1)\\\fBn\fP\\		-\fBdim\fP	\fBdim\fP	# specify alternative dimension for x-vector (2)\\\fBn\fP\\		-\fBb\fP		# generate \fBa\fP binary format catalogue.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\        Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 12 of file makerandcat.c.
+.SH "Function Documentation"
+.PP 
+.SS "double drand48 ()"
+.PP
+Referenced by add_population(), expvar(), gasdev(), gaussdev(), main(), make_pop(), num0funcarray(), ran1(), randdoit(), and randinit().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 36 of file makerandcat.c.
+.PP
+References argsinit(), argsToString(), drand48(), error_exit, exit(), flag, FLAG_ARG, getargi(), getflag(), i, LC_NUM_FMT, n, nextargtype(), usage, and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,3 @@
+The tools in this section allow one to numerically evolve
+dispersive waves (including the free scalar field) and also
+to evolve scalar fields (including self interactions etc).

@@ -1,0 +1,27 @@
+#!/usr/bin/perl
+
+# fix the BoundingBox line in pgplot epsf files
+
+# read the lines from a file into array
+@line = <>;
+
+# get the real bounding box line
+foreach (@line) {
+	if (/^%%BoundingBox/) {
+		$bbline = $_ unless /atend/;
+	}
+}
+
+# now write out the file with last bbline in place of first
+foreach (@line) {
+	if (/^%%BoundingBox/) {
+		if (/atend/) {
+			print $bbline;
+		}
+	} else {
+		print;
+	}
+}
+
+
+

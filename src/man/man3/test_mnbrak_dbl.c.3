@@ -1,0 +1,66 @@
+.TH "mnbrak_dbl.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+mnbrak_dbl.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include '../../utils/nrutil.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBNRANSI\fP"
+.br
+.ti -1c
+.RI "#define \fBGOLD\fP   1.618034"
+.br
+.ti -1c
+.RI "#define \fBGLIMIT\fP   100.0"
+.br
+.ti -1c
+.RI "#define \fBTINY\fP   1.0\fBe\fP-20"
+.br
+.ti -1c
+.RI "#define \fBSHFT\fP(\fBa\fP, \fBb\fP, \fBc\fP, \fBd\fP)   (\fBa\fP)=(\fBb\fP);(\fBb\fP)=(\fBc\fP);(\fBc\fP)=(\fBd\fP);"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBmnbrak\fP (double *ax, double *bx, double *cx, double *fa, double *\fBfb\fP, double *fc, double(*func)(double))"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define GLIMIT   100.0"
+.PP
+Definition at line 13 of file test/mnbrak_dbl.c.
+.SS "#define GOLD   1.618034"
+.PP
+Definition at line 12 of file test/mnbrak_dbl.c.
+.SS "#define NRANSI"
+.PP
+Definition at line 10 of file test/mnbrak_dbl.c.
+.SS "#define SHFT(\fBa\fP, \fBb\fP, \fBc\fP, \fBd\fP)   (\fBa\fP)=(\fBb\fP);(\fBb\fP)=(\fBc\fP);(\fBc\fP)=(\fBd\fP);"
+.PP
+Definition at line 15 of file test/mnbrak_dbl.c.
+.SS "#define TINY   1.0\fBe\fP-20"
+.PP
+Definition at line 14 of file test/mnbrak_dbl.c.
+.SH "Function Documentation"
+.PP 
+.SS "void mnbrak (double * ax, double * bx, double * cx, double * fa, double * fb, double * fc, double(* func)(double))"
+.PP
+Definition at line 17 of file test/mnbrak_dbl.c.
+.PP
+References fb, FMAX, func(), GLIMIT, GOLD, r, SHFT, SIGN, and TINY.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

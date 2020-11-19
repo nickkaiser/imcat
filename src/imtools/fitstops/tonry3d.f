@@ -1,0 +1,324 @@
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+CC                  Mongo Interactive Graphics Software                    CC
+CC                 Copyright (c) 1987, 1994 - John Tonry.                  CC
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+C *** argument list ***
+C 	SUBROUTINE MGOPLT3D(A,M,N,WORK,ALT,AZ,ZFAC,ZOFF)
+C
+C	A	- REAL DATA ARRAY, REPRESENTS HEIGHT OF SURFACE AS
+C		  FUNCTION MGOOF LOCATION IN PLANE
+C	M,N	- DIMENSIONS OF DATA ARRAY A
+C	WORK	- REAL WORK ARRAY, LENGTH .GE. 4*MIN(M,N)
+C	ALT,AZ	- ALTITUDE,AZIMUTH VIEWING ANGLES IN DEGREES
+C	ZFAC	- SCALING OF Z-AXIS (INVERSE OF RANGE, I.E. DEFAULT 1/DATAMAX)
+C	ZOFF	- OFFSET OF Z-ORIGIN IN DATA UNITS
+C
+C Note: A(I,J) altered to A(M-I+1,J) to correct x parity flip
+C
+      SUBROUTINE MGOPLT3D(A,M,N,WORK,ALT,AZ,ZFAC,ZOFF)
+      COMMON /MGOPLT3B/ A1,A2,A3,B1,B2,B3,B4
+      DIMENSION A(M,N),WORK(1)
+C      INCLUDE 'mongo.par'
+
+	GX1 = 0
+	GX2 = 512
+	GY1 = 0
+	GY2 = 512
+
+      XLEN = 2*(GX2-GX1)/3
+      YLEN = XLEN
+      XOFF = .5*(GX2+GX1)
+      YOFF = .5*(GY2+GY1)
+      ZFACTOR = ZFAC * (GY2-GY1) / 4
+
+      LMAX=2*MIN0(M,N)
+      TAZ=AZ*0.0174532925
+      TALT=ALT*0.0174532925
+
+      SAZ=SIN(TAZ)
+      CAZ=COS(TAZ)
+      SAL=SIN(TALT)
+      CAL=COS(TALT)
+
+      XSC=XLEN/FLOAT(N-1)
+      YSC=YLEN/FLOAT(M-1)
+      A1=CAZ*XSC
+      A2=-SAZ*YSC
+      A3=XOFF-0.5*(A1*FLOAT(N+1)+A2*FLOAT(M+1))
+      B1=SAZ*SAL*XSC
+      B2=CAZ*SAL*YSC
+      B3=ZFACTOR*CAL
+      B4=B3*ZOFF+YOFF-0.5*(B1*FLOAT(N+1)+B2*FLOAT(M+1))
+
+      IAZ=1
+      IF(A1 .LE. 0.0) IAZ=IAZ+1
+      IF(A2 .LE. 0.0) IAZ=IAZ+2
+
+      GO TO (10,20,10,20),IAZ
+ 10   IFIRST=1
+      ISTEP=1
+      ILAST=M
+      GO TO 30
+ 20   IFIRST=M
+      ISTEP=-1
+      ILAST=1
+
+ 30   GO TO (50,50,40,40),IAZ
+ 40   JFIRST=1
+      JSTEP=1
+      JLAST=N
+      GO TO 60
+ 50   JFIRST=N
+      JSTEP=-1
+      JLAST=1
+
+ 60   GO TO (64,62,62,64),IAZ
+ 62   LLI=1
+      GO TO 66
+ 64   LLI=-1
+
+ 66   IC=0
+      IBEG=IFIRST+ISTEP
+ 70   LNTH=MIN0(2*IABS(IBEG-IFIRST)+1,LMAX)
+      IF(LLI .EQ. -1) GO TO 72
+      LL=0
+      GO TO 74
+ 72   LL=LNTH+1
+ 74   I=IBEG
+      J=JFIRST
+      XX=FLOAT(J)
+      YY=FLOAT(I)
+      LL=LL+LLI
+      WORK(LL)=A1*XX+A2*YY+A3
+      WORK(LL+LMAX)=B1*XX+B2*YY+B3*(A(M-I+1,J)+ZOFF)+B4
+ 80   I=I-ISTEP
+      YY=FLOAT(I)
+      LL=LL+LLI
+      WORK(LL)=A1*XX+A2*YY+A3
+      WORK(LL+LMAX)=B1*XX+B2*YY+B3*(A(M-I+1,J)+ZOFF)+B4
+      IF(J .EQ. JLAST) GO TO 85
+      J=J+JSTEP
+      XX=FLOAT(J)
+      LL=LL+LLI
+      WORK(LL)=A1*XX+A2*YY+A3
+      WORK(LL+LMAX)=B1*XX+B2*YY+B3*(A(M-I+1,J)+ZOFF)+B4
+      IF(I .NE. IFIRST) GO TO 80
+ 85   CALL MGONXTVU(IC,WORK(1),WORK(LMAX+1),LNTH,IER)
+      IF(IER .NE. 0) RETURN
+      IC=1
+      IF(IBEG .EQ. ILAST) GO TO 90
+      IBEG=IBEG+ISTEP
+      GO TO 70
+
+ 90   JBEG=JFIRST
+ 100  LNTH=MIN0(2*IABS(JBEG-JLAST)+1,LMAX)
+      IF (LLI.EQ.-1) GO TO 102
+      LL=0
+      GO TO 104
+ 102  LL=LNTH+1
+ 104  I=ILAST
+      J=JBEG
+      XX=FLOAT(J)
+      YY=FLOAT(I)
+      LL=LL+LLI
+      WORK(LL)=A1*XX+A2*YY+A3
+      WORK(LL+LMAX)=B1*XX+B2*YY+B3*(A(M-I+1,J)+ZOFF)+B4
+ 110  J=J+JSTEP
+      XX=FLOAT(J)
+      LL=LL+LLI
+      WORK(LL)=A1*XX+A2*YY+A3
+      WORK(LL+LMAX)=B1*XX+B2*YY+B3*(A(M-I+1,J)+ZOFF)+B4
+      IF(I .EQ. IFIRST) GO TO 120
+      I=I-ISTEP
+      YY=FLOAT(I)
+      LL=LL+LLI
+      WORK(LL)=A1*XX+A2*YY+A3
+      WORK(LL+LMAX)=B1*XX+B2*YY+B3*(A(M-I+1,J)+ZOFF)+B4
+      IF(J .NE. JLAST) GO TO 110
+ 120  CALL MGONXTVU(1,WORK(1),WORK(LMAX+1),LNTH,IER)
+      IF(IER .NE. 0) RETURN
+      JBEG=JBEG+JSTEP
+      IF (JBEG.EQ.JLAST) RETURN
+      GO TO 100
+      END
+
+      SUBROUTINE MGONXTVU(IC,X,Y,N,IER)
+      PARAMETER (NN=2000)
+      DIMENSION X(N),Y(N)
+      REAL MGOALIN
+      COMMON /MGONXTV1/XX(NN),YY(NN),KK,LL
+      IF (IC .NE. 0) GO TO 20
+      IF(N .GT. NN) GO TO 500
+      LL=NN-N+1
+      I=LL
+      XX(I)=X(1)
+      YY(I)=Y(1)
+      DO 10 J=2,N
+      I=I+1
+      XX(I)=X(J)
+      YY(I)=Y(J)
+      CALL MGOLINE(XX(I-1),YY(I-1),XX(I),YY(I))
+ 10   CONTINUE
+      IER=0
+      RETURN
+ 20   IF(IER .NE. 0) RETURN
+      II=1
+      JJ=LL
+      KK=0
+      YA0=Y(1)
+      YB0=YY(LL)
+      IF(X(1)-XX(LL)) 30,30,70
+ 30   PX = X(1)
+      PY = YA0
+ 40   CALL MGOOUTP(X(II),Y(II),IER)
+      IF (II.EQ.N) GO TO 360
+      II=II+1
+      YA0=Y(II)
+      IF(X(II) .GT. XX(LL)) GO TO 50
+      CALL MGOLINE(PX,PY,X(II),YA0)
+      PX = X(II)
+      PY = YA0
+      GO TO 40
+ 50   II=II-1
+      XL=X(II)
+      YL=Y(II)
+      YA0=MGOALIN(X(II),X(II+1),Y(II),Y(II+1),XX(LL))
+      X0=XX(LL)
+      IF(YA0 .GT. YB0) GO TO 90
+      CALL MGOLINE(PX,PY,X0,YA0)
+      PX = X0
+      PY = YA0
+      CALL MGOOUTP(X0,YA0,IER)
+      CALL MGOOUTP(X0,YB0,IER)
+      GO TO 100
+ 70   CALL MGOOUTP(XX(JJ),YY(JJ),IER)
+      IF(JJ .EQ. NN) GO TO 380
+      JJ=JJ+1
+      YB0=YY(JJ)
+      IF(X(1)-XX(JJ)) 80,70,70
+ 80   JJ=JJ-1
+      YB0=MGOALIN(XX(JJ),XX(JJ+1),YY(JJ),YY(JJ+1),X(1))
+      X0=X(1)
+      IF(YA0 .LE. YB0) GO TO 100
+      CALL MGOOUTP (X0,YB0,IER)
+      CALL MGOOUTP(X0,YA0,IER)
+      XL=X0
+      YL=YA0
+ 90   IOV0=1
+      GO TO 120
+ 100  IOV0=0
+ 120  IF(II .EQ. N) GO TO 300
+      IF(JJ .EQ. NN) GO TO 310
+      IF(X(II+1) .GT. XX(JJ+1)) GO TO 130
+      ISW=+1
+      II=II+1
+      X1=X(II)
+      YA1=Y(II)
+      YB1=MGOALIN(XX(JJ),XX(JJ+1),YY(JJ),YY(JJ+1),X1)
+      GO TO 140
+ 130  IF(XX(JJ+1) .GE. X(N)) GO TO 340
+      ISW=-1
+      JJ=JJ+1
+      X1=XX(JJ)
+      YA1=MGOALIN(X(II),X(II+1),Y(II),Y(II+1),X1)
+      YB1=YY(JJ)
+ 140  IF(YA1 .LE. YB1) GO TO 160
+      IOV1=1
+      IF(IOV0 .EQ. 0) GO TO 170
+ 150  IF(ISW .EQ. -1) GO TO 200
+      CALL MGOOUTP (X1,YA1,IER)
+      CALL MGOLINE(XL,YL,X1,YA1)
+      XL=X1
+      YL=YA1
+      GO TO 200
+ 160  IOV1=0
+      IF(IOV0 .EQ. 0) GO TO 190
+ 170  FRAC=(YB0-YA0)/(YA1-YB1+YB0-YA0)
+      XI=(X1-X0)*FRAC+X0
+      YI=(YA1-YA0)*FRAC+YA0
+      CALL MGOOUTP(XI,YI,IER)
+      IF(IOV0 .EQ. 0) GO TO 180
+      CALL MGOLINE(XL,YL,XI,YI)
+      XL=XI
+      YL=YI
+      GO TO 190
+ 180  XL=XI
+      YL=YI
+      GO TO 150
+ 190  IF(ISW .EQ. +1) GO TO 200
+      CALL MGOOUTP(XX(JJ),YY(JJ),IER)
+ 200  IF(IER .NE. 0) RETURN
+      X0=X1
+      YA0=YA1
+      YB0=YB1
+      IOV0=IOV1
+      GO TO 120
+ 310  X1=XX(NN)
+      YA1=MGOALIN(X(II),X(II+1),Y(II),Y(II+1),X1)
+      YB1=YY(NN)
+      IF(YA1 .GT. YB1) GO TO 320
+      CALL MGOOUTP(X1,YB1,IER)
+      CALL MGOOUTP(X1,YA1,IER)
+      PX = X1
+      PY = YA1
+      GO TO 330
+ 380  II=1
+ 320  PX = X(II)
+      PY = Y(II)
+ 330  IF(II .EQ. N) GO TO 400
+      II=II+1
+      CALL MGOOUTP(X(II),Y(II),IER)
+      CALL MGOLINE(PX,PY,X(II),Y(II))
+      PX = X(II)
+      PY = Y(II)
+      GO TO 330
+ 300  IF(JJ .EQ. NN) GO TO 400
+ 340  X1=X(N)
+      YA1=Y(N)
+      YB1=MGOALIN(XX(JJ),XX(JJ+1),YY(JJ),YY(JJ+1),X1)
+      IF(YA1 .LE. YB1) GO TO 350
+      CALL MGOOUTP(X1,YA1,IER)
+      CALL MGOOUTP(X1,YB1,IER)
+      CALL MGOLINE(XL,YL,X1,YA1)
+350   IF (JJ.EQ.NN) GO TO 400
+      JJ=JJ+1
+      CALL MGOOUTP(XX(JJ),YY(JJ),IER)
+      GO TO 350
+ 360  JJ=0
+      GO TO 350
+ 400  LL=NN-KK+1
+      I=LL
+      DO 410 J=1,KK
+      XX(I)=XX(J)
+      YY(I)=YY(J)
+      I=I+1
+ 410  CONTINUE
+      RETURN
+ 500  IER=1
+      RETURN
+      END
+
+      SUBROUTINE MGOOUTP(X,Y,IER)
+      PARAMETER (NN=2000,EPS=.001)
+      COMMON /MGONXTV1/XX(NN),YY(NN),KK,LL
+      IF(KK .EQ. 0) GO TO 10
+      IF(KK .EQ. LL-1) GO TO 20
+      IF(ABS(XX(KK)-X)+ABS(YY(KK)-Y) .LT. EPS) RETURN
+10    KK=KK+1
+      XX(KK)=X
+      YY(KK)=Y
+      RETURN
+20    IER=1
+      RETURN
+      END
+
+      REAL FUNCTION MGOALIN(X0,X1,Y0,Y1,X)
+      IF(X0 .EQ. X1) GO TO 10
+      MGOALIN=(X-X0)*(Y1-Y0)/(X1-X0)+Y0
+      RETURN
+10    IF(Y1 .GT. Y0) GO TO 20
+      MGOALIN=Y0
+      RETURN
+20    MGOALIN=Y1
+      RETURN
+      END

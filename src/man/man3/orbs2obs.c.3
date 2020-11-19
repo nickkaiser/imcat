@@ -1,0 +1,54 @@
+.TH "orbs2obs.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+orbs2obs.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+\fC#include 'deltam.h'\fP
+.br
+\fC#include 'airmassmin.h'\fP
+.br
+\fC#include 'planetdata.h'\fP
+.br
+\fC#include 'obsdata.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	orbs2obs\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	orbs2obs \fBnp\fP \fBnf\fP dt [-\fBw\fP weather.cat]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	orbs2obs reads from stdin an lc catalog containing \fBnf\fP\\\fBn\fP\\	frames of \fBnp\fP+1 records containing at least heliocentric\\\fBn\fP\\	phase-space coordinates \fBr\fP[3] and \fBv\fP[3], as well as\\\fBn\fP\\	scalars risk and v_inf. The first record\\\fBn\fP\\	in each \fBframe\fP is understood to contain the coordinates of\\\fBn\fP\\	the observer, and orb2obs computes various observocentric\\\fBn\fP\\	properties such as the angular speed, delta-magnitude etc.\\\fBn\fP\\	Timestep dt is given in units of the Earth's dynamical time.\\\fBn\fP\\\\\fBn\fP\\	It first computes helio-centric coords of the \fBobject\fP, relative\\\fBn\fP\\	to the center of Earth, and at the integrator \fBtimestep\fP. It then\\\fBn\fP\\	finds the time (on hourly intervals) for which the \fBobject\fP has\\\fBn\fP\\	the minimum air mass, subject to constraints on the sun (> 18 deg\\\fBn\fP\\	below horizon) and moon (below horizon).\\\fBn\fP\\\\\fBn\fP\\	It then computes the position of observer and \fBobject\fP at the time\\\fBn\fP\\	of observation, and computes other properties.\\\fBn\fP\\\\\fBn\fP\\	Quantities output are:\\\fBn\fP\\	\fBra\fP[3], \fBva\fP[3]	# position and velocity of the \fBobject\fP\\\fBn\fP\\	\fBre\fP[3], ve[3]	# position of the Earth\\\fBn\fP\\	\fBrho\fP[3]		# position of observatory wrt Earth\\\fBn\fP\\	rlen		# Earth-\fBobject\fP distance\\\fBn\fP\\	dotn		# angular speed\\\fBn\fP\\	mu		# cosine of \fBangle\fP from opposition\\\fBn\fP\\	\fBdm\fP[3]		# phase \fBangle\fP/distance magnitude shift (3 models)\\\fBn\fP\\	lambda, beta	# ecliptic coords\\\fBn\fP\\	lon, lat	# helio-ecliptic coords\\\fBn\fP\\	pnum		# \fBparticle\fP \fBnumber\fP\\\fBn\fP\\	fnum		# \fBframe\fP \fBnumber\fP\\\fBn\fP\\	airmass_min	# minimum air mass (on the hour)\\\fBn\fP\\	risk		# risk factor\\\fBn\fP\\	v_inf		# collision velocity\\\fBn\fP\\	\fBalpha\fP, delta	# equatorial coords\\\fBn\fP\\	t_int		# time of integrator time-step (in t_dyn)\\\fBn\fP\\	t_obs		# time of observation\\\fBn\fP\\	t_local		# local time in hours\\\fBn\fP\\\\\fBn\fP\\	With -\fBw\fP \fBflag\fP we read \fBnf\fP records from weather.cat containing\\\fBn\fP\\	frac_clear, extinct, seeing, and these are also output.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	evolveorbits\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	orbs2obs\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	orbs2obs \fBnp\fP \fBnf\fP dt [-\fBw\fP weather.cat]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	orbs2obs reads from stdin an lc catalog containing \fBnf\fP\\\fBn\fP\\	frames of \fBnp\fP+1 records containing at least heliocentric\\\fBn\fP\\	phase-space coordinates \fBr\fP[3] and \fBv\fP[3], as well as\\\fBn\fP\\	scalars risk and v_inf. The first record\\\fBn\fP\\	in each \fBframe\fP is understood to contain the coordinates of\\\fBn\fP\\	the observer, and orb2obs computes various observocentric\\\fBn\fP\\	properties such as the angular speed, delta-magnitude etc.\\\fBn\fP\\	Timestep dt is given in units of the Earth's dynamical time.\\\fBn\fP\\\\\fBn\fP\\	It first computes helio-centric coords of the \fBobject\fP, relative\\\fBn\fP\\	to the center of Earth, and at the integrator \fBtimestep\fP. It then\\\fBn\fP\\	finds the time (on hourly intervals) for which the \fBobject\fP has\\\fBn\fP\\	the minimum air mass, subject to constraints on the sun (> 18 deg\\\fBn\fP\\	below horizon) and moon (below horizon).\\\fBn\fP\\\\\fBn\fP\\	It then computes the position of observer and \fBobject\fP at the time\\\fBn\fP\\	of observation, and computes other properties.\\\fBn\fP\\\\\fBn\fP\\	Quantities output are:\\\fBn\fP\\	\fBra\fP[3], \fBva\fP[3]	# position and velocity of the \fBobject\fP\\\fBn\fP\\	\fBre\fP[3], ve[3]	# position of the Earth\\\fBn\fP\\	\fBrho\fP[3]		# position of observatory wrt Earth\\\fBn\fP\\	rlen		# Earth-\fBobject\fP distance\\\fBn\fP\\	dotn		# angular speed\\\fBn\fP\\	mu		# cosine of \fBangle\fP from opposition\\\fBn\fP\\	\fBdm\fP[3]		# phase \fBangle\fP/distance magnitude shift (3 models)\\\fBn\fP\\	lambda, beta	# ecliptic coords\\\fBn\fP\\	lon, lat	# helio-ecliptic coords\\\fBn\fP\\	pnum		# \fBparticle\fP \fBnumber\fP\\\fBn\fP\\	fnum		# \fBframe\fP \fBnumber\fP\\\fBn\fP\\	airmass_min	# minimum air mass (on the hour)\\\fBn\fP\\	risk		# risk factor\\\fBn\fP\\	v_inf		# collision velocity\\\fBn\fP\\	\fBalpha\fP, delta	# equatorial coords\\\fBn\fP\\	t_int		# time of integrator time-step (in t_dyn)\\\fBn\fP\\	t_obs		# time of observation\\\fBn\fP\\	t_local		# local time in hours\\\fBn\fP\\\\\fBn\fP\\	With -\fBw\fP \fBflag\fP we read \fBnf\fP records from weather.cat containing\\\fBn\fP\\	frac_clear, extinct, seeing, and these are also output.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	evolveorbits\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 10 of file orbs2obs.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 64 of file orbs2obs.c.
+.PP
+References add(), airmassmin(), alpha, assign(), ASTEROID_G_DARK, ASTEROID_G_LIGHT, ASTEROID_G_MEDIUM, AU, AXISTILTINDEG, copy(), DAYSPERYEAR, deltam(), diff(), dot(), exit(), i, ipf, LATOBSINDEG, length(), n, nf, r, R_EARTH, roty(), scale(), tmpvec, usage, and v.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

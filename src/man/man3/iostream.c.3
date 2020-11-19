@@ -1,0 +1,54 @@
+.TH "iostream.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+iostream.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include 'iostream.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBhasbadchars\fP (char *string)"
+.br
+.ti -1c
+.RI "\fBiostream\fP * \fBopeniostream\fP (char *iostreamstring, char *\fBmode\fP)"
+.br
+.ti -1c
+.RI "int \fBcloseiostream\fP (\fBiostream\fP *theiostream)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int closeiostream (\fBiostream\fP * theiostream)"
+.PP
+Definition at line 90 of file iostream.c.
+.PP
+References error_exit, iostream::f, FILE_IOSTREAM_TYPE, free(), PIPE_IOSTREAM_TYPE, STD_IOSTREAM_TYPE, and iostream::type.
+.PP
+Referenced by main().
+.SS "int hasbadchars (char * string)"
+.PP
+Definition at line 108 of file iostream.c.
+.PP
+References i.
+.PP
+Referenced by openiostream().
+.SS "\fBiostream\fP* openiostream (char * iostreamstring, char * mode)"
+.PP
+Definition at line 11 of file iostream.c.
+.PP
+References error_exit, exit(), iostream::f, FILE_IOSTREAM_TYPE, hasbadchars(), i, iostream::mode, PIPE_IOSTREAM_TYPE, STD_IOSTREAM_TYPE, and iostream::type.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

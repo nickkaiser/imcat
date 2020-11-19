@@ -1,0 +1,84 @@
+.TH "item" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+item \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <cat.h>\fP
+.PP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "char * \fBname\fP"
+.br
+.ti -1c
+.RI "int \fBitype\fP"
+.br
+.ti -1c
+.RI "int \fBndim\fP"
+.br
+.ti -1c
+.RI "int \fBidim\fP [MAX_DIMS]"
+.br
+.ti -1c
+.RI "int \fBdim\fP [MAX_DIMS]"
+.br
+.ti -1c
+.RI "void * \fBaddr\fP"
+.br
+.ti -1c
+.RI "\fBitem\fP * \fBnext\fP"
+.br
+.ti -1c
+.RI "int \fBswapbytesi\fP"
+.br
+.in -1c
+.SH "Field Documentation"
+.PP 
+.SS "void* \fBitem::addr\fP"
+.PP
+Definition at line 50 of file cat.h.
+.PP
+Referenced by adddate(), addheadercontents(), allocobjectcontents(), connectcatheadtoobject(), connectobjecttocathead(), copycontentinfo(), copyheaderinfo(), copyitem(), derefinit(), dospecialname(), dotdoit(), dotinit(), enterdoit(), enterinit(), freeitem(), getheaderitemaddress(), getnumericaddresses(), getop(), grandinit(), ifdoit(), ifinit(), install1numericheaderitem(), install1textheaderitem(), inverseinit(), lintransdoit(), lintransinit(), madddoit(), maddinit(), main(), mscaledoit(), mscaleinit(), msubdoit(), msubinit(), newopitem(), num1func(), num2func(), parsename(), randinit(), readcathead(), readlmodel(), setheaderitemaddress(), streqdoit(), streqinit(), vadddoit(), vaddinit(), vectorinit(), vscaledoit(), vscaleinit(), vshiftdoit(), vshiftinit(), vsubdoit(), vsubinit(), writecathead(), and writelmodel().
+.SS "int \fBitem::dim\fP[MAX_DIMS]"
+.PP
+Definition at line 49 of file cat.h.
+.PP
+Referenced by allocitemcontents(), aloop(), copyitemcontents(), derefinit(), difflmodel(), dotdoit(), dotinit(), freeitemcontents(), getaddresses(), getitemaddresses(), identical(), ifinit(), inheritcontents(), lintransinit(), madddoit(), maddinit(), main(), mscaledoit(), mscaleinit(), msubdoit(), msubinit(), newitem(), newitembydimarray(), newlmodel(), newopitem(), newzernikelmodel(), num1func(), num2func(), readcathead(), readitem(), readlmodel(), readnewitem(), sscanitem(), sscannewitem(), vadddoit(), vaddinit(), vectorinit(), vscaledoit(), vscaleinit(), vshiftdoit(), vshiftinit(), vsubdoit(), vsubinit(), writeitem(), writelabel(), and writename().
+.SS "int \fBitem::idim\fP[MAX_DIMS]"
+.PP
+Definition at line 48 of file cat.h.
+.PP
+Referenced by writelabel().
+.SS "int \fBitem::itype\fP"
+.PP
+Definition at line 46 of file cat.h.
+.PP
+Referenced by allocitemcontents(), copyitemcontents(), derefinit(), dotinit(), evalrpnfunction(), getnumericaddresses(), identical(), ifinit(), inheritcontents(), lintransinit(), maddinit(), main(), mscaleinit(), msubinit(), newitem(), newitembydimarray(), newlmodel(), num1func(), num2func(), readitem(), readlmodel(), readnewitem(), sscanitem(), sscannewitem(), streqinit(), vaddinit(), vectorinit(), vscaleinit(), vshiftinit(), vsubinit(), writeitem(), writelabel(), and writename().
+.SS "char* \fBitem::name\fP"
+.PP
+Definition at line 45 of file cat.h.
+.PP
+Referenced by copyitem(), deleteheaderitem(), deleteobjectitem(), derefinit(), evalrpnfunction(), freeitem(), getheaderitem(), getobjectitem(), getobjectitemindex(), identical(), installitem(), main(), newitem(), newitembydimarray(), newlmodel(), readcathead(), readlmodel(), readnewitem(), sscannewitem(), vectorinit(), writelabel(), and writename().
+.SS "int \fBitem::ndim\fP"
+.PP
+Definition at line 47 of file cat.h.
+.PP
+Referenced by allocitemcontents(), aloop(), copyitemcontents(), derefinit(), difflmodel(), dotdoit(), dotinit(), freeitemcontents(), getaddresses(), getitemaddresses(), identical(), ifinit(), inheritcontents(), lintransinit(), maddinit(), main(), mscaleinit(), msubinit(), newitem(), newitembydimarray(), newlmodel(), newzernikelmodel(), num1func(), num2func(), readcathead(), readitem(), readlmodel(), readnewitem(), sscanitem(), sscannewitem(), vaddinit(), vectorinit(), vscaleinit(), vshiftinit(), vsubinit(), writeitem(), writelabel(), and writename().
+.SS "struct \fBitem\fP* \fBitem::next\fP"
+.PP
+Definition at line 51 of file cat.h.
+.PP
+Referenced by copycontentinfo(), copyheaderinfo(), copyitem(), deleteheaderitem(), deleteobjectitem(), enterdoit(), evalrpnfunction(), freecathead(), getheaderitem(), getnumericaddresses(), getobjectitem(), identical(), ifdoit(), installitem(), lintransdoit(), main(), makeitemlist(), num1func(), num2func(), and writecathead().
+.SS "int \fBitem::swapbytesi\fP"
+.PP
+Definition at line 52 of file cat.h.
+.PP
+Referenced by main(), readcathead(), and readitem().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

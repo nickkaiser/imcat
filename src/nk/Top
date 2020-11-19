@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# a script that mimics "top" on an alpha...to exit it, you
+
+while true
+do
+        clear; ps aux | head -20
+        sleep 5
+done

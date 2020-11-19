@@ -1,0 +1,85 @@
+.TH "iostream.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+iostream.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBiostream\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSTD_IOSTREAM_TYPE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBFILE_IOSTREAM_TYPE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBPIPE_IOSTREAM_TYPE\fP   2"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBiostream\fP \fBiostream\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBiostream\fP * \fBopeniostream\fP (char *iostreamstring, char *\fBmode\fP)"
+.br
+.ti -1c
+.RI "int \fBcloseiostream\fP (\fBiostream\fP *theiostream)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define FILE_IOSTREAM_TYPE   1"
+.PP
+Definition at line 20 of file iostream.h.
+.PP
+Referenced by closeiostream(), main(), and openiostream().
+.SS "#define PIPE_IOSTREAM_TYPE   2"
+.PP
+Definition at line 21 of file iostream.h.
+.PP
+Referenced by closeiostream(), and openiostream().
+.SS "#define STD_IOSTREAM_TYPE   0"
+.PP
+Definition at line 19 of file iostream.h.
+.PP
+Referenced by closeiostream(), and openiostream().
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBiostream\fP  \fBiostream\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "int closeiostream (\fBiostream\fP * theiostream)"
+.PP
+Definition at line 90 of file iostream.c.
+.PP
+References error_exit, iostream::f, FILE_IOSTREAM_TYPE, free(), PIPE_IOSTREAM_TYPE, STD_IOSTREAM_TYPE, and iostream::type.
+.PP
+Referenced by main().
+.SS "\fBiostream\fP* openiostream (char * iostreamstring, char * mode)"
+.PP
+Definition at line 11 of file iostream.c.
+.PP
+References error_exit, exit(), iostream::f, FILE_IOSTREAM_TYPE, hasbadchars(), i, iostream::mode, PIPE_IOSTREAM_TYPE, STD_IOSTREAM_TYPE, and iostream::type.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,180 @@
+.TH "fitsheader" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitsheader \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <fits.h>\fP
+.PP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "int \fBextpixtype\fP"
+.br
+.ti -1c
+.RI "int \fBintpixtype\fP"
+.br
+.ti -1c
+.RI "int \fBndim\fP"
+.br
+.ti -1c
+.RI "int \fBn\fP [MAX_FITS_DIM]"
+.br
+.ti -1c
+.RI "int \fBbscaling\fP"
+.br
+.ti -1c
+.RI "double \fBbscale\fP"
+.br
+.ti -1c
+.RI "double \fBbzero\fP"
+.br
+.ti -1c
+.RI "FILE * \fBipstream\fP"
+.br
+.ti -1c
+.RI "FILE * \fBopstream\fP"
+.br
+.ti -1c
+.RI "char * \fBlinebuffer\fP"
+.br
+.ti -1c
+.RI "int \fBlinebuffersize\fP"
+.br
+.ti -1c
+.RI "int \fBipbyteorder\fP"
+.br
+.ti -1c
+.RI "int \fBopbyteorder\fP"
+.br
+.ti -1c
+.RI "int \fBconvertnans\fP"
+.br
+.ti -1c
+.RI "\fBfitscomment\fP * \fBbasecomment\fP"
+.br
+.ti -1c
+.RI "int \fBhasextensions\fP"
+.br
+.ti -1c
+.RI "int \fBisextension\fP"
+.br
+.ti -1c
+.RI "int \fBnextensions\fP"
+.br
+.ti -1c
+.RI "int \fBpcount\fP"
+.br
+.ti -1c
+.RI "int \fBgcount\fP"
+.br
+.in -1c
+.SH "Field Documentation"
+.PP 
+.SS "struct \fBfitscomment\fP* \fBfitsheader::basecomment\fP"
+.PP
+Definition at line 68 of file fits.h.
+.PP
+Referenced by appendcomment(), copyfitsheader(), getcommentbyname(), main(), prependcomment(), readdataheader(), readfitsheader(), removecomment(), and writefitsheader().
+.SS "double \fBfitsheader::bscale\fP"
+.PP
+Definition at line 62 of file fits.h.
+.PP
+Referenced by main(), readfitsheader(), readfitsline(), writefitsheader(), and writefitsline().
+.SS "int \fBfitsheader::bscaling\fP"
+.PP
+Definition at line 61 of file fits.h.
+.PP
+Referenced by main(), newfitsheader(), readfitsheader(), readfitsline(), writefitsheader(), and writefitsline().
+.SS "double \fBfitsheader::bzero\fP"
+.PP
+Definition at line 62 of file fits.h.
+.PP
+Referenced by main(), readfitsheader(), readfitsline(), writefitsheader(), and writefitsline().
+.SS "int \fBfitsheader::convertnans\fP"
+.PP
+Definition at line 67 of file fits.h.
+.PP
+Referenced by newfitsheader(), readfitsheader(), readfitsline(), and writefitsline().
+.SS "int \fBfitsheader::extpixtype\fP"
+.PP
+Definition at line 57 of file fits.h.
+.PP
+Referenced by main(), newfitsheader(), readfitsheader(), readfitsline(), setextpixtype(), skiplines(), updatelinebuffer(), writefitsheader(), writefitsline(), and writefitstail().
+.SS "int \fBfitsheader::gcount\fP"
+.PP
+Definition at line 69 of file fits.h.
+.PP
+Referenced by readfitsheader().
+.SS "int \fBfitsheader::hasextensions\fP"
+.PP
+Definition at line 69 of file fits.h.
+.PP
+Referenced by main(), readfitsheader(), and writefitsheader().
+.SS "int \fBfitsheader::intpixtype\fP"
+.PP
+Definition at line 58 of file fits.h.
+.PP
+Referenced by addtofitsarray(), allocfitsarray(), doplot(), main(), newfitsheader(), readdataheader(), readfitsheader(), readfitsline(), and writefitsline().
+.SS "int \fBfitsheader::ipbyteorder\fP"
+.PP
+Definition at line 66 of file fits.h.
+.PP
+Referenced by main(), readfitsheader(), and readfitsline().
+.SS "FILE* \fBfitsheader::ipstream\fP"
+.PP
+Definition at line 63 of file fits.h.
+.PP
+Referenced by main(), newfitsheader(), readfitsheader(), readfitsline(), and skiplines().
+.SS "int \fBfitsheader::isextension\fP"
+.PP
+Definition at line 69 of file fits.h.
+.PP
+Referenced by main(), readfitsheader(), and writefitsheader().
+.SS "char* \fBfitsheader::linebuffer\fP"
+.PP
+Definition at line 64 of file fits.h.
+.PP
+Referenced by main(), readfitsline(), set2Dimagesize(), setextpixtype(), skiplines(), updatelinebuffer(), and writefitsline().
+.SS "int \fBfitsheader::linebuffersize\fP"
+.PP
+Definition at line 65 of file fits.h.
+.PP
+Referenced by updatelinebuffer().
+.SS "int \fBfitsheader::n\fP[MAX_FITS_DIM]"
+.PP
+Definition at line 60 of file fits.h.
+.PP
+Referenced by accumulate(), addtofitsarray(), allocfitsarray(), deproject(), generatefm(), getpix(), main(), myworkproc1(), newfitsheader(), openfits(), project(), readdataheader(), readfitscube(), readfitsheader(), readfitsline(), readfitsplane(), readimheader(), scrunch_stream(), set2Dimagesize(), skiplines(), start_command(), surfaceplot(), updatelinebuffer(), write2Dfloatimage(), writefitsarray(), writefitscube(), writefitsheader(), writefitsline(), writefitsplane(), writefitstail(), and writeimage().
+.SS "int \fBfitsheader::ndim\fP"
+.PP
+Definition at line 59 of file fits.h.
+.PP
+Referenced by accumulate(), aloop(), deproject(), getpix(), main(), newfitsheader(), openfits(), project(), readdataheader(), readfitsheader(), readimheader(), set2Dimagesize(), start_command(), write2Dfloatimage(), writefitsheader(), and writefitstail().
+.SS "int \fBfitsheader::nextensions\fP"
+.PP
+Definition at line 69 of file fits.h.
+.PP
+Referenced by main(), readfitsheader(), and writefitsheader().
+.SS "int \fBfitsheader::opbyteorder\fP"
+.PP
+Definition at line 66 of file fits.h.
+.PP
+Referenced by main(), newfitsheader(), readfitsheader(), writefitsheader(), and writefitsline().
+.SS "FILE * \fBfitsheader::opstream\fP"
+.PP
+Definition at line 63 of file fits.h.
+.PP
+Referenced by display(), doplot(), main(), newfitsheader(), readfitsheader(), writefitsheader(), writefitsline(), and writefitstail().
+.SS "int \fBfitsheader::pcount\fP"
+.PP
+Definition at line 69 of file fits.h.
+.PP
+Referenced by readfitsheader().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

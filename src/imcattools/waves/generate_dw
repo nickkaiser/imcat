@@ -1,0 +1,122 @@
+#!/usr/bin/perl
+
+$usage = "\nNAME\
+	generate_dw - generate waves for edw\
+\
+SYNOPSIS\
+	generate_dw N [-gaussian alpha rf] [-packet theta sigma k] [-droplet sigma] [-dr ocean | debroglie | scalar kstar] [-cycle dx dy] [-u]\
+\
+DESCRIPTION\
+	Generate_dw generates N x N initial date for a wave field\
+	suitable for evolution with edw.\
+\
+	By default it generates Gaussian noise with\
+	flat spectrum (alpha = 0) and 1-pixel smoothing length; i.e\
+	equavalent to 'generate_dw N -gaussian 0.0 1.0'.\
+\
+	With '-packet theta sigma k' it genenerates a gaussian\
+	profile wave packet with scale length sigma and wave\
+	vector k propagating in direction theta (in degrees).\
+\
+	Use the -dr flag to set the dispersion relation.\
+\
+SEE ALSO\
+	edw, xfv\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@hawaii.edu\n\n";
+
+$N = shift(@ARGV) || die $usage;
+die $usage if ($N =~ /^-/);
+
+# defaults
+$mode 	= "gaussian";
+$alpha 	= 0.0;
+$rf 	= 1.0;
+$dr 	= "default";
+
+$deg = 3.1415926535897 / 180.0;
+
+$cycler = "";
+
+while ($arg = shift(@ARGV)) {
+	if ($arg =~ /^-gaussian$/) {
+		# gaussian random noise - zero initial velocity
+		$mode = "gaussian";
+		$alpha 	= shift(@ARGV);
+		$rf 	= shift(@ARGV) || die $usage;
+	} elsif ($arg =~ /^-packet$/) {
+		$mode = "packet";
+		$theta	= shift(@ARGV);
+		$sigma  = shift(@ARGV) || die $usage;
+		$k	= shift(@ARGV) || die $usage;
+	} elsif ($arg =~ /^-droplet$/) {
+		$mode = "droplet";
+		$sigma  = shift(@ARGV) || die $usage;
+	} elsif ($arg =~ /^-dr$/) {
+		$dr 	= shift(@ARGV) || die $usage;
+		if ($dr eq "scalar") {
+			$kstar = shift(@ARGV) || die $usage;
+		}
+	} elsif ($arg =~ /^-cycle$/) {
+		$dx = shift(@ARGV) || die $usage;
+		$dy = shift(@ARGV) || die $usage;
+		$cycler = "| cycleimage $dx $dy ";
+	} else {
+		die $usage;
+	}
+	
+}
+
+$tmpbase = "/tmp/generate_dw";
+
+echosys("imhead -g -32 3 $N $N 2");
+
+$N2 = $N / 2;
+
+if ($mode eq "gaussian") {
+	echosys("ic -c $N $N 'grand' | smooth -p $alpha | smooth -f 0 0 $rf | imhead -d");
+	echosys("ic -c $N $N '0' | imhead -d");
+} elsif ($mode eq "packet") {
+	$kx = $k * cos($theta * $deg);
+	$ky = $k * sin($theta * $deg);
+	$dk = 2 * 3.14159 / $N;
+	$kk0 = 0.01 * $dk * $dk;
+	$sigma2 = $sigma * $sigma;
+	if ($dr eq "ocean") {
+		$omega = ($kk0 + $k * $k)**0.25;
+	} elsif ($dr eq "debroglie") {
+		$omega = ($kk0 + $k * $k)**1.0;
+	} elsif ($dr eq "scalar") {
+		$omega = ($kstar * $kstar + $k * $k)**0.5;
+	} else {
+		$omega = ($kk0 + $k * $k)**0.5;
+	}
+	# create x,y images
+	echosys("ic -c $N $N 'xp $N2 - 0.5 +' > $tmpbase.x.fits");
+	echosys("ic -c $N $N 'yp $N2 - 0.5 +' > $tmpbase.y.fits");
+	# create the Gaussian envelope W
+	echosys("ic '%1 %1 * %2 %2 * + $sigma2 / -0.5 * exp' $tmpbase.[xy].fits > $tmpbase.W.fits");
+	# create the field W(x) * cos(k.x)
+	echosys("ic '%1 $kx * %2 $ky * + cos %3 *' $tmpbase.[xy].fits $tmpbase.W.fits ".
+		"$cycler | imhead -d");
+	# create the field W(x) * sin(k.x) * -omega
+	echosys("ic '%1 $kx * %2 $ky * + sin %3 * -$omega *' $tmpbase.[xy].fits $tmpbase.W.fits ".
+		"$cycler | imhead -d");
+} elsif ($mode eq "droplet") {
+	$N2 = $N / 2;
+	$sigma2 = $sigma * $sigma;
+	echosys("ic -c $N $N 'xp $N2 - enter * yp $N2 - enter * + $sigma2 / -0.5 * exp' | imhead -d");
+	echosys("ic -c $N $N '0' | imhead -d");
+}
+
+echosys("rm -f $tmpbase.?.fits");
+
+exit;
+
+
+sub echosys {
+	warn "$_[0]\n";
+	system($_[0]) && die "system($_[0]) failed\n";
+}
+

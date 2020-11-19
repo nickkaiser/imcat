@@ -1,0 +1,96 @@
+.TH "triplets.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+triplets.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   'usage: triplets [dmax]\\\fBn\fP\\	reads \fBa\fP list of coords and finds \fBtriangles\fP with max side dmax\\\fBn\fP\\	orders vertices so long, medium and short sides are\\\fBn\fP\\	L = AB; \fBM\fP = BC; S = CA and prints out\\\fBn\fP\\	L, \fBM\fP, S, \fBphi\fP, xA, yA where\\\fBn\fP\\	\fBphi\fP = atan2(yB - yA, xB - xA)\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBWHOPPER\fP   1.e10"
+.br
+.ti -1c
+.RI "#define \fBMAX_OBJECTS\fP   1000"
+.br
+.ti -1c
+.RI "#define \fBdist\fP(\fBi\fP, \fBj\fP)   sqrt((x[\fBi\fP]-x[\fBj\fP])*(x[\fBi\fP]-x[\fBj\fP])+(y[\fBi\fP]-y[\fBj\fP])*(y[\fBi\fP]-y[\fBj\fP]))"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBprint\fP (int ia, int ib, int \fBic\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "int \fBinorder\fP (double d1, double d2, double d3)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double \fBx\fP [MAX_OBJECTS]"
+.br
+.ti -1c
+.RI "double \fBy\fP [MAX_OBJECTS]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define dist(\fBi\fP, \fBj\fP)   sqrt((x[\fBi\fP]-x[\fBj\fP])*(x[\fBi\fP]-x[\fBj\fP])+(y[\fBi\fP]-y[\fBj\fP])*(y[\fBi\fP]-y[\fBj\fP]))"
+.PP
+Definition at line 20 of file triplets.c.
+.SS "#define MAX_OBJECTS   1000"
+.PP
+Definition at line 18 of file triplets.c.
+.SS "#define \fBusage\fP   'usage: triplets [dmax]\\\fBn\fP\\	reads \fBa\fP list of coords and finds \fBtriangles\fP with max side dmax\\\fBn\fP\\	orders vertices so long, medium and short sides are\\\fBn\fP\\	L = AB; \fBM\fP = BC; S = CA and prints out\\\fBn\fP\\	L, \fBM\fP, S, \fBphi\fP, xA, yA where\\\fBn\fP\\	\fBphi\fP = atan2(yB - yA, xB - xA)\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 10 of file triplets.c.
+.SS "#define WHOPPER   1.e10"
+.PP
+Definition at line 17 of file triplets.c.
+.SH "Function Documentation"
+.PP 
+.SS "int inorder (double d1, double d2, double d3)"
+.PP
+Definition at line 105 of file triplets.c.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 25 of file triplets.c.
+.PP
+References dist, dmax, exit(), inorder(), line, n, print(), usage, WHOPPER, x, and y.
+.SS "void print (int ia, int ib, int ic)"
+.PP
+Definition at line 95 of file triplets.c.
+.PP
+References dist, phi, x, and y.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "double x[MAX_OBJECTS]"
+.PP
+Definition at line 22 of file triplets.c.
+.SS "double y[MAX_OBJECTS]"
+.PP
+Definition at line 22 of file triplets.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,92 @@
+.TH "arrays.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+arrays.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include 'error.h'\fP
+.br
+\fC#include 'arrays.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void * \fBcheckalloc\fP (int nel, int size)"
+.br
+.ti -1c
+.RI "void \fBallocShortArray\fP (short ***f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBallocFloatArray\fP (float ***f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBfreeShortArray\fP (short **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBfreeFloatArray\fP (float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBcopyFloatToShort\fP (float **fsrc, short **fdst, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBcopyShortToFloat\fP (short **fsrc, float **fdst, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "float *** \fBalloc3DFloatArray\fP (int \fBN1\fP, int \fBN2\fP, int N3)"
+.br
+.ti -1c
+.RI "void \fBfree3DFloatArray\fP (float ***f, int \fBN1\fP, int \fBN2\fP, int N3)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "float*** alloc3DFloatArray (int N1, int N2, int N3)"
+.PP
+Definition at line 109 of file arrays.c.
+.PP
+References checkalloc(), f, i, j, N1, and N2.
+.SS "void allocFloatArray (float *** f, int N1, int N2)"
+.PP
+Definition at line 43 of file arrays.c.
+.SS "void allocShortArray (short *** f, int N1, int N2)"
+.PP
+Definition at line 26 of file arrays.c.
+.SS "void* checkalloc (int nel, int size)"
+.PP
+routines for allocating, freeing and copying 2-D/3-D arrays
+.PP
+these are the newstyle contiguous storage versions Definition at line 15 of file arrays.c.
+.PP
+References error_exit, and size.
+.PP
+Referenced by alloc3DFloatArray(), and main().
+.SS "void copyFloatToShort (float ** fsrc, short ** fdst, int N1, int N2)"
+.PP
+Definition at line 85 of file arrays.c.
+.SS "void copyShortToFloat (short ** fsrc, float ** fdst, int N1, int N2)"
+.PP
+Definition at line 98 of file arrays.c.
+.SS "void free3DFloatArray (float *** f, int N1, int N2, int N3)"
+.PP
+Definition at line 127 of file arrays.c.
+.PP
+References f, free(), and i.
+.SS "void freeFloatArray (float ** f, int N1, int N2)"
+.PP
+Definition at line 73 of file arrays.c.
+.SS "void freeShortArray (short ** f, int N1, int N2)"
+.PP
+Definition at line 61 of file arrays.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

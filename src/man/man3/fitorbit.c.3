@@ -1,0 +1,322 @@
+.TH "fitorbit.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitorbit.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+\fC#include 'Ffunc.h'\fP
+.br
+\fC#include 'gaussdev.h'\fP
+.br
+\fC#include 'tcl.h'\fP
+.br
+\fC#include 'kepler.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	fitorbit - find least squares orbit solution\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitorbit initsolcat \fBnp\fP [-tcl \fBdtmax\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	fitorbit finds \fBa\fP minimum chi-squared solution for \fBa\fP set of observations\\\fBn\fP\\	given an initial solution.\\\fBn\fP\\\\\fBn\fP\\	fitorbit first reads an lc format catalog initsolcat containing the\\\fBn\fP\\	\fBa\fP preliminary solution ra0[3], va0[3], as well as the position re0[3] and\\\fBn\fP\\	velocity ve0[3] of the Earth at \fBt0\fP the initial time \fBt0\fP (though these just\\\fBn\fP\\	get passed through.  It also contains the \fBnumber\fP of observations \fBnt\fP.\\\fBn\fP\\\\\fBn\fP\\	It then reads \fBa\fP set of \fBnt\fP observations \fBre\fP[3], \fBrho\fP[3], \fBnobs\fP[3], \fBsigma\fP\\\fBn\fP\\	and \fBt\fP from obscat, and finds \fBa\fP minimum chi^2 by propagating from the\\\fBn\fP\\	\fBt0\fP solution and computing the residuals.  By default it uses Kepler elements\\\fBn\fP\\	but with -tcl \fBflag\fP will use time-centered leapfrog with maximum \fBtimestep\fP\\\fBn\fP\\	\fBdtmax\fP.  Minimum is found using Powell's method.\\\fBn\fP\\\\\fBn\fP\\	Here \fBre\fP[] is the geocenter, \fBrho\fP[] is the position of the observatory\\\fBn\fP\\	realtive to the geocenter and \fBnobs\fP is \fBa\fP unit vector in the direction\\\fBn\fP\\	\fBra\fP[] - \fBre\fP[].\\\fBn\fP\\\\\fBn\fP\\	fitorbit outputs \fBa\fP series of \fBnp\fP+2 sets of phase-space coordinates\\\fBn\fP\\	\fBr\fP[], \fBv\fP[] where the first set is the observer, the second is the\\\fBn\fP\\	asteroid solution and subsequent \fBnp\fP sets of coordinates are solutions\\\fBn\fP\\	obtained by randomly perturbing the observations with Gaussian\\\fBn\fP\\	distributed errors with rms value \fBsigma\fP.  Also output is the minimum\\\fBn\fP\\	value of chi-squared for the solution, and \fBa\fP \fBparticle\fP \fBnumber\fP p (-1 for\\\fBn\fP\\	the observer, 0 for the actual solution and 1 ... \fBnp\fP for the virtual\\\fBn\fP\\	asteroids.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	makeobs_inertial makeobs_circ laplace3 tcl_evolve r2n tcl_evolveN orbs2obs\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBchisquared\fP (double *x)"
+.br
+.ti -1c
+.RI "void \fBpowell\fP (double p[], double **xi, int \fBn\fP, double ftol, int *iter, double *fret, double(*func)(double[]))"
+.br
+.ti -1c
+.RI "void \fBamoeba\fP (double **p, double y[], int \fBndim\fP, double ftol, double(*funk)(double[]), int *nfunk)"
+.br
+.ti -1c
+.RI "void \fBfindmin_powell\fP (double *r0, double *v0, double *x)"
+.br
+.ti -1c
+.RI "void \fBfindmin_amoeba\fP (double *r0, double *v0, double *x, double \fBdx\fP)"
+.br
+.ti -1c
+.RI "void \fBgetbasis\fP (double *\fBn\fP, double *i0, double *i1)"
+.br
+.ti -1c
+.RI "void \fBgetderivs\fP (double *r0, double *v0, double \fBdx\fP)"
+.br
+.ti -1c
+.RI "void \fBgetchiplanes\fP (double *x, int \fBN\fP, double \fBdx\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double ** \fBre\fP"
+.br
+.ti -1c
+.RI "double ** \fBrho\fP"
+.br
+.ti -1c
+.RI "double ** \fBnobs\fP"
+.br
+.ti -1c
+.RI "double ** \fBnin\fP"
+.br
+.ti -1c
+.RI "double * \fBn\fP"
+.br
+.ti -1c
+.RI "double * \fBt\fP"
+.br
+.ti -1c
+.RI "double \fBt0\fP"
+.br
+.ti -1c
+.RI "double * \fBsigma\fP"
+.br
+.ti -1c
+.RI "double * \fBra\fP"
+.br
+.ti -1c
+.RI "double * \fBva\fP"
+.br
+.ti -1c
+.RI "double \fBarcsec\fP"
+.br
+.ti -1c
+.RI "double \fBdtmax\fP"
+.br
+.ti -1c
+.RI "double * \fBiota\fP [2]"
+.br
+.ti -1c
+.RI "double * \fBn0\fP"
+.br
+.ti -1c
+.RI "int \fBnt\fP"
+.br
+.ti -1c
+.RI "int \fBdotcl\fP"
+.br
+.ti -1c
+.RI "double ** \fBpowell_xi\fP"
+.br
+.ti -1c
+.RI "double \fBpowell_ftol\fP"
+.br
+.ti -1c
+.RI "double \fBpowell_fret\fP"
+.br
+.ti -1c
+.RI "double ** \fBamoeba_p\fP"
+.br
+.ti -1c
+.RI "double * \fBamoeba_y\fP"
+.br
+.ti -1c
+.RI "double \fBamoeba_ftol\fP"
+.br
+.ti -1c
+.RI "\fBkeplerorbit\fP * \fBtheorbit\fP"
+.br
+.ti -1c
+.RI "double * \fBchi_i\fP"
+.br
+.ti -1c
+.RI "double ** \fBchi_ij\fP"
+.br
+.ti -1c
+.RI "double ** \fBgx\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	fitorbit - find least squares orbit solution\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitorbit initsolcat \fBnp\fP [-tcl \fBdtmax\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	fitorbit finds \fBa\fP minimum chi-squared solution for \fBa\fP set of observations\\\fBn\fP\\	given an initial solution.\\\fBn\fP\\\\\fBn\fP\\	fitorbit first reads an lc format catalog initsolcat containing the\\\fBn\fP\\	\fBa\fP preliminary solution ra0[3], va0[3], as well as the position re0[3] and\\\fBn\fP\\	velocity ve0[3] of the Earth at \fBt0\fP the initial time \fBt0\fP (though these just\\\fBn\fP\\	get passed through.  It also contains the \fBnumber\fP of observations \fBnt\fP.\\\fBn\fP\\\\\fBn\fP\\	It then reads \fBa\fP set of \fBnt\fP observations \fBre\fP[3], \fBrho\fP[3], \fBnobs\fP[3], \fBsigma\fP\\\fBn\fP\\	and \fBt\fP from obscat, and finds \fBa\fP minimum chi^2 by propagating from the\\\fBn\fP\\	\fBt0\fP solution and computing the residuals.  By default it uses Kepler elements\\\fBn\fP\\	but with -tcl \fBflag\fP will use time-centered leapfrog with maximum \fBtimestep\fP\\\fBn\fP\\	\fBdtmax\fP.  Minimum is found using Powell's method.\\\fBn\fP\\\\\fBn\fP\\	Here \fBre\fP[] is the geocenter, \fBrho\fP[] is the position of the observatory\\\fBn\fP\\	realtive to the geocenter and \fBnobs\fP is \fBa\fP unit vector in the direction\\\fBn\fP\\	\fBra\fP[] - \fBre\fP[].\\\fBn\fP\\\\\fBn\fP\\	fitorbit outputs \fBa\fP series of \fBnp\fP+2 sets of phase-space coordinates\\\fBn\fP\\	\fBr\fP[], \fBv\fP[] where the first set is the observer, the second is the\\\fBn\fP\\	asteroid solution and subsequent \fBnp\fP sets of coordinates are solutions\\\fBn\fP\\	obtained by randomly perturbing the observations with Gaussian\\\fBn\fP\\	distributed errors with rms value \fBsigma\fP.  Also output is the minimum\\\fBn\fP\\	value of chi-squared for the solution, and \fBa\fP \fBparticle\fP \fBnumber\fP p (-1 for\\\fBn\fP\\	the observer, 0 for the actual solution and 1 ... \fBnp\fP for the virtual\\\fBn\fP\\	asteroids.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	makeobs_inertial makeobs_circ laplace3 tcl_evolve r2n tcl_evolveN orbs2obs\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 10 of file fitorbit.c.
+.SH "Function Documentation"
+.PP 
+.SS "void amoeba (double ** p, double y[], int ndim, double ftol, double(* funk)(double[]), int * nfunk)"
+.PP
+Definition at line 18 of file orbits/orbitutils/amoeba_dbl.c.
+.SS "double chisquared (double * x)"
+.PP
+Definition at line 253 of file fitorbit.c.
+.PP
+References keplerorbit::a, cartesiantokepler(), chi2(), dotcl, dtmax, i, keplertocartesian(), length(), keplerorbit::M, n, nobs, nt, ra, re, rho, scale(), sigma, t, t0, tcl(), theorbit, va, and x.
+.PP
+Referenced by findmin(), and main().
+.SS "void findmin_amoeba (double * r0, double * v0, double * x, double dx)"
+.PP
+Definition at line 314 of file fitorbit.c.
+.SS "void findmin_powell (double * r0, double * v0, double * x)"
+.PP
+Definition at line 288 of file fitorbit.c.
+.PP
+Referenced by main().
+.SS "void getbasis (double * n, double * i0, double * i1)"
+.PP
+Definition at line 243 of file fitorbit.c.
+.PP
+References assign(), n, and phi.
+.SS "void getchiplanes (double * x, int N, double dx)"
+.PP
+Definition at line 357 of file fitorbit.c.
+.SS "void getderivs (double * r0, double * v0, double dx)"
+.PP
+Definition at line 338 of file fitorbit.c.
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 72 of file fitorbit.c.
+.PP
+References amoeba_p, amoeba_y, arcsec, chi_i, chi_ij, chisquared(), copy(), dotcl, dtmax, exit(), findmin_powell(), gaussdev(), getbasis(), gx, i, iota, ipf, j, length(), n, n0, nin, nobs, nt, powell_xi, ra, re, rho, scale(), sigma, t, t0, theorbit, usage, va, and x.
+.SS "void powell (double p[], double ** xi, int n, double ftol, int * iter, double * fret, double(* func)(double[]))"
+.PP
+Definition at line 15 of file orbits/orbitutils/powell_dbl.c.
+.SH "Variable Documentation"
+.PP 
+.SS "double \fBamoeba_ftol\fP"
+.PP
+Definition at line 56 of file fitorbit.c.
+.SS "double** \fBamoeba_p\fP"
+.PP
+Definition at line 56 of file fitorbit.c.
+.PP
+Referenced by main().
+.SS "double * \fBamoeba_y\fP"
+.PP
+Definition at line 56 of file fitorbit.c.
+.PP
+Referenced by main().
+.SS "double \fBarcsec\fP"
+.PP
+Definition at line 51 of file fitorbit.c.
+.PP
+Referenced by getC(), and main().
+.SS "double* \fBchi_i\fP"
+.PP
+Definition at line 60 of file fitorbit.c.
+.PP
+Referenced by main().
+.SS "double ** \fBchi_ij\fP"
+.PP
+Definition at line 60 of file fitorbit.c.
+.PP
+Referenced by main().
+.SS "int \fBdotcl\fP"
+.PP
+Definition at line 52 of file fitorbit.c.
+.PP
+Referenced by chisquared(), and main().
+.SS "double \fBdtmax\fP"
+.PP
+Definition at line 51 of file fitorbit.c.
+.PP
+Referenced by chisquared(), and main().
+.SS "double ** \fBgx\fP"
+.PP
+Definition at line 60 of file fitorbit.c.
+.PP
+Referenced by main(), and platepix().
+.SS "double * \fBiota\fP[2]"
+.PP
+Definition at line 51 of file fitorbit.c.
+.PP
+Referenced by findmin(), getC(), and main().
+.SS "double * \fBn\fP"
+.PP
+Definition at line 51 of file fitorbit.c.
+.PP
+Referenced by add_population(), alloc_fft(), allocpositionvector(), bang(), bswap4(), bswap8(), cartesiantokepler(), ccf(), cdl_applyZscale(), cdl_drawThickDashVec(), cdl_drawThickVector(), cdl_fixData(), cfftb1_(), cfftb_(), cfftf1_(), cfftf_(), cffti1_(), cffti_(), cfilter(), chisquared(), com_readCursor(), com_readData(), com_readWCS(), com_write(), copy_fft(), cosqb1_(), cosqb_(), cosqf1_(), cosqf_(), cosqi_(), cost_(), costi_(), decode_frameno(), det(), ezfft1_(), ezfftb_(), ezfftf_(), ezffti_(), fill_pixmap(), filter(), fitall(), fitdistortions(), fitextinctions(), fittranslations(), forward_fft(), fourn(), frprmn(), gaussfitn(), get_fft(), getbasis(), getcolormap(), getneighbours(), getobjects(), getperp(), getrgbfromcmap(), iis_read(), iis_write(), inverse_fft(), invertmatrix(), linmin(), lintransdoit(), lintransinit(), lubksb(), ludcmp(), main(), MAIN__(), make_pop(), make_r(), make_re(), make_z(), makepopup(), makezernikeR(), mgonxtvu_(), mgoplt3d_(), mylubksb(), myludcmp(), newzernikelmodel(), outputrcat(), picclick(), powell(), power(), printdistortions(), printmatrix(), printtranslations(), rfftb1_(), rfftb_(), rfftf1_(), rfftf_(), rffti1_(), rffti_(), set_fft(), setlabelstring(), setslider(), showpixmap(), sinqb_(), sinqf_(), sinqi_(), sint1_(), sint_(), sinti_(), slaDeuler(), and vx_iisio().
+.SS "double * \fBn0\fP"
+.PP
+Definition at line 51 of file fitorbit.c.
+.PP
+Referenced by findmin(), and main().
+.SS "double ** \fBnin\fP"
+.PP
+Definition at line 51 of file fitorbit.c.
+.PP
+Referenced by main().
+.SS "double ** \fBnobs\fP"
+.PP
+Definition at line 51 of file fitorbit.c.
+.PP
+Referenced by chisquared(), and main().
+.SS "int \fBnt\fP"
+.PP
+Definition at line 52 of file fitorbit.c.
+.PP
+Referenced by chisquared(), main(), passb_(), and passf_().
+.SS "double \fBpowell_fret\fP"
+.PP
+Definition at line 54 of file fitorbit.c.
+.PP
+Referenced by findmin().
+.SS "double \fBpowell_ftol\fP"
+.PP
+Definition at line 54 of file fitorbit.c.
+.PP
+Referenced by findmin().
+.SS "double** \fBpowell_xi\fP"
+.PP
+Definition at line 54 of file fitorbit.c.
+.PP
+Referenced by findmin(), and main().
+.SS "double * \fBra\fP"
+.PP
+Definition at line 51 of file fitorbit.c.
+.PP
+Referenced by chisquared(), fk425(), fk425e(), fk425m(), fk4prec(), fk524(), fk524e(), fk524m(), fk5prec(), getobjects(), getra(), getxcoords(), hputra(), inversegetxcoords(), main(), platepos(), ra2str(), str2ra(), and worldpix().
+.SS "double** \fBre\fP"
+.PP
+Definition at line 51 of file fitorbit.c.
+.PP
+Referenced by chisquared(), deflection(), fittranslations(), main(), and make_re().
+.SS "double ** \fBrho\fP"
+.PP
+Definition at line 51 of file fitorbit.c.
+.PP
+Referenced by chisquared(), and main().
+.SS "double * \fBsigma\fP"
+.PP
+Definition at line 51 of file fitorbit.c.
+.PP
+Referenced by add_noise(), avsigclip(), avsigclip2(), chisquared(), computeSigma(), do_object_stats(), exponentialfilter(), fdo_stats(), fitLine(), getpeaks(), getsky(), kolmogorovfilter(), liststats(), main(), and smprofile().
+.SS "double * \fBt\fP"
+.PP
+Definition at line 51 of file fitorbit.c.
+.PP
+Referenced by addmaskpoint(), cartesiantokepler(), chisquared(), com_whdr(), f3tensor(), free_f3tensor(), If(), ilmnts_(), interp(), irrdot_(), jpl_state(), keplertocartesian(), main(), mprecfk4(), mprecfk5(), poidev(), powell(), and printtriangle().
+.SS "double \fBt0\fP"
+.PP
+Definition at line 51 of file fitorbit.c.
+.PP
+Referenced by chisquared(), counterclockwiseadapt(), main(), and mprecfk5().
+.SS "\fBkeplerorbit\fP* \fBtheorbit\fP"
+.PP
+Definition at line 58 of file fitorbit.c.
+.PP
+Referenced by cartesiantokepler(), chisquared(), keplertocartesian(), keplertocartesian_shapiro(), main(), and oid().
+.SS "double * \fBva\fP"
+.PP
+Definition at line 51 of file fitorbit.c.
+.PP
+Referenced by chisquared(), main(), and slaDmxv().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

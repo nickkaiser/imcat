@@ -1,0 +1,42 @@
+.TH "lmodelcalculus.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+lmodelcalculus.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'catlib/cat.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'lmodel.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBlmodel\fP * \fBdifflmodel\fP (\fBlmodel\fP *ipmodel, int integratemode)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "\fBlmodel\fP* difflmodel (\fBlmodel\fP * ipmodel, int integratemode)"
+.PP
+Definition at line 15 of file lmodelcalculus.c.
+.PP
+References lmodel::aflat, lmodel::aitem, lmodel::asize, lmodel::boxlimits, item::dim, error_exit, flatten_a(), FOURIER_LMODEL, lmodel::i, i, j, lmodel::k, kk, lmodel::kmax, lmodel::kmin, lmodel::lbox, lmodel::lmax, lmodel::lmin, lmodel::modeltype, item::ndim, newfourierlmodel(), newpolylmodel(), lmodel::nmodes, lmodel::p, POLYNOMIAL_LMODEL, lmodel::pp, unflatten_a(), lmodel::xdim, lmodel::xitem, and ZERNIKE_LMODEL.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

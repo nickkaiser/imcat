@@ -1,0 +1,224 @@
+.TH "smselect.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+smselect.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/smpopup.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		smselect \fBxname\fP \fByname\fP [\fBoptions\fP...] [cat]\\\fBn\fP\\			-\fBX\fP \fBx1\fP \fBx2\fP	# specify range for \fBX\fP-coord\\\fBn\fP\\			-\fBY\fP y1 y2	# specify range for \fBY\fP-coord\\\fBn\fP\\			-\fBv\fP		# select objects outside the box\\\fBn\fP\\			-\fBd\fP		# just display the \fBplot\fP\\\fBn\fP\\			-\fBm\fP		# return average x and y\\\fBn\fP\\			-V		# \fBverbose\fP \fBmode\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		\\'smselect\\' interactive 2-\fBd\fP catalogue editor.\\\fBn\fP\\		Invokes sm to popup \fBa\fP window with the objects plotted.\\\fBn\fP\\		User then generates \fBa\fP box using cursor and \fBkey\fP-'\fBb\fP'\\\fBn\fP\\		and when this is OK selects objects lying within the\\\fBn\fP\\		box by hitting \fBkey\fP-'x'.\\\fBn\fP\\		Use -\fBv\fP to select objects which don'\fBt\fP lie in the box.\\\fBn\fP\\		Reads an lc-format catalogue 'cat' and writes to stdout.\\\fBn\fP\\		You need to quote fancy names (\fBe\fP.g. 'x[0]').\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAX\fP(x, y)   (((x) > (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMIN\fP(x, y)   (((x) < (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMARGIN\fP   0.1"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBdrawselectionbox\fP ()"
+.br
+.ti -1c
+.RI "void \fBgetlimits\fP (int \fBN\fP, float *x, float *\fBxmin\fP, float *\fBxmax\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "void \fBdrawfn\fP (void)"
+.br
+.ti -1c
+.RI "void \fBcursorfn\fP (float x, float y, int \fBkey\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float * \fBsmx\fP"
+.br
+.ti -1c
+.RI "float * \fBsmy\fP"
+.br
+.ti -1c
+.RI "float \fBsmx1\fP"
+.br
+.ti -1c
+.RI "float \fBsmy1\fP"
+.br
+.ti -1c
+.RI "float \fBsmx2\fP"
+.br
+.ti -1c
+.RI "float \fBsmy2\fP"
+.br
+.ti -1c
+.RI "float \fBsmxlim1\fP"
+.br
+.ti -1c
+.RI "float \fBsmylim1\fP"
+.br
+.ti -1c
+.RI "float \fBsmxlim2\fP"
+.br
+.ti -1c
+.RI "float \fBsmylim2\fP"
+.br
+.ti -1c
+.RI "char * \fBsmxname\fP"
+.br
+.ti -1c
+.RI "char * \fBsmyname\fP"
+.br
+.ti -1c
+.RI "int \fBsmN\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MARGIN   0.1"
+.PP
+Definition at line 261 of file smselect.c.
+.PP
+Referenced by getlimits(), and main().
+.SS "#define MAX(x, y)   (((x) > (y)) ? (x) : (y))"
+.PP
+Definition at line 38 of file smselect.c.
+.PP
+Referenced by color_index(), doplot(), eps_annotate(), eps_colorHeader(), eps_doColorbar(), eps_simpleHeader(), fill_pixmap(), gray(), main(), mnbrak(), painttriangle(), set_shades(), and smprofile().
+.SS "#define MIN(x, y)   (((x) < (y)) ? (x) : (y))"
+.PP
+Definition at line 39 of file smselect.c.
+.PP
+Referenced by color_index(), doplot(), eps_annotate(), eps_doColorbar(), fill_pixmap(), getsourceij(), main(), painttriangle(), and set_shades().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		smselect \fBxname\fP \fByname\fP [\fBoptions\fP...] [cat]\\\fBn\fP\\			-\fBX\fP \fBx1\fP \fBx2\fP	# specify range for \fBX\fP-coord\\\fBn\fP\\			-\fBY\fP y1 y2	# specify range for \fBY\fP-coord\\\fBn\fP\\			-\fBv\fP		# select objects outside the box\\\fBn\fP\\			-\fBd\fP		# just display the \fBplot\fP\\\fBn\fP\\			-\fBm\fP		# return average x and y\\\fBn\fP\\			-V		# \fBverbose\fP \fBmode\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		\\'smselect\\' interactive 2-\fBd\fP catalogue editor.\\\fBn\fP\\		Invokes sm to popup \fBa\fP window with the objects plotted.\\\fBn\fP\\		User then generates \fBa\fP box using cursor and \fBkey\fP-'\fBb\fP'\\\fBn\fP\\		and when this is OK selects objects lying within the\\\fBn\fP\\		box by hitting \fBkey\fP-'x'.\\\fBn\fP\\		Use -\fBv\fP to select objects which don'\fBt\fP lie in the box.\\\fBn\fP\\		Reads an lc-format catalogue 'cat' and writes to stdout.\\\fBn\fP\\		You need to quote fancy names (\fBe\fP.g. 'x[0]').\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 6 of file smselect.c.
+.SH "Function Documentation"
+.PP 
+.SS "void cursorfn (float x, float y, int key)"
+.PP
+Definition at line 225 of file smselect.c.
+.PP
+Referenced by main().
+.SS "void drawfn (void)"
+.PP
+Definition at line 210 of file smselect.c.
+.PP
+Referenced by cursorfn(), main(), and smpopup().
+.SS "void drawselectionbox ()"
+.PP
+Definition at line 249 of file smselect.c.
+.PP
+References smx1, smx2, smy1, and smy2.
+.PP
+Referenced by cursorfn().
+.SS "void getlimits (int N, float * x, float * xmin, float * xmax)"
+.PP
+Definition at line 263 of file smselect.c.
+.PP
+References d, i, MARGIN, N, x, xmax, and xmin.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 48 of file smselect.c.
+.PP
+References cursorfn(), drawfn(), error_exit, exit(), getlimits(), i, line, MAX, MIN, smN, smpopup(), smx, smx1, smx2, smxlim1, smxlim2, smxname, smy, smy1, smy2, smylim1, smylim2, smyname, usage, verbose, xmax, xmin, ymax, and ymin.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBsmN\fP"
+.PP
+Definition at line 44 of file smselect.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "float* \fBsmx\fP"
+.PP
+Definition at line 41 of file smselect.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "float \fBsmx1\fP"
+.PP
+Definition at line 41 of file smselect.c.
+.PP
+Referenced by cursorfn(), drawselectionbox(), and main().
+.SS "float \fBsmx2\fP"
+.PP
+Definition at line 41 of file smselect.c.
+.PP
+Referenced by cursorfn(), drawselectionbox(), and main().
+.SS "float \fBsmxlim1\fP"
+.PP
+Definition at line 42 of file smselect.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "float \fBsmxlim2\fP"
+.PP
+Definition at line 42 of file smselect.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "char* \fBsmxname\fP"
+.PP
+Definition at line 43 of file smselect.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "float * \fBsmy\fP"
+.PP
+Definition at line 41 of file smselect.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "float \fBsmy1\fP"
+.PP
+Definition at line 41 of file smselect.c.
+.PP
+Referenced by cursorfn(), drawselectionbox(), and main().
+.SS "float \fBsmy2\fP"
+.PP
+Definition at line 41 of file smselect.c.
+.PP
+Referenced by cursorfn(), drawselectionbox(), and main().
+.SS "float \fBsmylim1\fP"
+.PP
+Definition at line 42 of file smselect.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "float \fBsmylim2\fP"
+.PP
+Definition at line 42 of file smselect.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "char * \fBsmyname\fP"
+.PP
+Definition at line 43 of file smselect.c.
+.PP
+Referenced by drawfn(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

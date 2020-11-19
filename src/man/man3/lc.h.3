@@ -1,0 +1,121 @@
+.TH "lc.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+lc.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBsortobject\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBsortobject\fP \fBsortobject\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBparsename\fP (char *string)"
+.br
+.ti -1c
+.RI "void \fBparseheaderexpr\fP (char *string)"
+.br
+.ti -1c
+.RI "void \fBaddheadercontents\fP (\fBitem\fP *theitem, char *string, \fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "char * \fBquote\fP (char *string)"
+.br
+.ti -1c
+.RI "void \fBreadtabheader\fP (void)"
+.br
+.ti -1c
+.RI "void \fBdospecialname\fP (char *string)"
+.br
+.ti -1c
+.RI "void \fBchopcomments\fP (\fBcathead\fP *thecathead, int \fBmode\fP, int nchop)"
+.br
+.ti -1c
+.RI "void \fBadddate\fP (void)"
+.br
+.ti -1c
+.RI "int \fBobjcmp\fP (const void *ptr1, const void *ptr2)"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBsortobject\fP  \fBsortobject\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "void adddate (void)"
+.PP
+Definition at line 567 of file lc.c.
+.PP
+References item::addr, allocitemcontents(), error_exit, cathead::headeritembase, installitem(), newitem(), outputcathead, pos, and TEXT_TYPE.
+.PP
+Referenced by main().
+.SS "void addheadercontents (\fBitem\fP * theitem, char * string, \fBcathead\fP * thecathead)"
+.PP
+Definition at line 457 of file lc.c.
+.PP
+References item::addr, allocitemcontents(), cathead::headeritembase, installitem(), and sscanitem().
+.SS "void chopcomments (\fBcathead\fP * thecathead, int mode, int nchop)"
+.PP
+Definition at line 535 of file lc.c.
+.PP
+References CHOP_HEAD_MODE, CHOP_TAIL_MODE, cathead::commentbase, error_exit, and comment::next.
+.PP
+Referenced by main().
+.SS "void dospecialname (char * string)"
+.PP
+Definition at line 502 of file lc.c.
+.PP
+References addobjectitem(), item::addr, copyitem(), error_exit, inputcathead, inputobjectcount, cathead::itemlist, newitem(), cathead::nobjectitems, NUM_TYPE, and outputcathead.
+.PP
+Referenced by parsename().
+.SS "int objcmp (const void * ptr1, const void * ptr2)"
+.PP
+Definition at line 595 of file lc.c.
+.PP
+References SORT_ASCENDING.
+.PP
+Referenced by main().
+.SS "void parseheaderexpr (char * string)"
+.PP
+Definition at line 436 of file lc.c.
+.PP
+References error_exit, evalrpnfunction(), getword(), cathead::headeritembase, installitem(), newrpnfunction(), outputcathead, and rpnfunc::result.
+.PP
+Referenced by main().
+.SS "void parsename (char * string)"
+.PP
+Definition at line 403 of file lc.c.
+.PP
+References addobjectitem(), item::addr, copyitem(), dospecialname(), error_exit, evalrpnfunction(), getobjectitem(), getword(), inputcathead, MAX_FUNCTIONS, newrpnfunction(), nrpn, outputcathead, rpnfunction, rpnname, and rpnstring.
+.PP
+Referenced by main().
+.SS "char* quote (char * string)"
+.PP
+Definition at line 464 of file lc.c.
+.PP
+Referenced by main().
+.SS "void readtabheader (void)"
+.PP
+Definition at line 475 of file lc.c.
+.PP
+References addcomment(), c, commenttag, line, and outputcathead.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

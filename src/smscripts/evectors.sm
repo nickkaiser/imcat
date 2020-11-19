@@ -1,0 +1,17 @@
+evectors  	
+	data eanal.out
+	read {ng 3 e1 4 e2 5 x 6 y 7}
+	limits -1 1 -1 1
+	erase
+	box
+	points x y
+	set e = sqrt(e1 * e1 + e2 * e2)
+	set phi = 0.5 * atan2(e2, e1)
+	set x1 = x - 10 * e * cos(phi)
+	set y1 = y - 10 * e * sin(phi)
+	set x2 = x + 10 * e * cos(phi)
+	set y2 = y + 10 * e * sin(phi)
+	do i = 0, dimen(x) - 1 {
+		relocate x1[$i] y1[$i]
+		draw x2[$i] y2[$i]
+	}

@@ -1,0 +1,160 @@
+.TH "main.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+main.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <sys/time.h>\fP
+.br
+\fC#include <sys/types.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include 'forms.h'\fP
+.br
+\fC#include 'xforms-compat.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'utils/arrays.h'\fP
+.br
+\fC#include 'control_panel.h'\fP
+.br
+\fC#include 'callbacks.h'\fP
+.br
+\fC#include 'mesh.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBTRUE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\        fits3Dviewer - use \fBgeomview\fP to display 3D \fBFITS\fP files\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\        fits3Dviewer\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\        fits3Dviewer is \fBa\fP \fBgeomview\fP module.  To use it,\\\fBn\fP\\	move to \fBa\fP working directory, and run the script\\\fBn\fP\\	geomviewsetup.  Then start \fBgeomview\fP.  '\fBFITS\fP 3D viewer'\\\fBn\fP\\	should appear in the 'External Modules' menu.  Clicking on\\\fBn\fP\\	this should bring up \fBa\fP window 'fits3Dviewer' into which you can enter\\\fBn\fP\\	an arbitrary command that, when executed, will generate\\\fBn\fP\\	\fBa\fP 3-D \fBFITS\fP file.  The planes of that image will be rendered\\\fBn\fP\\	by \fBgeomview\fP as \fBa\fP series of surface plots.  This is \fBa\fP useful way\\\fBn\fP\\	to make animations.  One can use the \fBcontrols\fP in the various\\\fBn\fP\\	windows to fine-tune the appearance of the surface and the\\\fBn\fP\\	\fBz\fP-scale.  Then, pressing the 'record' followed by the 'play'\\\fBn\fP\\	button will result in \fBa\fP series of files /\fBtmp\fP/fits3Dviewer.nnnn.ppm\\\fBn\fP\\	being created.  These can then be converted into \fBe\fP.g. animated\\\fBn\fP\\	GIF format using the gimp.\\\fBn\fP\\\\\fBn\fP\\	For example\\\fBn\fP\\	 \fBic\fP -\fBc\fP 1024 1024 'grand 3 *' | smooth -p -1 | smooth -f 0 0 2 | helicalscan 64 2 22.5\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\        geomviewsetup\\\fBn\fP\\AUTHOR\\\fBn\fP\\        Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (argc, char **argv)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float \fBlog2zscale\fP"
+.br
+.ti -1c
+.RI "float \fBzscale\fP"
+.br
+.ti -1c
+.RI "float ** \fBf\fP"
+.br
+.ti -1c
+.RI "int \fBopmode\fP"
+.br
+.ti -1c
+.RI "int \fBrecording\fP"
+.br
+.ti -1c
+.RI "int \fBframenumber\fP"
+.br
+.ti -1c
+.RI "int \fBnframes\fP"
+.br
+.ti -1c
+.RI "int \fBNx\fP"
+.br
+.ti -1c
+.RI "int \fBNy\fP"
+.br
+.ti -1c
+.RI "\fBFD_control_panel\fP * \fBthecontrolpanel\fP"
+.br
+.ti -1c
+.RI "\fBfitsheader\fP * \fBfits\fP"
+.br
+.ti -1c
+.RI "char * \fBfitsgencommand\fP"
+.br
+.ti -1c
+.RI "FILE * \fBipf\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define TRUE   1"
+.PP
+Definition at line 14 of file main.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\        fits3Dviewer - use \fBgeomview\fP to display 3D \fBFITS\fP files\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\        fits3Dviewer\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\        fits3Dviewer is \fBa\fP \fBgeomview\fP module.  To use it,\\\fBn\fP\\	move to \fBa\fP working directory, and run the script\\\fBn\fP\\	geomviewsetup.  Then start \fBgeomview\fP.  '\fBFITS\fP 3D viewer'\\\fBn\fP\\	should appear in the 'External Modules' menu.  Clicking on\\\fBn\fP\\	this should bring up \fBa\fP window 'fits3Dviewer' into which you can enter\\\fBn\fP\\	an arbitrary command that, when executed, will generate\\\fBn\fP\\	\fBa\fP 3-D \fBFITS\fP file.  The planes of that image will be rendered\\\fBn\fP\\	by \fBgeomview\fP as \fBa\fP series of surface plots.  This is \fBa\fP useful way\\\fBn\fP\\	to make animations.  One can use the \fBcontrols\fP in the various\\\fBn\fP\\	windows to fine-tune the appearance of the surface and the\\\fBn\fP\\	\fBz\fP-scale.  Then, pressing the 'record' followed by the 'play'\\\fBn\fP\\	button will result in \fBa\fP series of files /\fBtmp\fP/fits3Dviewer.nnnn.ppm\\\fBn\fP\\	being created.  These can then be converted into \fBe\fP.g. animated\\\fBn\fP\\	GIF format using the gimp.\\\fBn\fP\\\\\fBn\fP\\	For example\\\fBn\fP\\	 \fBic\fP -\fBc\fP 1024 1024 'grand 3 *' | smooth -p -1 | smooth -f 0 0 2 | helicalscan 64 2 22.5\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\        geomviewsetup\\\fBn\fP\\AUTHOR\\\fBn\fP\\        Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 22 of file main.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (argc, char ** argv)"
+.PP
+Definition at line 63 of file main.c.
+.PP
+References FD_control_panel::command_input, FD_control_panel::control_panel, counter_filter(), create_form_control_panel(), DrawMesh(), exit(), f, framenumber, IDLE_MODE, ipf, log2zscale, opmode, ReadNewFrame(), recording, RUN_MODE, thecontrolpanel, TRUE, usage, zscale, and FD_control_panel::zscale_counter.
+.SH "Variable Documentation"
+.PP 
+.SS "float ** f"
+.PP
+Definition at line 53 of file main.c.
+.SS "\fBfitsheader\fP* \fBfits\fP"
+.PP
+Definition at line 56 of file main.c.
+.SS "char* \fBfitsgencommand\fP"
+.PP
+Definition at line 57 of file main.c.
+.PP
+Referenced by command_input_callback(), and start_command().
+.SS "int \fBframenumber\fP"
+.PP
+Definition at line 54 of file main.c.
+.SS "FILE* \fBipf\fP"
+.PP
+Definition at line 58 of file main.c.
+.SS "float \fBlog2zscale\fP"
+.PP
+Definition at line 53 of file main.c.
+.PP
+Referenced by main(), and zscale_counter_callback().
+.SS "int \fBnframes\fP"
+.PP
+Definition at line 54 of file main.c.
+.SS "int \fBNx\fP"
+.PP
+Definition at line 54 of file main.c.
+.SS "int \fBNy\fP"
+.PP
+Definition at line 54 of file main.c.
+.SS "int \fBopmode\fP"
+.PP
+Definition at line 54 of file main.c.
+.SS "int \fBrecording\fP"
+.PP
+Definition at line 54 of file main.c.
+.SS "\fBFD_control_panel\fP* \fBthecontrolpanel\fP"
+.PP
+Definition at line 55 of file main.c.
+.SS "float \fBzscale\fP"
+.PP
+Definition at line 53 of file main.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

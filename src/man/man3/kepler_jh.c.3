@@ -1,0 +1,196 @@
+.TH "kepler_jh.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+kepler_jh.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'f2c.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBconsts_1_\fP"
+.br
+.ti -1c
+.RI "struct \fBconsts_2_\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBconsts_1\fP   (*(struct \fBconsts_1_\fP *) &\fBconsts_\fP)"
+.br
+.ti -1c
+.RI "#define \fBconsts_2\fP   (*(struct \fBconsts_2_\fP *) &\fBconsts_\fP)"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBinteger\fP \fBilmnts_\fP (\fBdoublereal\fP *elem, \fBdoublereal\fP *emu, \fBdoublereal\fP *\fBt\fP, \fBdoublereal\fP *r__, \fBdoublereal\fP *rd)"
+.br
+.ti -1c
+.RI "\fBinteger\fP \fBirrdot_\fP (\fBdoublereal\fP *elem, \fBdoublereal\fP *emu, \fBdoublereal\fP *\fBt\fP, \fBdoublereal\fP *r__, \fBdoublereal\fP *rd)"
+.br
+.ti -1c
+.RI "\fBinteger\fP \fBkepler_\fP (\fBdoublereal\fP *\fBem\fP, \fBdoublereal\fP *\fBe\fP, \fBdoublereal\fP *ea)"
+.br
+.ti -1c
+.RI "int \fBrotate_\fP (\fBdoublereal\fP *r__, \fBdoublereal\fP *\fBa\fP, \fBinteger\fP *\fBk\fP, \fBdoublereal\fP *rz)"
+.br
+.ti -1c
+.RI "int \fBvcopy_\fP (\fBdoublereal\fP *v1, \fBdoublereal\fP *v2)"
+.br
+.ti -1c
+.RI "int \fBvsum_\fP (\fBdoublereal\fP *x, \fBdoublereal\fP *y, \fBdoublereal\fP *z__)"
+.br
+.ti -1c
+.RI "int \fBvsub_\fP (\fBdoublereal\fP *x, \fBdoublereal\fP *y, \fBdoublereal\fP *z__)"
+.br
+.ti -1c
+.RI "int \fBvzero_\fP (\fBdoublereal\fP *x)"
+.br
+.ti -1c
+.RI "\fBdoublereal\fP \fBvdot_\fP (\fBdoublereal\fP *x, \fBdoublereal\fP *y)"
+.br
+.ti -1c
+.RI "int \fBvxp_\fP (\fBdoublereal\fP *x, \fBdoublereal\fP *y, \fBdoublereal\fP *z__)"
+.br
+.ti -1c
+.RI "\fBdoublereal\fP \fBvlen_\fP (\fBdoublereal\fP *x)"
+.br
+.ti -1c
+.RI "\fBdoublereal\fP \fBstp_\fP (\fBdoublereal\fP *x, \fBdoublereal\fP *y, \fBdoublereal\fP *z__)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "struct {"
+.br
+.ti -1c
+.RI "   \fBdoublereal\fP \fBe_1\fP [7]"
+.br
+.ti -1c
+.RI "} \fBconsts_\fP"
+.br
+.ti -1c
+.RI "\fBinteger\fP \fBc__3\fP = 3"
+.br
+.ti -1c
+.RI "\fBinteger\fP \fBc__1\fP = 1"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define consts_1   (*(struct \fBconsts_1_\fP *) &\fBconsts_\fP)"
+.PP
+Definition at line 17 of file kepler_jh.c.
+.PP
+Referenced by ilmnts_(), and kepler_().
+.SS "#define consts_2   (*(struct \fBconsts_2_\fP *) &\fBconsts_\fP)"
+.PP
+Definition at line 18 of file kepler_jh.c.
+.SH "Function Documentation"
+.PP 
+.SS "\fBinteger\fP ilmnts_ (\fBdoublereal\fP * elem, \fBdoublereal\fP * emu, \fBdoublereal\fP * t, \fBdoublereal\fP * r__, \fBdoublereal\fP * rd)"
+.PP
+Definition at line 37 of file kepler_jh.c.
+.PP
+References consts_1, doublereal, f, integer, t, v, vdot_(), vlen_(), and vxp_().
+.PP
+Referenced by cartesiantokepler().
+.SS "\fBinteger\fP irrdot_ (\fBdoublereal\fP * elem, \fBdoublereal\fP * emu, \fBdoublereal\fP * t, \fBdoublereal\fP * r__, \fBdoublereal\fP * rd)"
+.PP
+Definition at line 125 of file kepler_jh.c.
+.PP
+References c__1, c__3, doublereal, f, integer, kepler_(), rotate_(), and t.
+.PP
+Referenced by keplertocartesian().
+.SS "\fBinteger\fP kepler_ (\fBdoublereal\fP * em, \fBdoublereal\fP * e, \fBdoublereal\fP * ea)"
+.PP
+Definition at line 199 of file kepler_jh.c.
+.PP
+References abs, consts_1, doublereal, e, and integer.
+.PP
+Referenced by irrdot_().
+.SS "int rotate_ (\fBdoublereal\fP * r__, \fBdoublereal\fP * a, \fBinteger\fP * k, \fBdoublereal\fP * rz)"
+.PP
+Definition at line 238 of file kepler_jh.c.
+.PP
+References a, doublereal, ftnlen, integer, j, and k.
+.PP
+Referenced by irrdot_().
+.SS "\fBdoublereal\fP stp_ (\fBdoublereal\fP * x, \fBdoublereal\fP * y, \fBdoublereal\fP * z__)"
+.PP
+Definition at line 432 of file kepler_jh.c.
+.PP
+References doublereal, x, and y.
+.SS "int vcopy_ (\fBdoublereal\fP * v1, \fBdoublereal\fP * v2)"
+.PP
+Definition at line 287 of file kepler_jh.c.
+.PP
+References doublereal.
+.SS "\fBdoublereal\fP vdot_ (\fBdoublereal\fP * x, \fBdoublereal\fP * y)"
+.PP
+Definition at line 382 of file kepler_jh.c.
+.PP
+References doublereal, x, and y.
+.PP
+Referenced by ilmnts_(), and vlen_().
+.SS "\fBdoublereal\fP vlen_ (\fBdoublereal\fP * x)"
+.PP
+Definition at line 411 of file kepler_jh.c.
+.PP
+References doublereal, vdot_(), and x.
+.PP
+Referenced by ilmnts_().
+.SS "int vsub_ (\fBdoublereal\fP * x, \fBdoublereal\fP * y, \fBdoublereal\fP * z__)"
+.PP
+Definition at line 329 of file kepler_jh.c.
+.PP
+References doublereal, ftnlen, integer, x, and y.
+.SS "int vsum_ (\fBdoublereal\fP * x, \fBdoublereal\fP * y, \fBdoublereal\fP * z__)"
+.PP
+Definition at line 301 of file kepler_jh.c.
+.PP
+References doublereal, ftnlen, integer, x, and y.
+.SS "int vxp_ (\fBdoublereal\fP * x, \fBdoublereal\fP * y, \fBdoublereal\fP * z__)"
+.PP
+Definition at line 397 of file kepler_jh.c.
+.PP
+References doublereal, x, and y.
+.PP
+Referenced by ilmnts_().
+.SS "int vzero_ (\fBdoublereal\fP * x)"
+.PP
+Definition at line 357 of file kepler_jh.c.
+.PP
+References doublereal, ftnlen, integer, and x.
+.SH "Variable Documentation"
+.PP 
+.SS "\fBinteger\fP \fBc__1\fP = 1\fC [static]\fP"
+.PP
+Definition at line 31 of file kepler_jh.c.
+.PP
+Referenced by irrdot_().
+.SS "\fBinteger\fP \fBc__3\fP = 3\fC [static]\fP"
+.PP
+Definition at line 30 of file kepler_jh.c.
+.PP
+Referenced by irrdot_().
+.SS "struct { ... }   \fBconsts_\fP"
+.PP
+.SS "\fBdoublereal\fP \fBe_1\fP[7]"
+.PP
+Definition at line 23 of file kepler_jh.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

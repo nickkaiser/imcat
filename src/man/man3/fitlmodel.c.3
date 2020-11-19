@@ -1,0 +1,54 @@
+.TH "fitlmodel.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitlmodel.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'catlib/cat.h'\fP
+.br
+\fC#include 'utils/lu.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'utils/lmodel.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitlmodel --- \fBfit\fP for linear superposition of \fBmode\fP function\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitlmodel \fBxname\fP aname modeldefinition [\fBoptions\fP...] \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fitlmodel' reads from stdin \fBa\fP catalogue containing at least \fBa\fP\\\fBn\fP\\	'postion vector' x called \fBxname\fP and some other variable \fBa\fP called aname,\\\fBn\fP\\	whch may be \fBa\fP scalar, vector or matrix of arbitrary rank,\\\fBn\fP\\	and \fBfits\fP for \fBa\fP model of \fBa\fP(x) as \fBa\fP linear superposition\\\fBn\fP\\	of \fBa\fP set of \fBmode\fP functions:\\\fBn\fP\\\\\fBn\fP\\		\fBa\fP(x) = sum_M a_M f_M(x)\\\fBn\fP\\\\\fBn\fP\\	where the \fBmode\fP function coefficients a_M have the same\\\fBn\fP\\	dimensionality as \fBa\fP.\\\fBn\fP\\\\\fBn\fP\\	The 'modeldefinition' is \fBa\fP combination of arguments which can be\\\fBn\fP\\	one of:\\\fBn\fP\\\\\fBn\fP\\	-p \fBlmin\fP \fBlmax\fP\\\fBn\fP\\		Fit \fBa\fP polynomial. The \fBmode\fP functions are labelled by \fBa\fP set\\\fBn\fP\\		of indices p[] with same length as x[], the functions are\\\fBn\fP\\\\\fBn\fP\\			f_p = \fBx0\fP^p0 \fBx1\fP^p1 .... = product x_i^p_i\\\fBn\fP\\\\\fBn\fP\\		and the \fBorder\fP \fBl\fP = sum p_i lies in the inclusive interval \fBlmin\fP-\fBlmax\fP.\\\fBn\fP\\		An alternative parameterisation of the indices is in terms of\\\fBn\fP\\		the \fBorder\fP array \fBl\fP[\fBi\fP] = \fBl\fP - sum_i=0^\fBi\fP-1 p[\fBi\fP], in terms of which the\\\fBn\fP\\		p-indices are p[\fBi\fP] = \fBl\fP[\fBi\fP] - \fBl\fP[\fBi\fP+1].\\\fBn\fP\\\\\fBn\fP\\	-\fBz\fP nmin nmax\\\fBn\fP\\		Fit for Zernike polynomials of \fBorder\fP min through nmax\\\fBn\fP\\		as defined in Born and Wolf.\\\fBn\fP\\\\\fBn\fP\\	-f kmin kmax lbox\\\fBn\fP\\		Fit \fBa\fP sum of Fourier modes labelled by compound index \fBm\fP = {\fBk\fP[], \fBi\fP}\\\fBn\fP\\\\\fBn\fP\\			f_m = cos(2 PI \fBk\fP.x / lbox)		\fBi\fP = 0\\\fBn\fP\\			f_m = sin(2 PI \fBk\fP.x / lbox)		\fBi\fP = 1\\\fBn\fP\\\\\fBn\fP\\		where the modulus of the integerised wave \fBnumber\fP \fBk\fP lies in the\\\fBn\fP\\		range kmin - kmax inclusive.\\\fBn\fP\\\\\fBn\fP\\	-F kmax lbox\\\fBn\fP\\		As for -f option save that all modes in hypercube with \fBedges\fP +- kmax.\\\fBn\fP\\\\\fBn\fP\\\\\fBn\fP\\	Other options:\\\fBn\fP\\\\\fBn\fP\\	-\fBc\fP	# generate covariance matrix 'covar'\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitlmodel --- \fBfit\fP for linear superposition of \fBmode\fP function\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitlmodel \fBxname\fP aname modeldefinition [\fBoptions\fP...] \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fitlmodel' reads from stdin \fBa\fP catalogue containing at least \fBa\fP\\\fBn\fP\\	'postion vector' x called \fBxname\fP and some other variable \fBa\fP called aname,\\\fBn\fP\\	whch may be \fBa\fP scalar, vector or matrix of arbitrary rank,\\\fBn\fP\\	and \fBfits\fP for \fBa\fP model of \fBa\fP(x) as \fBa\fP linear superposition\\\fBn\fP\\	of \fBa\fP set of \fBmode\fP functions:\\\fBn\fP\\\\\fBn\fP\\		\fBa\fP(x) = sum_M a_M f_M(x)\\\fBn\fP\\\\\fBn\fP\\	where the \fBmode\fP function coefficients a_M have the same\\\fBn\fP\\	dimensionality as \fBa\fP.\\\fBn\fP\\\\\fBn\fP\\	The 'modeldefinition' is \fBa\fP combination of arguments which can be\\\fBn\fP\\	one of:\\\fBn\fP\\\\\fBn\fP\\	-p \fBlmin\fP \fBlmax\fP\\\fBn\fP\\		Fit \fBa\fP polynomial. The \fBmode\fP functions are labelled by \fBa\fP set\\\fBn\fP\\		of indices p[] with same length as x[], the functions are\\\fBn\fP\\\\\fBn\fP\\			f_p = \fBx0\fP^p0 \fBx1\fP^p1 .... = product x_i^p_i\\\fBn\fP\\\\\fBn\fP\\		and the \fBorder\fP \fBl\fP = sum p_i lies in the inclusive interval \fBlmin\fP-\fBlmax\fP.\\\fBn\fP\\		An alternative parameterisation of the indices is in terms of\\\fBn\fP\\		the \fBorder\fP array \fBl\fP[\fBi\fP] = \fBl\fP - sum_i=0^\fBi\fP-1 p[\fBi\fP], in terms of which the\\\fBn\fP\\		p-indices are p[\fBi\fP] = \fBl\fP[\fBi\fP] - \fBl\fP[\fBi\fP+1].\\\fBn\fP\\\\\fBn\fP\\	-\fBz\fP nmin nmax\\\fBn\fP\\		Fit for Zernike polynomials of \fBorder\fP min through nmax\\\fBn\fP\\		as defined in Born and Wolf.\\\fBn\fP\\\\\fBn\fP\\	-f kmin kmax lbox\\\fBn\fP\\		Fit \fBa\fP sum of Fourier modes labelled by compound index \fBm\fP = {\fBk\fP[], \fBi\fP}\\\fBn\fP\\\\\fBn\fP\\			f_m = cos(2 PI \fBk\fP.x / lbox)		\fBi\fP = 0\\\fBn\fP\\			f_m = sin(2 PI \fBk\fP.x / lbox)		\fBi\fP = 1\\\fBn\fP\\\\\fBn\fP\\		where the modulus of the integerised wave \fBnumber\fP \fBk\fP lies in the\\\fBn\fP\\		range kmin - kmax inclusive.\\\fBn\fP\\\\\fBn\fP\\	-F kmax lbox\\\fBn\fP\\		As for -f option save that all modes in hypercube with \fBedges\fP +- kmax.\\\fBn\fP\\\\\fBn\fP\\\\\fBn\fP\\	Other options:\\\fBn\fP\\\\\fBn\fP\\	-\fBc\fP	# generate covariance matrix 'covar'\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 6 of file fitlmodel.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 75 of file fitlmodel.c.
+.PP
+References lmodel::a, a, A, addargscomment(), item::addr, addtomatrix(), lmodel::aflat, allocobjectcontents(), argsinit(), lmodel::asize, B, lmodel::cat, cathead::commentbase, connectobjecttocathead(), lmodel::covar, d, det(), item::dim, error_exit, exit(), flatten_a(), FOURIER_LMODEL, getargd(), getargi(), getargs(), getflag(), getobjectitem(), lmodel::hascovar, indx, invertmatrix(), ix, lmodelfunc(), m, mylubksb(), myludcmp(), n, item::ndim, newfourierlmodel(), newobject(), newpolylmodel(), newzernikelmodel(), lmodel::nmodes, POLYNOMIAL_LMODEL, readcathead(), readobject(), unflatten_a(), usage, writelmodel(), x, and ZERNIKE_LMODEL.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

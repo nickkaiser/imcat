@@ -1,0 +1,5 @@
+Wed Oct 25 09:59:13 EST 1995
+This directory cantains the stuff for generating libim.a
+which contains fits.o filters.o map.o print_stuff.o scrunch_stuff.o sm_stuff.o
+There is useful info re fits functions tools in fits.h
+

@@ -1,0 +1,52 @@
+.TH "getplanes.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getplanes.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	getplanes --- extracts \fBa\fP set of planes from multi-dimensional \fBfits\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getplanes [-f srcfits] i1 i2...\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'getplanes\\' reads from stdin \fBa\fP \fBN\fP-dimensional \fBfits\fP image\\\fBn\fP\\		f_in[Nm]....[\fBN2\fP][\fBN1\fP]\\\fBn\fP\\	and writes to stdout \fBa\fP \fBN\fP dimensional image with planes\\\fBn\fP\\		f_out[i1]....[\fBN2\fP][\fBN1\fP]\\\fBn\fP\\		f_out[i2]....[\fBN2\fP][\fBN1\fP]\\\fBn\fP\\	etc.\\\fBn\fP\\\\\fBn\fP\\	With -f option we read from named file (and we use fseek() to\\\fBn\fP\\	move around in the file for efficiency).\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	getplanes --- extracts \fBa\fP set of planes from multi-dimensional \fBfits\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getplanes [-f srcfits] i1 i2...\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'getplanes\\' reads from stdin \fBa\fP \fBN\fP-dimensional \fBfits\fP image\\\fBn\fP\\		f_in[Nm]....[\fBN2\fP][\fBN1\fP]\\\fBn\fP\\	and writes to stdout \fBa\fP \fBN\fP dimensional image with planes\\\fBn\fP\\		f_out[i1]....[\fBN2\fP][\fBN1\fP]\\\fBn\fP\\		f_out[i2]....[\fBN2\fP][\fBN1\fP]\\\fBn\fP\\	etc.\\\fBn\fP\\\\\fBn\fP\\	With -f option we read from named file (and we use fseek() to\\\fBn\fP\\	move around in the file for efficiency).\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file getplanes.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 32 of file getplanes.c.
+.PP
+References add_comment(), copyfitsheader(), error_exit, exit(), fitsheader::extpixtype, f, i, ipf, j, fitsheader::n, fitsheader::ndim, pixsize(), readfitsheader(), usage, writefitsheader(), and writefitstail().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

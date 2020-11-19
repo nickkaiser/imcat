@@ -1,0 +1,108 @@
+.TH "libiis.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+libiis.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <fcntl.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include 'libiis.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBiis_display\fP (float **f, int \fBnx\fP, int \fBny\fP, float \fBfmin\fP, float \fBfmax\fP, int \fBframe\fP)"
+.br
+.ti -1c
+.RI "void \fBiis_cur\fP (float *x, float *y, char *ch)"
+.br
+.ti -1c
+.RI "void \fBiis_drawcirc\fP (float xcen, float ycen, float \fBradius\fP, int colour, int \fBframe\fP)"
+.br
+.ti -1c
+.RI "void \fBiis_open\fP (char *inpipe, char *outpipe, int \fBfb\fP, int fbx, int fby)"
+.br
+.ti -1c
+.RI "void \fBiis_close\fP ()"
+.br
+.ti -1c
+.RI "void \fBiis_write\fP (char *\fBbuf\fP, int size)"
+.br
+.ti -1c
+.RI "void \fBiis_read\fP (char *\fBbuf\fP, int size)"
+.br
+.ti -1c
+.RI "void \fBiis_checksum\fP (short *hdr)"
+.br
+.ti -1c
+.RI "void \fBiis_error\fP (char *error1, char *error2)"
+.br
+.ti -1c
+.RI "int \fBiis_chan\fP (int \fBframe\fP)"
+.br
+.ti -1c
+.RI "int \fBiis_round\fP (float \fBi\fP)"
+.br
+.ti -1c
+.RI "float \fBiis_abs\fP (float x)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "float iis_abs (float x)"
+.PP
+Definition at line 620 of file libiis.c.
+.SS "int iis_chan (int frame)"
+.PP
+Definition at line 601 of file libiis.c.
+.SS "void iis_checksum (short * hdr)"
+.PP
+Definition at line 585 of file libiis.c.
+.SS "void iis_close ()"
+.PP
+Definition at line 550 of file libiis.c.
+.PP
+Referenced by main().
+.SS "void iis_cur (float * x, float * y, char * ch)"
+.PP
+Definition at line 255 of file libiis.c.
+.SS "int iis_display (float ** f, int nx, int ny, float fmin, float fmax, int frame)"
+.PP
+Definition at line 137 of file libiis.c.
+.SS "void iis_drawcirc (float xcen, float ycen, float radius, int colour, int frame)"
+.PP
+Definition at line 288 of file libiis.c.
+.SS "void iis_error (char * error1, char * error2)"
+.PP
+Definition at line 594 of file libiis.c.
+.SS "void iis_open (char * inpipe, char * outpipe, int fb, int fbx, int fby)"
+.PP
+Definition at line 441 of file libiis.c.
+.SS "void iis_read (char * buf, int size)"
+.PP
+Definition at line 573 of file libiis.c.
+.SS "int iis_round (float i)"
+.PP
+Definition at line 613 of file libiis.c.
+.SS "void iis_write (char * buf, int size)"
+.PP
+Definition at line 559 of file libiis.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

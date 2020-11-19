@@ -1,0 +1,33 @@
+Sun Apr 14 16:01:41 HST 2002
+
+# SSB
+generate_dw 256 -gaussian 0 1.0 | ic '%1 20 *' - > /tmp/gau.fits
+evolvescalar -nsteps 2 -kstar -0.5 -lambda 0.001 -gamma 0.1 < /tmp/gau.fits
+
+# packet
+generate_dw 256 -packet 0 20 0.5 -dr ocean | edw 2 -ocean
+
+packet figs for elements
+generate_dw 256 -packet 0 20 0.4 -dr ocean | edw 72 -ocean
+
+# non-dispersive wave
+generate_dw 256 -gaussian -1.5 2.0 | edw -1
+
+# droplet
+ic -c 256 256 'xp 128 == yp 128 == * 1.e3 *' | smooth -f 0 0 3 > /tmp/tmp.0.fits
+ic -c 256 256 '0' > /tmp/tmp.1.fits
+stackplanes /tmp/tmp.[01].fits > /tmp/droplet.fits
+edw 2 < /tmp/droplet.fits
+
+
+gimp:
+file->open
+rightbutton->video->VCR_Navigator
+save as is
+raw
+in Video navigator window
+	smart update (triangle up button)
+	play
+	close playback window
+rightbutton in Untitled-128.0 (RGB) 100% window
+	save as animation

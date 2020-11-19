@@ -1,0 +1,164 @@
+.TH "vectors.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+vectors.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBassign\fP (double *vec, double v0, double v1, double v2)"
+.br
+.ti -1c
+.RI "double \fBlength\fP (double *vec)"
+.br
+.ti -1c
+.RI "void \fBdiff\fP (double *dst, double *src1, double *src2)"
+.br
+.ti -1c
+.RI "void \fBadd\fP (double *dst, double *src1, double *src2)"
+.br
+.ti -1c
+.RI "void \fBscale\fP (double *vec, double scalefactor)"
+.br
+.ti -1c
+.RI "void \fBcopy\fP (double *dst, double *src)"
+.br
+.ti -1c
+.RI "void \fBprintvec\fP (double *vec, char *name)"
+.br
+.ti -1c
+.RI "void \fBfprintvec\fP (double *vec, FILE *stream)"
+.br
+.ti -1c
+.RI "double \fBdot\fP (double *vec1, double *vec2)"
+.br
+.ti -1c
+.RI "void \fBgetperp\fP (double *dst, double *src, double *\fBn\fP)"
+.br
+.ti -1c
+.RI "void \fBrotx\fP (double *vec, double \fBangle\fP)"
+.br
+.ti -1c
+.RI "void \fBroty\fP (double *vec, double \fBangle\fP)"
+.br
+.ti -1c
+.RI "void \fBrotz\fP (double *vec, double \fBangle\fP)"
+.br
+.ti -1c
+.RI "void \fBcross\fP (double *dst, double *\fBa\fP, double *\fBb\fP)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void add (double * dst, double * src1, double * src2)"
+.PP
+Definition at line 38 of file vectors.c.
+.PP
+References i.
+.PP
+Referenced by main().
+.SS "void assign (double * vec, double v0, double v1, double v2)"
+.PP
+Definition at line 10 of file vectors.c.
+.PP
+Referenced by addjupitergravity(), airmassmin(), cartesiantokepler(), getbasis(), keplertocartesian(), keplertocartesian_shapiro(), main(), rotx(), roty(), and rotz().
+.SS "void copy (double * dst, double * src)"
+.PP
+Definition at line 56 of file vectors.c.
+.PP
+References i.
+.PP
+Referenced by airmassmin(), cartesiantokepler(), keplertocartesian(), main(), and tcl().
+.SS "void cross (double * dst, double * a, double * b)"
+.PP
+Definition at line 144 of file vectors.c.
+.PP
+References a, and b.
+.PP
+Referenced by cartesiantokepler().
+.SS "void diff (double * dst, double * src1, double * src2)"
+.PP
+Definition at line 29 of file vectors.c.
+.PP
+References i.
+.PP
+Referenced by main(), and wcsdist().
+.SS "double dot (double * vec1, double * vec2)"
+.PP
+Definition at line 85 of file vectors.c.
+.PP
+References i.
+.PP
+Referenced by airmassmin(), cartesiantokepler(), cdl_doBoxMark(), cdl_doDashedLine(), cdl_drawThickDashVec(), getperp(), main(), and makedddotr().
+.SS "void fprintvec (double * vec, FILE * stream)"
+.PP
+Definition at line 76 of file vectors.c.
+.PP
+References i.
+.PP
+Referenced by main().
+.SS "void getperp (double * dst, double * src, double * n)"
+.PP
+Definition at line 97 of file vectors.c.
+.PP
+References dot(), i, and n.
+.PP
+Referenced by main().
+.SS "double length (double * vec)"
+.PP
+Definition at line 17 of file vectors.c.
+.PP
+References i.
+.PP
+Referenced by addjupitergravity(), airmassmin(), cartesiantokepler(), chisquared(), main(), tcl(), write_fits_head(), write_fits_head_ND(), write_fits_tail(), write_fits_tail_ND(), and writefitstail().
+.SS "void printvec (double * vec, char * name)"
+.PP
+Definition at line 65 of file vectors.c.
+.PP
+References i.
+.PP
+Referenced by main().
+.SS "void rotx (double * vec, double angle)"
+.PP
+Definition at line 108 of file vectors.c.
+.PP
+References angle, assign(), x, y, and z.
+.PP
+Referenced by keplertocartesian(), and main().
+.SS "void roty (double * vec, double angle)"
+.PP
+Definition at line 120 of file vectors.c.
+.PP
+References angle, assign(), x, y, and z.
+.PP
+Referenced by airmassmin(), and main().
+.SS "void rotz (double * vec, double angle)"
+.PP
+Definition at line 132 of file vectors.c.
+.PP
+References angle, assign(), x, y, and z.
+.PP
+Referenced by keplertocartesian(), and main().
+.SS "void scale (double * vec, double scalefactor)"
+.PP
+Definition at line 47 of file vectors.c.
+.PP
+References i.
+.PP
+Referenced by addjupitergravity(), airmassmin(), cartesiantokepler(), chisquared(), keplertocartesian(), main(), and tcl().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

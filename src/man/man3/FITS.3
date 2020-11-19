@@ -1,0 +1,94 @@
+.TH "FITS" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+FITS \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "FILE * \fBfp\fP"
+.br
+.ti -1c
+.RI "int \fBbitpix\fP"
+.br
+.ti -1c
+.RI "int \fBsize\fP"
+.br
+.ti -1c
+.RI "int \fBnaxis\fP"
+.br
+.ti -1c
+.RI "long int \fBaxes\fP [2]"
+.br
+.ti -1c
+.RI "long int \fBndata\fP"
+.br
+.ti -1c
+.RI "long int \fBcpos\fP"
+.br
+.ti -1c
+.RI "float \fBbscale\fP"
+.br
+.ti -1c
+.RI "float \fBbzero\fP"
+.br
+.ti -1c
+.RI "char \fBobject\fP [SZ_CARD]"
+.br
+.in -1c
+.SH "Field Documentation"
+.PP 
+.SS "long int \fBFITS::axes\fP[2]"
+.PP
+Definition at line 28 of file cdlfits.c.
+.SS "int \fBFITS::bitpix\fP"
+.PP
+Definition at line 26 of file cdlfits.c.
+.PP
+Referenced by cdl_getFITSPixels(), and cdl_readFITSHdr().
+.SS "float \fBFITS::bscale\fP"
+.PP
+Definition at line 31 of file cdlfits.c.
+.PP
+Referenced by cdl_getFITSPixels(), and cdl_readFITSHdr().
+.SS "float \fBFITS::bzero\fP"
+.PP
+Definition at line 31 of file cdlfits.c.
+.PP
+Referenced by cdl_getFITSPixels(), and cdl_readFITSHdr().
+.SS "long int \fBFITS::cpos\fP"
+.PP
+Definition at line 30 of file cdlfits.c.
+.PP
+Referenced by cdl_readFITSHdr().
+.SS "FILE* \fBFITS::fp\fP"
+.PP
+Definition at line 25 of file cdlfits.c.
+.PP
+Referenced by cdl_getFITSPixels(), and cdl_readFITSHdr().
+.SS "int \fBFITS::naxis\fP"
+.PP
+Definition at line 27 of file cdlfits.c.
+.PP
+Referenced by cdl_readFITSHdr().
+.SS "long int \fBFITS::ndata\fP"
+.PP
+Definition at line 29 of file cdlfits.c.
+.SS "char \fBFITS::object\fP[SZ_CARD]"
+.PP
+Definition at line 32 of file cdlfits.c.
+.PP
+Referenced by cdl_readFITSHdr().
+.SS "int \fBFITS::size\fP"
+.PP
+Definition at line 26 of file cdlfits.c.
+.PP
+Referenced by cdl_getFITSPixels().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,54 @@
+.TH "make2Dotf.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+make2Dotf.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	make2Dotf --- make 2-D fast guiding otf with offset guide star\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	make2Dotf [-\fBN\fP \fBN\fP] [-R r_outer] [-\fBr\fP r0] [-D D] [-o opfile] [-\fBz\fP zmax] [-\fBi\fP imname]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'make2Dotf' computes the OTF gk(\fBz\fP) for perfect fast guiding.\\\fBn\fP\\\\\fBn\fP\\	Options are\\\fBn\fP\\		-\fBN\fP \fBN\fP		# image size in pixels (512)\\\fBn\fP\\		-\fBr\fP r0		# Fried length in \fBm\fP (0.2)\\\fBn\fP\\		-D D		# telescope diameter (1.0)\\\fBn\fP\\		-\fBz\fP zmax		# upper limit for integerized \fBz\fP (\fBN\fP/2)\\\fBn\fP\\		-\fBd\fP dz		# step in \fBinteger\fP \fBz\fP (2)\\\fBn\fP\\		-p nphi		# \fBnumber\fP of rays in azimuthal \fBangle\fP (5)\\\fBn\fP\\		-g rg		# distance to guide star (1.0)\\\fBn\fP\\\\\fBn\fP\\	Output is \fBa\fP \fBfits\fP image of the OTF.\\\fBn\fP\\\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	make2Dotf --- make 2-D fast guiding otf with offset guide star\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	make2Dotf [-\fBN\fP \fBN\fP] [-R r_outer] [-\fBr\fP r0] [-D D] [-o opfile] [-\fBz\fP zmax] [-\fBi\fP imname]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'make2Dotf' computes the OTF gk(\fBz\fP) for perfect fast guiding.\\\fBn\fP\\\\\fBn\fP\\	Options are\\\fBn\fP\\		-\fBN\fP \fBN\fP		# image size in pixels (512)\\\fBn\fP\\		-\fBr\fP r0		# Fried length in \fBm\fP (0.2)\\\fBn\fP\\		-D D		# telescope diameter (1.0)\\\fBn\fP\\		-\fBz\fP zmax		# upper limit for integerized \fBz\fP (\fBN\fP/2)\\\fBn\fP\\		-\fBd\fP dz		# step in \fBinteger\fP \fBz\fP (2)\\\fBn\fP\\		-p nphi		# \fBnumber\fP of rays in azimuthal \fBangle\fP (5)\\\fBn\fP\\		-g rg		# distance to guide star (1.0)\\\fBn\fP\\\\\fBn\fP\\	Output is \fBa\fP \fBfits\fP image of the OTF.\\\fBn\fP\\\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file make2Dotf.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 37 of file make2Dotf.c.
+.PP
+References allocFloatArray(), argsinit(), error_exit, exit(), fits, flag, FLOAT_PIXTYPE, getargd(), getargi(), getflag(), ix, k, lcpipe, N, new2Dfitsheader(), phi, usage, write2Dfloatimage(), and z.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,86 @@
+.TH "fixedges.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fixedges.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'fixedges.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBpixel\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBpixel\fP \fBpixel\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBgetpixcoords\fP (\fBpixel\fP *\fBpix\fP, int npix, float **f, int \fBNx\fP, int \fBNy\fP)"
+.br
+.ti -1c
+.RI "int \fBfixpix\fP (\fBpixel\fP *\fBpix\fP, int npix, float **f, int \fBNx\fP, int \fBNy\fP)"
+.br
+.ti -1c
+.RI "void \fBfixedges\fP (float **f, int \fBNx\fP, int \fBNy\fP)"
+.br
+.ti -1c
+.RI "void \fBfixholes\fP (float **f, int \fBNx\fP, int \fBNy\fP)"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBpixel\fP  \fBpixel\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "void fixedges (float ** f, int Nx, int Ny)"
+.PP
+Definition at line 21 of file fixedges.c.
+.PP
+References f, FLOAT_MAGIC, Nx, Ny, x, and y.
+.PP
+Referenced by main().
+.SS "void fixholes (float ** f, int Nx, int Ny)"
+.PP
+Definition at line 69 of file fixedges.c.
+.PP
+References f, fixpix(), FLOAT_MAGIC, free(), getpixcoords(), Nx, Ny, pix, x, and y.
+.PP
+Referenced by main().
+.SS "int fixpix (\fBpixel\fP * pix, int npix, float ** f, int Nx, int Ny)"
+.PP
+Definition at line 113 of file fixedges.c.
+.PP
+References f, FLOAT_MAGIC, Ny, pix, x, and y.
+.PP
+Referenced by fixholes().
+.SS "int getpixcoords (\fBpixel\fP * pix, int npix, float ** f, int Nx, int Ny)"
+.PP
+Definition at line 92 of file fixedges.c.
+.PP
+References f, FLOAT_MAGIC, Nx, Ny, pix, x, and y.
+.PP
+Referenced by fixholes().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

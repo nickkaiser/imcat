@@ -1,0 +1,60 @@
+.TH "getbadpix.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getbadpix.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	getbadpix --- reject discrepant pixels\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getbadpix nu referenceimage [option...] \\\fBn\fP\\		-s	\fBsigma\fP	# rms noise value\\\fBn\fP\\		-\fBl\fP		# output \fBpixel\fP values as well as positions\\\fBn\fP\\		-f	\fBd\fP rg	# allow for difference in psf shape\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	By default \\'getbadpix\\' reads \fBa\fP \fBfits\fP image from stdin, extracts\\\fBn\fP\\	the value of the image header \fBitem\fP with keyword 'SIGMA', and\\\fBn\fP\\	sends to stdout an 'lc' format catalogue containing the \fBa\fP list\\\fBn\fP\\	of pixels for which the \fBpixel\fP value differs from the reference\\\fBn\fP\\	image \fBpixel\fP value by more than nu * SIGMA.\\\fBn\fP\\\\\fBn\fP\\	By default, the catalogue contains sinply the \fBpixel\fP position 'x[2]',\\\fBn\fP\\	but with the -\fBl\fP option it will also contain the input and reference\\\fBn\fP\\	image \fBpixel\fP values.\\\fBn\fP\\\\\fBn\fP\\	If the '-s' option is given the rms noise is read from the following\\\fBn\fP\\	command \fBline\fP argument rather than from the header.\\\fBn\fP\\\\\fBn\fP\\	The -f option is provided to allow for the fact the for bright\\\fBn\fP\\	objects such as stars the difference between the source and\\\fBn\fP\\	reference images may greatly exceed the statistical nu * \fBsigma\fP\\\fBn\fP\\	limit, so instead we reject pixels if |f - fref| exceeds the\\\fBn\fP\\	greater of:\\\fBn\fP\\\\\fBn\fP\\		nu  \fBsigma\fP\\\fBn\fP\\		2 \fBd\fP fref\\\fBn\fP\\		\fBd\fP fref rg^2 grad(fref)^2 / (fref^2 + \fBsigma\fP^2)\\\fBn\fP\\\\\fBn\fP\\	the last two expressions being the difference in the flux of an\\\fBn\fP\\	approximately gaussian star of \fBradius\fP \fBr\fP in the centre and on the\\\fBn\fP\\	\fBedge\fP where \fBd\fP is the assumed fractional change in the gaussian\\\fBn\fP\\	scale length: \fBd\fP = delta rg / rg = \fBd\fP ln(rg).\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 54 of file getbadpix.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	getbadpix --- reject discrepant pixels\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getbadpix nu referenceimage [option...] \\\fBn\fP\\		-s	\fBsigma\fP	# rms noise value\\\fBn\fP\\		-\fBl\fP		# output \fBpixel\fP values as well as positions\\\fBn\fP\\		-f	\fBd\fP rg	# allow for difference in psf shape\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	By default \\'getbadpix\\' reads \fBa\fP \fBfits\fP image from stdin, extracts\\\fBn\fP\\	the value of the image header \fBitem\fP with keyword 'SIGMA', and\\\fBn\fP\\	sends to stdout an 'lc' format catalogue containing the \fBa\fP list\\\fBn\fP\\	of pixels for which the \fBpixel\fP value differs from the reference\\\fBn\fP\\	image \fBpixel\fP value by more than nu * SIGMA.\\\fBn\fP\\\\\fBn\fP\\	By default, the catalogue contains sinply the \fBpixel\fP position 'x[2]',\\\fBn\fP\\	but with the -\fBl\fP option it will also contain the input and reference\\\fBn\fP\\	image \fBpixel\fP values.\\\fBn\fP\\\\\fBn\fP\\	If the '-s' option is given the rms noise is read from the following\\\fBn\fP\\	command \fBline\fP argument rather than from the header.\\\fBn\fP\\\\\fBn\fP\\	The -f option is provided to allow for the fact the for bright\\\fBn\fP\\	objects such as stars the difference between the source and\\\fBn\fP\\	reference images may greatly exceed the statistical nu * \fBsigma\fP\\\fBn\fP\\	limit, so instead we reject pixels if |f - fref| exceeds the\\\fBn\fP\\	greater of:\\\fBn\fP\\\\\fBn\fP\\		nu  \fBsigma\fP\\\fBn\fP\\		2 \fBd\fP fref\\\fBn\fP\\		\fBd\fP fref rg^2 grad(fref)^2 / (fref^2 + \fBsigma\fP^2)\\\fBn\fP\\\\\fBn\fP\\	the last two expressions being the difference in the flux of an\\\fBn\fP\\	approximately gaussian star of \fBradius\fP \fBr\fP in the centre and on the\\\fBn\fP\\	\fBedge\fP where \fBd\fP is the assumed fractional change in the gaussian\\\fBn\fP\\	scale length: \fBd\fP = delta rg / rg = \fBd\fP ln(rg).\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file getbadpix.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 57 of file getbadpix.c.
+.PP
+References addargscomment(), BINARY_FILE_TYPE, connectcatheadtoobject(), error_exit, exit(), f, ff, getcommentbyname(), getnumericvalue(), getobjectitemindex(), ix, lcpipe, MAGIC, N1, N2, newobject(), read2Dfloatimage(), readcathead(), setaddress(), setcatipf(), setcatopfiletype(), sigma, usage, writecathead(), writeobject(), and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

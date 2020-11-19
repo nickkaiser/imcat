@@ -1,0 +1,17 @@
+#! /usr/bin/perl
+
+use PGPLOT;
+
+$N1 = $N2 = 512;
+print $N1, $N2, "\n";
+
+open(IMAGE, "make_image 1 $N1 $N2 -o 20 3 100 -s 10 -f | imhead -d |");
+read IMAGE, $image, $N1 * $N2 * 4;
+
+print length($image), "\n";
+
+pgbeg(0, "/xserve", 1, 1);
+pgenv(0,$N1,0,$N2,1,0);
+pggray($image, $N1, $N2, 1, $N1, 1, $N2, 32, 0, [0,1,0,0,0,1]);
+pgend();
+

@@ -1,0 +1,190 @@
+.TH "color.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+color.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <X11/Xlib.h>\fP
+.br
+\fC#include <X11/Xutil.h>\fP
+.br
+\fC#include <X11/Intrinsic.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'back.h'\fP
+.br
+\fC#include 'color.h'\fP
+.br
+\fC#include 'front.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX\fP(x, y)   (((x) > (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMIN\fP(x, y)   (((x) < (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBCAPTION\fP   psfilename"
+.br
+.ti -1c
+.RI "#define \fBMAX_COLS\fP   65535"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBset_shades\fP (void)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBfmin\fP"
+.br
+.ti -1c
+.RI "int \fBfmax\fP"
+.br
+.ti -1c
+.RI "XColor \fBshade\fP []"
+.br
+.ti -1c
+.RI "unsigned long \fBpixel\fP []"
+.br
+.ti -1c
+.RI "unsigned int \fBn_shades\fP"
+.br
+.ti -1c
+.RI "Display * \fBmydisplay\fP"
+.br
+.ti -1c
+.RI "Colormap \fBcmap\fP"
+.br
+.ti -1c
+.RI "int \fBN1\fP"
+.br
+.ti -1c
+.RI "int \fBN2\fP"
+.br
+.ti -1c
+.RI "float ** \fBf\fP"
+.br
+.ti -1c
+.RI "char \fBcaption\fP []"
+.br
+.ti -1c
+.RI "int \fBncc\fP [MAX_COLORS]"
+.br
+.ti -1c
+.RI "int \fBmul\fP [MAX_COLORS]"
+.br
+.ti -1c
+.RI "int \fBngray\fP"
+.br
+.ti -1c
+.RI "int \fBn_shades_used\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CAPTION   psfilename"
+.PP
+Definition at line 32 of file color.c.
+.PP
+Referenced by printall(), and printselection().
+.SS "#define MAX(x, y)   (((x) > (y)) ? (x) : (y))"
+.PP
+Definition at line 26 of file color.c.
+.SS "#define MAX_COLS   65535"
+.PP
+Definition at line 53 of file color.c.
+.SS "#define MIN(x, y)   (((x) < (y)) ? (x) : (y))"
+.PP
+Definition at line 27 of file color.c.
+.SH "Function Documentation"
+.PP 
+.SS "void set_shades (void)"
+.PP
+Definition at line 59 of file color.c.
+.PP
+References cmap, i, MAX, MAX_COLS, MIN, mydisplay, n_shades, n_shades_used, pixel, and shade.
+.SH "Variable Documentation"
+.PP 
+.SS "char \fBcaption\fP[]"
+.PP
+Definition at line 46 of file color.c.
+.PP
+Referenced by main(), print_caption(), print_im(), and readdataheader().
+.SS "Colormap \fBcmap\fP"
+.PP
+Definition at line 43 of file color.c.
+.PP
+Referenced by alloc_shades(), eps_writeCmap(), eps_writeMono(), eps_writePix(), eps_writeRGB(), getcolormap(), main(), and set_shades().
+.SS "float** f"
+.PP
+Definition at line 45 of file color.c.
+.SS "float \fBfmax\fP\fC [static]\fP"
+.PP
+Definition at line 36 of file color.c.
+.SS "float \fBfmin\fP\fC [static]\fP"
+.PP
+Definition at line 36 of file color.c.
+.SS "int \fBmul\fP[MAX_COLORS]\fC [static]\fP"
+.PP
+Definition at line 49 of file color.c.
+.SS "Display* \fBmydisplay\fP"
+.PP
+Definition at line 42 of file color.c.
+.PP
+Referenced by alloc_shades(), create_pixmap(), createzoompixmap(), destroyzoompixmap(), fill_pixmap(), fillzoompixmap(), makeXImage(), and set_shades().
+.SS "int \fBN1\fP"
+.PP
+Definition at line 44 of file color.c.
+.SS "int \fBN2\fP"
+.PP
+Definition at line 44 of file color.c.
+.SS "unsigned int \fBn_shades\fP"
+.PP
+Definition at line 41 of file color.c.
+.PP
+Referenced by alloc_shades(), set_shades(), and setcolorscheme().
+.SS "int \fBn_shades_used\fP\fC [static]\fP"
+.PP
+Definition at line 49 of file color.c.
+.PP
+Referenced by set_shades().
+.SS "int \fBncc\fP[MAX_COLORS]\fC [static]\fP"
+.PP
+Definition at line 49 of file color.c.
+.SS "int \fBngray\fP\fC [static]\fP"
+.PP
+Definition at line 49 of file color.c.
+.SS "unsigned long \fBpixel\fP[]"
+.PP
+Definition at line 40 of file color.c.
+.SS "XColor \fBshade\fP[]"
+.PP
+Definition at line 39 of file color.c.
+.PP
+Referenced by fill_pixmap(), fillzoompixmap(), getcifromshade(), gray(), main(), and set_shades().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,68 @@
+limits -2 2 -2 2
+box
+data tempb.lst
+read {x 1 y 2}
+points x y
+data tempc.lst
+read {x 1 y 2}
+ptype 4 0
+points x y
+erase
+box
+data tempb.lst
+macro read plotlist.sm
+plotlist tempb.lst
+ptype 4 x
+ptype 4 1
+plotlist tempc.lst
+erase
+box
+plotlist tempa.lst
+ptype 4 0
+plotlist tempb.lst
+plotlist tempa.lst
+erase
+plotlist tempa.lst
+box
+data temp.lst
+erase
+read {x 1 y 2}
+limits x y
+box
+plotlist tempb.lst
+ptype 4 1
+plotlist tempc.lst
+erase
+box
+plotlist tempb.lst
+erase
+plotlist tempa.lst
+box
+!test.scr
+erase
+data temp.lst
+read {x 1 y 2}
+limits x y
+box
+plotlist tempb.lst
+ptype 4 0
+plotlist tempc.lst
+erase
+macro read plotlist.sm
+plotall
+box
+macro read plotlist.sm
+erase plotall
+box
+!test.scr
+erase
+macro read plotlist.sm
+plotall
+erase
+plotall
+erase
+plotall
+macro read plotlist.sm
+erase
+plotall
+quit

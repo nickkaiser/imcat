@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# script to multiply scrunch an image
+scrunch | scrunch
+

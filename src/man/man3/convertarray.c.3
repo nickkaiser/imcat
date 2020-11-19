@@ -1,0 +1,52 @@
+.TH "convertarray.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+convertarray.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'fits.h'\fP
+.br
+\fC#include 'convertarray.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBclip\fP(min, max, f)   ((f) > (min) ? ((f) < (max) ? (f) : (max)) : (min))"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBconvertarray\fP (char *fsrc, char *fdst, int srcpixtype, int dstpixtype, int nel, int bscaling, double bscale, double bzero)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define clip(min, max, f)   ((f) > (min) ? ((f) < (max) ? (f) : (max)) : (min))"
+.PP
+Definition at line 11 of file convertarray.c.
+.PP
+Referenced by avsigclip(), avsigclip2(), convertarray(), and main().
+.SH "Function Documentation"
+.PP 
+.SS "int convertarray (char * fsrc, char * fdst, int srcpixtype, int dstpixtype, int nel, int bscaling, double bscale, double bzero)"
+.PP
+Definition at line 13 of file convertarray.c.
+.PP
+References clip, DBL_MAGIC, DBL_PIXTYPE, error_exit, FLOAT_MAGIC, FLOAT_PIXTYPE, i, INT_MAGIC, INT_PIXTYPE, SHORT_MAGIC, SHORT_PIXTYPE, UCHAR_MAGIC, and UCHAR_PIXTYPE.
+.PP
+Referenced by readfitsline(), and writefitsline().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

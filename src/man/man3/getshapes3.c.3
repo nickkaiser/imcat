@@ -1,0 +1,68 @@
+.TH "getshapes3.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getshapes3.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../utils/stats_stuff.h'\fP
+.br
+\fC#include 'getshape3.h'\fP
+.br
+\fC#include 'zap.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	getshapes3 --- calculate ellipticities etc. for catalogue of objects\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getshapes3 f_image fs_image psf_image rf [\fBoptions\fP...]\\\fBn\fP\\		-\fBi\fP 		# ignore the sky \fBbackground\fP information.\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'getshapes3\\' is \fBa\fP catalogue filter which calculates polarisation\\\fBn\fP\\	and polarisability for objects.\\\fBn\fP\\\\\fBn\fP\\	It requires that the input catalogue contain at least position\\\fBn\fP\\	vector 'x[2]', and \fBa\fP (aperture) flux 'flux'.\\\fBn\fP\\\\\fBn\fP\\	It uses 'makekernel' to compute the kernels W[\fBi\fP], K[\fBi\fP][\fBj\fP], ZZ[\fBi\fP][\fBj\fP]\\\fBn\fP\\	from the psf supplied in the \fBfits\fP image 'psf_image' and\\\fBn\fP\\	then computes\\\fBn\fP\\\\\fBn\fP\\		F 	= sum fs[y][x] \fBw\fP[y][x]\\\fBt\fP\\\fBn\fP\\		q0 	= sum fs[y][x] W[0][y][x] / F\\\fBt\fP\\\fBn\fP\\		q[\fBl\fP] 	= sum fs[y][x] W[1+\fBl\fP][y][x] / F\\\fBt\fP\\\fBn\fP\\		P0[\fBm\fP] = sum f[y][x] K[0][1+\fBm\fP][y][x] / F\\\fBt\fP\\\fBn\fP\\		P[\fBl\fP][\fBm\fP] = sum f[y][x] K[1+\fBl\fP][1+\fBm\fP][y][x] / F\\\fBt\fP\\\fBn\fP\\		Z[\fBl\fP][\fBm\fP] = sum f[y][x] ZZ[1+\fBl\fP][1+\fBm\fP][y][x] / F\\\fBt\fP\\\fBn\fP\\		R[\fBm\fP]	= sum f[y][x] R[\fBm\fP][y][x] / F\\\fBt\fP\\\fBn\fP\\		Psh[\fBl\fP][\fBm\fP] = 2 q0 delta[\fBl\fP][\fBm\fP] - Z[\fBl\fP][\fBm\fP] / 2 rf^2 + 2 q[\fBl\fP] q[\fBm\fP] / rf^2\\\fBt\fP\\\fBn\fP\\		Psh[\fBl\fP][\fBm\fP] = ((rf^2 - 2 q0) delta[\fBl\fP][\fBm\fP] + Z[\fBl\fP][\fBm\fP] / 4 rf^2 - q[\fBl\fP] q[\fBm\fP] / rf^2)\\\fBt\fP\\\fBn\fP\\\\\fBn\fP\\	for \fBl\fP,\fBm\fP = 0,1\\\fBn\fP\\\\\fBn\fP\\	If sky \fBbackground\fP values (from getsky) are present they will\\\fBn\fP\\	be used (unless you give -\fBi\fP \fBflag\fP).\\\fBn\fP\\\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 59 of file getshapes3.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	getshapes3 --- calculate ellipticities etc. for catalogue of objects\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getshapes3 f_image fs_image psf_image rf [\fBoptions\fP...]\\\fBn\fP\\		-\fBi\fP 		# ignore the sky \fBbackground\fP information.\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'getshapes3\\' is \fBa\fP catalogue filter which calculates polarisation\\\fBn\fP\\	and polarisability for objects.\\\fBn\fP\\\\\fBn\fP\\	It requires that the input catalogue contain at least position\\\fBn\fP\\	vector 'x[2]', and \fBa\fP (aperture) flux 'flux'.\\\fBn\fP\\\\\fBn\fP\\	It uses 'makekernel' to compute the kernels W[\fBi\fP], K[\fBi\fP][\fBj\fP], ZZ[\fBi\fP][\fBj\fP]\\\fBn\fP\\	from the psf supplied in the \fBfits\fP image 'psf_image' and\\\fBn\fP\\	then computes\\\fBn\fP\\\\\fBn\fP\\		F 	= sum fs[y][x] \fBw\fP[y][x]\\\fBt\fP\\\fBn\fP\\		q0 	= sum fs[y][x] W[0][y][x] / F\\\fBt\fP\\\fBn\fP\\		q[\fBl\fP] 	= sum fs[y][x] W[1+\fBl\fP][y][x] / F\\\fBt\fP\\\fBn\fP\\		P0[\fBm\fP] = sum f[y][x] K[0][1+\fBm\fP][y][x] / F\\\fBt\fP\\\fBn\fP\\		P[\fBl\fP][\fBm\fP] = sum f[y][x] K[1+\fBl\fP][1+\fBm\fP][y][x] / F\\\fBt\fP\\\fBn\fP\\		Z[\fBl\fP][\fBm\fP] = sum f[y][x] ZZ[1+\fBl\fP][1+\fBm\fP][y][x] / F\\\fBt\fP\\\fBn\fP\\		R[\fBm\fP]	= sum f[y][x] R[\fBm\fP][y][x] / F\\\fBt\fP\\\fBn\fP\\		Psh[\fBl\fP][\fBm\fP] = 2 q0 delta[\fBl\fP][\fBm\fP] - Z[\fBl\fP][\fBm\fP] / 2 rf^2 + 2 q[\fBl\fP] q[\fBm\fP] / rf^2\\\fBt\fP\\\fBn\fP\\		Psh[\fBl\fP][\fBm\fP] = ((rf^2 - 2 q0) delta[\fBl\fP][\fBm\fP] + Z[\fBl\fP][\fBm\fP] / 4 rf^2 - q[\fBl\fP] q[\fBm\fP] / rf^2)\\\fBt\fP\\\fBn\fP\\\\\fBn\fP\\	for \fBl\fP,\fBm\fP = 0,1\\\fBn\fP\\\\\fBn\fP\\	If sky \fBbackground\fP values (from getsky) are present they will\\\fBn\fP\\	be used (unless you give -\fBi\fP \fBflag\fP).\\\fBn\fP\\\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file getshapes3.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 61 of file getshapes3.c.
+.PP
+References addargscomment(), addobjectitem(), object::addrlist, allocitemcontents(), allocobjectcontents(), BINARY_FILE_TYPE, connectobjecttocathead(), copycontentinfo(), copyheaderinfo(), error_exit, exit(), F(), f, getheaderitemaddress(), getobjectitemindex(), getshape3(), cathead::headeritembase, inheritcontents(), ix, K, l, m, M1, M2, N1, N2, newitem(), newobject(), NUM_TYPE, read2Dfloatimage(), readcathead(), readobject(), setcatopfiletype(), usage, W, w, writecathead(), writeobject(), and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,27 @@
+#! /usr/bin/perl
+
+$usage = "NAME\
+	doto - perlscript to automate overwriting of processed file\
+\
+SYNOPSIS\
+	doto file command\
+\
+DESCRIPTION\
+	doto executes the shell commands\
+\
+		command < file > doto.tmp\
+\
+		mv doto.tmp file\
+\
+\n";
+
+
+$file = shift @ARGV || die $usage;
+die $usage if ($file =~ /^-u$/);
+
+$sysstring = "@ARGV < $file > doto.tmp";
+if (system($sysstring)) {
+	print "doto: command failed\n";
+} else {
+	system("mv doto.tmp $file");
+}

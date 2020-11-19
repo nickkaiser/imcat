@@ -1,0 +1,17 @@
+Here's what you need to do to build the imcat directory from CVS:
+
+setenv CVSROOT :pserver:anonymous@surf.ifa.hawaii.edu:/CVSROOT/kaiser/pan-starrs
+
+The first time, you will need to run
+% cvs login
+and provide your e-mail as the password.
+
+The move to somewhere sensible and do
+% cvs checkout imcat
+which should result in a directory imcat/ in your current directory.
+% cd imcat
+% mkdir lib
+% mkdir bin
+% mkdir doc
+% cd src
+% ./rebuildlinks.pl

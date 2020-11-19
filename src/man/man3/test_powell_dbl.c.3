@@ -1,0 +1,48 @@
+.TH "powell_dbl.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+powell_dbl.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include '../../utils/nrutil.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBNRANSI\fP"
+.br
+.ti -1c
+.RI "#define \fBITMAX\fP   200"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBpowell\fP (double p[], double **xi, int \fBn\fP, double ftol, int *iter, double *fret, double(*func)(double[]))"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define ITMAX   200"
+.PP
+Definition at line 13 of file test/powell_dbl.c.
+.SS "#define NRANSI"
+.PP
+Definition at line 11 of file test/powell_dbl.c.
+.SH "Function Documentation"
+.PP 
+.SS "void powell (double p[], double ** xi, int n, double ftol, int * iter, double * fret, double(* func)(double[]))"
+.PP
+Definition at line 15 of file test/powell_dbl.c.
+.PP
+References free(), func(), i, ITMAX, j, linmin(), n, nrerror(), SQR, and t.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

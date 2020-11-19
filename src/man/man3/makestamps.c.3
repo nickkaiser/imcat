@@ -1,0 +1,72 @@
+.TH "makestamps.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makestamps.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../utils/ipbuff.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	makestamps --- extract 'postage stamp images'\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makestamps [option...]\\\fBn\fP\\		-\fBb\fP \fBb\fP		# box side (32)\\\fBn\fP\\		-\fBn\fP 		# normalise images\\\fBn\fP\\		-\fBM\fP mag0		# normalisation magnitude\\\fBn\fP\\		-f fitsfile	# specify source \fBfits\fP\\\fBn\fP\\		-x \fBxname\fP	# name for position 2-vector (x)\\\fBn\fP\\		-\fBm\fP magname	# name for magnitude (\fBmag\fP)\\\fBn\fP\\		-\fBN\fP normvalname	# normalise to unit 'normvalname'\\\fBn\fP\\		-\fBc\fP		# generate catalog with \fBx0\fP[2], x[2], f, \fBi\fP values\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'makestamps\\' creates \fBa\fP set of tiny images of\\\fBn\fP\\	patches of sky around objects in the catalogue.\\\fBn\fP\\	It reads \fBa\fP catalogue containing positions and optionally\\\fBn\fP\\	magnitudes of \fBnobj\fP objects from stdin and writes to\\\fBn\fP\\	stdout \fBa\fP 3-D \fBfits\fP image of dimensions \fBb\fP x \fBb\fP x \fBnobj\fP.\\\fBn\fP\\\\\fBn\fP\\	It uses the images named in the catalogue header\\\fBn\fP\\	by default.  Use -f option to override this.\\\fBn\fP\\\\\fBn\fP\\	With -\fBn\fP option the surface brightness will be\\\fBn\fP\\	scaled by \fBa\fP factor 10^(0.4 * (\fBmag\fP - mag0))\\\fBn\fP\\	where mag0 is the magnitude of the first \fBobject\fP\\\fBn\fP\\	unless you supply \fBa\fP value by hand with -\fBM\fP option.\\\fBn\fP\\\\\fBn\fP\\	Use -\fBN\fP option to normalise by dividing by 'normval':\\\fBn\fP\\	\fBe\fP.g. do\\\fBn\fP\\		makestamps -\fBN\fP flux ....\\\fBn\fP\\	to normalise to unit flux.\\\fBn\fP\\\\\fBn\fP\\	Use -\fBc\fP option to generate lc-catalog format output with\\\fBn\fP\\	\fBpixel\fP values f, \fBobject\fP \fBnumber\fP \fBi\fP, \fBobject\fP coords \fBx0\fP[], and \fBpixel\fP center coords x[]\\\fBn\fP\\	with respect to the \fBobject\fP coords.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBgetstamp\fP (float **f, int \fBN1\fP, int \fBN2\fP, float **fstamp, int box, int \fBix\fP, int \fBiy\fP, double ffactor)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 54 of file makestamps.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	makestamps --- extract 'postage stamp images'\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makestamps [option...]\\\fBn\fP\\		-\fBb\fP \fBb\fP		# box side (32)\\\fBn\fP\\		-\fBn\fP 		# normalise images\\\fBn\fP\\		-\fBM\fP mag0		# normalisation magnitude\\\fBn\fP\\		-f fitsfile	# specify source \fBfits\fP\\\fBn\fP\\		-x \fBxname\fP	# name for position 2-vector (x)\\\fBn\fP\\		-\fBm\fP magname	# name for magnitude (\fBmag\fP)\\\fBn\fP\\		-\fBN\fP normvalname	# normalise to unit 'normvalname'\\\fBn\fP\\		-\fBc\fP		# generate catalog with \fBx0\fP[2], x[2], f, \fBi\fP values\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'makestamps\\' creates \fBa\fP set of tiny images of\\\fBn\fP\\	patches of sky around objects in the catalogue.\\\fBn\fP\\	It reads \fBa\fP catalogue containing positions and optionally\\\fBn\fP\\	magnitudes of \fBnobj\fP objects from stdin and writes to\\\fBn\fP\\	stdout \fBa\fP 3-D \fBfits\fP image of dimensions \fBb\fP x \fBb\fP x \fBnobj\fP.\\\fBn\fP\\\\\fBn\fP\\	It uses the images named in the catalogue header\\\fBn\fP\\	by default.  Use -f option to override this.\\\fBn\fP\\\\\fBn\fP\\	With -\fBn\fP option the surface brightness will be\\\fBn\fP\\	scaled by \fBa\fP factor 10^(0.4 * (\fBmag\fP - mag0))\\\fBn\fP\\	where mag0 is the magnitude of the first \fBobject\fP\\\fBn\fP\\	unless you supply \fBa\fP value by hand with -\fBM\fP option.\\\fBn\fP\\\\\fBn\fP\\	Use -\fBN\fP option to normalise by dividing by 'normval':\\\fBn\fP\\	\fBe\fP.g. do\\\fBn\fP\\		makestamps -\fBN\fP flux ....\\\fBn\fP\\	to normalise to unit flux.\\\fBn\fP\\\\\fBn\fP\\	Use -\fBc\fP option to generate lc-catalog format output with\\\fBn\fP\\	\fBpixel\fP values f, \fBobject\fP \fBnumber\fP \fBi\fP, \fBobject\fP coords \fBx0\fP[], and \fBpixel\fP center coords x[]\\\fBn\fP\\	with respect to the \fBobject\fP coords.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file makestamps.c.
+.SH "Function Documentation"
+.PP 
+.SS "void getstamp (float ** f, int N1, int N2, float ** fstamp, int box, int ix, int iy, double ffactor)"
+.PP
+Definition at line 219 of file makestamps.c.
+.PP
+References dx, dy, f, MAGIC, N1, N2, x, and y.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 58 of file makestamps.c.
+.PP
+References add_comment(), allocFloatArray(), argsToString(), copyfitsheader(), error_exit, exit(), fitsheader::extpixtype, f, FLOAT_PIXTYPE, getstamp(), ix, lcpipe, line, mag, MAGIC, fitsheader::n, N1, N2, fitsheader::ndim, nobj, read2Dfloatimage(), readdoublebuff(), usage, writefitsheader(), writefitsline(), writefitstail(), and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

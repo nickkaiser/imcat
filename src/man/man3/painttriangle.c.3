@@ -1,0 +1,62 @@
+.TH "painttriangle.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+painttriangle.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'average.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) > (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.br
+.ti -1c
+.RI "#define \fBMIN\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) < (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBpointintriangle\fP (double x, double y, double **xt)"
+.br
+.ti -1c
+.RI "void \fBpainttriangle\fP (float ***fim, int fdim, double \fBx1\fP, double \fBx2\fP, int \fBNx\fP, double y1, double y2, int \fBNy\fP, double **xt, double **ft, int favgmode)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX(\fBa\fP, \fBb\fP)   ((\fBa\fP) > (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.PP
+Definition at line 10 of file painttriangle.c.
+.SS "#define MIN(\fBa\fP, \fBb\fP)   ((\fBa\fP) < (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.PP
+Definition at line 11 of file painttriangle.c.
+.SH "Function Documentation"
+.PP 
+.SS "void painttriangle (float *** fim, int fdim, double x1, double x2, int Nx, double y1, double y2, int Ny, double ** xt, double ** ft, int favgmode)"
+.PP
+Definition at line 15 of file painttriangle.c.
+.PP
+References F_INTERP, F_MEAN, F_MEDIAN, i, ix, j, m, MAX, mean(), median(), MIN, Nx, Ny, pointintriangle(), x, xmax, xmin, y, ymax, and ymin.
+.PP
+Referenced by main().
+.SS "int pointintriangle (double x, double y, double ** xt)"
+.PP
+Definition at line 86 of file painttriangle.c.
+.PP
+References c, i, j, x, and y.
+.PP
+Referenced by painttriangle().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

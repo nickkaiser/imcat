@@ -1,0 +1,79 @@
+.TH "maptest.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+maptest.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../utils/arrays.h'\fP
+.br
+\fC#include 'map.h'\fP
+.br
+\fC#include 'fits.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBdeflect\fP (float ri, float rj, float *\fBdi\fP, float *\fBdj\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBN\fP = 5"
+.br
+.ti -1c
+.RI "int \fBN1\fP"
+.br
+.ti -1c
+.RI "int \fBN2\fP"
+.br
+.ti -1c
+.RI "int \fBM1\fP"
+.br
+.ti -1c
+.RI "int \fBM2\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void deflect (float ri, float rj, float * di, float * dj)"
+.PP
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 16 of file imlib/maptest.c.
+.PP
+References allocFloatArray(), deflect(), exit(), FLOAT_PIXTYPE, FORWARDMAPMODE, fread_fits(), fwrite_fits(), i, INVERSEMAPMODE, j, M1, M2, map(), N1, N2, set_output_pixtype(), and set_triangle_map_mode().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBM1\fP"
+.PP
+Definition at line 14 of file imlib/maptest.c.
+.SS "int \fBM2\fP"
+.PP
+Definition at line 14 of file imlib/maptest.c.
+.SS "int \fBN\fP = 5"
+.PP
+Definition at line 13 of file imlib/maptest.c.
+.SS "int \fBN1\fP"
+.PP
+Definition at line 14 of file imlib/maptest.c.
+.SS "int \fBN2\fP"
+.PP
+Definition at line 14 of file imlib/maptest.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

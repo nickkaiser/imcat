@@ -1,0 +1,64 @@
+.TH "convertorbits.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+convertorbits.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+\fC#include 'kepler.h'\fP
+.br
+\fC#include 'extravars.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	convertorbits - convert between Kepler elements and phase-space coordinates\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	convertorbits k2c | c2k [-extravars vardefs]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	convertorbits converts between Keplerian elements\\\fBn\fP\\	\fBa\fP, \fBe\fP, \fBi\fP, omega, Omega, \fBM\fP and cartesian \fBr\fP[3], \fBv\fP[3].\\\fBn\fP\\\\\fBn\fP\\	With -extravars option we carry defined variables along.  For example, use\\\fBn\fP\\		-extrvars myscalar:1:myvector:3\\\fBn\fP\\	to carry along myscalar and myvector[3]\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBK2C_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBC2K_MODE\fP   1"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define C2K_MODE   1"
+.PP
+Definition at line 31 of file convertorbits.c.
+.PP
+Referenced by main().
+.SS "#define K2C_MODE   0"
+.PP
+Definition at line 30 of file convertorbits.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	convertorbits - convert between Kepler elements and phase-space coordinates\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	convertorbits k2c | c2k [-extravars vardefs]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	convertorbits converts between Keplerian elements\\\fBn\fP\\	\fBa\fP, \fBe\fP, \fBi\fP, omega, Omega, \fBM\fP and cartesian \fBr\fP[3], \fBv\fP[3].\\\fBn\fP\\\\\fBn\fP\\	With -extravars option we carry defined variables along.  For example, use\\\fBn\fP\\		-extrvars myscalar:1:myvector:3\\\fBn\fP\\	to carry along myscalar and myvector[3]\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 13 of file convertorbits.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 33 of file convertorbits.c.
+.PP
+References assignkeplerorbitfrombuffer(), buff, C2K_MODE, cartesiantokepler(), exit(), fillbufferfromkeplerorbit(), ipf, K2C_MODE, keplertocartesian(), opmode, parseextravars(), r, theorbit, usage, and v.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

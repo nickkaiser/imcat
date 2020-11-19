@@ -1,0 +1,10 @@
+#!/bin/sh
+
+case $1 in
+"-u")	echo "\nusage: subtractmode fitsfile\n\n\
+subtracts mode from a fits file in place\n\n"     1>&2; exit 2
+esac
+
+imarith -a -`stats < $1  | awk '/mode/ {print $3}'` <$1 >subtractmode.tmp
+mv subtractmode.tmp $1
+

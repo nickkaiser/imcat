@@ -1,0 +1,65 @@
+.TH "stats_stuff.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stats_stuff.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBfstatsrec\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBfstatsrec\fP \fBfstatsrec\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBfdo_stats\fP (float **f, int \fBN1\fP, int \fBN2\fP, int margin, \fBfstatsrec\fP *fsrec)"
+.br
+.ti -1c
+.RI "int \fBliststats\fP (float *fsample, int samplesize, float *median, float *lquart, float *uquart, float *\fBsigma\fP)"
+.br
+.ti -1c
+.RI "int \fBfindmode\fP (float **f, int \fBN1\fP, int \fBN2\fP, float lquart, float uquart, float *\fBmode\fP, float *flquart)"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBfstatsrec\fP  \fBfstatsrec\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "void fdo_stats (float ** f, int N1, int N2, int margin, \fBfstatsrec\fP * fsrec)"
+.PP
+Definition at line 48 of file stats_stuff.c.
+.PP
+References fstatsrec::badpix, DEFSAMPLEFRAC, f, fgood, findmode(), fstatsrec::flowerquartile, fstatsrec::fmax, fstatsrec::fmean, fstatsrec::fmedian, fstatsrec::fmin, fmin, fstatsrec::fmode, free(), fstatsrec::fupperquartile, fstatsrec::goodpix, HUGE_VAL, i, j, liststats(), MAX_SAMPLE_SIZE, median(), N1, N2, fstatsrec::samplesize, fstatsrec::sigma, and sigma.
+.PP
+Referenced by main().
+.SS "int findmode (float ** f, int N1, int N2, float lquart, float uquart, float * mode, float * flquart)"
+.PP
+Definition at line 184 of file stats_stuff.c.
+.PP
+References b, BIG_FACTOR, BINS, f, fmin, free(), i, j, N1, N2, and SIG_FACTOR.
+.PP
+Referenced by fdo_stats(), and main().
+.SS "int liststats (float * fsample, int samplesize, float * median, float * lquart, float * uquart, float * sigma)"
+.PP
+Definition at line 133 of file stats_stuff.c.
+.PP
+References floatcmp(), median(), and sigma.
+.PP
+Referenced by dosky(), fdo_stats(), getsky(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

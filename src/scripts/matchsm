@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# a awk script to translate sm output up the page ans scale it
+
+awk '
+	BEGIN {comments = 1}
+	{if ($1 !~ /^%/ && comments == 1) {
+		print "-0.27 72 mul 1.72 72 mul translate"
+		print "1.056 1.056 scale"
+		comments = 0
+	}}
+	{print}' 

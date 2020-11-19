@@ -1,0 +1,156 @@
+.TH "imview_stuff.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+imview_stuff.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include 'imview_stuff.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX_GRAYS\fP   128"
+.br
+.ti -1c
+.RI "#define \fBSIZE_GOAL\fP   512"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBalloc_grays\fP (int *\fBn_cells\fP)"
+.br
+.ti -1c
+.RI "void \fBset_grays\fP (int \fBn_cells\fP, int n_lo, int n_hi)"
+.br
+.ti -1c
+.RI "Pixmap \fBmake_pixmap\fP (int fMin, int fMax, int \fBn_cells\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "Display * \fBmydisplay\fP"
+.br
+.ti -1c
+.RI "int \fBmyscreen\fP"
+.br
+.ti -1c
+.RI "int \fBdepth\fP"
+.br
+.ti -1c
+.RI "GC \fBmygc\fP"
+.br
+.ti -1c
+.RI "Colormap \fBcmap\fP"
+.br
+.ti -1c
+.RI "Window \fBmywindow\fP"
+.br
+.ti -1c
+.RI "XColor \fBgray\fP [MAX_GRAYS]"
+.br
+.ti -1c
+.RI "unsigned long \fBpixel\fP [MAX_GRAYS]"
+.br
+.ti -1c
+.RI "int \fBn_grays\fP"
+.br
+.ti -1c
+.RI "Widget \fBmain_w\fP"
+.br
+.ti -1c
+.RI "int \fBascii\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX_GRAYS   128"
+.PP
+Definition at line 11 of file imview_stuff.c.
+.PP
+Referenced by alloc_grays().
+.SS "#define SIZE_GOAL   512"
+.PP
+Definition at line 12 of file imview_stuff.c.
+.PP
+Referenced by make_pixmap().
+.SH "Function Documentation"
+.PP 
+.SS "void alloc_grays (int * n_cells)"
+.PP
+Definition at line 26 of file imview_stuff.c.
+.SS "Pixmap make_pixmap (int fMin, int fMax, int n_cells)"
+.PP
+Definition at line 107 of file imview_stuff.c.
+.SS "void set_grays (int n_cells, int n_lo, int n_hi)"
+.PP
+Definition at line 70 of file imview_stuff.c.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBascii\fP"
+.PP
+Definition at line 24 of file imview_stuff.c.
+.SS "Colormap \fBcmap\fP\fC [static]\fP"
+.PP
+Definition at line 18 of file imview_stuff.c.
+.PP
+Referenced by alloc_grays(), and set_grays().
+.SS "int \fBdepth\fP\fC [static]\fP"
+.PP
+Definition at line 16 of file imview_stuff.c.
+.PP
+Referenced by alloc_grays(), and make_pixmap().
+.SS "XColor gray[MAX_GRAYS]\fC [static]\fP"
+.PP
+Definition at line 20 of file imview_stuff.c.
+.PP
+Referenced by make_pixmap(), and set_grays().
+.SS "Widget \fBmain_w\fP"
+.PP
+Definition at line 23 of file imview_stuff.c.
+.SS "Display* \fBmydisplay\fP\fC [static]\fP"
+.PP
+Definition at line 15 of file imview_stuff.c.
+.PP
+Referenced by alloc_grays(), make_pixmap(), and set_grays().
+.SS "GC \fBmygc\fP\fC [static]\fP"
+.PP
+Definition at line 17 of file imview_stuff.c.
+.PP
+Referenced by alloc_grays(), and make_pixmap().
+.SS "int \fBmyscreen\fP\fC [static]\fP"
+.PP
+Definition at line 16 of file imview_stuff.c.
+.PP
+Referenced by alloc_grays(), and make_pixmap().
+.SS "Window \fBmywindow\fP\fC [static]\fP"
+.PP
+Definition at line 19 of file imview_stuff.c.
+.PP
+Referenced by alloc_grays(), and make_pixmap().
+.SS "int \fBn_grays\fP\fC [static]\fP"
+.PP
+Definition at line 22 of file imview_stuff.c.
+.PP
+Referenced by alloc_grays().
+.SS "unsigned long \fBpixel\fP[MAX_GRAYS]\fC [static]\fP"
+.PP
+Definition at line 21 of file imview_stuff.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

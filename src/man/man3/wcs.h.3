@@ -1,0 +1,164 @@
+.TH "wcs.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+wcs.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBWorldCoor\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBPI\fP   3.141592653589793"
+.br
+.ti -1c
+.RI "#define \fBdegrad\fP(x)   ((x)*PI/180.)"
+.br
+.ti -1c
+.RI "#define \fBraddeg\fP(x)   ((x)*180./PI)"
+.br
+.ti -1c
+.RI "#define \fBhrdeg\fP(x)   ((x)*15.)"
+.br
+.ti -1c
+.RI "#define \fBdeghr\fP(x)   ((x)/15.)"
+.br
+.ti -1c
+.RI "#define \fBhrrad\fP(x)   degrad(hrdeg(x))"
+.br
+.ti -1c
+.RI "#define \fBradhr\fP(x)   deghr(raddeg(x))"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBWorldCoor\fP * \fBwcsinit\fP ()"
+.br
+.ti -1c
+.RI "\fBWorldCoor\fP * \fBwcsninit\fP ()"
+.br
+.ti -1c
+.RI "\fBWorldCoor\fP * \fBwcsset\fP ()"
+.br
+.ti -1c
+.RI "int \fBiswcs\fP ()"
+.br
+.ti -1c
+.RI "int \fBnowcs\fP ()"
+.br
+.ti -1c
+.RI "void \fBwcsshift\fP ()"
+.br
+.ti -1c
+.RI "void \fBwcscent\fP ()"
+.br
+.ti -1c
+.RI "void \fBwcssize\fP ()"
+.br
+.ti -1c
+.RI "void \fBwcsfull\fP ()"
+.br
+.ti -1c
+.RI "double \fBwcsdist\fP ()"
+.br
+.ti -1c
+.RI "void \fBwcscominit\fP ()"
+.br
+.ti -1c
+.RI "void \fBwcscom\fP ()"
+.br
+.ti -1c
+.RI "void \fBwcsoutinit\fP ()"
+.br
+.ti -1c
+.RI "int \fBpix2wcst\fP ()"
+.br
+.ti -1c
+.RI "void \fBpix2wcs\fP ()"
+.br
+.ti -1c
+.RI "void \fBwcs2pix\fP ()"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define deghr(x)   ((x)/15.)"
+.PP
+Definition at line 69 of file wcs.h.
+.SS "#define degrad(x)   ((x)*PI/180.)"
+.PP
+Definition at line 66 of file wcs.h.
+.PP
+Referenced by fk425m(), fk42gal(), fk4prec(), fk524m(), fk52gal(), fk5prec(), gal2fk4(), gal2fk5(), wcsdist(), wcsinit(), wcsset(), wcssize(), worldpix(), and worldpos().
+.SS "#define hrdeg(x)   ((x)*15.)"
+.PP
+Definition at line 68 of file wcs.h.
+.SS "#define hrrad(x)   degrad(hrdeg(x))"
+.PP
+Definition at line 70 of file wcs.h.
+.PP
+Referenced by wcsinit().
+.SS "#define PI   3.141592653589793"
+.PP
+Definition at line 62 of file wcs.h.
+.SS "#define raddeg(x)   ((x)*180./PI)"
+.PP
+Definition at line 67 of file wcs.h.
+.PP
+Referenced by fk425m(), fk42gal(), fk4prec(), fk524m(), fk52gal(), fk5prec(), gal2fk4(), gal2fk5(), wcsdist(), worldpix(), and worldpos().
+.SS "#define radhr(x)   deghr(raddeg(x))"
+.PP
+Definition at line 71 of file wcs.h.
+.SH "Function Documentation"
+.PP 
+.SS "int iswcs ()"
+.PP
+Referenced by pix2wcs(), pix2wcst(), wcs2pix(), wcscom(), wcscominit(), wcsfull(), wcsoutinit(), and wcssize().
+.SS "int nowcs ()"
+.PP
+Referenced by main(), and wcsshift().
+.SS "void pix2wcs ()"
+.PP
+Referenced by main(), pix2wcst(), wcscent(), wcsfull(), and wcssize().
+.SS "int pix2wcst ()"
+.PP
+Referenced by wcscent(), and wcscom().
+.SS "void wcs2pix ()"
+.PP
+.SS "void wcscent ()"
+.PP
+.SS "void wcscom ()"
+.PP
+.SS "void wcscominit ()"
+.PP
+.SS "double wcsdist ()"
+.PP
+Referenced by wcscent(), wcsfull(), and wcssize().
+.SS "void wcsfull ()"
+.PP
+.SS "struct \fBWorldCoor\fP* wcsinit ()"
+.PP
+Referenced by main(), and wcsninit().
+.SS "struct \fBWorldCoor\fP* wcsninit ()"
+.PP
+.SS "void wcsoutinit ()"
+.PP
+.SS "struct \fBWorldCoor\fP* wcsset ()"
+.PP
+.SS "void wcsshift ()"
+.PP
+.SS "void wcssize ()"
+.PP
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,79 @@
+.TH "fitstack.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitstack.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmake_r\fP (void)"
+.br
+.ti -1c
+.RI "int \fBallocatearrays\fP (void)"
+.br
+.ti -1c
+.RI "double *** \fBallocpositionvector\fP (void)"
+.br
+.ti -1c
+.RI "int \fBprinttranslations\fP (void)"
+.br
+.ti -1c
+.RI "int \fBprintdistortions\fP (void)"
+.br
+.ti -1c
+.RI "double \fBchisquared\fP (double *\fBv\fP)"
+.br
+.ti -1c
+.RI "int \fBoutputrcat\fP (void)"
+.br
+.ti -1c
+.RI "int \fBfittranslations\fP (void)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int allocatearrays (void)"
+.PP
+Definition at line 455 of file registration/fitstack.c.
+.PP
+References a, Ad, Am, At, Bd, Bm, Bt, Cd, Cm, Ct, d, dm, dodistfit, i, indxd, indxm, indxt, j, m, ndcoefft, nexp, nmcoefft, nmodes, ntcoefft, and phi.
+.SS "double*** allocpositionvector (void)"
+.PP
+Definition at line 501 of file registration/fitstack.c.
+.PP
+References allocpositionvector(), error_exit, i, j, n, and nprs.
+.SS "double chisquared (double * v)"
+.PP
+Definition at line 281 of file test/fitstack.c.
+.SS "int fittranslations (void)"
+.PP
+Definition at line 344 of file registration/fitstack.c.
+.PP
+References At, Bt, Ct, d, det, e, i, indxt, j, m, mylubksb(), myludcmp(), n, ne, nexp, nprs, ntcoefft, phi, and re.
+.SS "int make_r (void)"
+.PP
+Definition at line 223 of file registration/fitstack.c.
+.PP
+References a, allocpositionvector(), d, e, f(), i, j, ll, M, mm, n, nmodes, nprs, phi, r, x, and xx.
+.SS "int outputrcat (void)"
+.PP
+Definition at line 312 of file test/fitstack.c.
+.PP
+References C, n, N, w, and x.
+.SS "int printdistortions (void)"
+.PP
+Definition at line 271 of file test/fitstack.c.
+.PP
+References d, and n.
+.SS "int printtranslations (void)"
+.PP
+Definition at line 260 of file test/fitstack.c.
+.PP
+References n.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

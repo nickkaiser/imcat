@@ -1,0 +1,60 @@
+.TH "betafitmain.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+betafitmain.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../../imlib/fits.h'\fP
+.br
+\fC#include '../../../utils/error.h'\fP
+.br
+\fC#include 'betafit.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	betafit --- \fBfit\fP image to beta model\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	betafit [\fBoptions\fP....]\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\		-f		# output the model as \fBfits\fP image\\\fBn\fP\\		-\fBN\fP \fBN\fP		# \fBnumber\fP of micropixels per \fBpixel\fP (1.e4)\\\fBn\fP\\		-\fBv\fP		# \fBverbose\fP \fBmode\fP\\\fBn\fP\\		-\fBr\fP \fBrc\fP		# initial core \fBradius\fP (1.0)\\\fBn\fP\\		-\fBb\fP beta		# assumed beta\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'betafit\\' reads \fBa\fP \fBfits\fP image of counts \fBn\fP[][] from stdin and \fBfits\fP\\\fBn\fP\\	this to \fBa\fP simple beta model for mean counts with central\\\fBn\fP\\	value \fBf0\fP; core \fBradius\fP \fBrc\fP; index beta centered on \fBx0\fP, y0:\\\fBn\fP\\\\\fBn\fP\\		n_model = \fBn0\fP * (1 + \fBr\fP^2 / \fBrc\fP^2)^-beta\\\fBn\fP\\\\\fBn\fP\\	where \fBn0\fP = \fBf0\fP * f and \fBr\fP^2 = (x - \fBx0\fP)^2 + (y - y0)^2\\\fBn\fP\\\\\fBn\fP\\	by minimising\\\fBn\fP\\		sum_pixels \fBN\fP * f - sum_pixels (\fBn\fP[\fBiy\fP][\fBix\fP] * log(f))\\\fBn\fP\\\\\fBn\fP\\	Where \fBN\fP is the \fBnumber\fP of micropixels per \fBreal\fP \fBpixel\fP.\\\fBn\fP\\\\\fBn\fP\\	output is\\\fBn\fP\\\\\fBn\fP\\		\fBN\fP * \fBf0\fP, \fBx0\fP, y0, \fBrc\fP, beta\\\fBn\fP\\\\\fBn\fP\\	We start with \fBx0\fP, y0 given by mean of x,y for input counts\\\fBn\fP\\	and core \fBradius\fP unity by default and with initial\\\fBn\fP\\	f = sum \fBn\fP / (\fBN\fP * rc2)\\\fBn\fP\\\\\fBn\fP\\BUGS\\\fBn\fP\\	Couldn'\fBt\fP get it to work stably with beta as free parameter.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBPI\fP   M_PI"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define PI   M_PI"
+.PP
+Definition at line 55 of file betafitmain.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	betafit --- \fBfit\fP image to beta model\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	betafit [\fBoptions\fP....]\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\		-f		# output the model as \fBfits\fP image\\\fBn\fP\\		-\fBN\fP \fBN\fP		# \fBnumber\fP of micropixels per \fBpixel\fP (1.e4)\\\fBn\fP\\		-\fBv\fP		# \fBverbose\fP \fBmode\fP\\\fBn\fP\\		-\fBr\fP \fBrc\fP		# initial core \fBradius\fP (1.0)\\\fBn\fP\\		-\fBb\fP beta		# assumed beta\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'betafit\\' reads \fBa\fP \fBfits\fP image of counts \fBn\fP[][] from stdin and \fBfits\fP\\\fBn\fP\\	this to \fBa\fP simple beta model for mean counts with central\\\fBn\fP\\	value \fBf0\fP; core \fBradius\fP \fBrc\fP; index beta centered on \fBx0\fP, y0:\\\fBn\fP\\\\\fBn\fP\\		n_model = \fBn0\fP * (1 + \fBr\fP^2 / \fBrc\fP^2)^-beta\\\fBn\fP\\\\\fBn\fP\\	where \fBn0\fP = \fBf0\fP * f and \fBr\fP^2 = (x - \fBx0\fP)^2 + (y - y0)^2\\\fBn\fP\\\\\fBn\fP\\	by minimising\\\fBn\fP\\		sum_pixels \fBN\fP * f - sum_pixels (\fBn\fP[\fBiy\fP][\fBix\fP] * log(f))\\\fBn\fP\\\\\fBn\fP\\	Where \fBN\fP is the \fBnumber\fP of micropixels per \fBreal\fP \fBpixel\fP.\\\fBn\fP\\\\\fBn\fP\\	output is\\\fBn\fP\\\\\fBn\fP\\		\fBN\fP * \fBf0\fP, \fBx0\fP, y0, \fBrc\fP, beta\\\fBn\fP\\\\\fBn\fP\\	We start with \fBx0\fP, y0 given by mean of x,y for input counts\\\fBn\fP\\	and core \fBradius\fP unity by default and with initial\\\fBn\fP\\	f = sum \fBn\fP / (\fBN\fP * rc2)\\\fBn\fP\\\\\fBn\fP\\BUGS\\\fBn\fP\\	Couldn'\fBt\fP get it to work stably with beta as free parameter.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file betafitmain.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 59 of file betafitmain.c.
+.PP
+References add_comment(), allocFloatArray(), error_exit, exit(), fitsheader::extpixtype, fitall(), fits, FLOAT_PIXTYPE, ix, makebetamodel(), N, n, N1, N2, read2Dfloatimage(), usage, verbose, and write2Dfloatimage().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

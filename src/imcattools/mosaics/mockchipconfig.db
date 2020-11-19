@@ -1,0 +1,10 @@
+# offsets and rotation angles for mock mosaic
+#	ix	iy	phi	dx	dy
+	0	0	0	0	0
+	1	0	0.002	0	0
+	2	0	0	5	0
+	3	0	0	0	5
+	0	1	0.001	5       -5	
+	1	1	-0.002	-5	10
+	2	1	0	-10	-10
+	3	1	0	10	-10

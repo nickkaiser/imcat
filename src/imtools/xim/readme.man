@@ -1,0 +1,6 @@
+'xim' is a colour image viewer I developed.  It is not very fast (compared
+to e.g. saoimage), but it does allow one to read 2- or 3-color images and
+to modify the colormap dynamically.  I have found it useful in adjusting the
+color mapping for making color postscript images to send to a printer.
+A major limitation is that it only reads 16 bit images, and, if these
+are color, then the format is as created by makecolorimage.

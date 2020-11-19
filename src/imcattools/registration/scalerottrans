@@ -1,0 +1,67 @@
+#!/usr/bin/perl
+
+# perl script perform scale, rotation and translation on a catalogue
+
+# force flushing
+$| = 1;
+
+#defaults
+$inverse = 0;
+$xname = "x";
+
+$usage = "\
+NAME
+	scalerottrans --- scale rotate and translate spatial coords in a cat\
+\
+SYNOPSIS\
+	scalerottrans dx dy a phi [options....]\
+\
+DESCRIPTION\
+        applies transformation\
+                x0 = a (x cos phi - y sin phi) + dx\
+                y0 = a (x sin phi + y cos phi) + dy\
+	where options are\
+		-x xname	# name for the spatial coord vector\
+		-i		# apply inverse transformation\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+\n";
+
+die $usage if ($#ARGV < 3);
+$argstring = sprintf("'scalerottrans %s %s %s %s", @ARGV);
+
+$dx  = shift(@ARGV);
+$dy  = shift(@ARGV);
+$a   = shift(@ARGV);
+$phi = shift(@ARGV);
+
+
+while ($_ = shift(@ARGV)) {
+	$argstring = sprintf("%s %s", $argstring, $_);
+	if (/^-x/) {
+		$xname = shift(@ARGV) || die $usage;
+		$argstring = sprintf("%s %s", $argstring, $name);
+	} elsif (/^-i/) {
+		$inverse = 1;
+	} else {
+		die $usage;
+	}
+}
+$argstring = sprintf("%s'", $argstring);
+
+if ($inverse) {
+	$a = 1.0 / $a;
+	$phi = -$phi;
+}
+
+$phi00 = $phi11 = $a * cos($phi);
+$phi10 = $a * sin($phi);
+$phi01 = -$phi10;
+
+if ($inverse) {
+	system("lc -x -a $argstring -B +all '$xname = %$xname $dx $dy 2 vector vsub $phi00 $phi01 $phi10 $phi11 lintrans'");
+} else {
+	system("lc -x -a $argstring -B +all '$xname = %$xname $phi00 $phi01 $phi10 $phi11 lintrans $dx $dy 2 vector vadd'");
+}
+

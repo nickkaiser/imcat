@@ -1,0 +1,66 @@
+.TH "rpn.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+rpn.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include 'getop.h'\fP
+.br
+\fC#include 'stack.h'\fP
+.br
+\fC#include 'operators.h'\fP
+.br
+\fC#include 'rpn.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX_OPS\fP   1024"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBrpnfunc\fP * \fBnewrpnfunction\fP (char *name, char *string)"
+.br
+.ti -1c
+.RI "void \fBevalrpnfunction\fP (\fBrpnfunc\fP *therpnfunc)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX_OPS   1024"
+.PP
+Definition at line 14 of file rpn.c.
+.PP
+Referenced by main(), and newrpnfunction().
+.SH "Function Documentation"
+.PP 
+.SS "void evalrpnfunction (\fBrpnfunc\fP * therpnfunc)"
+.PP
+Definition at line 48 of file rpn.c.
+.PP
+References GEN_OP_TYPE, genfunc(), item::itype, item::name, rpnfunc::name, item::next, rpnfunc::nop, NUM1_OP_TYPE, num1func(), NUM2_OP_TYPE, num2func(), NUM_TYPE, op, rpnfunc::oplist, pop(), push(), rpnfunc::result, and TEXT_TYPE.
+.PP
+Referenced by main(), parseheaderexpr(), and parsename().
+.SS "\fBrpnfunc\fP* newrpnfunction (char * name, char * string)"
+.PP
+Definition at line 16 of file rpn.c.
+.PP
+References getop(), MAX_OPS, rpnfunc::name, rpnfunc::nop, op, and rpnfunc::oplist.
+.PP
+Referenced by main(), parseheaderexpr(), and parsename().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

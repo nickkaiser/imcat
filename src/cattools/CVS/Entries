@@ -1,0 +1,33 @@
+/-i/1.1/Sun Apr 13 22:54:13 2003//
+/Makefile/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/README/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/catcats/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/catstats.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/d.par/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/d2.par/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/d3.par/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/d4.par/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/diff2Dpolymodel.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/dx.par/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/dy.par/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/fit2Dpolymodel.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/gen2Dpolymodel.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/gen2Dpolymodelimage.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/gridavg.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/int2Dpolymodel.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/maskcat.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/pair.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/pastecats.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/readme.html/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/readme.man/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/smselect.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/test_diff.par/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/test_xf.par/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/tmp.cat/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/tmp.par/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/tmp2.cat/1.1.1.1/Sun Apr 13 22:54:13 2003//
+D/lc////
+D/lmodel////
+D/mergecats////
+D/tk////
+/rebin.c/1.2/Sat Nov 15 23:55:52 2003//

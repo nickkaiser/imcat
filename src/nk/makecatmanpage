@@ -1,0 +1,37 @@
+#!/usr/bin/perl
+
+$| = 1;			# force flushing
+
+chop($com = `basename $0`);
+
+$usage = "\
+NAME\
+	$com --- perl script to generate a man page\
+\
+SYNOPSIS\
+	$com commandname | libname headers\
+\
+DESCRIPTION\
+	With a single argument we invoke the command 'commandname' with '-u'\
+	option to genenerate the cat-style man page.\
+\
+	With multiple arguments we output a man page for a library 'libname'\
+\
+";
+
+if ($#ARGV >= 1	) {
+	$libname = shift(@ARGV) || die $usage;
+	print "\n\nNAME\n\t$libname - imcat library\n\n";
+	print "SYNOPSIS\n\tSee header files appended.\n\n";
+	print "AUTHOR\n\tNick Kaiser - kaiser\@hawaii.edu.\n\n\n";
+	while ($header = shift(@ARGV)) {
+		print "\n\n\n$header :\n";
+		system("cat $header");
+	}
+} else {
+	$commandname = shift(@ARGV) || die $usage;
+	die $usage if ($commandname =~ /^-u$/);
+	system("$commandname -u 2>&1");
+}
+
+exit;

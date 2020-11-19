@@ -1,0 +1,65 @@
+.TH "color.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+color.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBQ0_MAX\fP   1"
+.br
+.ti -1c
+.RI "#define \fBA_MAX\fP   4"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBsetcolorscheme\fP (void)"
+.br
+.ti -1c
+.RI "void \fBset_shades\fP (void)"
+.br
+.ti -1c
+.RI "int \fBcolor_index\fP (int \fBi\fP, int \fBj\fP)"
+.br
+.ti -1c
+.RI "double \fBgray\fP (int \fBi\fP, int \fBj\fP)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define A_MAX   4"
+.PP
+Definition at line 6 of file color.h.
+.PP
+Referenced by myworkproc1(), newslidervalue(), set_shades(), and setcolorscheme().
+.SS "#define Q0_MAX   1"
+.PP
+Definition at line 5 of file color.h.
+.PP
+Referenced by newslidervalue(), and set_shades().
+.SH "Function Documentation"
+.PP 
+.SS "int color_index (int i, int j)"
+.PP
+Referenced by make_pixmap().
+.SS "double gray (int i, int j)"
+.PP
+Referenced by printall(), and printselection().
+.SS "void set_shades (void)"
+.PP
+Definition at line 76 of file back.c.
+.SS "void setcolorscheme (void)"
+.PP
+Definition at line 59 of file ximcolor.c.
+.PP
+Referenced by alloc_shades().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

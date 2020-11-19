@@ -1,0 +1,199 @@
+.TH "map_private.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+map_private.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBvert\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBvert\fP \fBvert\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBvert\fP * \fBmakevertex\fP (float x, float y)"
+.br
+.ti -1c
+.RI "void \fBmakering\fP (\fBvert\fP **basevertex, \fBvert\fP **\fBpoint\fP, int npoints)"
+.br
+.ti -1c
+.RI "void \fBdecompose\fP (\fBvert\fP *basevertex)"
+.br
+.ti -1c
+.RI "void \fBprintpolygon\fP (\fBvert\fP *basevertex)"
+.br
+.ti -1c
+.RI "void \fBprintvertex\fP (\fBvert\fP *thevert)"
+.br
+.ti -1c
+.RI "void \fBsmprintpolygon\fP (\fBvert\fP *basevertex)"
+.br
+.ti -1c
+.RI "void \fBfreepolygon\fP (\fBvert\fP *basevert)"
+.br
+.ti -1c
+.RI "void \fBdopolygon\fP (\fBvert\fP *basevert)"
+.br
+.ti -1c
+.RI "void \fBmakebreakpoints\fP (\fBvert\fP *v1, \fBvert\fP *v2, \fBvert\fP **V1, \fBvert\fP **V2, int \fBdir\fP, float cut)"
+.br
+.ti -1c
+.RI "void \fBswitchxy\fP (\fBvert\fP *\fBv\fP)"
+.br
+.ti -1c
+.RI "void \fBlink\fP (\fBvert\fP *r1, \fBvert\fP *r2, \fBvert\fP *l1, \fBvert\fP *l2, \fBvert\fP *R1, \fBvert\fP *R2, \fBvert\fP *\fBL1\fP, \fBvert\fP *\fBL2\fP)"
+.br
+.ti -1c
+.RI "void \fBdotriangle\fP (\fBvert\fP *basevert)"
+.br
+.ti -1c
+.RI "float \fBtrianglearea\fP (\fBvert\fP *basevert)"
+.br
+.ti -1c
+.RI "void \fBgetsourceij\fP (\fBvert\fP *basevert, int *\fBix\fP, int *\fBiy\fP)"
+.br
+.ti -1c
+.RI "void \fBaddarea\fP (int \fBix\fP, int \fBiy\fP, float area)"
+.br
+.ti -1c
+.RI "\fBvert\fP * \fBallocvert\fP (void)"
+.br
+.ti -1c
+.RI "void \fBfreeverts\fP (void)"
+.br
+.in -1c
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBvert\fP  \fBvert\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "void addarea (int ix, int iy, float area)"
+.PP
+Definition at line 467 of file map.c.
+.PP
+References FLOAT_MAGIC, FORWARDMAPMODE, garea, gareasum, gfsource, gfsum, gftarget, globalmapmode, gM2, gntriangles, gtargeti, gtargetj, and ix.
+.PP
+Referenced by dotriangle().
+.SS "\fBvert\fP* allocvert (void)"
+.PP
+Definition at line 498 of file map.c.
+.PP
+References counter, error_exit, MAX_VERTS, and vstore.
+.PP
+Referenced by dopolygon(), makebreakpoints(), and makevertex().
+.SS "void decompose (\fBvert\fP * basevertex)"
+.PP
+Definition at line 62 of file map.c.
+.PP
+References dopolygon(), error_exit, link(), makebreakpoints(), vert::next, NOCUT, vert::prev, vert::x, XCUT, xmax, xmin, vert::y, YCUT, ymax, and ymin.
+.PP
+Referenced by map().
+.SS "void dopolygon (\fBvert\fP * basevert)"
+.PP
+Definition at line 186 of file map.c.
+.PP
+References allocvert(), dotriangle(), error_exit, vert::next, and vert::prev.
+.PP
+Referenced by decompose().
+.SS "void dotriangle (\fBvert\fP * basevert)"
+.PP
+Definition at line 227 of file map.c.
+.PP
+References addarea(), getsourceij(), i, j, and trianglearea().
+.PP
+Referenced by dopolygon().
+.SS "void freepolygon (\fBvert\fP * basevert)"
+.PP
+Definition at line 289 of file map.c.
+.PP
+References free(), and vert::next.
+.SS "void freeverts (void)"
+.PP
+Definition at line 507 of file map.c.
+.PP
+References counter.
+.PP
+Referenced by map().
+.SS "void getsourceij (\fBvert\fP * basevert, int * ix, int * iy)"
+.PP
+Definition at line 374 of file map.c.
+.PP
+References ix, MIN, vert::next, vert::prev, vert::x, and vert::y.
+.PP
+Referenced by dotriangle().
+.SS "void link (\fBvert\fP * r1, \fBvert\fP * r2, \fBvert\fP * l1, \fBvert\fP * l2, \fBvert\fP * R1, \fBvert\fP * R2, \fBvert\fP * L1, \fBvert\fP * L2)"
+.PP
+Definition at line 344 of file map.c.
+.PP
+References vert::next, and vert::prev.
+.PP
+Referenced by decompose().
+.SS "void makebreakpoints (\fBvert\fP * v1, \fBvert\fP * v2, \fBvert\fP ** V1, \fBvert\fP ** V2, int dir, float cut)"
+.PP
+Definition at line 316 of file map.c.
+.PP
+References allocvert(), dir, switchxy(), vert::x, vert::y, and YCUT.
+.PP
+Referenced by decompose().
+.SS "void makering (\fBvert\fP ** basevertex, \fBvert\fP ** point, int npoints)"
+.PP
+Definition at line 48 of file map.c.
+.PP
+References i, and point.
+.PP
+Referenced by map().
+.SS "\fBvert\fP* makevertex (float x, float y)"
+.PP
+Definition at line 33 of file map.c.
+.PP
+References allocvert(), x, vert::x, y, and vert::y.
+.PP
+Referenced by map().
+.SS "void printpolygon (\fBvert\fP * basevertex)"
+.PP
+Definition at line 241 of file map.c.
+.PP
+References vert::next, and printvertex().
+.SS "void printvertex (\fBvert\fP * thevert)"
+.PP
+Definition at line 265 of file map.c.
+.PP
+References vert::x, and vert::y.
+.PP
+Referenced by printpolygon().
+.SS "void smprintpolygon (\fBvert\fP * basevertex)"
+.PP
+Definition at line 272 of file map.c.
+.PP
+References vert::next, vert::x, and vert::y.
+.SS "void switchxy (\fBvert\fP * v)"
+.PP
+Definition at line 305 of file map.c.
+.PP
+References v.
+.PP
+Referenced by makebreakpoints().
+.SS "float trianglearea (\fBvert\fP * basevert)"
+.PP
+Definition at line 361 of file map.c.
+.PP
+References vert::next, vert::prev, vert::x, and vert::y.
+.PP
+Referenced by dotriangle(), and map().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

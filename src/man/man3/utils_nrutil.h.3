@@ -1,0 +1,358 @@
+.TH "nrutil.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+nrutil.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSQR\fP(\fBa\fP)   ((\fBsqrarg\fP=(\fBa\fP)) == 0.0 ? 0.0 : \fBsqrarg\fP*\fBsqrarg\fP)"
+.br
+.ti -1c
+.RI "#define \fBDSQR\fP(\fBa\fP)   ((\fBdsqrarg\fP=(\fBa\fP)) == 0.0 ? 0.0 : \fBdsqrarg\fP*\fBdsqrarg\fP)"
+.br
+.ti -1c
+.RI "#define \fBDMAX\fP(\fBa\fP, \fBb\fP)"
+.br
+.ti -1c
+.RI "#define \fBDMIN\fP(\fBa\fP, \fBb\fP)"
+.br
+.ti -1c
+.RI "#define \fBFMAX\fP(\fBa\fP, \fBb\fP)"
+.br
+.ti -1c
+.RI "#define \fBFMIN\fP(\fBa\fP, \fBb\fP)"
+.br
+.ti -1c
+.RI "#define \fBLMAX\fP(\fBa\fP, \fBb\fP)"
+.br
+.ti -1c
+.RI "#define \fBLMIN\fP(\fBa\fP, \fBb\fP)"
+.br
+.ti -1c
+.RI "#define \fBIMAX\fP(\fBa\fP, \fBb\fP)"
+.br
+.ti -1c
+.RI "#define \fBIMIN\fP(\fBa\fP, \fBb\fP)"
+.br
+.ti -1c
+.RI "#define \fBSIGN\fP(\fBa\fP, \fBb\fP)   ((\fBb\fP) > 0.0 ? fabs(\fBa\fP) : -fabs(\fBa\fP))"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBnrerror\fP ()"
+.br
+.ti -1c
+.RI "float * \fBvector\fP ()"
+.br
+.ti -1c
+.RI "float ** \fBmatrix\fP ()"
+.br
+.ti -1c
+.RI "float ** \fBsubmatrix\fP ()"
+.br
+.ti -1c
+.RI "float ** \fBconvert_matrix\fP ()"
+.br
+.ti -1c
+.RI "float *** \fBf3tensor\fP ()"
+.br
+.ti -1c
+.RI "double * \fBdvector\fP ()"
+.br
+.ti -1c
+.RI "double ** \fBdmatrix\fP ()"
+.br
+.ti -1c
+.RI "int * \fBivector\fP ()"
+.br
+.ti -1c
+.RI "int ** \fBimatrix\fP ()"
+.br
+.ti -1c
+.RI "unsigned char * \fBcvector\fP ()"
+.br
+.ti -1c
+.RI "unsigned long * \fBlvector\fP ()"
+.br
+.ti -1c
+.RI "void \fBfree_vector\fP ()"
+.br
+.ti -1c
+.RI "void \fBfree_dvector\fP ()"
+.br
+.ti -1c
+.RI "void \fBfree_ivector\fP ()"
+.br
+.ti -1c
+.RI "void \fBfree_cvector\fP ()"
+.br
+.ti -1c
+.RI "void \fBfree_lvector\fP ()"
+.br
+.ti -1c
+.RI "void \fBfree_matrix\fP ()"
+.br
+.ti -1c
+.RI "void \fBfree_submatrix\fP ()"
+.br
+.ti -1c
+.RI "void \fBfree_convert_matrix\fP ()"
+.br
+.ti -1c
+.RI "void \fBfree_dmatrix\fP ()"
+.br
+.ti -1c
+.RI "void \fBfree_imatrix\fP ()"
+.br
+.ti -1c
+.RI "void \fBfree_f3tensor\fP ()"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float \fBsqrarg\fP"
+.br
+.ti -1c
+.RI "double \fBdsqrarg\fP"
+.br
+.ti -1c
+.RI "double \fBdmaxarg1\fP"
+.br
+.ti -1c
+.RI "double \fBdmaxarg2\fP"
+.br
+.ti -1c
+.RI "double \fBdminarg1\fP"
+.br
+.ti -1c
+.RI "double \fBdminarg2\fP"
+.br
+.ti -1c
+.RI "float \fBmaxarg1\fP"
+.br
+.ti -1c
+.RI "float \fBmaxarg2\fP"
+.br
+.ti -1c
+.RI "float \fBminarg1\fP"
+.br
+.ti -1c
+.RI "float \fBminarg2\fP"
+.br
+.ti -1c
+.RI "long \fBlmaxarg1\fP"
+.br
+.ti -1c
+.RI "long \fBlmaxarg2\fP"
+.br
+.ti -1c
+.RI "long \fBlminarg1\fP"
+.br
+.ti -1c
+.RI "long \fBlminarg2\fP"
+.br
+.ti -1c
+.RI "int \fBimaxarg1\fP"
+.br
+.ti -1c
+.RI "int \fBimaxarg2\fP"
+.br
+.ti -1c
+.RI "int \fBiminarg1\fP"
+.br
+.ti -1c
+.RI "int \fBiminarg2\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define DMAX(\fBa\fP, \fBb\fP)"
+.PP
+\fBValue:\fP.nf
+(dmaxarg1=(a),dmaxarg2=(b),(dmaxarg1) > (dmaxarg2) ?\
+        (dmaxarg1) : (dmaxarg2))
+.fi
+.PP
+Definition at line 11 of file utils/nrutil.h.
+.SS "#define DMIN(\fBa\fP, \fBb\fP)"
+.PP
+\fBValue:\fP.nf
+(dminarg1=(a),dminarg2=(b),(dminarg1) < (dminarg2) ?\
+        (dminarg1) : (dminarg2))
+.fi
+.PP
+Definition at line 15 of file utils/nrutil.h.
+.SS "#define DSQR(\fBa\fP)   ((\fBdsqrarg\fP=(\fBa\fP)) == 0.0 ? 0.0 : \fBdsqrarg\fP*\fBdsqrarg\fP)"
+.PP
+Definition at line 8 of file utils/nrutil.h.
+.SS "#define FMAX(\fBa\fP, \fBb\fP)"
+.PP
+\fBValue:\fP.nf
+(maxarg1=(a),maxarg2=(b),(maxarg1) > (maxarg2) ?\
+        (maxarg1) : (maxarg2))
+.fi
+.PP
+Definition at line 19 of file utils/nrutil.h.
+.SS "#define FMIN(\fBa\fP, \fBb\fP)"
+.PP
+\fBValue:\fP.nf
+(minarg1=(a),minarg2=(b),(minarg1) < (minarg2) ?\
+        (minarg1) : (minarg2))
+.fi
+.PP
+Definition at line 23 of file utils/nrutil.h.
+.SS "#define IMAX(\fBa\fP, \fBb\fP)"
+.PP
+\fBValue:\fP.nf
+(imaxarg1=(a),imaxarg2=(b),(imaxarg1) > (imaxarg2) ?\
+        (imaxarg1) : (imaxarg2))
+.fi
+.PP
+Definition at line 35 of file utils/nrutil.h.
+.SS "#define IMIN(\fBa\fP, \fBb\fP)"
+.PP
+\fBValue:\fP.nf
+(iminarg1=(a),iminarg2=(b),(iminarg1) < (iminarg2) ?\
+        (iminarg1) : (iminarg2))
+.fi
+.PP
+Definition at line 39 of file utils/nrutil.h.
+.SS "#define LMAX(\fBa\fP, \fBb\fP)"
+.PP
+\fBValue:\fP.nf
+(lmaxarg1=(a),lmaxarg2=(b),(lmaxarg1) > (lmaxarg2) ?\
+        (lmaxarg1) : (lmaxarg2))
+.fi
+.PP
+Definition at line 27 of file utils/nrutil.h.
+.SS "#define LMIN(\fBa\fP, \fBb\fP)"
+.PP
+\fBValue:\fP.nf
+(lminarg1=(a),lminarg2=(b),(lminarg1) < (lminarg2) ?\
+        (lminarg1) : (lminarg2))
+.fi
+.PP
+Definition at line 31 of file utils/nrutil.h.
+.SS "#define SIGN(\fBa\fP, \fBb\fP)   ((\fBb\fP) > 0.0 ? fabs(\fBa\fP) : -fabs(\fBa\fP))"
+.PP
+Definition at line 42 of file utils/nrutil.h.
+.SS "#define SQR(\fBa\fP)   ((\fBsqrarg\fP=(\fBa\fP)) == 0.0 ? 0.0 : \fBsqrarg\fP*\fBsqrarg\fP)"
+.PP
+Definition at line 5 of file utils/nrutil.h.
+.SH "Function Documentation"
+.PP 
+.SS "float** convert_matrix ()"
+.PP
+.SS "unsigned char* cvector ()"
+.PP
+.SS "double** dmatrix ()"
+.PP
+.SS "double* dvector ()"
+.PP
+.SS "float*** f3tensor ()"
+.PP
+.SS "void free_convert_matrix ()"
+.PP
+.SS "void free_cvector ()"
+.PP
+.SS "void free_dmatrix ()"
+.PP
+.SS "void free_dvector ()"
+.PP
+.SS "void free_f3tensor ()"
+.PP
+.SS "void free_imatrix ()"
+.PP
+.SS "void free_ivector ()"
+.PP
+.SS "void free_lvector ()"
+.PP
+.SS "void free_matrix ()"
+.PP
+.SS "void free_submatrix ()"
+.PP
+.SS "void free_vector ()"
+.PP
+.SS "int** imatrix ()"
+.PP
+.SS "int* ivector ()"
+.PP
+.SS "unsigned long* lvector ()"
+.PP
+.SS "float** matrix ()"
+.PP
+.SS "void nrerror ()"
+.PP
+.SS "float** submatrix ()"
+.PP
+.SS "float* vector ()"
+.PP
+.SH "Variable Documentation"
+.PP 
+.SS "double \fBdmaxarg1\fP\fC [static]\fP"
+.PP
+Definition at line 10 of file utils/nrutil.h.
+.SS "double \fBdmaxarg2\fP\fC [static]\fP"
+.PP
+Definition at line 10 of file utils/nrutil.h.
+.SS "double \fBdminarg1\fP\fC [static]\fP"
+.PP
+Definition at line 14 of file utils/nrutil.h.
+.SS "double \fBdminarg2\fP\fC [static]\fP"
+.PP
+Definition at line 14 of file utils/nrutil.h.
+.SS "double \fBdsqrarg\fP\fC [static]\fP"
+.PP
+Definition at line 7 of file utils/nrutil.h.
+.SS "int \fBimaxarg1\fP\fC [static]\fP"
+.PP
+Definition at line 34 of file utils/nrutil.h.
+.SS "int \fBimaxarg2\fP\fC [static]\fP"
+.PP
+Definition at line 34 of file utils/nrutil.h.
+.SS "int \fBiminarg1\fP\fC [static]\fP"
+.PP
+Definition at line 38 of file utils/nrutil.h.
+.SS "int \fBiminarg2\fP\fC [static]\fP"
+.PP
+Definition at line 38 of file utils/nrutil.h.
+.SS "long \fBlmaxarg1\fP\fC [static]\fP"
+.PP
+Definition at line 26 of file utils/nrutil.h.
+.SS "long \fBlmaxarg2\fP\fC [static]\fP"
+.PP
+Definition at line 26 of file utils/nrutil.h.
+.SS "long \fBlminarg1\fP\fC [static]\fP"
+.PP
+Definition at line 30 of file utils/nrutil.h.
+.SS "long \fBlminarg2\fP\fC [static]\fP"
+.PP
+Definition at line 30 of file utils/nrutil.h.
+.SS "float \fBmaxarg1\fP\fC [static]\fP"
+.PP
+Definition at line 18 of file utils/nrutil.h.
+.SS "float \fBmaxarg2\fP\fC [static]\fP"
+.PP
+Definition at line 18 of file utils/nrutil.h.
+.SS "float \fBminarg1\fP\fC [static]\fP"
+.PP
+Definition at line 22 of file utils/nrutil.h.
+.SS "float \fBminarg2\fP\fC [static]\fP"
+.PP
+Definition at line 22 of file utils/nrutil.h.
+.SS "float \fBsqrarg\fP\fC [static]\fP"
+.PP
+Definition at line 4 of file utils/nrutil.h.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

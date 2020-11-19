@@ -1,0 +1,7 @@
+'ic' is the 'Image Calculator' which allows rather general
+operations on fits images (though restricted to 1-point operations
+where the output image at a given position is some function only
+of one or more input pixel values at the same position).
+It uses a simple reverse-polish notation to specify the
+operation you wish to perform.
+

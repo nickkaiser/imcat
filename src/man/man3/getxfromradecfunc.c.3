@@ -1,0 +1,44 @@
+.TH "getxfromradecfunc.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getxfromradecfunc.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include 'getxfromradecfunc.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBgetxcoords\fP (double \fBra\fP, double dec, double rao, double deco, double *x)"
+.br
+.ti -1c
+.RI "int \fBinversegetxcoords\fP (double *\fBra\fP, double *dec, double rao, double deco, double *x)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int getxcoords (double ra, double dec, double rao, double deco, double * x)"
+.PP
+Definition at line 15 of file getxfromradecfunc.c.
+.PP
+References i, phi, ra, x, xo, and xp().
+.PP
+Referenced by getobjects(), and main().
+.SS "int inversegetxcoords (double * ra, double * dec, double rao, double deco, double * x)"
+.PP
+Definition at line 79 of file getxfromradecfunc.c.
+.PP
+References i, phi, ra, x, xo, xp(), and xx.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

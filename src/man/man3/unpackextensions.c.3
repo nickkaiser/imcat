@@ -1,0 +1,54 @@
+.TH "unpackextensions.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+unpackextensions.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/args.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	unpackextensions --- extract extensions from multi-part \fBFITS\fP file\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	unpackextensions extname fmt\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'unpackextensions\\' is used to separate \fBa\fP multi-component\\\fBn\fP\\	\fBFITS\fP file where \fBa\fP \fBnumber\fP of separate images (of arbitrary\\\fBn\fP\\	dimensionality) have been packed as extensions.\\\fBn\fP\\\\\fBn\fP\\	We first read the primary header, check that it has \\\fBn\fP\\	EXTEND = T and get the \fBnumber\fP of extensions from the\\\fBn\fP\\	NEXTEND header \fBitem\fP value.\\\fBn\fP\\	Then, for each extension, we read the header and image \fBdata\fP and\\\fBn\fP\\	write them to \fBa\fP file with name '\fBfilename\fP' given by\\\fBn\fP\\		sprintf(\fBfilename\fP, fmt, EXTNAME) where\\\fBn\fP\\	'fmt' is \fBa\fP format string and EXTNAME is the integerized value\\\fBn\fP\\	of the header \fBitem\fP named 'extname'.\\\fBn\fP\\\\\fBn\fP\\	For example, to unpack \fBa\fP CFHT archive format CFH12K file\\\fBn\fP\\	504338o.\fBfits\fP to 504338o00.\fBfits\fP 504338o01.\fBfits\fP ... 504338o11.\fBfits\fP\\\fBn\fP\\	you can do\\\fBn\fP\\\\\fBn\fP\\		unpackextensions IMAGEID 504338o\\%.2\fBd\fP.\fBfits\fP < 504338o.\fBfits\fP\\\fBn\fP\\\\\fBn\fP\\	since IMAGEID (or CHIPID) contains the chip \fBnumber\fP as an \fBinteger\fP.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	unpackextensions --- extract extensions from multi-part \fBFITS\fP file\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	unpackextensions extname fmt\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'unpackextensions\\' is used to separate \fBa\fP multi-component\\\fBn\fP\\	\fBFITS\fP file where \fBa\fP \fBnumber\fP of separate images (of arbitrary\\\fBn\fP\\	dimensionality) have been packed as extensions.\\\fBn\fP\\\\\fBn\fP\\	We first read the primary header, check that it has \\\fBn\fP\\	EXTEND = T and get the \fBnumber\fP of extensions from the\\\fBn\fP\\	NEXTEND header \fBitem\fP value.\\\fBn\fP\\	Then, for each extension, we read the header and image \fBdata\fP and\\\fBn\fP\\	write them to \fBa\fP file with name '\fBfilename\fP' given by\\\fBn\fP\\		sprintf(\fBfilename\fP, fmt, EXTNAME) where\\\fBn\fP\\	'fmt' is \fBa\fP format string and EXTNAME is the integerized value\\\fBn\fP\\	of the header \fBitem\fP named 'extname'.\\\fBn\fP\\\\\fBn\fP\\	For example, to unpack \fBa\fP CFHT archive format CFH12K file\\\fBn\fP\\	504338o.\fBfits\fP to 504338o00.\fBfits\fP 504338o01.\fBfits\fP ... 504338o11.\fBfits\fP\\\fBn\fP\\	you can do\\\fBn\fP\\\\\fBn\fP\\		unpackextensions IMAGEID 504338o\\%.2\fBd\fP.\fBfits\fP < 504338o.\fBfits\fP\\\fBn\fP\\\\\fBn\fP\\	since IMAGEID (or CHIPID) contains the chip \fBnumber\fP as an \fBinteger\fP.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file unpackextensions.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 46 of file unpackextensions.c.
+.PP
+References argsinit(), error_exit, exit(), fitsheader::extpixtype, fits, flag, FLAG_ARG, free(), getargs(), getcommentbyname(), getnumericvalue(), fitsheader::hasextensions, i, fitsheader::isextension, fitsheader::n, fitsheader::ndim, nextargtype(), fitsheader::nextensions, nim, fitsheader::opstream, pixsize(), readfitsheader(), usage, and writefitsheader().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

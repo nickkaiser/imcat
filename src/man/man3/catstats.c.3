@@ -1,0 +1,262 @@
+.TH "catstats.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+catstats.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/stats_stuff.h'\fP
+.br
+\fC#include '../catlib/cat.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBstatobj\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	catstats - calculate statistics for catalogue \fBobject\fP values\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	catstats [\fBoptions\fP....]\\\fBn\fP\\		-s		# only output count, min, max, mean, \fBsigma1\fP\\\fBn\fP\\		-\fBv\fP statistic	# only output 'statistic'\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'catstats' reads \fBa\fP catalogue from stdin and creates \fBa\fP new\\\fBn\fP\\	catalogue whose first \fBobject\fP \fBitem\fP is \fBa\fP text entry 'statistic'\\\fBn\fP\\	which takes values 'count', 'min', 'max', 'mean'....\\\fBn\fP\\	and whose subsequent \fBobject\fP items have the same names as the\\\fBn\fP\\	numerical items in the input catalogue and which\\\fBn\fP\\	contain the appropriate statistic.\\\fBn\fP\\\\\fBn\fP\\	Catstats will always output the basic statistics:\\\fBn\fP\\		count		# \fBnumber\fP of objects\\\fBn\fP\\		min		# minimum value\\\fBn\fP\\		max		# maximum value\\\fBn\fP\\		mean		# <f> = sum f / count\\\fBn\fP\\		\fBsigma1\fP		# sqrt(<f^2> - <f>^2)\\\fBt\fP\\\fBn\fP\\	and by default will also calculate\\\fBn\fP\\		\fBmode\fP		# 'robust' \fBmode\fP estimator\\\fBn\fP\\		median		# median\\\fBn\fP\\		lquart		# upper quartile\\\fBn\fP\\		uquart		# lower quartile\\\fBn\fP\\		\fBsigma2\fP		# 'robust' \fBsigma\fP estimator   \\\fBn\fP\\	provided there are are least 8 objects in the catalogue.\\\fBn\fP\\\\\fBn\fP\\	The statistics '\fBmode\fP' and '\fBsigma2\fP' are designed to be\\\fBn\fP\\	insensitive to outliers.\\\fBn\fP\\\\\fBn\fP\\	The '\fBmode\fP' is estimated by first making \fBa\fP crude\\\fBn\fP\\	estimate of \fBsigma\fP as (uquart - lquart) / 1.34; smoothing\\\fBn\fP\\	the histogram of values with \fBa\fP gaussian of width \fBsigma\fP\\\fBn\fP\\	and returning the location of the \fBpeak\fP.\\\fBn\fP\\\\\fBn\fP\\	'\fBsigma2\fP' is estimated from the width of the region around\\\fBn\fP\\	the \fBmode\fP containing 25 percent of the values (and assuming)\\\fBn\fP\\	\fBa\fP gaussian distribution.  Thus, \fBsigma2\fP is effectively\\\fBn\fP\\	measured from the curvature of the distribution around the\\\fBn\fP\\	\fBmode\fP and will, for example, overestimate the \fBreal\fP \fBsigma\fP\\\fBn\fP\\	for \fBa\fP very boxy distribution.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBSIMPLE_STATS_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBALL_STATS_MODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBN_STATS\fP   9"
+.br
+.ti -1c
+.RI "#define \fBMIN_INDEX\fP   0"
+.br
+.ti -1c
+.RI "#define \fBMAX_INDEX\fP   1"
+.br
+.ti -1c
+.RI "#define \fBMEAN_INDEX\fP   2"
+.br
+.ti -1c
+.RI "#define \fBSIGMA1_INDEX\fP   3"
+.br
+.ti -1c
+.RI "#define \fBMODE_INDEX\fP   4"
+.br
+.ti -1c
+.RI "#define \fBMEDIAN_INDEX\fP   5"
+.br
+.ti -1c
+.RI "#define \fBLQUART_INDEX\fP   6"
+.br
+.ti -1c
+.RI "#define \fBUQUART_INDEX\fP   7"
+.br
+.ti -1c
+.RI "#define \fBSIGMA2_INDEX\fP   8"
+.br
+.ti -1c
+.RI "#define \fBMAX_NUMBERS\fP   10000"
+.br
+.ti -1c
+.RI "#define \fBMIN_COUNT\fP   8"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBstatobj\fP \fBstatobj\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBgetnumericaddresses\fP (\fBobject\fP *\fBobj\fP)"
+.br
+.ti -1c
+.RI "void \fBgetitemaddresses\fP (\fBitem\fP *theitem, void *addr, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "char \fBstatname\fP [N_STATS][64]"
+.br
+.ti -1c
+.RI "double * \fBfin\fP [MAX_NUMBERS]"
+.br
+.ti -1c
+.RI "double * \fBfstat\fP [N_STATS][MAX_NUMBERS]"
+.br
+.ti -1c
+.RI "int \fBg_istat\fP"
+.br
+.ti -1c
+.RI "int \fBfindex\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define ALL_STATS_MODE   1"
+.PP
+Definition at line 66 of file catstats.c.
+.PP
+Referenced by main().
+.SS "#define LQUART_INDEX   6"
+.PP
+Definition at line 74 of file catstats.c.
+.PP
+Referenced by main().
+.SS "#define MAX_INDEX   1"
+.PP
+Definition at line 69 of file catstats.c.
+.PP
+Referenced by main().
+.SS "#define MAX_NUMBERS   10000"
+.PP
+Definition at line 100 of file catstats.c.
+.PP
+Referenced by main().
+.SS "#define MEAN_INDEX   2"
+.PP
+Definition at line 70 of file catstats.c.
+.PP
+Referenced by main().
+.SS "#define MEDIAN_INDEX   5"
+.PP
+Definition at line 73 of file catstats.c.
+.PP
+Referenced by main().
+.SS "#define MIN_COUNT   8"
+.PP
+Definition at line 102 of file catstats.c.
+.PP
+Referenced by main().
+.SS "#define MIN_INDEX   0"
+.PP
+Definition at line 68 of file catstats.c.
+.PP
+Referenced by main().
+.SS "#define MODE_INDEX   4"
+.PP
+Definition at line 72 of file catstats.c.
+.PP
+Referenced by main().
+.SS "#define N_STATS   9"
+.PP
+Definition at line 67 of file catstats.c.
+.PP
+Referenced by main().
+.SS "#define SIGMA1_INDEX   3"
+.PP
+Definition at line 71 of file catstats.c.
+.PP
+Referenced by main().
+.SS "#define SIGMA2_INDEX   8"
+.PP
+Definition at line 76 of file catstats.c.
+.PP
+Referenced by main().
+.SS "#define SIMPLE_STATS_MODE   0"
+.PP
+Definition at line 65 of file catstats.c.
+.PP
+Referenced by main().
+.SS "#define UQUART_INDEX   7"
+.PP
+Definition at line 75 of file catstats.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	catstats - calculate statistics for catalogue \fBobject\fP values\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	catstats [\fBoptions\fP....]\\\fBn\fP\\		-s		# only output count, min, max, mean, \fBsigma1\fP\\\fBn\fP\\		-\fBv\fP statistic	# only output 'statistic'\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'catstats' reads \fBa\fP catalogue from stdin and creates \fBa\fP new\\\fBn\fP\\	catalogue whose first \fBobject\fP \fBitem\fP is \fBa\fP text entry 'statistic'\\\fBn\fP\\	which takes values 'count', 'min', 'max', 'mean'....\\\fBn\fP\\	and whose subsequent \fBobject\fP items have the same names as the\\\fBn\fP\\	numerical items in the input catalogue and which\\\fBn\fP\\	contain the appropriate statistic.\\\fBn\fP\\\\\fBn\fP\\	Catstats will always output the basic statistics:\\\fBn\fP\\		count		# \fBnumber\fP of objects\\\fBn\fP\\		min		# minimum value\\\fBn\fP\\		max		# maximum value\\\fBn\fP\\		mean		# <f> = sum f / count\\\fBn\fP\\		\fBsigma1\fP		# sqrt(<f^2> - <f>^2)\\\fBt\fP\\\fBn\fP\\	and by default will also calculate\\\fBn\fP\\		\fBmode\fP		# 'robust' \fBmode\fP estimator\\\fBn\fP\\		median		# median\\\fBn\fP\\		lquart		# upper quartile\\\fBn\fP\\		uquart		# lower quartile\\\fBn\fP\\		\fBsigma2\fP		# 'robust' \fBsigma\fP estimator   \\\fBn\fP\\	provided there are are least 8 objects in the catalogue.\\\fBn\fP\\\\\fBn\fP\\	The statistics '\fBmode\fP' and '\fBsigma2\fP' are designed to be\\\fBn\fP\\	insensitive to outliers.\\\fBn\fP\\\\\fBn\fP\\	The '\fBmode\fP' is estimated by first making \fBa\fP crude\\\fBn\fP\\	estimate of \fBsigma\fP as (uquart - lquart) / 1.34; smoothing\\\fBn\fP\\	the histogram of values with \fBa\fP gaussian of width \fBsigma\fP\\\fBn\fP\\	and returning the location of the \fBpeak\fP.\\\fBn\fP\\\\\fBn\fP\\	'\fBsigma2\fP' is estimated from the width of the region around\\\fBn\fP\\	the \fBmode\fP containing 25 percent of the values (and assuming)\\\fBn\fP\\	\fBa\fP gaussian distribution.  Thus, \fBsigma2\fP is effectively\\\fBn\fP\\	measured from the curvature of the distribution around the\\\fBn\fP\\	\fBmode\fP and will, for example, overestimate the \fBreal\fP \fBsigma\fP\\\fBn\fP\\	for \fBa\fP very boxy distribution.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file catstats.c.
+.PP
+Referenced by main().
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBstatobj\fP  \fBstatobj\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "void getitemaddresses (\fBitem\fP * theitem, void * addr, int level)"
+.PP
+Definition at line 286 of file catstats.c.
+.PP
+References item::dim, fin, findex, fstat, g_istat, i, and item::ndim.
+.PP
+Referenced by getnumericaddresses().
+.SS "void getnumericaddresses (\fBobject\fP * obj)"
+.PP
+Definition at line 272 of file catstats.c.
+.PP
+References item::addr, object::cathead, findex, getitemaddresses(), item::itype, item::next, and NUM_TYPE.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 108 of file catstats.c.
+.PP
+References addargscomment(), addobjectitem(), item::addr, ALL_STATS_MODE, allocitemcontents(), allocobjectcontents(), connectobjecttocathead(), copyheaderinfo(), copyitem(), error_exit, exit(), statobj::f, f, fin, findex, findmode(), fmedian(), fstat, g_istat, getnumericaddresses(), i, item::itype, liststats(), LQUART_INDEX, MAX_INDEX, MEAN_INDEX, MEDIAN_INDEX, MIN_COUNT, MIN_INDEX, MODE_INDEX, N_STATS, newitem(), newobject(), statobj::next, item::next, NUM_TYPE, cathead::objectitembase, opmode, readcathead(), readobject(), SIGMA1_INDEX, SIGMA2_INDEX, SIMPLE_STATS_MODE, statname, TEXT_TYPE, UQUART_INDEX, usage, writecathead(), and writeobject().
+.SH "Variable Documentation"
+.PP 
+.SS "double* \fBfin\fP[MAX_NUMBERS]\fC [static]\fP"
+.PP
+Definition at line 104 of file catstats.c.
+.PP
+Referenced by getitemaddresses(), and main().
+.SS "int \fBfindex\fP\fC [static]\fP"
+.PP
+Definition at line 106 of file catstats.c.
+.PP
+Referenced by getitemaddresses(), getnumericaddresses(), and main().
+.SS "double* \fBfstat\fP[N_STATS][MAX_NUMBERS]\fC [static]\fP"
+.PP
+Definition at line 105 of file catstats.c.
+.PP
+Referenced by getitemaddresses(), main(), and skiplines().
+.SS "int \fBg_istat\fP\fC [static]\fP"
+.PP
+Definition at line 106 of file catstats.c.
+.PP
+Referenced by getitemaddresses(), and main().
+.SS "char \fBstatname\fP[N_STATS][64]"
+.PP
+\fBInitial value:\fP.nf
+ {
+  'min',
+  'max',
+  'mean',
+  'sigma1',
+  'mode',
+  'median',
+  'lquart',
+  'uquart',
+  'sigma2'
+}
+.fi
+.PP
+Definition at line 79 of file catstats.c.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

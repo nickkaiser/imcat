@@ -1,0 +1,42 @@
+.TH "lintransformfit.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+lintransformfit.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   'usage: lintransformfit [\fBoptions\fP...]\\\fBn\fP\\\\\fBt\fP\\\fBt\fP-\fBr\fP\\\fBt\fP\\\fBt\fP# output residuals\\\fBn\fP\\\\treads file containing x, y, x', y' from stdin and \fBfits\fP \fBa\fP linear\\\fBn\fP\\\\ttransformation model:\\\fBn\fP\\\\\fBt\fP\\\fBtx\fP' = \fBx0\fP + Pxx x + Pxy y\\\fBn\fP\\\\\fBt\fP\\\fBty\fP' = y0 + Pyx x + Pyy y\\\fBn\fP\\\\tby least squares.\\\fBn\fP\\\\tOutputs \fBdx\fP, \fBdy\fP, Pxx, Pxy, Pyx, Pyy to stdout by default.\\\fBn\fP\\\\tUse -\fBr\fP option to output x, y, x', y', \fBdx\fP, \fBdy\fP where \fBdx\fP = x' - model.\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   'usage: lintransformfit [\fBoptions\fP...]\\\fBn\fP\\\\\fBt\fP\\\fBt\fP-\fBr\fP\\\fBt\fP\\\fBt\fP# output residuals\\\fBn\fP\\\\treads file containing x, y, x', y' from stdin and \fBfits\fP \fBa\fP linear\\\fBn\fP\\\\ttransformation model:\\\fBn\fP\\\\\fBt\fP\\\fBtx\fP' = \fBx0\fP + Pxx x + Pxy y\\\fBn\fP\\\\\fBt\fP\\\fBty\fP' = y0 + Pyx x + Pyy y\\\fBn\fP\\\\tby least squares.\\\fBn\fP\\\\tOutputs \fBdx\fP, \fBdy\fP, Pxx, Pxy, Pyx, Pyy to stdout by default.\\\fBn\fP\\\\tUse -\fBr\fP option to output x, y, x', y', \fBdx\fP, \fBdy\fP where \fBdx\fP = x' - model.\\\fBn\fP'"
+.PP
+Definition at line 6 of file lintransformfit.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 19 of file lintransformfit.c.
+.PP
+References B, d, dx, dy, exit(), indx, line, m, mylubksb(), myludcmp(), n, usage, x, xp(), y, and yp().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

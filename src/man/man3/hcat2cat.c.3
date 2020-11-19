@@ -1,0 +1,202 @@
+.TH "hcat2cat.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+hcat2cat.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/stats_stuff.h'\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include 'hfindpeaks.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBoldobject\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	hcat2cat - process hfindpeaks output\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	hcat2cat [\fBoptions\fP...] < hcatfile > \fBcatfile\fP\\\fBn\fP\\		-\fBa\fP		# fire on all local maxima\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'hcat2cat\\' reads \fBa\fP set of \fBpeak\fP trajectories in \\'hcat\\'\\n\\	format from stdin and applies an algorithm to pick out\\\fBn\fP\\	particular \fBpoints\fP (\fBe\fP.g. \fBpoints\fP of max significance).\\\fBn\fP\\	Default is to pick only the most significant local maxima\\\fBn\fP\\	along \fBa\fP \fBpeak\fP trajectory, but -\fBa\fP option finds all local maxima.\\\fBn\fP\\	Standard format catalogue goes to stdout\\\fBn\fP\\	THIS IS NOW CALLED AUTOMATICALLY BY hfindpeaks\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBBESTPEAK\fP   0"
+.br
+.ti -1c
+.RI "#define \fBALLPEAKS\fP   1"
+.br
+.ti -1c
+.RI "#define \fBRFACTOR\fP   0.66"
+.br
+.ti -1c
+.RI "#define \fBFFACTOR\fP   15.41"
+.br
+.ti -1c
+.RI "#define \fBEFACTOR\fP   1.50"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBoldobject\fP \fBoldobject\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBprocess\fP (\fBpeak\fP *thepeak, int peakcount, int \fBmode\fP)"
+.br
+.ti -1c
+.RI "float \fBinterp\fP (float \fBd\fP, float \fBx1\fP, float \fBx2\fP, float x3)"
+.br
+.ti -1c
+.RI "void \fBwrite_object\fP (\fBoldobject\fP *objectptr)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBobject\fP * \fBtheobject\fP"
+.br
+.ti -1c
+.RI "double \fBX\fP [2]"
+.br
+.ti -1c
+.RI "double \fBLG\fP"
+.br
+.ti -1c
+.RI "double \fBRG\fP"
+.br
+.ti -1c
+.RI "double \fBEG\fP [2]"
+.br
+.ti -1c
+.RI "double \fBFS\fP"
+.br
+.ti -1c
+.RI "double \fBNU\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define ALLPEAKS   1"
+.PP
+Definition at line 44 of file hcat2cat.c.
+.PP
+Referenced by main(), and process().
+.SS "#define BESTPEAK   0"
+.PP
+Definition at line 43 of file hcat2cat.c.
+.PP
+Referenced by main(), and process().
+.SS "#define EFACTOR   1.50"
+.PP
+Definition at line 53 of file hcat2cat.c.
+.PP
+Referenced by output(), and process().
+.SS "#define FFACTOR   15.41"
+.PP
+Definition at line 52 of file hcat2cat.c.
+.PP
+Referenced by output(), and process().
+.SS "#define RFACTOR   0.66"
+.PP
+Definition at line 51 of file hcat2cat.c.
+.PP
+Referenced by main(), output(), and process().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	hcat2cat - process hfindpeaks output\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	hcat2cat [\fBoptions\fP...] < hcatfile > \fBcatfile\fP\\\fBn\fP\\		-\fBa\fP		# fire on all local maxima\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'hcat2cat\\' reads \fBa\fP set of \fBpeak\fP trajectories in \\'hcat\\'\\n\\	format from stdin and applies an algorithm to pick out\\\fBn\fP\\	particular \fBpoints\fP (\fBe\fP.g. \fBpoints\fP of max significance).\\\fBn\fP\\	Default is to pick only the most significant local maxima\\\fBn\fP\\	along \fBa\fP \fBpeak\fP trajectory, but -\fBa\fP option finds all local maxima.\\\fBn\fP\\	Standard format catalogue goes to stdout\\\fBn\fP\\	THIS IS NOW CALLED AUTOMATICALLY BY hfindpeaks\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file hcat2cat.c.
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBoldobject\fP  \fBoldobject\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "float interp (float d, float x1, float x2, float x3)"
+.PP
+Definition at line 177 of file hcat2cat.c.
+.PP
+References d.
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 58 of file hcat2cat.c.
+.PP
+References addargscomment(), ALLPEAKS, BESTPEAK, BINARY_FILE_TYPE, connectcatheadtoobject(), EG, error_exit, exit(), FS, getobjectitemindex(), LG, newobject(), peak::next, NU, peak, process(), readcathead(), RG, setaddress(), setcatopfiletype(), theline, theobject, usage, writecathead(), and X.
+.SS "void process (\fBpeak\fP * thepeak, int peakcount, int mode)"
+.PP
+Definition at line 115 of file hcat2cat.c.
+.PP
+References ALLPEAKS, BESTPEAK, d, oldobject::e, EFACTOR, FFACTOR, free(), oldobject::fs, oldobject::i, i, interp(), oldobject::j, oldobject::l, oldobject::lg, peak::next, oldobject::nu, RFACTOR, oldobject::rg, oldobject::rh, write_object(), and oldobject::x.
+.PP
+Referenced by main().
+.SS "void write_object (\fBoldobject\fP * objectptr)"
+.PP
+Definition at line 187 of file hcat2cat.c.
+.PP
+References oldobject::e, EG, oldobject::fs, FS, oldobject::lg, LG, oldobject::nu, NU, oldobject::rg, RG, theobject, writeobject(), oldobject::x, and X.
+.PP
+Referenced by main(), and process().
+.SH "Variable Documentation"
+.PP 
+.SS "double \fBEG\fP[2]\fC [static]\fP"
+.PP
+Definition at line 56 of file hcat2cat.c.
+.PP
+Referenced by main(), and write_object().
+.SS "double \fBFS\fP\fC [static]\fP"
+.PP
+Definition at line 56 of file hcat2cat.c.
+.PP
+Referenced by main(), and write_object().
+.SS "double \fBLG\fP\fC [static]\fP"
+.PP
+Definition at line 56 of file hcat2cat.c.
+.PP
+Referenced by main(), and write_object().
+.SS "double \fBNU\fP\fC [static]\fP"
+.PP
+Definition at line 56 of file hcat2cat.c.
+.PP
+Referenced by main(), and write_object().
+.SS "double \fBRG\fP\fC [static]\fP"
+.PP
+Definition at line 56 of file hcat2cat.c.
+.PP
+Referenced by main(), and write_object().
+.SS "\fBobject\fP* \fBtheobject\fP\fC [static]\fP"
+.PP
+Definition at line 55 of file hcat2cat.c.
+.PP
+Referenced by main(), and write_object().
+.SS "double \fBX\fP[2]\fC [static]\fP"
+.PP
+Definition at line 56 of file hcat2cat.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

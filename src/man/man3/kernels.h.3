@@ -1,0 +1,45 @@
+.TH "kernels.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+kernels.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBcirckernel\fP (double *K, double \fBx0\fP, double y0, double x, double y, double R, double eps)"
+.br
+.ti -1c
+.RI "void \fBrectkernel\fP (double *K, double *\fBalpha\fP, double \fBx0\fP, double y0, double x, double y, double NX, double NY, double eps)"
+.br
+.ti -1c
+.RI "double \fBcutoff\fP (double \fBr\fP, double p, double eps)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void circkernel (double * K, double x0, double y0, double x, double y, double R, double eps)"
+.PP
+Definition at line 20 of file kernels.c.
+.PP
+References a1, a2, cutoff(), EPS, K, r, W, x, y, Y, and z.
+.SS "double cutoff (double r, double p, double eps)"
+.PP
+Definition at line 161 of file kernels.c.
+.PP
+References EPS, r, and x.
+.PP
+Referenced by circkernel(), and rectkernel().
+.SS "void rectkernel (double * K, double * alpha, double x0, double y0, double x, double y, double NX, double NY, double eps)"
+.PP
+Definition at line 81 of file kernels.c.
+.PP
+References a, alpha, cutoff(), EPS, i, j, K, L, r, sign, W, x, and y.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

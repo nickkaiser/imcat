@@ -1,0 +1,93 @@
+#!/usr/bin/perl
+
+$| = 1;			# force flushing
+
+chop($com = `basename $0`);
+
+$usage = "\
+NAME\
+	$com --- perl script to generate man pages in various formats\
+\
+SYNOPSIS\
+	$com sectionname mandir docdir tools... scripts...\
+\
+DESCRIPTION\
+	Generate man pages in various formats.\
+\
+";
+
+$sectionname = shift(@ARGV) || die $usage;
+$mandir = shift(@ARGV) || die $usage;
+$docdir = shift(@ARGV) || die $usage;
+
+$ntools = $#ARGV + 1;
+@tool = sort @ARGV;
+print "@tool\n";
+
+# make the individual man pages
+for ($t = 0; $t < $ntools; $t++) {
+	# make the cat-style manpage in docdir
+	echosys("$tool[$t] -u 2> $docdir/$tool[$t].man");
+	# make the groff formatted version in centralised directory
+	echosys("makegroffmanpage $tool[$t] $sectionname < $docdir/$tool[$t].man > $docdir/$tool[$t].1");
+	echosys("makehtmlmanpage < $docdir/$tool[$t].1 >  $docdir/$tool[$t].html");
+	echosys("maketexmanpage < $docdir/$tool[$t].1 >  $docdir/$tool[$t].tex");
+}
+
+if (1) {
+	# make the index
+	warn "# $0 : making section manpage\n";
+	open(OP, "> $docdir/$sectionname.man");
+	print OP "NAME\n\t$sectionname - $sectionname tools section\n\n";
+	if (-f "readme.man") {
+		print OP "DESCRIPTION\n";
+		$text = `cat readme.man`;
+		@line = split("\n", $text);
+		foreach $line (@line) {
+			print OP "\t$line\n";
+		}
+		print OP "\n";
+	}
+	print OP "COMMANDS\n";
+	for ($t = 0; $t < $ntools; $t++) {
+		printf OP "\t%-20s\t# ", $tool[$t];
+		@man = split("\n", `cat  $docdir/$tool[$t].man`);
+		for ($i = 0; $i < $#man + 1; $i++) {
+			last if ($man[$i] =~ /^NAME/);
+		}
+		$line = $man[$i + 1];
+		@word = split(" ", $line);
+		for ($i =  2 ; $i < $#word + 1; $i++) {
+			print OP "$word[$i] ";
+		}
+		print OP "\n\n";
+	}
+	print OP "\n";
+	print OP "AUTHOR\n\tNick Kaiser -- kaiser\@hawaii.edu\n";
+	close(OP);
+	echosys("makegroffmanpage $sectionname $sectionname < $docdir/$sectionname.man > $docdir/$sectionname.1");
+	echosys("makehtmlmanpage < $docdir/$sectionname.1 >  $docdir/$sectionname.html");
+	echosys("maketexmanpage 1 < $docdir/$sectionname.1 >  $docdir/$sectionname.tex");
+	echosys("cp $docdir/$sectionname.1 $docdir/AAA.groff");
+} else {
+	echosys("rm -f $docdir/AAA.groff");
+}
+
+for ($t = 0; $t < $ntools; $t++) {
+	echosys("cat $docdir/$tool[$t].1 >> $docdir/AAA.groff");
+	echosys("cat $docdir/$tool[$t].tex >> $docdir/$sectionname.tex");
+	echosys("rm $docdir/$tool[$t].tex");
+	echosys("cp $docdir/$tool[$t].man $mandir/cat1/$tool[$t].1");
+}
+
+echosys("cp $docdir/$sectionname.man $mandir/cat1/$sectionname.1");
+echosys("cp $docdir/*.1 $mandir/man1");
+echosys("cp $docdir/*.html $mandir/html1");
+
+sub echosys {
+        warn ("# ", $_[0], "\n");
+        system($_[0]);
+}
+
+
+exit;

@@ -1,0 +1,65 @@
+#! /usr/bin/perl
+
+# generate 2 * scrunched album for a slice of warped images
+
+$usage = "\
+NAME\
+	makewarpedalbum - creates an album of doubly scrunched images\
+SYNOPSIS\
+	makewarpedalbum ix1 ix2 iy1 iy2 expname warpdir destdir name\
+DESCRIPTION\
+	creates an album of doubly scrunched images from\
+	warpdir/ix_iy/expname.fits where ix = ix1 ... ix2 etc\
+	Result is placed in destdir/name\
+";
+
+die $usage if ($#ARGV < 7);
+$ix1 = shift @ARGV;
+$ix2 = shift @ARGV;
+$iy1 = shift @ARGV;
+$iy2 = shift @ARGV;
+$expname = shift @ARGV;
+$warpdir = shift @ARGV;
+$destdir = shift @ARGV;
+$name = shift @ARGV;
+
+
+$| = 1;
+
+$N = 256;
+$N1 = $N * (1 + $ix2 - $ix1);
+$N2 = $N * (1 + $iy2 - $iy1);
+
+
+# generate the offsets file
+open(OFFSETS, "> $$.tmp") || die "Can't open offsetsfile\n";
+printf OFFSETS "#	i	j\n";
+for ($ix = $ix1; $ix <= $ix2; $ix++) {
+	for ($iy = $iy1; $iy <= $iy2; $iy++) {
+		printf OFFSETS "\t%d\t%d\n", $N * ($iy - $iy1), $N * ($ix - $ix1);
+	}
+}
+close(OFFSETS);
+
+$n = 0;
+open(NAMES, "> $$.names") || die "cannot open $$.names\n";
+for ($ix = $ix1; $ix <= $ix2; $ix++) {
+	for ($iy = $iy1; $iy <= $iy2; $iy++) {
+		$srcfits = "$warpdir/$ix"."_"."$iy/$expname.fits";
+		$dstfits =  "$destdir/$$.$n.fits";
+		printf NAMES "%s\n", $dstfits;
+		&echosys("scrunch < $srcfits | scrunch > $dstfits");
+		$n++;
+	}
+}
+close(NAMES);
+
+&echosys("album -i $N1 $N2 -f $$.tmp -b `cat $$.names` > $destdir/$name");
+ 	
+&echosys("rm -f $$.tmp $destdir/$$.*");	
+
+
+sub echosys {
+        print @_, "\n";
+        system(@_);
+}

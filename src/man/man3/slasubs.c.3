@@ -1,0 +1,78 @@
+.TH "slasubs.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+slasubs.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBD2PI\fP   6.2831853071795864769252867665590057683943387987502"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBslaDcs2c\fP (double \fBa\fP, double \fBb\fP, double *\fBv\fP)"
+.br
+.ti -1c
+.RI "void \fBslaDmxv\fP (\fBdm\fP, double *\fBva\fP, double *vb)"
+.br
+.ti -1c
+.RI "void \fBslaDcc2s\fP (double *\fBv\fP, double *\fBa\fP, double *\fBb\fP)"
+.br
+.ti -1c
+.RI "double \fBslaDranrm\fP (double \fBangle\fP)"
+.br
+.ti -1c
+.RI "void \fBslaDeuler\fP (char *\fBorder\fP, double \fBphi\fP, double theta, double \fBpsi\fP, rmat)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define D2PI   6.2831853071795864769252867665590057683943387987502"
+.PP
+Definition at line 110 of file slasubs.c.
+.PP
+Referenced by slaDranrm().
+.SH "Function Documentation"
+.PP 
+.SS "void slaDcc2s (double * v, double * a, double * b)"
+.PP
+Definition at line 72 of file slasubs.c.
+.PP
+References a, b, r, v, x, y, and z.
+.SS "void slaDcs2c (double a, double b, double * v)"
+.PP
+Definition at line 10 of file slasubs.c.
+.PP
+References a, b, and v.
+.SS "void slaDeuler (char * order, double phi, double theta, double psi, rmat)"
+.PP
+Definition at line 133 of file slasubs.c.
+.PP
+References angle, c, i, j, k, l, n, order, phi, psi, and w.
+.SS "void slaDmxv (\fBdm\fP, double * va, double * vb)"
+.PP
+Definition at line 38 of file slasubs.c.
+.PP
+References i, j, va, and w.
+.SS "double slaDranrm (double angle)"
+.PP
+Definition at line 112 of file slasubs.c.
+.PP
+References angle, D2PI, and w.
+.PP
+Referenced by fk4prec(), and fk5prec().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,74 @@
+.TH "brent_dbl.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+brent_dbl.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include 'nrutil.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBNRANSI\fP"
+.br
+.ti -1c
+.RI "#define \fBITMAX\fP   100"
+.br
+.ti -1c
+.RI "#define \fBCGOLD\fP   0.3819660"
+.br
+.ti -1c
+.RI "#define \fBZEPS\fP   1.0\fBe\fP-10"
+.br
+.ti -1c
+.RI "#define \fBSHFT\fP(\fBa\fP, \fBb\fP, \fBc\fP, \fBd\fP)   (\fBa\fP)=(\fBb\fP);(\fBb\fP)=(\fBc\fP);(\fBc\fP)=(\fBd\fP);"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBbrent\fP (double ax, double bx, double cx, double(*f)(double), double tol, double *\fBxmin\fP)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CGOLD   0.3819660"
+.PP
+Definition at line 13 of file orbits/orbitutils/brent_dbl.c.
+.PP
+Referenced by brent().
+.SS "#define ITMAX   100"
+.PP
+Definition at line 12 of file orbits/orbitutils/brent_dbl.c.
+.PP
+Referenced by brent(), frprmn(), and powell().
+.SS "#define NRANSI"
+.PP
+Definition at line 10 of file orbits/orbitutils/brent_dbl.c.
+.SS "#define SHFT(\fBa\fP, \fBb\fP, \fBc\fP, \fBd\fP)   (\fBa\fP)=(\fBb\fP);(\fBb\fP)=(\fBc\fP);(\fBc\fP)=(\fBd\fP);"
+.PP
+Definition at line 15 of file orbits/orbitutils/brent_dbl.c.
+.PP
+Referenced by brent(), and mnbrak().
+.SS "#define ZEPS   1.0\fBe\fP-10"
+.PP
+Definition at line 14 of file orbits/orbitutils/brent_dbl.c.
+.PP
+Referenced by brent().
+.SH "Function Documentation"
+.PP 
+.SS "double brent (double ax, double bx, double cx, double(* f)(double), double tol, double * xmin)"
+.PP
+Definition at line 17 of file orbits/orbitutils/brent_dbl.c.
+.PP
+References a, b, CGOLD, d, e, ITMAX, nrerror(), r, SHFT, SIGN, v, w, x, xmin, and ZEPS.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

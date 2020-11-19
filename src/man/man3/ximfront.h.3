@@ -1,0 +1,215 @@
+.TH "ximfront.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ximfront.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBTITLE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBPRINT\fP   2"
+.br
+.ti -1c
+.RI "#define \fBMAKEMASK\fP   3"
+.br
+.ti -1c
+.RI "#define \fBTOPLEVEL\fP   4"
+.br
+.ti -1c
+.RI "#define \fBPICWIDGET\fP   5"
+.br
+.ti -1c
+.RI "#define \fBPOSLABEL\fP   6"
+.br
+.ti -1c
+.RI "#define \fBPIXVALLABEL\fP   7"
+.br
+.ti -1c
+.RI "#define \fBSLIDER2\fP   8"
+.br
+.ti -1c
+.RI "#define \fBPLOT\fP   9"
+.br
+.ti -1c
+.RI "#define \fBFMAX\fP   100"
+.br
+.ti -1c
+.RI "#define \fBFMIN\fP   101"
+.br
+.ti -1c
+.RI "#define \fBGOODSIZE\fP   102"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBSyntax\fP (XtAppContext app_con, char *call)"
+.br
+.ti -1c
+.RI "void \fBmakeslider\fP (int index, Widget fromVert, Widget fromHoriz)"
+.br
+.ti -1c
+.RI "void \fBxfgetargstring\fP (char **argstrptr)"
+.br
+.ti -1c
+.RI "void \fBmakewidgetdatabase\fP (void)"
+.br
+.ti -1c
+.RI "int \fBxfgetvalue\fP (int thename)"
+.br
+.ti -1c
+.RI "int \fBxfgetwidgetnumber\fP (Widget button)"
+.br
+.ti -1c
+.RI "Widget \fBxfgetwidget\fP (int thenumber)"
+.br
+.ti -1c
+.RI "void \fBsliderChanged\fP (Widget \fBw\fP, XtPointer closure, XtPointer call_data)"
+.br
+.ti -1c
+.RI "void \fBsetslider\fP (int index, float thumbpos, char *\fBlabel\fP, char *value)"
+.br
+.ti -1c
+.RI "void \fBsetlabelstring\fP (Widget \fBw\fP, char *thestring)"
+.br
+.ti -1c
+.RI "void \fBsetlabelnumber\fP (Widget \fBw\fP, float thenumber)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define FMAX   100"
+.PP
+Definition at line 17 of file ximfront.h.
+.SS "#define FMIN   101"
+.PP
+Definition at line 18 of file ximfront.h.
+.SS "#define GOODSIZE   102"
+.PP
+Definition at line 19 of file ximfront.h.
+.SS "#define MAKEMASK   3"
+.PP
+Definition at line 8 of file ximfront.h.
+.PP
+Referenced by makepopup(), and makewidgetdatabase().
+.SS "#define PICWIDGET   5"
+.PP
+Definition at line 10 of file ximfront.h.
+.SS "#define PIXVALLABEL   7"
+.PP
+Definition at line 12 of file ximfront.h.
+.PP
+Referenced by makewidgetdatabase(), and picclick().
+.SS "#define PLOT   9"
+.PP
+Definition at line 14 of file ximfront.h.
+.PP
+Referenced by makepopup(), and makewidgetdatabase().
+.SS "#define POSLABEL   6"
+.PP
+Definition at line 11 of file ximfront.h.
+.PP
+Referenced by makewidgetdatabase(), and picclick().
+.SS "#define PRINT   2"
+.PP
+Definition at line 7 of file ximfront.h.
+.PP
+Referenced by makepopup(), and makewidgetdatabase().
+.SS "#define SLIDER2   8"
+.PP
+Definition at line 13 of file ximfront.h.
+.PP
+Referenced by makewidgetdatabase(), and myworkproc1().
+.SS "#define TITLE   1"
+.PP
+Definition at line 6 of file ximfront.h.
+.PP
+Referenced by makepopup(), and makewidgetdatabase().
+.SS "#define TOPLEVEL   4"
+.PP
+Definition at line 9 of file ximfront.h.
+.SH "Function Documentation"
+.PP 
+.SS "void makeslider (int index, Widget fromVert, Widget fromHoriz)"
+.PP
+Definition at line 260 of file ximfront.c.
+.PP
+References scrollbar, slider, sliderChanged(), sliderlabel, sliders, and slidervalue.
+.PP
+Referenced by main().
+.SS "void makewidgetdatabase (void)"
+.PP
+Definition at line 236 of file front.c.
+.PP
+References FLABEL, flabel, makemask, MAKEMASK, numberlist, PICWIDGET, picwidget, pixvallabel, PIXVALLABEL, plot, PLOT, poslabel, POSLABEL, print, PRINT, slider, SLIDER2, title, TITLE, TLABEL, tlabel, TOPLEVEL, toplevel, and widgetlist.
+.SS "void setlabelnumber (Widget w, float thenumber)"
+.PP
+Definition at line 297 of file front.c.
+.PP
+References setlabelstring(), and w.
+.PP
+Referenced by sliderChanged().
+.SS "void setlabelstring (Widget w, char * thestring)"
+.PP
+Definition at line 284 of file front.c.
+.PP
+References n, and w.
+.PP
+Referenced by myworkproc1(), picclick(), setlabelnumber(), and setslider().
+.SS "void setslider (int index, float thumbpos, char * label, char * value)"
+.PP
+Definition at line 393 of file ximfront.c.
+.PP
+References label, n, scrollbar, setlabelstring(), sliderlabel, and slidervalue.
+.PP
+Referenced by setcolorscheme().
+.SS "void sliderChanged (Widget w, XtPointer closure, XtPointer call_data)"
+.PP
+Definition at line 375 of file ximfront.c.
+.PP
+References MAX_SLIDERS, newslidervalue(), scrollbar, set_shades(), setlabelnumber(), setsliderval(), slidervalue, and w.
+.PP
+Referenced by makeslider().
+.SS "void Syntax (XtAppContext app_con, char * call)"
+.PP
+Definition at line 193 of file front.c.
+.PP
+References exit(), and helpmsg.
+.PP
+Referenced by main().
+.SS "void xfgetargstring (char ** argstrptr)"
+.PP
+Definition at line 210 of file front.c.
+.PP
+References argstring.
+.SS "int xfgetvalue (int thename)"
+.PP
+Definition at line 218 of file front.c.
+.PP
+References app_resources, error_exit, _AppResources::fmax, FMAX, _AppResources::fmin, FMIN, GOODSIZE, and _AppResources::goodwindowsize.
+.PP
+Referenced by readdataheader(), and setcolorscheme().
+.SS "Widget xfgetwidget (int thenumber)"
+.PP
+Definition at line 268 of file front.c.
+.PP
+References error_exit, numberlist, and widgetlist.
+.PP
+Referenced by alloc_shades(), myworkproc1(), picclick(), and showpixmap().
+.SS "int xfgetwidgetnumber (Widget button)"
+.PP
+Definition at line 252 of file front.c.
+.PP
+References error_exit, numberlist, and widgetlist.
+.PP
+Referenced by makepopup().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

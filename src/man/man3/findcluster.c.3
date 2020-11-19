@@ -1,0 +1,74 @@
+.TH "findcluster.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+findcluster.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBparticle\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   'usage: findcluster ncol sigma_1...sigma_ncol [\fBoptions\fP...]\\\fBn\fP\\	searches for \fBa\fP cluster of particles in multi-dimensional space.\\\fBn\fP\\		-\fBb\fP dbox		# half-box side d_i = dbox * sigma_i (2.0)\\\fBn\fP\\		-\fBw\fP 		# weight the \fBpoints\fP by f\\\fBn\fP\\		-p 		# print the \fBpoints\fP in the box\\\fBn\fP\\	You supply ncol, the \fBnumber\fP of columns and \fBa\fP smoothing scale\\\fBn\fP\\	sigma_i for each dimension.\\\fBn\fP\\	For each \fBpoint\fP we calculate f = sum over neighbours of\\\fBn\fP\\	exp(-0.5 sum_i dx_i^2 / sigma_i^2) and find the hottest \fBparticle\fP.\\\fBn\fP\\	Finally we average coordinate summing over particles\\\fBn\fP\\	in the box of half-side d_i = dbox * sigma_i.\\\fBn\fP\\	Use -\fBw\fP option to weight \fBpoints\fP by f.\\\fBn\fP\\	Use -p option to print the \fBpoints\fP in the box (with f-values\\\fBn\fP\\	in last column).\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAX_DIMS\fP   6"
+.br
+.ti -1c
+.RI "#define \fBD2_MAX\fP   20"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBparticle\fP \fBparticle\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define D2_MAX   20"
+.PP
+Definition at line 29 of file findcluster.c.
+.PP
+Referenced by main().
+.SS "#define MAX_DIMS   6"
+.PP
+Definition at line 28 of file findcluster.c.
+.SS "#define \fBusage\fP   'usage: findcluster ncol sigma_1...sigma_ncol [\fBoptions\fP...]\\\fBn\fP\\	searches for \fBa\fP cluster of particles in multi-dimensional space.\\\fBn\fP\\		-\fBb\fP dbox		# half-box side d_i = dbox * sigma_i (2.0)\\\fBn\fP\\		-\fBw\fP 		# weight the \fBpoints\fP by f\\\fBn\fP\\		-p 		# print the \fBpoints\fP in the box\\\fBn\fP\\	You supply ncol, the \fBnumber\fP of columns and \fBa\fP smoothing scale\\\fBn\fP\\	sigma_i for each dimension.\\\fBn\fP\\	For each \fBpoint\fP we calculate f = sum over neighbours of\\\fBn\fP\\	exp(-0.5 sum_i dx_i^2 / sigma_i^2) and find the hottest \fBparticle\fP.\\\fBn\fP\\	Finally we average coordinate summing over particles\\\fBn\fP\\	in the box of half-side d_i = dbox * sigma_i.\\\fBn\fP\\	Use -\fBw\fP option to weight \fBpoints\fP by f.\\\fBn\fP\\	Use -p option to print the \fBpoints\fP in the box (with f-values\\\fBn\fP\\	in last column).\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 7 of file findcluster.c.
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBparticle\fP  \fBparticle\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 31 of file findcluster.c.
+.PP
+References c, d, D2_MAX, exit(), particle::f, line, particle::next, sigma, usage, and particle::x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

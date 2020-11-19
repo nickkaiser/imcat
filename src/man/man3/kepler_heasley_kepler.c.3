@@ -1,0 +1,78 @@
+.TH "kepler.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+kepler.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'kepler.h'\fP
+.br
+\fC#include '../orbitutils/vectors.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBEMU\fP   0.0002959122370203"
+.br
+.ti -1c
+.RI "#define \fBK\fP   0.01720209895"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBassignkeplerorbitfrombuffer\fP (\fBkeplerorbit\fP *orbit, double *buffer)"
+.br
+.ti -1c
+.RI "void \fBfillbufferfromkeplerorbit\fP (\fBkeplerorbit\fP *orbit, double *buffer)"
+.br
+.ti -1c
+.RI "int \fBcartesiantokepler\fP (double *\fBr\fP, double *\fBv\fP, \fBkeplerorbit\fP *\fBtheorbit\fP)"
+.br
+.ti -1c
+.RI "int \fBkeplertocartesian\fP (\fBkeplerorbit\fP *\fBtheorbit\fP, double *\fBr\fP, double *\fBv\fP)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define EMU   0.0002959122370203"
+.PP
+Definition at line 11 of file kepler_heasley/kepler.c.
+.PP
+Referenced by cartesiantokepler(), and keplertocartesian().
+.SS "#define K   0.01720209895"
+.PP
+Definition at line 12 of file kepler_heasley/kepler.c.
+.PP
+Referenced by cartesiantokepler(), circkernel(), getshape2(), getshape3(), keplertocartesian(), main(), and rectkernel().
+.SH "Function Documentation"
+.PP 
+.SS "void assignkeplerorbitfrombuffer (\fBkeplerorbit\fP * orbit, double * buffer)"
+.PP
+Definition at line 14 of file kepler_heasley/kepler.c.
+.SS "int cartesiantokepler (double * r, double * v, \fBkeplerorbit\fP * theorbit)"
+.PP
+Definition at line 34 of file kepler_heasley/kepler.c.
+.SS "void fillbufferfromkeplerorbit (\fBkeplerorbit\fP * orbit, double * buffer)"
+.PP
+Definition at line 24 of file kepler_heasley/kepler.c.
+.PP
+Referenced by main().
+.SS "int keplertocartesian (\fBkeplerorbit\fP * theorbit, double * r, double * v)"
+.PP
+Definition at line 71 of file kepler_heasley/kepler.c.
+.PP
+Referenced by chisquared(), main(), and oid().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

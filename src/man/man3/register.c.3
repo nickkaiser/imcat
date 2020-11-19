@@ -1,0 +1,82 @@
+.TH "register.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+register.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../utils/arrays.h'\fP
+.br
+\fC#include '../fftlib/myfft.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../imlib/filters.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   'usage: register xylist x'y'list [\fBoptions\fP...]\\\fBn\fP\\	read 2 lists of coords: (x,y), (x',y') and determine\\\fBn\fP\\	scale, rotation and translation that maps (x',y') => (x,y)\\\fBn\fP\\		x = \fBa\fP (x' cos - y' sin) + \fBx0\fP\\\fBn\fP\\		y = \fBa\fP (x' sin + y' cos) + y0\\\fBn\fP\\	It works by cross-correlating images of wrapped lnr, \fBphi\fP\\\fBn\fP\\	values for pairs of objects and locating \fBpeak\fP to determine\\\fBn\fP\\	\fBa\fP, \fBphi\fP.  We then rotate and scale x' y', generate images\\\fBn\fP\\	of x,y positions and cross correlate these to get \fBx0\fP, y0.\\\fBn\fP\\	Outputs \fBx0\fP, y0, \fBa\fP, \fBphi\fP.\\\fBn\fP\\	Options are:\\\fBn\fP\\		-\fBi\fP imsize	# internal image size (512)\\\fBn\fP\\		-p phi1 phi2	# range for \fBphi\fP wrapping (0, PI)\\\fBn\fP\\		-\fBa\fP \fBa1\fP \fBa2\fP	# find peaks only in this range of scale\\\fBn\fP\\		-\fBd\fP dlnr		# range of lnr for wrapping (1.0)\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBPI\fP   M_PI"
+.br
+.ti -1c
+.RI "#define \fBMAX_OBJECTS\fP   100000"
+.br
+.ti -1c
+.RI "#define \fBBIG_NEG\fP   -1.e10"
+.br
+.ti -1c
+.RI "#define \fBBIG_POS\fP   1.e10;"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "float \fBmexicanfilterfunction\fP (float ki, float kj)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define BIG_NEG   -1.e10"
+.PP
+Definition at line 34 of file register.c.
+.SS "#define BIG_POS   1.e10;"
+.PP
+Definition at line 35 of file register.c.
+.SS "#define MAX_OBJECTS   100000"
+.PP
+Definition at line 33 of file register.c.
+.SS "#define PI   M_PI"
+.PP
+Definition at line 32 of file register.c.
+.SS "#define \fBusage\fP   'usage: register xylist x'y'list [\fBoptions\fP...]\\\fBn\fP\\	read 2 lists of coords: (x,y), (x',y') and determine\\\fBn\fP\\	scale, rotation and translation that maps (x',y') => (x,y)\\\fBn\fP\\		x = \fBa\fP (x' cos - y' sin) + \fBx0\fP\\\fBn\fP\\		y = \fBa\fP (x' sin + y' cos) + y0\\\fBn\fP\\	It works by cross-correlating images of wrapped lnr, \fBphi\fP\\\fBn\fP\\	values for pairs of objects and locating \fBpeak\fP to determine\\\fBn\fP\\	\fBa\fP, \fBphi\fP.  We then rotate and scale x' y', generate images\\\fBn\fP\\	of x,y positions and cross correlate these to get \fBx0\fP, y0.\\\fBn\fP\\	Outputs \fBx0\fP, y0, \fBa\fP, \fBphi\fP.\\\fBn\fP\\	Options are:\\\fBn\fP\\		-\fBi\fP imsize	# internal image size (512)\\\fBn\fP\\		-p phi1 phi2	# range for \fBphi\fP wrapping (0, PI)\\\fBn\fP\\		-\fBa\fP \fBa1\fP \fBa2\fP	# find peaks only in this range of scale\\\fBn\fP\\		-\fBd\fP dlnr		# range of lnr for wrapping (1.0)\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 15 of file register.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 39 of file register.c.
+.PP
+References a1, a2, alloc_fft(), allocFloatArray(), BIG_NEG, BIG_POS, c, ccf(), dx, dy, error_exit, exit(), fft_type, forward_fft(), i, ipf, ix, line, MAX_OBJECTS, mexicanfilter(), n, nobj, phi, PI, usage, x, X, y, and Y.
+.SS "float mexicanfilterfunction (float ki, float kj)"
+.PP
+Definition at line 498 of file filters.c.
+.PP
+Referenced by mexicanfilter().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,48 @@
+.TH "unmergecat.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+unmergecat.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	unmergecat - extract one member from \fBa\fP merged catalogue\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	unmergecat \fBN\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'unmergecat' reads \fBa\fP merged catalogue created by 'mergecats'.\\\fBn\fP\\	Ignorring any \fBobject\fP items which are not vectors of things\\\fBn\fP\\	(\fBe\fP.g. the 'detection mask' or \fBnumber\fP of detections column)\\\fBn\fP\\	it creates \fBa\fP new catalogue in which each \fBobject\fP \fBitem\fP\\\fBn\fP\\	is the (\fBN\fP-1)th element of the \fBitem\fP of the same name in the\\\fBn\fP\\	input catalogue.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	unmergecat - extract one member from \fBa\fP merged catalogue\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	unmergecat \fBN\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'unmergecat' reads \fBa\fP merged catalogue created by 'mergecats'.\\\fBn\fP\\	Ignorring any \fBobject\fP items which are not vectors of things\\\fBn\fP\\	(\fBe\fP.g. the 'detection mask' or \fBnumber\fP of detections column)\\\fBn\fP\\	it creates \fBa\fP new catalogue in which each \fBobject\fP \fBitem\fP\\\fBn\fP\\	is the (\fBN\fP-1)th element of the \fBitem\fP of the same name in the\\\fBn\fP\\	input catalogue.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file unmergecat.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 32 of file unmergecat.c.
+.PP
+References addargscomment(), addobjectitem(), item::addr, allocitemcontents(), BINARY_FILE_TYPE, connectobjecttocathead(), copyheaderinfo(), item::dim, error_exit, exit(), i, item::itype, N, item::name, item::ndim, newitem(), newobject(), item::next, cathead::objectitembase, readcathead(), readobject(), setcatopfiletype(), usage, writecathead(), and writeobject().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

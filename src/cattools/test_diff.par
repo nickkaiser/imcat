@@ -1,0 +1,20 @@
+# text format catalogue file --- do not edit manually, use 'lc'
+# header:
+# text     1 1         model_type                  2Dpoly
+# number   1 1         dim                              2
+# number   1 1         nmodes                           6
+# text     1 1         xname                            x
+# number   1 2         xorigin                          0             0
+# number   1 1         nvar                             1
+# comment: spatial polynomial parameter file
+# contents: 3
+# number   1 1         l                   
+# number   1 1         m                   
+# number   1 2         f                   
+#             l             m          f[0]          f[1]
+              0             0      -6.85427      -25.8624
+              1             0      -11.2452       29.2509
+              1             1       29.2509       65.5034
+              2             0       17.8071      -3.26757
+              2             1      -6.53514      -43.0602
+              2             2      -21.5301      -38.3991

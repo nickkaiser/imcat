@@ -1,0 +1,113 @@
+.TH "map.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+map.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBULTRAFAST_MAP_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBFAST_MAP_MODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBTRIANGLE_MAP_MODE\fP   2"
+.br
+.ti -1c
+.RI "#define \fBFORWARDMAPMODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBINVERSEMAPMODE\fP   0"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBmap\fP (float **ftarget, int \fBN1\fP, int \fBN2\fP, float **fsource, int \fBM1\fP, int \fBM2\fP, int(*deflection)(float ri, float rj, float *\fBdi\fP, float *\fBdj\fP))"
+.br
+.ti -1c
+.RI "long \fBtrianglecount\fP (void)"
+.br
+.ti -1c
+.RI "void \fBfastmap\fP (float **ftarget, int \fBN1\fP, int \fBN2\fP, float **fsource, int \fBM1\fP, int \fBM2\fP, int(*deflection)(float ri, float rj, float *\fBdi\fP, float *\fBdj\fP))"
+.br
+.ti -1c
+.RI "void \fBultrafastmap\fP (float **ftarget, int \fBN1\fP, int \fBN2\fP, float **fsource, int \fBM1\fP, int \fBM2\fP, int(*deflection)(float ri, float rj, float *\fBdi\fP, float *\fBdj\fP))"
+.br
+.ti -1c
+.RI "void \fBset_triangle_map_mode\fP (int mapmode)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define FAST_MAP_MODE   1"
+.PP
+Definition at line 6 of file map.h.
+.PP
+Referenced by main().
+.SS "#define FORWARDMAPMODE   1"
+.PP
+Definition at line 50 of file map.h.
+.PP
+Referenced by addarea(), main(), and map().
+.SS "#define INVERSEMAPMODE   0"
+.PP
+Definition at line 51 of file map.h.
+.PP
+Referenced by main(), and map().
+.SS "#define TRIANGLE_MAP_MODE   2"
+.PP
+Definition at line 7 of file map.h.
+.PP
+Referenced by main().
+.SS "#define ULTRAFAST_MAP_MODE   0"
+.PP
+Definition at line 5 of file map.h.
+.PP
+Referenced by main().
+.SH "Function Documentation"
+.PP 
+.SS "void fastmap (float ** ftarget, int N1, int N2, float ** fsource, int M1, int M2, int(* deflection)(float ri, float rj, float *\fBdi\fP, float *\fBdj\fP))"
+.PP
+Definition at line 58 of file fastmap.c.
+.PP
+References deflection(), dx, dy, E, exit(), f, i, ix, iy, j, M1, M2, MAGIC, N, N1, N2, S, W, x, y, and ys.
+.PP
+Referenced by main().
+.SS "void map (float ** ftarget, int N1, int N2, float ** fsource, int M1, int M2, int(* deflection)(float ri, float rj, float *\fBdi\fP, float *\fBdj\fP))"
+.PP
+Definition at line 405 of file map.c.
+.PP
+References decompose(), deflection(), di, dj, FORWARDMAPMODE, freeverts(), garea, gareasum, gfsource, gfsum, gftarget, globalmapmode, gM1, gM2, gtargeti, gtargetj, i, INVERSEMAPMODE, j, M1, M2, makering(), makevertex(), N1, N2, point, trianglearea(), x, and y.
+.PP
+Referenced by main().
+.SS "void set_triangle_map_mode (int mapmode)"
+.PP
+Definition at line 514 of file map.c.
+.PP
+References globalmapmode.
+.PP
+Referenced by main().
+.SS "long trianglecount (void)"
+.PP
+Definition at line 485 of file map.c.
+.PP
+References gntriangles.
+.PP
+Referenced by main().
+.SS "void ultrafastmap (float ** ftarget, int N1, int N2, float ** fsource, int M1, int M2, int(* deflection)(float ri, float rj, float *\fBdi\fP, float *\fBdj\fP))"
+.PP
+Definition at line 28 of file fastmap.c.
+.PP
+References deflection(), i, j, M1, M2, N1, N2, x, y, and ys.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

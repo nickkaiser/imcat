@@ -1,0 +1,50 @@
+.TH "applytrans.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+applytrans.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'fmode.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	applytrans --- apply transformations from fitstack\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	applytrans parfile\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'applytrans' reads from stdin \fBa\fP catalogue containing the result of\\\fBn\fP\\	merging all pairs of cats for \fBa\fP \fBstack\fP of '\fBnexp\fP' images (as created\\\fBn\fP\\	by 'mergestacks1') and applies the transformations \\\fBn\fP\\	defined in 'parfile' (as created by fitstack)\\\fBn\fP\\	to generate sky coords \fBr\fP, so we can then filter to remove\\\fBn\fP\\	discrepant pairs.\\\fBn\fP\\	See also fitstack.tex.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBSCALE\fP   1.0"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define SCALE   1.0"
+.PP
+Definition at line 25 of file applytrans.c.
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	applytrans --- apply transformations from fitstack\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	applytrans parfile\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'applytrans' reads from stdin \fBa\fP catalogue containing the result of\\\fBn\fP\\	merging all pairs of cats for \fBa\fP \fBstack\fP of '\fBnexp\fP' images (as created\\\fBn\fP\\	by 'mergestacks1') and applies the transformations \\\fBn\fP\\	defined in 'parfile' (as created by fitstack)\\\fBn\fP\\	to generate sky coords \fBr\fP, so we can then filter to remove\\\fBn\fP\\	discrepant pairs.\\\fBn\fP\\	See also fitstack.tex.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 1 of file applytrans.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 27 of file applytrans.c.
+.PP
+References a, d, e, error_exit, exit(), f(), i, j, l, line, ll, M, m, mag, n, phi, r, usage, x, and xp().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,192 @@
+.TH "operators.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+operators.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include 'stack.h'\fP
+.br
+\fC#include 'operators.h'\fP
+.br
+\fC#include 'op_math.h'\fP
+.br
+\fC#include 'op_logic.h'\fP
+.br
+\fC#include 'op_deref.h'\fP
+.br
+\fC#include 'op_vector.h'\fP
+.br
+\fC#include 'op_dot.h'\fP
+.br
+\fC#include 'op_rand.h'\fP
+.br
+\fC#include 'op_misc.h'\fP
+.br
+\fC#include 'op_lintrans.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+\fC#include 'op_strings.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBN_NUM1_OPS\fP   17"
+.br
+.ti -1c
+.RI "#define \fBN_NUM2_OPS\fP   18"
+.br
+.ti -1c
+.RI "#define \fBN_GEN_OPS\fP   18"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBitem\fP * \fBnewopitem\fP (char *thename)"
+.br
+.ti -1c
+.RI "void \fBnum1func\fP (\fBitem\fP *operand, \fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBnum2func\fP (\fBitem\fP *operand1, \fBitem\fP *operand2, \fBitem\fP *operator)"
+.br
+.ti -1c
+.RI "void \fBgenfunc\fP (\fBitem\fP *operator)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "char * \fBnum1funcname\fP [N_NUM1_OPS]"
+.br
+.ti -1c
+.RI "double(* \fBnum1funcarray\fP [N_NUM1_OPS])(double)="
+.br
+.ti -1c
+.RI "char * \fBnum2funcname\fP [N_NUM2_OPS]"
+.br
+.ti -1c
+.RI "double(* \fBnum2funcarray\fP [N_NUM2_OPS])(double, double)="
+.br
+.ti -1c
+.RI "char * \fBgenfuncname\fP [N_GEN_OPS]"
+.br
+.ti -1c
+.RI "void(* \fBgenfuncinit\fP [N_GEN_OPS])(\fBitem\fP *)="
+.br
+.ti -1c
+.RI "void(* \fBgenfuncdoit\fP [N_GEN_OPS])(\fBitem\fP *)="
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define N_GEN_OPS   18"
+.PP
+Definition at line 46 of file cattools/lc/operators.c.
+.PP
+Referenced by newopitem().
+.SS "#define N_NUM1_OPS   17"
+.PP
+Definition at line 23 of file cattools/lc/operators.c.
+.PP
+Referenced by newop(), and newopitem().
+.SS "#define N_NUM2_OPS   18"
+.PP
+Definition at line 34 of file cattools/lc/operators.c.
+.PP
+Referenced by newop(), and newopitem().
+.SH "Function Documentation"
+.PP 
+.SS "void genfunc (\fBitem\fP * operator)"
+.PP
+Definition at line 146 of file cattools/lc/operators.c.
+.PP
+References genfuncdoit, and genfuncinit.
+.PP
+Referenced by evalrpnfunction().
+.SS "\fBitem\fP* newopitem (char * thename)"
+.PP
+Definition at line 57 of file cattools/lc/operators.c.
+.PP
+References item::addr, item::dim, exit(), GEN_OP_TYPE, genfuncname, N_GEN_OPS, N_NUM1_OPS, N_NUM2_OPS, newitem(), NUM1_OP_TYPE, num1funcarray, num1funcname, NUM2_OP_TYPE, num2funcarray, and num2funcname.
+.PP
+Referenced by getop().
+.SS "void num1func (\fBitem\fP * operand, \fBitem\fP * operator)"
+.PP
+Definition at line 100 of file cattools/lc/operators.c.
+.SS "void num2func (\fBitem\fP * operand1, \fBitem\fP * operand2, \fBitem\fP * operator)"
+.PP
+Definition at line 120 of file cattools/lc/operators.c.
+.SH "Variable Documentation"
+.PP 
+.SS "void(* \fBgenfuncdoit\fP[N_GEN_OPS])(\fBitem\fP *) ="
+.PP
+Definition at line 53 of file cattools/lc/operators.c.
+.PP
+Referenced by genfunc().
+.SS "void(* \fBgenfuncinit\fP[N_GEN_OPS])(\fBitem\fP *) ="
+.PP
+Definition at line 50 of file cattools/lc/operators.c.
+.PP
+Referenced by genfunc().
+.SS "char* \fBgenfuncname\fP[N_GEN_OPS]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+'deref', 'vector', 'dot', 'rand', 'grand', 'if', '?', 'enter', 'lintrans', 'vsub', 'vadd', 'vscale', 'vshift', 
+  'inverse', 'msub', 'madd', 'mscale', 'eq'}
+.fi
+.PP
+Definition at line 47 of file cattools/lc/operators.c.
+.PP
+Referenced by newopitem().
+.SS "double(* num1funcarray[N_NUM1_OPS])(double) ="
+.PP
+Definition at line 28 of file cattools/lc/operators.c.
+.PP
+Referenced by main(), newop(), newopitem(), and num1func().
+.SS "char* \fBnum1funcname\fP[N_NUM1_OPS]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+'acos', 'asin', 'atan', 'ceil', 'cos', 'cosh', 'exp', 'fabs', 'floor',
+'log', 'log10', 'sin', 'sinh', 'sqrt', 'tan', 'tanh', '!'
+}
+.fi
+.PP
+Definition at line 24 of file cattools/lc/operators.c.
+.PP
+Referenced by newopitem().
+.SS "double(* num2funcarray[N_NUM2_OPS])(double, double) ="
+.PP
+Definition at line 39 of file cattools/lc/operators.c.
+.PP
+Referenced by main(), newop(), newopitem(), and num2func().
+.SS "char* \fBnum2funcname\fP[N_NUM2_OPS]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {
+'mult',  '*',    '+',  '/',   '-', 'atan2', 'pow', 'fmod',
+'>', '>=', '<', '<=', '==', '!=', 'and', 'or', 'max', 'min'
+}
+.fi
+.PP
+Definition at line 35 of file cattools/lc/operators.c.
+.PP
+Referenced by newopitem().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

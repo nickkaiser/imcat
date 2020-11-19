@@ -1,0 +1,112 @@
+#! /usr/bin/perl
+
+# generate a stack of images for a given region of X,Y sky coords
+$usage = "\
+NAME\
+	makestack_lt --- make stack of warped images using linear\
+	transformation coefficients derived by 'getstacktrans'\
+\
+SYNOPSIS\
+	makestack_lt [options...]\
+\
+	'makestack_lt' reads a set of linear transformation coefficients\
+	phi_ij, d_i and magnitude offsets dm from stdin, and warps a\
+	set of images accordingly. By default, it will look for\
+	images in the same directory that the catalogues used by\
+	'getstacktrans' were found in, and with the same names,\
+	but with the suffix replaced by 'src_suffix' ('.fits' by\
+	default), and the resulting images will be placed in the\
+	same directory with suffix 'dst_suffix' ('.warp' by default).\
+	By default, the output image size is inherited from\
+	the input image.\
+	Options are:\
+		-i srcdir	# source image directory ('images')\
+		-d dstdir	# directory for warped images ('images')\
+		-S src_suffix	# suffix for source images ('.fits')\
+		-s dst_suffix	# suffix for transformed images ('.warp')\
+		-x dx dy	# add dx, dy to dX, dY values\
+		-m dm		# add dm to the delta-mag column\
+		-n N1 N2	# size of output image\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+";
+
+$| = 1;
+
+# defaults:
+$srcsfx = ".fits";
+$dstsfx = ".warp";
+$sizeopt = "";
+$srcdir = "images";
+$dstdir = "images";
+
+while ($_ = shift(@ARGV)) {
+        if (/^-i/) {
+		$srcdir = shift(@ARGV) || die $usage;
+	} elsif (/^-d/) {
+		$dstdir = shift(@ARGV) || die $usage;
+	} elsif (/^-S/) {
+		$srcsfx = shift(@ARGV) || die $usage;
+	} elsif (/^-s/) {
+		$dstsfx = shift(@ARGV) || die $usage;
+	} elsif (/^-x/) {
+		$Dx = shift(@ARGV) || die $usage;
+		$Dy = shift(@ARGV) || die $usage;
+ 	} elsif (/^-n/) {
+		$N1 = shift(@ARGV) || die $usage;
+		$N2 = shift(@ARGV) || die $usage;
+		$sizeopt = "-n $N1 $N2 ";
+  	} elsif (/^-m/) {
+		$Dm = shift(@ARGV) || die $usage;
+        } else {
+                die $usage;
+        }
+}
+
+
+
+
+# read the transformation coefficients
+open(LTCOEFFTS, "lc -o phi d dm cat |") || die "Can't open lc-pipe for input";
+while (<LTCOEFFTS>) {
+	($phixx, $phixy, $phiyx, $phiyy, $dx, $dy, $dm, $name) = split(" ", $_);
+	$dx += $Dx;
+	$dy += $Dy;
+	$dm += $Dm;
+	chop($dir = `dirname $name`);
+	if (!$srcdir) {
+		$srcdir = $dir;
+	}
+	if (!$dstdir) {
+		$dstdir = $dir;
+	}
+	chop($name = `basename $name`);
+	$name =~ s/\.\w*$//;
+	$src = $srcdir."/".$name.$srcsfx;
+	$dst = $dstdir."/".$name.$dstsfx;
+	print "src = $src; dst = $dst\n";
+	$magfactor = 10.0 ** (0.4 * $dm);
+	print "# getting sigma value for $src:";
+	chop($sigma = `stats -v sigma < $src`);
+	$sigma *= $magfactor;
+	print " $sigma", "\n";
+	if (!$N1) {
+		chop($N1 = `imhead -v NAXIS1 < $src`);
+		chop($N2 = `imhead -v NAXIS2 < $src`);
+	}
+	&echosys("ic -c $N1 $N2 'MAGIC' > $$.fits");
+	$sysstring = sprintf("ic '%%1 %f mult' %s | transformimage $sizeopt -p %g %g %g %g -t %g %g -i -f %s > %s",
+		$magfactor, $src, $phixx, $phixy, $phiyx, $phiyy, $dx, $dy, "$$.fits", $dst);
+	&echosys($sysstring);
+	&echosys("rm $$.fits");
+	&echosys("addfitscomment $dst SIGMA $sigma");	
+}
+
+
+
+
+sub echosys {
+        print @_, "\n";
+        system(@_) && die "makestack_lt: system call failed\n";
+}

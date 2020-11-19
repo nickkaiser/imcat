@@ -1,0 +1,5 @@
+The tools in this section can be used to perform Delauney tesselation
+to interpoate unevenly sampled data onto an image for example.
+
+Uses Jonathan Richard Shewchuk's triangle.[ch]
+

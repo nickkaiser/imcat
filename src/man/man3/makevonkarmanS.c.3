@@ -1,0 +1,54 @@
+.TH "makevonkarmanS.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makevonkarmanS.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	makevonkarmanS --- von Karman structure function\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makevonkarmanS R r0 dz Nz [-\fBN\fP \fBN\fP] [-\fBd\fP \fBdy\fP] [-y ystar]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'makevonkarmanS' computes the function\\\fBn\fP\\\\\fBn\fP\\	S(\fBz\fP) = r0^(5/3) \fBz\fP^(-5/3) sum \fBdy\fP y (y^2 + (2 pi \fBz\fP / R)^2)^(-11/6)\\\fBn\fP\\		(1 - J0(y) exp(-(y / ystar)^2))\\\fBn\fP\\\\\fBn\fP\\	for \fBz\fP = iz * dz and 0 <= iz < Nz.\\\fBn\fP\\\\\fBn\fP\\	Options are:\\\fBn\fP\\		-\fBN\fP	\fBNy\fP	# \fBnumber\fP of steps in y (10000)\\\fBn\fP\\		-\fBd\fP	\fBdy\fP	# step size in y (0.01)\\\fBn\fP\\		-y	ystar	# integration parameter (50)\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	makevonkarmanS --- von Karman structure function\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makevonkarmanS R r0 dz Nz [-\fBN\fP \fBN\fP] [-\fBd\fP \fBdy\fP] [-y ystar]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'makevonkarmanS' computes the function\\\fBn\fP\\\\\fBn\fP\\	S(\fBz\fP) = r0^(5/3) \fBz\fP^(-5/3) sum \fBdy\fP y (y^2 + (2 pi \fBz\fP / R)^2)^(-11/6)\\\fBn\fP\\		(1 - J0(y) exp(-(y / ystar)^2))\\\fBn\fP\\\\\fBn\fP\\	for \fBz\fP = iz * dz and 0 <= iz < Nz.\\\fBn\fP\\\\\fBn\fP\\	Options are:\\\fBn\fP\\		-\fBN\fP	\fBNy\fP	# \fBnumber\fP of steps in y (10000)\\\fBn\fP\\		-\fBd\fP	\fBdy\fP	# step size in y (0.01)\\\fBn\fP\\		-y	ystar	# integration parameter (50)\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file makevonkarmanS.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 35 of file makevonkarmanS.c.
+.PP
+References argsinit(), argsToString(), b, dy, error_exit, exit(), flag, FLAG_ARG, getargd(), getargi(), getflag(), N, nextargtype(), S, usage, y, yy, and z.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

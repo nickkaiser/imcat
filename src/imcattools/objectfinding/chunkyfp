@@ -1,0 +1,174 @@
+#!/usr/bin/perl
+
+# script to carve an image up into smaller chunks and
+# run hfindpeaks, findpeaks or findpeaks -m
+
+# force flushing
+$| = 1;
+
+#defaults
+$nfft = 512;
+$nx = 4;
+$ny = 4;
+$nbox = 400;
+$verbose = 1;
+$finder = "hfindpeaks";
+$opts = "-r 0.5 50";
+$nu = 4;
+$dominima = 0;
+$dovideo = 0;
+$hfind = 1;
+$TEMPDIR = $ENV{'TEMPDIR'};
+$needsstats = 1;
+
+$usage = "\
+NAME\
+	chunkyfp --- perform peak finding by dividing image into chunks\
+\
+SYNOPSIS\
+	chunkyfp [options...] fitsfile\
+	where options are\
+		-s 		# run silently\
+		-f nfft		# size of FFT (512)\
+		-m		# find minima\
+		-n rf		# use findpeaks -r rf rather than hfindpeaks\
+		-N nu		# minimum nu (4)\
+		-b nx nx nbox	# use nx x ny chunks of size nbox (4 4 400)\
+		-v saopipe	# pipe charts of chunks in iisformat to 'saopipe'\
+		-S sigma mode	# supply mode and sigma by hand\
+\
+DESCRIPTION\
+	'chunkyfp' divides image up into overlapping chunks and runs\
+	hfindpeaks (by default) and then combines the resulting catalogues.\
+	The catalogue name is derived from the fitsfile, but with suffix\
+	'.cat' (or '.min' in case of -m option).  Temporary files will\
+	be kept in env variable TEMPDIR so define this environment variable sensibly.\
+\
+	The -v option allows you to monitor the progress using saoimage.\
+\
+	Thanks to Andreas Jaunsen for correcting a bug.\
+\
+AUTHOR\
+	Nick Kaiser -- kaiser\@hawaii.edu\
+\
+";
+
+while ($_ = shift(@ARGV)) {
+	if (/^-f/) {
+		$nfft = shift(@ARGV) || die $usage;
+	} elsif (/^-b/) {
+		$nx = shift(@ARGV) || die $usage;
+		$ny = shift(@ARGV) || die $usage;
+		$nbox = shift(@ARGV) || die $usage;
+	} elsif (/^-s/) {
+		$verbose = 0;
+	} elsif (/^-m/) {
+		$finder = "findpeaks";
+		$opts = "-m";
+		$dominima = 1;
+		$hfind = 0;
+	} elsif (/^-n/) {
+		$finder = "findpeaks";
+		$rf = shift(@ARGV) || die $usage;
+		$opts = "-r $rf";
+		$hfind = 0;
+	} elsif (/^-N/) {
+		$nu = shift(@ARGV) || die $usage;
+	} elsif (/^-v/) {
+		$dovideo = 1;
+		$saopipe = shift(@ARGV) || die $usage;
+	} elsif (/^-u/) {
+		die $usage;
+	} elsif (/^-S/) {
+		$sigma = shift(@ARGV) || die $usage;
+		$mode = shift(@ARGV) || die $usage;
+		$needsstats = 0;
+	} else {
+		$fitsfile = $_;
+		break;
+	}
+}
+
+die "nbox must be <= nfft" if ($nbox > $nfft);
+$border = int(($nfft - $nbox) / 2);
+$nboxplus = $nbox + $border - 1;
+
+if ($verbose) {
+	print "# finder = $finder\n";
+	print "# dovideo = $dovideo\n";
+	print "# fitsfile = $fitsfile\n";
+	print "# nfft = $nfft\n";
+	print "# nx, ny = $nx, $ny\n";
+	print "# nbox = $nbox\n";
+	print "# nu_min = $nu\n";
+	print "# getting mode, sigma....\n";
+}
+
+@stats = `stats < $fitsfile`;
+@words =  split(' ', $stats[0]);
+$N1 = $words[0];
+$N2 = $words[2];
+@words =  split(' ', $stats[4]);
+if ($needsstats) {
+	$mode = $words[2];
+}
+@words =  split(' ', $stats[7]);
+if ($needsstats) {
+	$sigma = $words[2];
+}
+if ($verbose) {
+	print "# image dimensions: $N1 x $N2\n";
+	print "# mode = $mode; sigma = $sigma\n";
+}
+
+warn "# warning: you will lose some of the image\n" if (($ny * $nbox) < $N2 || ($nx * $nbox) < $N1);
+die "# fatal error: use smaller nx or ny\n" if ((($ny-1) * $nbox) >= $N2 || (($nx-1) * $nbox) >= $N1);
+
+
+if ($verbose) {
+	print "# finding peaks in $fitsfile ....\n# making subcats....\n";
+}
+for ($x = 0; $x < $nx; $x++) {
+	for ($y = 0; $y < $ny; $y++) {
+		$xx=$x * $nbox - $border;
+		$yy=$y * $nbox - $border;
+		&sys("makesubimage $xx $yy $nfft $nfft < $fitsfile >$TEMPDIR/$$.fits");
+		&sys("$finder $TEMPDIR/$$.fits $opts -n $nu -s $sigma $mode >$TEMPDIR/$$.$x$y.cat");
+		if ($dovideo) {
+			if ($hfind) {
+				&sys("makechart -r rg 3 < $TEMPDIR/$$.$x$y.cat | iis -p $saopipe");
+			} else {
+				&sys("lc -b +all 'r = 5' < $TEMPDIR/$$.$x$y.cat | makechart -r r 1 | iis -p $saopipe");
+			}
+		}
+	}
+}
+
+if ($verbose) {
+	print "# combining subcats....\n";
+}
+for ($x = 0; $x < $nx; $x++) {
+	for ($y = 0; $y < $ny; $y++) {
+		&sys("lc -b -x +all -i '%x[0] $border > %x[0] $nboxplus <= and %x[1] $border > %x[1] $nboxplus <= and and' <$TEMPDIR/$$.$x$y.cat >$TEMPDIR/$$.cat");
+		$dx = $x * $nbox - $border;
+		$dy = $y * $nbox - $border;
+		&sys("lc -b -x +all 'x = %x[0] $dx + %x[1] $dy + 2 vector' <$TEMPDIR/$$.cat >$TEMPDIR/$$.$x$y.cat");
+	}
+}
+if ($dominima) {
+	($catfile = $fitsfile) =~ s/fits$/min/;
+} else {
+	($catfile = $fitsfile) =~ s/fits$/cat/;
+}
+&sys("lc -b -x -a 'chunkyfp $fitsfile' +all -H 'fits_name = {$fitsfile}' -H 'fits_size = $N1 $N2 2 vector' < $TEMPDIR/$$.00.cat | lc -b -h > $catfile");
+for ($x = 0; $x < $nx; $x++) {
+	for ($y = 0; $y < $ny; $y++) {
+		&sys("lc -b -o +all < $TEMPDIR/$$.$x$y.cat >> $catfile");
+	}
+}
+&sys("rm $TEMPDIR/$$.*.cat $TEMPDIR/$$.cat $TEMPDIR/$$.fits");
+
+sub sys {
+	print ($_[0], "\n") if ($verbose);
+	system($_[0]) && die "chunkyfp: system call ($_[0]) failed\n";
+}

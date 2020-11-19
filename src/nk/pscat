@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# pscat : concatenate two postscript files
+
+case $# in
+0|1)	echo "\npscat :  concatenate two postscript files\n\n\
+usage: pscat file1 file2\n\
+	removes showpage from first file and\n\
+	removes preamble from second and\n\
+	concatenates the files to stdout\n\
+	assumes showpage command on single line\n\
+\n"	1>&2; exit 2
+esac
+
+# nawk '
+awk '
+BEGIN { firstfile = 1 }
+{
+	if (firstfile)
+		if ($1 !~ /showpage/)
+			print 
+		else
+			firstfile = 0
+	else
+		if ($1 !~ /^%/)
+			print
+}
+' $1 $2
+

@@ -1,0 +1,105 @@
+.TH "fitstack.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitstack.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmake_r\fP (void)"
+.br
+.ti -1c
+.RI "int \fBmake_re\fP (void)"
+.br
+.ti -1c
+.RI "int \fBmake_z\fP (void)"
+.br
+.ti -1c
+.RI "int \fBfitextinctions\fP (void)"
+.br
+.ti -1c
+.RI "int \fBfittranslations\fP (void)"
+.br
+.ti -1c
+.RI "int \fBfitdistortions\fP (void)"
+.br
+.ti -1c
+.RI "int \fBallocatearrays\fP (void)"
+.br
+.ti -1c
+.RI "double *** \fBallocpositionvector\fP (void)"
+.br
+.ti -1c
+.RI "int \fBprinttranslations\fP (char *parfilename)"
+.br
+.ti -1c
+.RI "double \fBchisquared\fP (void)"
+.br
+.ti -1c
+.RI "int \fBoutputrcat\fP (char *outputcatfilename)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int allocatearrays (void)"
+.PP
+Definition at line 455 of file registration/fitstack.c.
+.SS "double*** allocpositionvector (void)"
+.PP
+Definition at line 501 of file registration/fitstack.c.
+.SS "double chisquared (void)"
+.PP
+Definition at line 541 of file registration/fitstack.c.
+.PP
+References chi2(), i, nprs, and r.
+.SS "int fitdistortions (void)"
+.PP
+Definition at line 405 of file registration/fitstack.c.
+.PP
+References a, Ad, Bd, Cd, det, e, f(), i, indxd, j, ll, M, m, mm, mylubksb(), myludcmp(), n, ndcoefft, nmodes, nprs, phi, x, and z.
+.PP
+Referenced by main().
+.SS "int fitextinctions (void)"
+.PP
+Definition at line 301 of file registration/fitstack.c.
+.PP
+References Am, Bm, Cm, det, dm, e, i, indxm, j, m, mag, mylubksb(), myludcmp(), n, nexp, nmcoefft, and nprs.
+.PP
+Referenced by main().
+.SS "int fittranslations (void)"
+.PP
+Definition at line 344 of file registration/fitstack.c.
+.SS "int make_r (void)"
+.PP
+Definition at line 223 of file registration/fitstack.c.
+.SS "int make_re (void)"
+.PP
+Definition at line 254 of file registration/fitstack.c.
+.PP
+References a, allocpositionvector(), f(), i, ll, M, mm, n, nmodes, nprs, re, x, and xx.
+.PP
+Referenced by main().
+.SS "int make_z (void)"
+.PP
+Definition at line 279 of file registration/fitstack.c.
+.PP
+References allocpositionvector(), d, e, i, j, n, nprs, phi, x, and z.
+.PP
+Referenced by main().
+.SS "int outputrcat (char * outputcatfilename)"
+.PP
+Definition at line 557 of file registration/fitstack.c.
+.PP
+References dm, e, exit(), lcpipe, mag, nprs, r, and x.
+.SS "int printtranslations (char * parfilename)"
+.PP
+Definition at line 522 of file registration/fitstack.c.
+.PP
+References d, dm, error_exit, i, nexp, and phi.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

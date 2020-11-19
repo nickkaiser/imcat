@@ -1,0 +1,48 @@
+.TH "fit2Dpolymodel.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fit2Dpolymodel.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../utils/modefunc.h'\fP
+.br
+\fC#include '../utils/lu.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fit2Dpolymodel --- \fBfit\fP \fBa\fP 2-dimensional spatial polynomial model to \fBa\fP cat\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fit2Dpolymodel \fBxname\fP \fBlmin\fP \fBlmax\fP \fBvar\fP [\fBoptions\fP...] \\\fBn\fP\\		-o \fBx0\fP y0	# spatial origin for \fBmode\fP functions\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fit2Dpolymodel' reads from stdin \fBa\fP catalogue which must contain\\\fBn\fP\\	at least \fBa\fP 2-vector '\fBxname\fP[2]' and \fBa\fP numerical variable '\fBvar\fP'\\\fBn\fP\\	(which may be \fBa\fP scalar, vector or tensor of arbitrary rank)\\\fBn\fP\\	and determines the coefficients of \fBa\fP 2-D spatial \fBpoly\fP model:\\\fBn\fP\\\\\fBn\fP\\		var_model = sum_l sum_m a_lm f_lm(x)\\\fBn\fP\\\\\fBn\fP\\	where the f_lm's are 2-D polynomials:\\\fBn\fP\\\\\fBn\fP\\		f_lm(x) = x[0]^(\fBl\fP - \fBm\fP) x[1]^\fBm\fP\\\fBn\fP\\\\\fBn\fP\\	with \fBlmin\fP <= \fBl\fP <= \fBlmax\fP and 0 <= \fBm\fP <= \fBl\fP.\\\fBn\fP\\\\\fBn\fP\\	The model coefficients are output as an lc-format catalogue\\\fBn\fP\\	containing the indices \fBl\fP, \fBm\fP, followed by the \fBmode\fP coefficients\\\fBn\fP\\	which have the same names as the '\fBvar\fP' variable.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fit2Dpolymodel --- \fBfit\fP \fBa\fP 2-dimensional spatial polynomial model to \fBa\fP cat\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fit2Dpolymodel \fBxname\fP \fBlmin\fP \fBlmax\fP \fBvar\fP [\fBoptions\fP...] \\\fBn\fP\\		-o \fBx0\fP y0	# spatial origin for \fBmode\fP functions\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fit2Dpolymodel' reads from stdin \fBa\fP catalogue which must contain\\\fBn\fP\\	at least \fBa\fP 2-vector '\fBxname\fP[2]' and \fBa\fP numerical variable '\fBvar\fP'\\\fBn\fP\\	(which may be \fBa\fP scalar, vector or tensor of arbitrary rank)\\\fBn\fP\\	and determines the coefficients of \fBa\fP 2-D spatial \fBpoly\fP model:\\\fBn\fP\\\\\fBn\fP\\		var_model = sum_l sum_m a_lm f_lm(x)\\\fBn\fP\\\\\fBn\fP\\	where the f_lm's are 2-D polynomials:\\\fBn\fP\\\\\fBn\fP\\		f_lm(x) = x[0]^(\fBl\fP - \fBm\fP) x[1]^\fBm\fP\\\fBn\fP\\\\\fBn\fP\\	with \fBlmin\fP <= \fBl\fP <= \fBlmax\fP and 0 <= \fBm\fP <= \fBl\fP.\\\fBn\fP\\\\\fBn\fP\\	The model coefficients are output as an lc-format catalogue\\\fBn\fP\\	containing the indices \fBl\fP, \fBm\fP, followed by the \fBmode\fP coefficients\\\fBn\fP\\	which have the same names as the '\fBvar\fP' variable.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 6 of file fit2Dpolymodel.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 42 of file fit2Dpolymodel.c.
+.PP
+References A, a, B, det(), error_exit, exit(), f(), getvars(), i, indx, l, lcpipe, ll, M, m, modefunc_addargcomment(), MODEFUNC_MAX_VARS, mylubksb(), myludcmp(), N, nmodes, setorigin(), usage, write2Dpolymodel(), and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

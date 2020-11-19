@@ -1,0 +1,162 @@
+.TH "fft_FFTW.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fft_FFTW.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <malloc.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <fftw.h>\fP
+.br
+\fC#include <rfftw.h>\fP
+.br
+\fC#include 'myfft.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBPI\fP   M_PI"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBmyfftwcfft\fP (float **fsrc, int \fBnx\fP, int \fBny\fP, float **fdst, int direction)"
+.br
+.ti -1c
+.RI "void \fBforward_fft\fP (float **f, int \fBnx\fP, int \fBny\fP, \fBfft_type\fP fk)"
+.br
+.ti -1c
+.RI "void \fBinverse_fft\fP (\fBfft_type\fP fk, int \fBnx\fP, int \fBny\fP, float **f)"
+.br
+.ti -1c
+.RI "void \fBfilter\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float(*filterfunc)(float ki, float kj))"
+.br
+.ti -1c
+.RI "void \fBcfilter\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float(*rfunc)(float ki, float kj), float(*ifunc)(float ki, float kj))"
+.br
+.ti -1c
+.RI "void \fBccf\fP (\fBfft_type\fP fk1, \fBfft_type\fP fk2, int \fBNx\fP, int \fBNy\fP, float **ff12, int \fBx0\fP, int y0)"
+.br
+.ti -1c
+.RI "void \fBpower\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **p, int \fBx0\fP, int y0)"
+.br
+.ti -1c
+.RI "void \fBalloc_fft\fP (\fBfft_type\fP *fk, int \fBNx\fP, int \fBNy\fP)"
+.br
+.ti -1c
+.RI "void \fBfree_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP)"
+.br
+.ti -1c
+.RI "void \fBcopy_fft\fP (\fBfft_type\fP fksrc, int \fBNx\fP, int \fBNy\fP, \fBfft_type\fP fkdest)"
+.br
+.ti -1c
+.RI "void \fBget_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **fdest)"
+.br
+.ti -1c
+.RI "void \fBset_fft\fP (\fBfft_type\fP fk, int \fBNx\fP, int \fBNy\fP, float **fsrc)"
+.br
+.ti -1c
+.RI "void \fBforward_cfft\fP (float **fsrc, int \fBnx\fP, int \fBny\fP, float **fdst)"
+.br
+.ti -1c
+.RI "void \fBinverse_cfft\fP (float **fsrc, int \fBnx\fP, int \fBny\fP, float **fdst)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define PI   M_PI"
+.PP
+Definition at line 25 of file fft_FFTW.c.
+.SH "Function Documentation"
+.PP 
+.SS "void alloc_fft (\fBfft_type\fP * fk, int Nx, int Ny)"
+.PP
+Definition at line 155 of file fft_FFTW.c.
+.PP
+References error_exit, fft_type, n, Nx, Ny, and y.
+.SS "void ccf (\fBfft_type\fP fk1, \fBfft_type\fP fk2, int Nx, int Ny, float ** ff12, int x0, int y0)"
+.PP
+Definition at line 103 of file fft_FFTW.c.
+.PP
+References a1, a2, b1, b2, cycleimage(), fft_type, inverse_fft(), ix, n, Nx, and Ny.
+.SS "void cfilter (\fBfft_type\fP fk, int Nx, int Ny, float(* rfunc)(float ki, float kj), float(* ifunc)(float ki, float kj))"
+.PP
+Definition at line 77 of file fft_FFTW.c.
+.PP
+References fft_type, ifunc(), ix, n, Nx, Ny, PI, and rfunc().
+.SS "void copy_fft (\fBfft_type\fP fksrc, int Nx, int Ny, \fBfft_type\fP fkdest)"
+.PP
+Definition at line 179 of file fft_FFTW.c.
+.PP
+References fft_type, n, Nx, Ny, x, and y.
+.SS "void filter (\fBfft_type\fP fk, int Nx, int Ny, float(* filterfunc)(float ki, float kj))"
+.PP
+Definition at line 57 of file fft_FFTW.c.
+.PP
+References fft_type, ix, n, Nx, Ny, and PI.
+.SS "void forward_cfft (float ** fsrc, int nx, int ny, float ** fdst)"
+.PP
+Definition at line 242 of file fft_FFTW.c.
+.PP
+References c, cfftf_(), cffti_(), cycleimage(), free(), myfftwcfft(), nx, ny, x, and y.
+.PP
+Referenced by main().
+.SS "void forward_fft (float ** f, int nx, int ny, \fBfft_type\fP fk)"
+.PP
+Definition at line 30 of file fft_FFTW.c.
+.PP
+References f, fft_type, nx, and ny.
+.SS "void free_fft (\fBfft_type\fP fk, int Nx, int Ny)"
+.PP
+Definition at line 171 of file fft_FFTW.c.
+.PP
+References fft_type, and free().
+.SS "void get_fft (\fBfft_type\fP fk, int Nx, int Ny, float ** fdest)"
+.PP
+Definition at line 192 of file fft_FFTW.c.
+.PP
+References fft_type, ix, n, Nx, and Ny.
+.SS "void inverse_cfft (float ** fsrc, int nx, int ny, float ** fdst)"
+.PP
+Definition at line 247 of file fft_FFTW.c.
+.PP
+References c, cfftb_(), cffti_(), cycleimage(), free(), myfftwcfft(), nx, ny, x, and y.
+.PP
+Referenced by main().
+.SS "void inverse_fft (\fBfft_type\fP fk, int nx, int ny, float ** f)"
+.PP
+Definition at line 39 of file fft_FFTW.c.
+.PP
+References f, fft_type, nx, ny, scale, x, and y.
+.SS "void myfftwcfft (float ** fsrc, int nx, int ny, float ** fdst, int direction)"
+.PP
+Definition at line 252 of file fft_FFTW.c.
+.PP
+References cycleimage(), free(), nx, ny, scale, x, and y.
+.PP
+Referenced by forward_cfft(), and inverse_cfft().
+.SS "void power (\fBfft_type\fP fk, int Nx, int Ny, float ** p, int x0, int y0)"
+.PP
+Definition at line 128 of file fft_FFTW.c.
+.PP
+References fft_type, ix, n, Nx, Ny, and scale.
+.SS "void set_fft (\fBfft_type\fP fk, int Nx, int Ny, float ** fsrc)"
+.PP
+Definition at line 221 of file fft_FFTW.c.
+.PP
+References fft_type, ix, n, Nx, and Ny.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

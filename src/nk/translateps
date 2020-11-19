@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# a awk script to translate a postscript file by $1 $2 in inches
+
+awk '
+	BEGIN {comments = 1}
+	{if ($1 !~ /^%/ && comments == 1) {
+		print "'"$1"' 72 mul '"$2"' 72 mul translate"
+		comments = 0
+	}}
+	{print}' 

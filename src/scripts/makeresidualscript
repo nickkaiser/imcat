@@ -1,0 +1,15 @@
+#!/bin/sh
+
+awk '
+BEGIN {
+        printf("#!/bin/sh\n\n\n")
+}
+$1 !~ /#/ {
+        print "echo making residual from", $3
+        print "makesubimage", $1, $2, "1600 1600 < emi.fits >temp"
+        printf("cp %s %sx\nsubtract temp %sx\n", $3, $3, $3)
+}
+END {
+	printf("echo all done\n")
+}
+' | sed 's/stars/fits/g' | sed 's/fitsx/res/'

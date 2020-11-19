@@ -1,0 +1,109 @@
+.TH "print_image.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+print_image.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	print_image -- prints \fBa\fP square image on the LaserWriter\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	print_image	fitsfile [option...] \\\fBn\fP\\		-f \fBfmin\fP \fBfmax\fP	# max and min f values\\\fBn\fP\\		-\fBn\fP		# don'\fBt\fP print header info\\\fBn\fP\\		-\fBb\fP		# draw \fBa\fP box oround image\\\fBn\fP\\		-\fBc\fP \fBcomment\fP	# use (quoted if multiword) \fBcomment\fP as \fBlabel\fP\\\fBn\fP\\		-p pw ph \fBmx\fP \fBmy\fP	# set page width, height, margins (612, 792, 50, 50)\\\fBn\fP\\		-P		# include setpagedevice\\\fBn\fP\\		-g		# pipe output through gs to compress\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'print_image\\' reads \fBa\fP \fBfits\fP file and sends\\\fBn\fP\\	postscript file to stdout\\\fBn\fP\\\\\fBn\fP\\	The range of values may be specified with the -f option,\\\fBn\fP\\	otherwise the range is 0 (=white) to 255 (=black).\\\fBn\fP\\\\\fBn\fP\\	Supports 3-\fBcolor\fP images.\\\fBn\fP\\\\\fBn\fP\\	If fitsfile = '-' then we read from stdin.\\\fBn\fP\\\\\fBn\fP\\	Default page size info is 612x792 = (8.5x11)in with 50 pt margin\\\fBn\fP\\	so the actual inked area is 512x692. Use -p option to change this.\\\fBn\fP\\\\\fBn\fP\\	The -P option is provided to include \fBa\fP 'setpagedevice' command giving\\\fBn\fP\\	the physical total page size.  This is used for big prints on\\\fBn\fP\\	the designjet, but seems to be problematic with latex epsf handling.\\\fBn\fP\\	Do not use this with -g option.\\\fBn\fP\\\\\fBn\fP\\	With the -g option we pipe the output through\\\fBn\fP\\		gs -q -sDEVICE=pswrite -sOutputFile=- -dNOPAUSE -\\\fBn\fP\\	which will result in \fBa\fP much smaller output file.\\\fBn\fP\\	Do not use this with -P option.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBprint_im\fP (int \fBN1\fP, int \fBN2\fP, int Ncolors, double(*gray)(), char *\fBcaption\fP)"
+.br
+.ti -1c
+.RI "void \fBsetpagesize\fP (int pagewidth, int pageheight, int pagemargin)"
+.br
+.ti -1c
+.RI "void \fBprint_caption\fP (char *\fBcaption\fP)"
+.br
+.ti -1c
+.RI "void \fBpsDrawChar\fP (char aChar)"
+.br
+.ti -1c
+.RI "void \fBps\fP (char *string)"
+.br
+.ti -1c
+.RI "void \fBset_print_opf\fP (FILE *thefile)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "char * \fBpsstring\fP"
+.br
+.ti -1c
+.RI "FILE * \fBopf\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	print_image -- prints \fBa\fP square image on the LaserWriter\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	print_image	fitsfile [option...] \\\fBn\fP\\		-f \fBfmin\fP \fBfmax\fP	# max and min f values\\\fBn\fP\\		-\fBn\fP		# don'\fBt\fP print header info\\\fBn\fP\\		-\fBb\fP		# draw \fBa\fP box oround image\\\fBn\fP\\		-\fBc\fP \fBcomment\fP	# use (quoted if multiword) \fBcomment\fP as \fBlabel\fP\\\fBn\fP\\		-p pw ph \fBmx\fP \fBmy\fP	# set page width, height, margins (612, 792, 50, 50)\\\fBn\fP\\		-P		# include setpagedevice\\\fBn\fP\\		-g		# pipe output through gs to compress\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'print_image\\' reads \fBa\fP \fBfits\fP file and sends\\\fBn\fP\\	postscript file to stdout\\\fBn\fP\\\\\fBn\fP\\	The range of values may be specified with the -f option,\\\fBn\fP\\	otherwise the range is 0 (=white) to 255 (=black).\\\fBn\fP\\\\\fBn\fP\\	Supports 3-\fBcolor\fP images.\\\fBn\fP\\\\\fBn\fP\\	If fitsfile = '-' then we read from stdin.\\\fBn\fP\\\\\fBn\fP\\	Default page size info is 612x792 = (8.5x11)in with 50 pt margin\\\fBn\fP\\	so the actual inked area is 512x692. Use -p option to change this.\\\fBn\fP\\\\\fBn\fP\\	The -P option is provided to include \fBa\fP 'setpagedevice' command giving\\\fBn\fP\\	the physical total page size.  This is used for big prints on\\\fBn\fP\\	the designjet, but seems to be problematic with latex epsf handling.\\\fBn\fP\\	Do not use this with -g option.\\\fBn\fP\\\\\fBn\fP\\	With the -g option we pipe the output through\\\fBn\fP\\		gs -q -sDEVICE=pswrite -sOutputFile=- -dNOPAUSE -\\\fBn\fP\\	which will result in \fBa\fP much smaller output file.\\\fBn\fP\\	Do not use this with -P option.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file print_image.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 64 of file print_image.c.
+.PP
+References argsToString(), ascii, c, caption, color, error_exit, exit(), f, fits, FLOAT_MAGIC, fmin, i, j, fitsheader::n, N, N1, N2, fitsheader::ndim, opf, print_caption(), ps(), psstring, psstringlen, readfitsheader(), readfitsline(), and usage.
+.SS "void print_caption (char * caption)"
+.PP
+Definition at line 36 of file psutils.c.
+.SS "void print_im (int N1, int N2, int Ncolors, double(* gray)(), char * caption)"
+.PP
+Definition at line 299 of file print_image.c.
+.PP
+References color, gray(), i, j, N1, N2, ps(), and psstring.
+.SS "void ps (char * string)"
+.PP
+Definition at line 12 of file psutils.c.
+.SS "void psDrawChar (char aChar)"
+.PP
+Definition at line 18 of file psutils.c.
+.SS "void set_print_opf (FILE * thefile)"
+.PP
+Definition at line 57 of file psutils.c.
+.SS "void setpagesize (int pagewidth, int pageheight, int pagemargin)"
+.PP
+.SH "Variable Documentation"
+.PP 
+.SS "FILE* \fBopf\fP\fC [static]\fP"
+.PP
+Definition at line 54 of file print_image.c.
+.PP
+Referenced by main().
+.SS "char* \fBpsstring\fP"
+.PP
+Definition at line 53 of file print_image.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

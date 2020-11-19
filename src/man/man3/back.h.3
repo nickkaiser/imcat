@@ -1,0 +1,103 @@
+.TH "back.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+back.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBreadimheader\fP (int *\fBn1\fP, int *\fBn2\fP)"
+.br
+.ti -1c
+.RI "void \fBset_shades\fP (void)"
+.br
+.ti -1c
+.RI "void \fBalloc_shades\fP (void)"
+.br
+.ti -1c
+.RI "void \fBcreate_pixmap\fP (void)"
+.br
+.ti -1c
+.RI "void \fBfill_pixmap\fP (void)"
+.br
+.ti -1c
+.RI "void \fBmakeXImage\fP (void)"
+.br
+.ti -1c
+.RI "void \fBshowpixmap\fP (void)"
+.br
+.ti -1c
+.RI "int \fBmyworkproc1\fP (XtPointer client_data)"
+.br
+.ti -1c
+.RI "void \fBsetblocksize\fP (int \fBb\fP)"
+.br
+.ti -1c
+.RI "void \fBsetfrange\fP (float ffmin, float ffmax)"
+.br
+.ti -1c
+.RI "void \fBsetcolormapindex\fP (int theindex)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void alloc_shades (void)"
+.PP
+Definition at line 104 of file back.c.
+.SS "void create_pixmap (void)"
+.PP
+Definition at line 165 of file back.c.
+.PP
+References blocksize, depth, mydisplay, mywindow, N1, N2, and pixmap.
+.SS "void fill_pixmap (void)"
+.PP
+Definition at line 174 of file back.c.
+.SS "void makeXImage (void)"
+.PP
+Definition at line 205 of file back.c.
+.PP
+References blocksize, depth, exit(), malloc(), mydisplay, myscreen, N1, N2, and theimage.
+.SS "int myworkproc1 (XtPointer client_data)"
+.PP
+Definition at line 246 of file back.c.
+.SS "void readimheader (int * n1, int * n2)"
+.PP
+Definition at line 52 of file back.c.
+.PP
+References allocFloatArray(), error_exit, f, fits, getcommentbyname(), getnumericvalue(), fitsheader::n, N1, N2, fitsheader::ndim, nframes, readfitsheader(), and timestep.
+.PP
+Referenced by main().
+.SS "void set_shades (void)"
+.PP
+Definition at line 76 of file back.c.
+.SS "void setblocksize (int b)"
+.PP
+Definition at line 282 of file back.c.
+.PP
+References b, and blocksize.
+.PP
+Referenced by main().
+.SS "void setcolormapindex (int theindex)"
+.PP
+Definition at line 295 of file back.c.
+.PP
+References colormapindex.
+.PP
+Referenced by main().
+.SS "void setfrange (float ffmin, float ffmax)"
+.PP
+Definition at line 287 of file back.c.
+.PP
+References gfmax, and gfmin.
+.PP
+Referenced by main().
+.SS "void showpixmap (void)"
+.PP
+Definition at line 268 of file back.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

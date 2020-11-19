@@ -1,0 +1,173 @@
+.TH "ic_dev.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ic_dev.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+\fC#include '../../imtools/magic.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include 'getop.h'\fP
+.br
+\fC#include 'ic.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\		\fBic\fP -- image calculator\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		\fBic\fP [\fBoptions\fP....] rpnexpr fitsfile... \\\fBn\fP\\		where \fBoptions\fP are:\\\fBn\fP\\			-u 		# print \fBusage\fP\\\fBn\fP\\			-\fBc\fP \fBN1\fP \fBN2\fP	# create an image of this size\\\fBn\fP\\			-p pixtype	# specify output pixtype\\\fBn\fP\\			-s \fBseed\fP		# \fBseed\fP rand num generator\\\fBn\fP\\			-\fBm\fP magicsub	# substitute magic value\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		\\'ic\\' does simple arithmetic on one or more images\\\fBn\fP\\		according to the reverse-polish notation expression 'rpnexpr'.\\\fBn\fP\\		Images are referred to in rpnexpr as '%%1', '%%2'.... and\\\fBn\fP\\		must all have the same size.  If the fitsfilename is given\\\fBn\fP\\		as '-' then that file will be read from stdin.\\\fBn\fP\\		If any of the input images is MAGIC (as defined 'magic.\fBh\fP')\\\fBn\fP\\		then the result will be MAGIC also (though with '-\fBm\fP' option\\\fBn\fP\\		'\fBic\fP' will output 'magicsub' in place of the usual SHRT_MIN)\\\fBn\fP\\		The functions supported include all of the standard \fBC\fP math\\\fBn\fP\\		library plus the operators '+', '-', '*', '/', and 'mult' \\\fBn\fP\\		is provided as \fBa\fP synonym for '*' to avoid potential problems\\\fBn\fP\\		if you invoke \fBic\fP from \fBa\fP script. There are the \fBlogical\fP\\\fBn\fP\\		operations '>', '<', '>=', '<=', '!=', '==' and the negation operator\\\fBn\fP\\		'!'. There is \fBa\fP random \fBnumber\fP generator 'rand' which generates\\\fBn\fP\\		\fBa\fP uniform random \fBnumber\fP on the range 0.0-1.0 and 'grand' which\\\fBn\fP\\		generates \fBa\fP zero-mean, unit variance normal variate. There are\\\fBn\fP\\		two functions 'xp', 'yp' to get the horixontal and vertical \fBpixel\fP\\\fBn\fP\\		positions respectively, and two further functions 'x', 'y' which\\\fBn\fP\\		return the position in units of the lenght of the side of\\\fBn\fP\\		the image.  There is \fBa\fP constant MAGIC (defined in magic.\fBh\fP - and\\\fBn\fP\\		currently set to -32768) which is \fBa\fP \fBflag\fP for bad \fBdata\fP.\\\fBn\fP\\		There is \fBa\fP function 'if' (\fBa\fP.\fBk\fP.\fBa\fP. '?') which mimics the \fBC\fP\\\fBn\fP\\		language '(\fBc\fP ? \fBt\fP : f)' which returns '\fBt\fP' or 'f' respectively\\\fBn\fP\\		depending on the truth or falseness of the condition '\fBc\fP'.  The\\\fBn\fP\\		rpn syntax for this expression is '\fBt\fP f \fBc\fP ?' in which '?' pops the\\\fBn\fP\\		condition '\fBc\fP' followed by 'f' and then '\fBt\fP' and pushes '\fBt\fP' or 'f'\\\fBn\fP\\		as appropriate. The condition '\fBc\fP' will of course most likely be\\\fBn\fP\\		\fBa\fP compound \fBlogical\fP expression.  There is also \fBa\fP function 'enter'\\\fBn\fP\\		which duplicates the top value of the \fBstack\fP.\\\fBn\fP\\		Use -\fBc\fP option (with no input images) to generate an image from\\\fBn\fP\\		scratch.\\\fBn\fP\\		Use -p option to specify output pixtpye which can be one of\\\fBn\fP\\			 16	# signed 2-byte \fBinteger\fP\\\fBn\fP\\			-32	# 4-byte floating \fBpoint\fP\\\fBn\fP\\			 32	# 4-byte int\\\fBn\fP\\		Otherwise the output will have same pixtype as input, or, with\\\fBn\fP\\		-\fBc\fP option, will have pixtype -32.\\\fBn\fP\\		Output goes to stdout.\\\fBn\fP\\\\\fBn\fP\\EXAMPLES\\\fBn\fP\\		Subtract \fBb\fP.\fBfits\fP from \fBa\fP.fits:\\\fBn\fP\\\\\fBn\fP\\			\fBic\fP '%%1 %%2 -' \fBa\fP.\fBfits\fP \fBb\fP.\fBfits\fP\\\fBn\fP\\\\\fBn\fP\\		Take sqrt of image to be read from stdin; output as float:\\\fBn\fP\\\\\fBn\fP\\			\fBic\fP -f '%%1 sqrt' -\\\fBn\fP\\\\\fBn\fP\\		Create \fBa\fP 512 x 512 image with \fBa\fP linear horizontal ramp and\\\fBn\fP\\		multiply by 10:\\\fBn\fP\\\\\fBn\fP\\			\fBic\fP -\fBc\fP 512 512 'x 10 *'\\\fBn\fP\\\\\fBn\fP\\		Replace all pixels in \fBa\fP.\fBfits\fP with value < 10 with MAGIC:\\\fBn\fP\\\\\fBn\fP\\			\fBic\fP '%%1 MAGIC %%1 10 > ?' \fBa\fP.\fBfits\fP\\\fBn\fP\\\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAX_OPS\fP   1024"
+.br
+.ti -1c
+.RI "#define \fBSTACK_DEPTH\fP   100"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBdrand48\fP ()"
+.br
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "double \fBxp\fP (void)"
+.br
+.ti -1c
+.RI "double \fByp\fP (void)"
+.br
+.ti -1c
+.RI "double \fBx\fP (void)"
+.br
+.ti -1c
+.RI "double \fBy\fP (void)"
+.br
+.ti -1c
+.RI "double \fBgasdev\fP (void)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double \fBst\fP [STACK_DEPTH]"
+.br
+.ti -1c
+.RI "int \fBpos\fP = -1"
+.br
+.ti -1c
+.RI "int \fBnim\fP = 0"
+.br
+.ti -1c
+.RI "int \fBix\fP"
+.br
+.ti -1c
+.RI "int \fBiy\fP"
+.br
+.ti -1c
+.RI "int \fBN1\fP"
+.br
+.ti -1c
+.RI "int \fBN2\fP"
+.br
+.ti -1c
+.RI "float ** \fBf\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX_OPS   1024"
+.PP
+Definition at line 88 of file ic_dev.c.
+.SS "#define STACK_DEPTH   100"
+.PP
+Definition at line 89 of file ic_dev.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\		\fBic\fP -- image calculator\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		\fBic\fP [\fBoptions\fP....] rpnexpr fitsfile... \\\fBn\fP\\		where \fBoptions\fP are:\\\fBn\fP\\			-u 		# print \fBusage\fP\\\fBn\fP\\			-\fBc\fP \fBN1\fP \fBN2\fP	# create an image of this size\\\fBn\fP\\			-p pixtype	# specify output pixtype\\\fBn\fP\\			-s \fBseed\fP		# \fBseed\fP rand num generator\\\fBn\fP\\			-\fBm\fP magicsub	# substitute magic value\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		\\'ic\\' does simple arithmetic on one or more images\\\fBn\fP\\		according to the reverse-polish notation expression 'rpnexpr'.\\\fBn\fP\\		Images are referred to in rpnexpr as '%%1', '%%2'.... and\\\fBn\fP\\		must all have the same size.  If the fitsfilename is given\\\fBn\fP\\		as '-' then that file will be read from stdin.\\\fBn\fP\\		If any of the input images is MAGIC (as defined 'magic.\fBh\fP')\\\fBn\fP\\		then the result will be MAGIC also (though with '-\fBm\fP' option\\\fBn\fP\\		'\fBic\fP' will output 'magicsub' in place of the usual SHRT_MIN)\\\fBn\fP\\		The functions supported include all of the standard \fBC\fP math\\\fBn\fP\\		library plus the operators '+', '-', '*', '/', and 'mult' \\\fBn\fP\\		is provided as \fBa\fP synonym for '*' to avoid potential problems\\\fBn\fP\\		if you invoke \fBic\fP from \fBa\fP script. There are the \fBlogical\fP\\\fBn\fP\\		operations '>', '<', '>=', '<=', '!=', '==' and the negation operator\\\fBn\fP\\		'!'. There is \fBa\fP random \fBnumber\fP generator 'rand' which generates\\\fBn\fP\\		\fBa\fP uniform random \fBnumber\fP on the range 0.0-1.0 and 'grand' which\\\fBn\fP\\		generates \fBa\fP zero-mean, unit variance normal variate. There are\\\fBn\fP\\		two functions 'xp', 'yp' to get the horixontal and vertical \fBpixel\fP\\\fBn\fP\\		positions respectively, and two further functions 'x', 'y' which\\\fBn\fP\\		return the position in units of the lenght of the side of\\\fBn\fP\\		the image.  There is \fBa\fP constant MAGIC (defined in magic.\fBh\fP - and\\\fBn\fP\\		currently set to -32768) which is \fBa\fP \fBflag\fP for bad \fBdata\fP.\\\fBn\fP\\		There is \fBa\fP function 'if' (\fBa\fP.\fBk\fP.\fBa\fP. '?') which mimics the \fBC\fP\\\fBn\fP\\		language '(\fBc\fP ? \fBt\fP : f)' which returns '\fBt\fP' or 'f' respectively\\\fBn\fP\\		depending on the truth or falseness of the condition '\fBc\fP'.  The\\\fBn\fP\\		rpn syntax for this expression is '\fBt\fP f \fBc\fP ?' in which '?' pops the\\\fBn\fP\\		condition '\fBc\fP' followed by 'f' and then '\fBt\fP' and pushes '\fBt\fP' or 'f'\\\fBn\fP\\		as appropriate. The condition '\fBc\fP' will of course most likely be\\\fBn\fP\\		\fBa\fP compound \fBlogical\fP expression.  There is also \fBa\fP function 'enter'\\\fBn\fP\\		which duplicates the top value of the \fBstack\fP.\\\fBn\fP\\		Use -\fBc\fP option (with no input images) to generate an image from\\\fBn\fP\\		scratch.\\\fBn\fP\\		Use -p option to specify output pixtpye which can be one of\\\fBn\fP\\			 16	# signed 2-byte \fBinteger\fP\\\fBn\fP\\			-32	# 4-byte floating \fBpoint\fP\\\fBn\fP\\			 32	# 4-byte int\\\fBn\fP\\		Otherwise the output will have same pixtype as input, or, with\\\fBn\fP\\		-\fBc\fP option, will have pixtype -32.\\\fBn\fP\\		Output goes to stdout.\\\fBn\fP\\\\\fBn\fP\\EXAMPLES\\\fBn\fP\\		Subtract \fBb\fP.\fBfits\fP from \fBa\fP.fits:\\\fBn\fP\\\\\fBn\fP\\			\fBic\fP '%%1 %%2 -' \fBa\fP.\fBfits\fP \fBb\fP.\fBfits\fP\\\fBn\fP\\\\\fBn\fP\\		Take sqrt of image to be read from stdin; output as float:\\\fBn\fP\\\\\fBn\fP\\			\fBic\fP -f '%%1 sqrt' -\\\fBn\fP\\\\\fBn\fP\\		Create \fBa\fP 512 x 512 image with \fBa\fP linear horizontal ramp and\\\fBn\fP\\		multiply by 10:\\\fBn\fP\\\\\fBn\fP\\			\fBic\fP -\fBc\fP 512 512 'x 10 *'\\\fBn\fP\\\\\fBn\fP\\		Replace all pixels in \fBa\fP.\fBfits\fP with value < 10 with MAGIC:\\\fBn\fP\\\\\fBn\fP\\			\fBic\fP '%%1 MAGIC %%1 10 > ?' \fBa\fP.\fBfits\fP\\\fBn\fP\\\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file ic_dev.c.
+.SH "Function Documentation"
+.PP 
+.SS "double drand48 ()"
+.PP
+.SS "double gasdev (void)"
+.PP
+Definition at line 452 of file ic_dev.c.
+.PP
+References drand48(), r, and ran0().
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 99 of file ic_dev.c.
+.PP
+References ACOS, add_comment(), allocFloatArray(), ASIN, ATAN, ATAN2, CEIL, CONSTANT_TYPE, COS, COSH, op::data, DIVIDE, drand48(), ENTER, EQ, error_exit, exit(), EXP, f, FABS, ff, FLOAT_PIXTYPE, FLOOR, FMOD, fread_fits(), fwrite_fits(), gasdev(), GE, get_input_pixtype(), getop(), GRAND, GT, IF, IFQ, IM_VALUE_TYPE, INT_PIXTYPE, ix, iy, LE, LOG, LOG10, LT, M1, M2, MAGIC, MAX_OPS, MINUS, N1, N2, NE, nim, NOT, NUM0_FUNC_TYPE, NUM1_FUNC_TYPE, NUM2_FUNC_TYPE, op::opno, PLUS, pos, POW, RAND, set_fits_ipf(), set_output_pixtype(), SHORT_PIXTYPE, SIN, SINH, SQRT, st, STACK_DEPTH, TAN, TANH, TIMES0, TIMES1, op::type, usage, x(), X, xp(), XP, y(), Y, yp(), and YP.
+.SS "double x (void)"
+.PP
+Definition at line 442 of file ic_dev.c.
+.PP
+References ix, and N1.
+.SS "double xp (void)"
+.PP
+Definition at line 432 of file ic_dev.c.
+.PP
+References ix.
+.SS "double y (void)"
+.PP
+Definition at line 447 of file ic_dev.c.
+.PP
+References iy, and N2.
+.SS "double yp (void)"
+.PP
+Definition at line 437 of file ic_dev.c.
+.PP
+References iy.
+.SH "Variable Documentation"
+.PP 
+.SS "float** f"
+.PP
+Definition at line 95 of file ic_dev.c.
+.SS "int \fBix\fP\fC [static]\fP"
+.PP
+Definition at line 94 of file ic_dev.c.
+.SS "int \fBiy\fP\fC [static]\fP"
+.PP
+Definition at line 94 of file ic_dev.c.
+.PP
+Referenced by main(), y(), and yp().
+.SS "int \fBN1\fP\fC [static]\fP"
+.PP
+Definition at line 94 of file ic_dev.c.
+.SS "int \fBN2\fP\fC [static]\fP"
+.PP
+Definition at line 94 of file ic_dev.c.
+.SS "int \fBnim\fP = 0"
+.PP
+Definition at line 93 of file ic_dev.c.
+.SS "int \fBpos\fP = -1"
+.PP
+Definition at line 91 of file ic_dev.c.
+.SS "double \fBst\fP[STACK_DEPTH]"
+.PP
+Definition at line 90 of file ic_dev.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

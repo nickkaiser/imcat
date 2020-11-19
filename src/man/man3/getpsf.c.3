@@ -1,0 +1,221 @@
+.TH "getpsf.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getpsf.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'fits.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+\fC#include 'stats_stuff.h'\fP
+.br
+\fC#include 'object_stuff.h'\fP
+.br
+\fC#include 'catio.h'\fP
+.br
+\fC#include 'smpopup.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		getpsf [\fBoptions\fP...] \fBa\fP.cat \fBb\fP.cat ......\\\fBn\fP\\			-s		# generate getpsf.out\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		\\'getpsf\\' fits stars in specified range to gaussians\\\fBn\fP\\		Invokes sm to popup \fBa\fP window with \fBr\fP-\fBl\fP scatterplot so user\\\fBn\fP\\		can define sample of stars - then fills rpsf field in xxx.cat\\\fBn\fP\\	        with -s option we analyse -f the stars and psf parameters\\\fBn\fP\\		are written to getpsf.out\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAX\fP(x, y)   (((x) > (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMIN\fP(x, y)   (((x) < (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMAX_STARS\fP   1000"
+.br
+.ti -1c
+.RI "#define \fBRLMODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBEEMODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBELIMIT\fP   0.3"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBdrawselectionbox\fP ()"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "void \fBdrawfn\fP (void)"
+.br
+.ti -1c
+.RI "void \fBcursorfn\fP (float x, float y, int \fBkey\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float * \fBsmr\fP"
+.br
+.ti -1c
+.RI "float * \fBsml\fP"
+.br
+.ti -1c
+.RI "float \fBsmx1\fP = 0 \fBsmy1\fP = 0 \fBsmx2\fP = 0 \fBsmy2\fP = 0"
+.br
+.ti -1c
+.RI "int \fBsmN\fP"
+.br
+.ti -1c
+.RI "int \fBsmmode\fP"
+.br
+.ti -1c
+.RI "int \fBnstars\fP"
+.br
+.ti -1c
+.RI "float \fBe1\fP [MAX_STARS]"
+.br
+.ti -1c
+.RI "float \fBe2\fP [MAX_STARS]"
+.br
+.ti -1c
+.RI "float \fBl\fP [MAX_STARS]"
+.br
+.ti -1c
+.RI "float \fBrh\fP [MAX_STARS]"
+.br
+.ti -1c
+.RI "int \fBi\fP [MAX_STARS]"
+.br
+.ti -1c
+.RI "int \fBj\fP [MAX_STARS]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define EEMODE   1"
+.PP
+Definition at line 38 of file getpsf.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "#define ELIMIT   0.3"
+.PP
+Definition at line 40 of file getpsf.c.
+.PP
+Referenced by drawfn().
+.SS "#define MAX(x, y)   (((x) > (y)) ? (x) : (y))"
+.PP
+Definition at line 33 of file getpsf.c.
+.SS "#define MAX_STARS   1000"
+.PP
+Definition at line 36 of file getpsf.c.
+.PP
+Referenced by main().
+.SS "#define MIN(x, y)   (((x) < (y)) ? (x) : (y))"
+.PP
+Definition at line 34 of file getpsf.c.
+.SS "#define RLMODE   0"
+.PP
+Definition at line 37 of file getpsf.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		getpsf [\fBoptions\fP...] \fBa\fP.cat \fBb\fP.cat ......\\\fBn\fP\\			-s		# generate getpsf.out\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		\\'getpsf\\' fits stars in specified range to gaussians\\\fBn\fP\\		Invokes sm to popup \fBa\fP window with \fBr\fP-\fBl\fP scatterplot so user\\\fBn\fP\\		can define sample of stars - then fills rpsf field in xxx.cat\\\fBn\fP\\	        with -s option we analyse -f the stars and psf parameters\\\fBn\fP\\		are written to getpsf.out\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 6 of file getpsf.c.
+.SH "Function Documentation"
+.PP 
+.SS "void cursorfn (float x, float y, int key)"
+.PP
+Definition at line 273 of file getpsf.c.
+.PP
+References drawfn(), drawselectionbox(), key, smx1, smx2, smy1, smy2, x, and y.
+.SS "void drawfn (void)"
+.PP
+Definition at line 240 of file getpsf.c.
+.PP
+References e1, e2, EEMODE, ELIMIT, error_exit, nstars, RLMODE, sml, smmode, smN, and smr.
+.SS "void drawselectionbox ()"
+.PP
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 48 of file getpsf.c.
+.PP
+References a, b, cursorfn(), drawfn(), object::e, e, e1, e2, EEMODE, error_exit, exit(), object::i, i, object::j, j, l, MAX, MAX_STARS, MIN, nstars, phi, PI, rh, RLMODE, sml, smmode, smN, smpopup(), smr, smx1, smx2, smy1, smy2, usage, and write_object().
+.SH "Variable Documentation"
+.PP 
+.SS "float \fBe1\fP[MAX_STARS]"
+.PP
+Definition at line 44 of file getpsf.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "float \fBe2\fP[MAX_STARS]"
+.PP
+Definition at line 44 of file getpsf.c.
+.PP
+Referenced by drawfn(), fk425m(), fk524m(), and main().
+.SS "int \fBi\fP[MAX_STARS]"
+.PP
+Definition at line 45 of file getpsf.c.
+.PP
+Referenced by accumulate(), add(), add_noise(), add_population(), addjupitergravity(), addmaskpoint(), addtofitsarray(), addtomatrix(), alloc3Darray(), alloc3DFloatArray(), alloc_f(), alloc_grays(), alloc_shades(), allocatearrays(), allocfitsarray(), allocFloatArray(), allocitemcontents(), allocpositionvector(), allocShortArray(), aloop(), amoeba(), apphot(), argsToString(), avgpixstack(), avsigclip(), avsigclip2(), block_filter(), byteswapline(), cartesiantokepler(), carveholes(), cdl_applyZscale(), cdl_doBoxMark(), cdl_doCircAnnuliMark(), cdl_doDashedLine(), cdl_doEllipAnnuliMark(), cdl_doPointMark(), cdl_doPolygonMark(), cdl_doTextMarker(), cdl_drawDashVec(), cdl_drawThickDashVec(), cdl_drawThickVector(), cdl_drawVector(), cdl_fillArea(), cdl_findNearest(), cdl_fixData(), cdl_flip(), cdl_getCircleCoords(), cdl_getEllipseCoords(), cdl_getFITSPixels(), cdl_getIRAFPixels(), cdl_markCoordsFile(), cdl_minmax(), cdl_open(), cdl_openFITS(), cdl_rdCard(), cdl_readHeader(), cdl_selectFB(), cdl_strlen(), cdl_strpak(), chisquared(), color_index(), computeSigma(), conformingedge(), convert_matrix(), convertarray(), convertmagictonans(), convertnanstomagic(), copy(), copyFloatToShort(), copyitemcontents(), copyShortToFloat(), createeventheap(), deflect(), deproject(), diff(), difflmodel(), dispose(), divconqdelaunay(), dmatrix(), do_object_stats(), doplot(), dosky(), dot(), dotdoit(), dotinit(), dotriangle(), drawcircle(), drawcollar(), drawcursor(), drawellipse(), DrawMesh(), enforcequality(), eps_doColorbar(), eps_init(), eps_setCmap(), eps_writeCmap(), eps_writeMono(), eps_writeMonoRGB(), eps_writePix(), eps_writeRGB(), exponentialfilter(), f(), f3tensor(), fan(), fastmap(), fdo_stats(), fillzoompixmap(), findmin(), findmode(), findpeak(), finishfile(), fitall(), fitdistortions(), fitextinctions(), fitLine(), fittranslations(), fk425m(), fk42gal(), fk524m(), fk52gal(), flattenData(), floatCompare(), formskeleton(), fourierloop(), fprintvec(), fread_fits(), fread_fits_line(), free3DFloatArray(), free_dmatrix(), free_imatrix(), free_matrix(), freeFloatArray(), freeitemcontents(), freeShortArray(), func(), fwrite_fits(), fwrite_fits_line(), gal2fk4(), gal2fk5(), gaussfilter(), gaussfit(), gaussfitn(), gaussianfilterfunc(), generatefm(), get_fbconfig(), get_iochan(), getaddresses(), getargi(), getC(), getitemaddresses(), getlimits(), getmodeamplitudes_lc(), getnobjs(), getobjects(), getpeaks(), getperp(), getpix(), GetPixelValue(), getplane(), getrange(), getrgbfromcmap(), Getshape(), getshape(), getsigma(), getsize(), getvars(), getxcoords(), gray(), hasbadchars(), hchange(), hgetc(), hgetdate(), highorder(), identical(), ifinit(), iis_drawcirc(), iis_open(), iis_round(), imatrix(), imd_displayImage(), imd_loadImtoolrc(), imd_minmax(), imd_readSubRaster(), imd_writeImage(), imd_writeSubRaster(), incrementaldelaunay(), insertsite(), interp(), invdeflection(), inversedoit(), inversegetxcoords(), inverseinit(), invertmatrix(), is_swapped_machine(), isnum(), jpl_init_ephemeris(), jpl_pleph(), jpl_state(), keplertocartesian(), keplertocartesian_shapiro(), kernel_filter(), kolmogorovfilter(), length(), lintransdoit(), lintransinit(), locate(), lubksb(), ludcmp(), madddoit(), maddinit(), main(), make_pixmap(), make_pop(), make_r(), make_re(), make_z(), makecarray(), makecommand(), makedddotr(), makepreview(), makering(), makescrunchedviews(), maketriangle(), map(), matrix(), mean(), modefunc(), mscaledoit(), mscaleinit(), msubdoit(), msubinit(), mylubksb(), myludcmp(), nextargtype(), openiostream(), outputframe(), painttriangle(), parsecommandline(), picclick(), platepix(), plotclick(), pointintriangle(), polyloop(), powell(), print_im(), printclick(), printimage(), printtranslations(), printvec(), process(), project(), pruneextreme(), quality_statistics(), read_fits(), read_fits_head(), read_fits_head_ND(), read_fits_line(), readcathead(), readdata(), readfitscube(), readfitsplane(), readholes(), readitem(), readmergedcat(), readnodes(), recircdef(), reconstruct(), rectkernel(), rejectPixels(), repairencs(), rflatten_a(), rmodel(), runflatten_a(), sampleImage(), scale(), schecterfilter(), scrunch_stream(), segmentintersection(), set_fbconfig(), set_grays(), set_shades(), setcolorscheme(), setf(), setv(), sheaderrecord(), slaDeuler(), slaDmxv(), smcontour(), smprofile(), splittriangle(), sscanitem(), strnsrch(), submatrix(), subSample(), swapbytes(), swapint(), tcl(), triangulatepolygon(), tukey(), ultrafastmap(), vadddoit(), vaddinit(), valid(), vectordoit(), vectorinit(), vscaledoit(), vscaleinit(), vshiftdoit(), vshiftinit(), vsubdoit(), vsubinit(), vx_iisclose(), vx_iisio(), wcsdist(), wcsinit(), write2Dpolymodel(), write_fits(), write_fits_head_ND(), write_fits_line(), write_fits_tail_ND(), writeelements(), writefitsarray(), writefitscube(), writefitsplane(), writefitstail(), writegridcat(), writeimage(), writeitem(), writelabel(), writename(), writenodes(), writepoly(), writevoronoi(), zap(), zapcircle(), zapellipse(), and zeromatrix().
+.SS "int \fBj\fP[MAX_STARS]"
+.PP
+Definition at line 45 of file getpsf.c.
+.PP
+Referenced by accumulate(), add_bad_col(), add_noise(), add_population(), addmaskpoint(), alloc3Darray(), alloc3DFloatArray(), allocatearrays(), allocpositionvector(), amoeba(), amotry(), argsToString(), avgpixstack(), block_filter(), cartesiantokepler(), cdl_doBoxMark(), cdl_doPointMark(), cdl_doTextMarker(), cdl_fillArea(), cdl_fixData(), cdl_flip(), cdl_readHeader(), cdl_strpak(), cffti1_(), color_index(), convert_matrix(), copyFloatToShort(), copyShortToFloat(), deflect(), difflmodel(), dispose(), divconqdelaunay(), do_object_stats(), doplot(), dosky(), dotdoit(), dotinit(), dotriangle(), drawcircle(), drawcollar(), drawcursor(), drawellipse(), DrawMesh(), eps_doColorbar(), eps_writeCmap(), exponentialfilter(), ezfft1_(), f1dim(), f3tensor(), fan(), fastmap(), fdo_stats(), fillzoompixmap(), findmode(), findpeak(), fitall(), fitdistortions(), fitextinctions(), fittranslations(), fk425m(), fk524m(), flatten_a(), floatCompare(), fourierloop(), fread_fits(), frprmn(), gammln(), gaussfilter(), gaussianfilterfunc(), getC(), getpeaks(), GetPixelValue(), getrgbfromcmap(), Getshape(), getshape(), getsize(), gray(), identical(), iis_display(), iis_drawcirc(), iis_open(), imd_readSubRaster(), imd_writeImage(), imd_writeSubRaster(), interp(), invdeflection(), inversedoit(), inverseinit(), invertmatrix(), jpl_init_ephemeris(), jpl_state(), keplertocartesian_shapiro(), kernel_filter(), kolmogorovfilter(), linmin(), locate(), lubksb(), ludcmp(), madddoit(), maddinit(), main(), MAIN__(), make_pixmap(), make_pop(), make_r(), make_z(), makecarray(), makepreview(), makescrunchedviews(), map(), mean(), median(), mgonxtvu_(), mgoplt3d_(), modefunc(), mscaledoit(), mscaleinit(), msubdoit(), msubinit(), painttriangle(), parsecommandline(), passb_(), passf_(), picclick(), plotclick(), pointintriangle(), polyloop(), powell(), print_im(), printclick(), printimage(), quality_statistics(), radbg_(), radfg_(), ran1(), readmergedcat(), readnodes(), reconstruct(), rectkernel(), rejectPixels(), rffti1_(), rotate_(), schecterfilter(), scrunch_stream(), set_shades(), setgridsize(), slaDeuler(), slaDmxv(), smcontour(), smprofile(), submatrix(), tukey(), ultrafastmap(), valid(), vx_iisclose(), writeimage(), zap(), zapcircle(), and zapellipse().
+.SS "float \fBl\fP[MAX_STARS]"
+.PP
+Definition at line 44 of file getpsf.c.
+.SS "int \fBnstars\fP"
+.PP
+Definition at line 43 of file getpsf.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "float \fBrh\fP[MAX_STARS]"
+.PP
+Definition at line 44 of file getpsf.c.
+.PP
+Referenced by apphot(), and main().
+.SS "float * \fBsml\fP"
+.PP
+Definition at line 42 of file getpsf.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "int \fBsmmode\fP"
+.PP
+Definition at line 43 of file getpsf.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "int \fBsmN\fP"
+.PP
+Definition at line 43 of file getpsf.c.
+.SS "float* \fBsmr\fP"
+.PP
+Definition at line 42 of file getpsf.c.
+.PP
+Referenced by drawfn(), and main().
+.SS "float \fBsmx1\fP = 0 \fBsmy1\fP = 0 \fBsmx2\fP = 0 \fBsmy2\fP = 0"
+.PP
+Definition at line 42 of file getpsf.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

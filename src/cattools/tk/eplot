@@ -1,0 +1,39 @@
+#! /usr/local/bin/wish -f
+
+set auto_path "[set env(IMCATDIR)]/src/cattools/tk $auto_path"
+
+set usage "eplot xname x1 x2 yname y1 y2 title"
+
+
+if {$argc != 7} {
+	puts $usage
+	exit
+}
+set xname [lindex $argv 0]
+scan [lindex $argv 1] "%f" x1
+scan [lindex $argv 2] "%f" x2
+set yname	[lindex $argv 3]
+scan [lindex $argv 4] "%f" y1
+scan [lindex $argv 5] "%f" y2
+set title	[lindex $argv 6]
+
+
+plotinit
+setuserlimits $x1 $y1 $x2 $y2
+box
+xlabel $xname
+ylabel $yname
+plotlabel $title
+
+set pointsize 10.0
+
+while {[gets stdin line] >= 0} {
+	scan $line "%f %f %f %f" x y e0 e1
+	set phi [expr 0.5 * atan2($e1, $e0)]
+	set e [expr sqrt($e0 * $e0 + $e1 * $e1)]
+	if {$e < 1.0} {
+		set a [expr $pointsize * (1 + $e)]
+		set b [expr $pointsize / (1 + $e)]
+		ellipse $x $y $a $b $phi
+	}
+}

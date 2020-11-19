@@ -1,0 +1,64 @@
+.TH "frprmn.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+frprmn.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include 'frprmn.h'\fP
+.br
+\fC#include 'linmin.h'\fP
+.br
+\fC#include 'nrutil.h'\fP
+.br
+\fC#include 'fitstatus.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBITMAX\fP   200"
+.br
+.ti -1c
+.RI "#define \fBEPS\fP   1.0\fBe\fP-10"
+.br
+.ti -1c
+.RI "#define \fBFREEALL\fP   free_vector(xi,1,\fBn\fP);free_vector(\fBh\fP,1,\fBn\fP);free_vector(g,1,\fBn\fP);"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBfrprmn\fP (float p[], int \fBn\fP, float ftol, int *iter, float *fret, float(*func)(float[]), void(*dfunc)(float[], float[]))"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define EPS   1.0\fBe\fP-10"
+.PP
+Definition at line 15 of file frprmn.c.
+.SS "#define FREEALL   free_vector(xi,1,\fBn\fP);free_vector(\fBh\fP,1,\fBn\fP);free_vector(g,1,\fBn\fP);"
+.PP
+Definition at line 16 of file frprmn.c.
+.PP
+Referenced by frprmn().
+.SS "#define ITMAX   200"
+.PP
+Definition at line 14 of file frprmn.c.
+.SH "Function Documentation"
+.PP 
+.SS "void frprmn (float p[], int n, float ftol, int * iter, float * fret, float(* func)(float[]), void(* dfunc)(float[], float[]))"
+.PP
+Definition at line 19 of file frprmn.c.
+.PP
+References EPS, FREEALL, func(), g(), getfitstatus(), h, ITMAX, j, linmin(), n, setfitstatus(), TOO_MANY_ITERATIONS, and vector().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

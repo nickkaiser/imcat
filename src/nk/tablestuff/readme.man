@@ -1,0 +1,4 @@
+This section contains some commands that perform operations
+on simple ascii format tabular data.  They all ignore
+lines beginning with #, and so can read text-format
+lc output.

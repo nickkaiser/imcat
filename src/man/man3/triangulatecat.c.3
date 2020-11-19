@@ -1,0 +1,112 @@
+.TH "triangulatecat.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+triangulatecat.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'triangle.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'utils/iostream.h'\fP
+.br
+\fC#include 'utils/ipbuff.h'\fP
+.br
+\fC#include 'catlib/cat.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/arrays.h'\fP
+.br
+\fC#include 'painttriangle.h'\fP
+.br
+\fC#include 'fixedges.h'\fP
+.br
+\fC#include 'average.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBREAL\fP   double"
+.br
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	triangulatecat - Delauney tesselation of \fBa\fP catalogue\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	triangulatecat srccat [-\fBc\fP | -f \fBx1\fP \fBx2\fP \fBNx\fP y1 y2 \fBNy\fP] [-\fBm\fP | -\fBM\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Triangulatecat performs Delauney tesselation using Shewchuk's code.\\\fBn\fP\\	Input catalog should contain \fBa\fP 2-vector x[2] and scalar or 1-D vector f[\fBN\fP].\\\fBn\fP\\\\\fBn\fP\\	Default is to output the \fBtriangles\fP x[3][2], f[3][\fBN\fP].\\\fBn\fP\\	With -\fBc\fP option we output an average cat x[2] = \fBxbar\fP[2], f[\fBN\fP] = fbar[\fBN\fP].\\\fBn\fP\\	Ditto with -\fBc\fP -\fBm\fP \fBoptions\fP.\\\fBn\fP\\	With -\fBc\fP -\fBM\fP \fBoptions\fP we output \fBa\fP median cat x[2] = \fBxbar\fP[2], f[\fBN\fP] = fmedian[\fBN\fP].\\\fBn\fP\\	With -f ... option we output \fBa\fP \fBNx\fP by \fBNy\fP \fBFITS\fP image consisting of\\\fBn\fP\\	triangular linear ramp segments, or, with -\fBm\fP or -\fBM\fP \fBoptions\fP the \fBtriangles\fP\\\fBn\fP\\	are uniform and painted with the mean or median f[] value respectively.\\\fBn\fP\\\\\fBn\fP\\	Uses \fBiostream\fP utilities so use '-' for standard input, 'somecommand |' to\\\fBn\fP\\	read from \fBa\fP process etc.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBOP_TRIANGLES\fP   0"
+.br
+.ti -1c
+.RI "#define \fBOP_AVGCAT\fP   1"
+.br
+.ti -1c
+.RI "#define \fBOP_FITS\fP   2"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBmean\fP (double **y, int \fBj\fP)"
+.br
+.ti -1c
+.RI "double \fBmedian\fP (double **y, int \fBj\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define OP_AVGCAT   1"
+.PP
+Definition at line 44 of file triangulatecat.c.
+.PP
+Referenced by main().
+.SS "#define OP_FITS   2"
+.PP
+Definition at line 45 of file triangulatecat.c.
+.PP
+Referenced by main().
+.SS "#define OP_TRIANGLES   0"
+.PP
+Definition at line 43 of file triangulatecat.c.
+.PP
+Referenced by main().
+.SS "#define REAL   double"
+.PP
+Definition at line 4 of file triangulatecat.c.
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	triangulatecat - Delauney tesselation of \fBa\fP catalogue\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	triangulatecat srccat [-\fBc\fP | -f \fBx1\fP \fBx2\fP \fBNx\fP y1 y2 \fBNy\fP] [-\fBm\fP | -\fBM\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Triangulatecat performs Delauney tesselation using Shewchuk's code.\\\fBn\fP\\	Input catalog should contain \fBa\fP 2-vector x[2] and scalar or 1-D vector f[\fBN\fP].\\\fBn\fP\\\\\fBn\fP\\	Default is to output the \fBtriangles\fP x[3][2], f[3][\fBN\fP].\\\fBn\fP\\	With -\fBc\fP option we output an average cat x[2] = \fBxbar\fP[2], f[\fBN\fP] = fbar[\fBN\fP].\\\fBn\fP\\	Ditto with -\fBc\fP -\fBm\fP \fBoptions\fP.\\\fBn\fP\\	With -\fBc\fP -\fBM\fP \fBoptions\fP we output \fBa\fP median cat x[2] = \fBxbar\fP[2], f[\fBN\fP] = fmedian[\fBN\fP].\\\fBn\fP\\	With -f ... option we output \fBa\fP \fBNx\fP by \fBNy\fP \fBFITS\fP image consisting of\\\fBn\fP\\	triangular linear ramp segments, or, with -\fBm\fP or -\fBM\fP \fBoptions\fP the \fBtriangles\fP\\\fBn\fP\\	are uniform and painted with the mean or median f[] value respectively.\\\fBn\fP\\\\\fBn\fP\\	Uses \fBiostream\fP utilities so use '-' for standard input, 'somecommand |' to\\\fBn\fP\\	read from \fBa\fP process etc.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 17 of file triangulatecat.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 50 of file triangulatecat.c.
+.PP
+References add_comment(), addargscomment(), object::addrlist, allocFloatArray(), allocobjectcontents(), appendcomment(), argsinit(), c, closeiostream(), connectobjecttocathead(), item::dim, error_exit, exit(), iostream::f, f, F_INTERP, F_MEAN, F_MEDIAN, fits, fixedges(), fixholes(), flag, FLAG_ARG, FLOAT_MAGIC, FLOAT_PIXTYPE, getargd(), getargi(), getargs(), getflag(), getobjectitem(), getobjectitemindex(), i, item::itype, ix, MAX_FITS_DIM, mean(), median(), item::ndim, newfitsheader(), newnumericcomment(), newobject(), object::next, nextargtype(), nobj, NUM_TYPE, Nx, Ny, OP_AVGCAT, OP_FITS, OP_TRIANGLES, openiostream(), opmode, painttriangle(), readcathead(), readobject(), REAL, setcatipf(), t, triangulate(), usage, v, writecathead(), writefitsheader(), writefitsplane(), writefitstail(), writeobject(), and x.
+.SS "double mean (double ** y, int j)"
+.PP
+Definition at line 8 of file average.c.
+.PP
+References c, j, and y.
+.SS "double median (double ** y, int j)"
+.PP
+Definition at line 20 of file average.c.
+.PP
+References j, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,26 @@
+/Makefile/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/amoeba.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/amoeba.h/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/amoeba_dbl.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/amoeba_dbl.h/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/amotry.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/amotry.h/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/amotry_dbl.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/amotry_dbl.h/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/brent_dbl.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/f1dim_dbl.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/fitstack.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/fitstack.h/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/fitstack_amoeba.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/fitstack_modefunc.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/fitstack_modefunc.h/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/fitstack_read.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/fitstack_read.h/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/linmin_dbl.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/mnbrak_dbl.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/powell_dbl.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/temp.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/temp_r.cat/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/testamoeba.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+/testpowell.c/1.1.1.1/Sun Apr 13 22:54:13 2003//
+D

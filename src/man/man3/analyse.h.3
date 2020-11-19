@@ -1,0 +1,75 @@
+.TH "analyse.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+analyse.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBdosky\fP (float **f, int \fBN1\fP, int \fBN2\fP, int \fBi\fP, int \fBj\fP, int \fBa1\fP, int \fBa2\fP, skyquad *sky, float \fBfmode\fP, float \fBsigma\fP)"
+.br
+.ti -1c
+.RI "void \fBdo_object_stats\fP (\fBobject\fP *pk, float **f, int \fBN1\fP, int \fBN2\fP, float(*fsky)(int \fBi\fP, int \fBj\fP), float \fBsigma\fP, float ne, float \fBrc\fP, float \fBalpha\fP)"
+.br
+.ti -1c
+.RI "int \fBobjectcmp\fP (\fBobject\fP *pk1, \fBobject\fP *pk2)"
+.br
+.ti -1c
+.RI "int \fBshortcmp\fP (short *s1, short *s2)"
+.br
+.ti -1c
+.RI "float \fBfsky\fP (int \fBdi\fP, int \fBdj\fP)"
+.br
+.ti -1c
+.RI "void \fBsetskyparameters\fP (skyquad *sky)"
+.br
+.ti -1c
+.RI "void \fBzap\fP (int zapmode, \fBobject\fP *\fBobj\fP, int radiustype, float \fBa\fP, float **f, float **fzap, short **nzap, int \fBN1\fP, int \fBN2\fP)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void do_object_stats (\fBobject\fP * pk, float ** f, int N1, int N2, float(* fsky)(int \fBi\fP, int \fBj\fP), float sigma, float ne, float rc, float alpha)"
+.PP
+Definition at line 424 of file analyse.c.
+.PP
+References a, alpha, b, d, di, dj, dx, dy, object::e, f, fit, fsky(), gaussfit(), GC_MAX, object::i, i, object::j, j, MAGIC, N1, N2, ne, phi, PI, powerlawwindow, r, RMAX_MIN, sigma, and W.
+.PP
+Referenced by main().
+.SS "void dosky (float ** f, int N1, int N2, int ip, int jp, int a1, int a2, skyquad * sky, float fmode, float sigma)"
+.PP
+calculates occupation and mode for NSEW sectors; Definition at line 324 of file analyse.c.
+.PP
+References a1, a2, error_exit, f, free(), i, j, liststats(), m, MAGIC, median(), N1, N2, and PI.
+.PP
+Referenced by main().
+.SS "float fsky (int di, int dj)"
+.PP
+Definition at line 629 of file analyse.c.
+.PP
+References di, dj, ff, ffi, ffj, ffmode, and nosky.
+.PP
+Referenced by do_object_stats(), and main().
+.SS "int objectcmp (\fBobject\fP * pk1, \fBobject\fP * pk2)"
+.PP
+.SS "void setskyparameters (skyquad * sky)"
+.PP
+Definition at line 622 of file analyse.c.
+.PP
+References ff, ffi, and ffj.
+.PP
+Referenced by main().
+.SS "int shortcmp (short * s1, short * s2)"
+.PP
+.SS "void zap (int zapmode, \fBobject\fP * obj, int radiustype, float a, float ** f, float ** fzap, short ** nzap, int N1, int N2)"
+.PP
+Definition at line 640 of file analyse.c.
+.PP
+References a, d, error_exit, f, G_RADIUS, object::i, i, object::j, j, MAGIC, N1, N2, N_RADIUS, RESTORE, and ZAP.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

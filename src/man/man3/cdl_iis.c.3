@@ -1,0 +1,96 @@
+.TH "iis.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+iis.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <values.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../cdllib/cdl.h'\fP
+.br
+\fC#include '../../cdllib/cdlP.h'\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	iis - pipe \fBfits\fP image \fBdata\fP into saopipe or ximtool in IIS format\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	iis [-u] [-f \fBfmin\fP \fBfmax\fP] [-F fitsfile] [-p pscom] [-P pscom]\\\fBn\fP\\		[-\fBc\fP \fBcatfile\fP [-s size] [-\fBt\fP \fBtype\fP] [-T tname] [-\fBe\fP ename]\\\fBn\fP\\		[-\fBr\fP rname] [-\fBn\fP nname] [-\fBl\fP]]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'iis\\' reads \fBa\fP \fBfits\fP image from stdin, linearly scales the\\\fBn\fP\\	\fBpixel\fP values to range 0-199, prepends an iis header\\\fBn\fP\\	and writes the output to \fBa\fP FIFO pipe /dev/imt1o so that saoimage\\\fBn\fP\\	or ximtool can display it. This saves all the fiddle faddle\\\fBn\fP\\	with the viewers GUI and is useful to get visual feedback\\\fBn\fP\\	from scripts which process \fBa\fP series of images.\\\fBn\fP\\\\\fBn\fP\\	The first version of this program was devised from \fBa\fP fax of\\\fBn\fP\\	\fBa\fP photocopy of the arcane IIS display device protocol from\\\fBn\fP\\	George Miyashiro.  Karl Glazebrook then refined this, improving\\\fBn\fP\\	efficiency - thanks Karl - but I have now ditched his library\\\fBn\fP\\	in favour of the IRAF/NOAO cdl library due to Michael\\\fBn\fP\\	Fitzpatrick, which does the same \fBthing\fP, but which is\\\fBn\fP\\	better documented and has some useful extensions.\\\fBn\fP\\\\\fBn\fP\\	Bad pixels (flagged by the MAGIC value) are highlighted in green.\\\fBn\fP\\\\\fBn\fP\\	Options:\\\fBn\fP\\\\\fBn\fP\\	-u	print this mesage\\\fBn\fP\\	-f	set the limits for \fBpixel\fP values\\\fBn\fP\\	-F	read the image from 'fitsfile'\\\fBn\fP\\	-p	send postscript output to command 'pscom'\\\fBn\fP\\	-P	send annotated postscript output to command 'pscom'\\\fBn\fP\\	-\fBc\fP 	read in the objects from '\fBcatfile\fP' and display them\\\fBn\fP\\		as overlay markers. If \fBcatfile\fP = '-' the catalogue\\\fBn\fP\\		will be read from stdin (but be sure then to use -F\\\fBn\fP\\		option also). With -\fBc\fP you can use the following \fBoptions\fP\\\fBn\fP\\		to control the appearance of markers:\\\fBn\fP\\	-s 	set default size of markers (5)\\\fBn\fP\\	-\fBt\fP	set default \fBtype\fP (8). Allowed types are:			POINT		2\\\fBn\fP\\			BOX		4\\\fBn\fP\\			PLUS		8\\\fBn\fP\\			CROSS		16\\\fBn\fP\\			DIAMOND		32\\\fBn\fP\\			CIRCLE		64\\\fBn\fP\\			STAR		128\\\fBn\fP\\			HLINE		256\\\fBn\fP\\			VLINE		512\\\fBn\fP\\		you can add these to make composite markers and/or\\\fBn\fP\\		add 1 to \fBfill\fP them.\\\fBn\fP\\	-\fBe\fP 	option to draw ellipses with polarisation ename\\\fBn\fP\\	-\fBr\fP 	set size to input variable rname\\\fBn\fP\\	-T	set \fBtype\fP from inut variable tname\\\fBn\fP\\	-\fBn\fP	\fBlabel\fP marker with input variable 'nname'\\\fBn\fP\\	-\fBC\fP	set \fBcolor\fP from input variable 'cname'. Allowed colors are\\\fBn\fP\\			BLACK	1	CORAL	9\\\fBn\fP\\			WHITE	2	MAROON	10\\\fBn\fP\\			RED	3	ORANGE	11\\\fBn\fP\\			GREEN	4	KHAKI	12\\\fBn\fP\\			BLUE	5	ORCHID	13\\\fBn\fP\\			YELLOW	6	TQUOISE	14\\\fBn\fP\\			CYAN	7	VIOLET	15\\\fBn\fP\\			MAGENTA	8	WHEAT	16\\\fBn\fP\\	-\fBl\fP	enter edit loop after displaying cat in which we do the following\\\fBn\fP\\		in response to \fBkey\fP strokes:\\\fBn\fP\\			Key		Action\\\fBn\fP\\			---		---\\\fBn\fP\\			\fBd\fP		delete marker nearest cursor\\\fBn\fP\\			q		quit edit loop\\\fBn\fP\\			[0-9]		set overlay \fBcolor\fP\\\fBn\fP\\			\fBl\fP		start or end \fBa\fP \fBline\fP\\\fBn\fP\\			\fBb\fP		start or end \fBa\fP box\\\fBn\fP\\			\fBr\fP		redraw overlay\\\fBn\fP\\			f		toggle \fBfill\fP state for boxes\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser -- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.ti -1c
+.RI "#define \fBPIX_MAX\fP   200"
+.br
+.ti -1c
+.RI "#define \fBDIM_MAX\fP   4096"
+.br
+.ti -1c
+.RI "#define \fBCOLORBASE\fP   201"
+.br
+.ti -1c
+.RI "#define \fBNKBOX\fP   0"
+.br
+.ti -1c
+.RI "#define \fBNKLINE\fP   1"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define COLORBASE   201"
+.PP
+Definition at line 104 of file cdl/iis.c.
+.SS "#define DIM_MAX   4096"
+.PP
+Definition at line 103 of file cdl/iis.c.
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 101 of file cdl/iis.c.
+.SS "#define NKBOX   0"
+.PP
+Definition at line 105 of file cdl/iis.c.
+.SS "#define NKLINE   1"
+.PP
+Definition at line 106 of file cdl/iis.c.
+.SS "#define PIX_MAX   200"
+.PP
+Definition at line 102 of file cdl/iis.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\NAME\\\fBn\fP\\	iis - pipe \fBfits\fP image \fBdata\fP into saopipe or ximtool in IIS format\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	iis [-u] [-f \fBfmin\fP \fBfmax\fP] [-F fitsfile] [-p pscom] [-P pscom]\\\fBn\fP\\		[-\fBc\fP \fBcatfile\fP [-s size] [-\fBt\fP \fBtype\fP] [-T tname] [-\fBe\fP ename]\\\fBn\fP\\		[-\fBr\fP rname] [-\fBn\fP nname] [-\fBl\fP]]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'iis\\' reads \fBa\fP \fBfits\fP image from stdin, linearly scales the\\\fBn\fP\\	\fBpixel\fP values to range 0-199, prepends an iis header\\\fBn\fP\\	and writes the output to \fBa\fP FIFO pipe /dev/imt1o so that saoimage\\\fBn\fP\\	or ximtool can display it. This saves all the fiddle faddle\\\fBn\fP\\	with the viewers GUI and is useful to get visual feedback\\\fBn\fP\\	from scripts which process \fBa\fP series of images.\\\fBn\fP\\\\\fBn\fP\\	The first version of this program was devised from \fBa\fP fax of\\\fBn\fP\\	\fBa\fP photocopy of the arcane IIS display device protocol from\\\fBn\fP\\	George Miyashiro.  Karl Glazebrook then refined this, improving\\\fBn\fP\\	efficiency - thanks Karl - but I have now ditched his library\\\fBn\fP\\	in favour of the IRAF/NOAO cdl library due to Michael\\\fBn\fP\\	Fitzpatrick, which does the same \fBthing\fP, but which is\\\fBn\fP\\	better documented and has some useful extensions.\\\fBn\fP\\\\\fBn\fP\\	Bad pixels (flagged by the MAGIC value) are highlighted in green.\\\fBn\fP\\\\\fBn\fP\\	Options:\\\fBn\fP\\\\\fBn\fP\\	-u	print this mesage\\\fBn\fP\\	-f	set the limits for \fBpixel\fP values\\\fBn\fP\\	-F	read the image from 'fitsfile'\\\fBn\fP\\	-p	send postscript output to command 'pscom'\\\fBn\fP\\	-P	send annotated postscript output to command 'pscom'\\\fBn\fP\\	-\fBc\fP 	read in the objects from '\fBcatfile\fP' and display them\\\fBn\fP\\		as overlay markers. If \fBcatfile\fP = '-' the catalogue\\\fBn\fP\\		will be read from stdin (but be sure then to use -F\\\fBn\fP\\		option also). With -\fBc\fP you can use the following \fBoptions\fP\\\fBn\fP\\		to control the appearance of markers:\\\fBn\fP\\	-s 	set default size of markers (5)\\\fBn\fP\\	-\fBt\fP	set default \fBtype\fP (8). Allowed types are:			POINT		2\\\fBn\fP\\			BOX		4\\\fBn\fP\\			PLUS		8\\\fBn\fP\\			CROSS		16\\\fBn\fP\\			DIAMOND		32\\\fBn\fP\\			CIRCLE		64\\\fBn\fP\\			STAR		128\\\fBn\fP\\			HLINE		256\\\fBn\fP\\			VLINE		512\\\fBn\fP\\		you can add these to make composite markers and/or\\\fBn\fP\\		add 1 to \fBfill\fP them.\\\fBn\fP\\	-\fBe\fP 	option to draw ellipses with polarisation ename\\\fBn\fP\\	-\fBr\fP 	set size to input variable rname\\\fBn\fP\\	-T	set \fBtype\fP from inut variable tname\\\fBn\fP\\	-\fBn\fP	\fBlabel\fP marker with input variable 'nname'\\\fBn\fP\\	-\fBC\fP	set \fBcolor\fP from input variable 'cname'. Allowed colors are\\\fBn\fP\\			BLACK	1	CORAL	9\\\fBn\fP\\			WHITE	2	MAROON	10\\\fBn\fP\\			RED	3	ORANGE	11\\\fBn\fP\\			GREEN	4	KHAKI	12\\\fBn\fP\\			BLUE	5	ORCHID	13\\\fBn\fP\\			YELLOW	6	TQUOISE	14\\\fBn\fP\\			CYAN	7	VIOLET	15\\\fBn\fP\\			MAGENTA	8	WHEAT	16\\\fBn\fP\\	-\fBl\fP	enter edit loop after displaying cat in which we do the following\\\fBn\fP\\		in response to \fBkey\fP strokes:\\\fBn\fP\\			Key		Action\\\fBn\fP\\			---		---\\\fBn\fP\\			\fBd\fP		delete marker nearest cursor\\\fBn\fP\\			q		quit edit loop\\\fBn\fP\\			[0-9]		set overlay \fBcolor\fP\\\fBn\fP\\			\fBl\fP		start or end \fBa\fP \fBline\fP\\\fBn\fP\\			\fBb\fP		start or end \fBa\fP box\\\fBn\fP\\			\fBr\fP		redraw overlay\\\fBn\fP\\			f		toggle \fBfill\fP state for boxes\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser -- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 8 of file cdl/iis.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 108 of file cdl/iis.c.
+.PP
+References b, color, d, e, exit(), f, fb, frame, h, key, l, n, nf, not(), r, t, tmp, vector(), w, and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

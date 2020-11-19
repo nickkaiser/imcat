@@ -1,0 +1,31 @@
+#! /bin/sh
+
+# script to do run arbitrary command on porcupine from hare
+# does a cd to present directory (must lie under /$ROOTDIR)
+# sets $DISPLAY and runs command
+
+if (env | grep REMOTEHOST >/dev/null); then
+	if (env | grep ROOTDIR >/dev/null); then
+		rootdir=$ROOTDIR
+	else
+		rootdir=$HOST
+	fi
+else
+	echo you must first set the environment variable \$REMOTEHOST
+	exit 1
+fi
+
+case $# in
+0)	echo "\nremote\t\trun command remotely\n\n\
+usage:\tremote command [options...] [args....]\n\n\
+\t- sets \$DISPLAY, cd's to current working directory, and runs command,\n\
+\t  all on \$REMOTEHOST (so you must first \"setenv REMOTEHOST porcupine\"\n\
+\t  or whatever)\n\
+\t- all options and arguments passed to the remote command.\n\
+\t- x-commands require local env variable \$DISPLAY to be set to\n\
+\t  something which makes sense on remote machine (i.e. not \"0:0\")\n\
+\t- the current working directory is assumed to lie under /\$HOST\n\
+\t  set environment variable \$ROOTDIR to change this to something else\n\n"; exit 1 ;;
+*)	currdir=`pwd | sed "s/home/$rootdir/g"`; 
+	rsh $REMOTEHOST "setenv DISPLAY $DISPLAY ; chdir $currdir ; $*" ;;
+esac

@@ -1,0 +1,35 @@
+#! /usr/bin/perl
+$| = 1;
+
+# this script 'dist2.scr' reads 'dist1.cat' (the output of dist1.scr)
+# and which contains, inter alia, n, x_i, M_ij, P_ij and generates
+# a catalogue 'dist2.cat' containing n, x_i, F_ij = partial_i d_j = M^{-1} P
+
+
+
+open(CATIN, "lc -o n x M P < dist1.cat |");
+open(CATOUT, "| lc -C -n n -N '1 2 x' -N '2 2 2 F'  > dist2.cat");
+while (<CATIN>) {
+	chop;
+	($n, $x[0], $x[1], $M00, $M01, $M10, $M11, $P00, $P01, $P10, $P11) = split " ";
+	unless (!$n) {
+		$det = $M00 * $M11 - $M01 * $M10;
+		die "dist2.scr: zero determinant!\n" if ($det == 0);
+		$m00 =  $M11 / $det;
+		$m01 = -$M01 / $det;
+		$m10 = -$M10 / $det;
+		$m11 =  $M00 / $det;
+		$F00 = $m00 * $P00 + $m01 * $P10;
+		$F01 = $m00 * $P01 + $m01 * $P11;
+		$F10 = $m10 * $P00 + $m11 * $P10;
+		$F11 = $m10 * $P01 + $m11 * $P11;
+		print CATOUT "$n $x[0] $x[1] $F00 $F01 $F10 $F11\n";
+	}
+}
+close(CATIN);
+close(CATOUT);
+
+sub echosys {
+        print @_, "\n";
+        system(@_) && die "$0: System call $_[0] failed!\n";
+}

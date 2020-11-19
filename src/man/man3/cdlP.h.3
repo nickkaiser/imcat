@@ -1,0 +1,131 @@
+.TH "cdlP.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cdlP.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBFBTab\fP"
+.br
+.ti -1c
+.RI "struct \fBIMD\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBSZ_FNAME\fP   256"
+.br
+.ti -1c
+.RI "#define \fBSZ_NAME\fP   256"
+.br
+.ti -1c
+.RI "#define \fBSZ_LINE\fP   256"
+.br
+.ti -1c
+.RI "#define \fBSZ_IMTDEV\fP   128"
+.br
+.ti -1c
+.RI "#define \fBOK\fP   0"
+.br
+.ti -1c
+.RI "#define \fBERR\fP   1"
+.br
+.ti -1c
+.RI "#define \fBEOS\fP   '\\0'"
+.br
+.ti -1c
+.RI "#define \fBmax\fP(\fBa\fP, \fBb\fP)   (\fBa\fP > \fBb\fP ? \fBa\fP : \fBb\fP)"
+.br
+.ti -1c
+.RI "#define \fBmin\fP(\fBa\fP, \fBb\fP)   (\fBa\fP < \fBb\fP ? \fBa\fP : \fBb\fP)"
+.br
+.ti -1c
+.RI "#define \fBTrue\fP   1"
+.br
+.ti -1c
+.RI "#define \fBFalse\fP   0"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef unsigned char \fBuchar\fP"
+.br
+.ti -1c
+.RI "typedef \fBIMD\fP * \fBIMDPtr\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define EOS   '\\0'"
+.PP
+Definition at line 13 of file cdlP.h.
+.SS "#define ERR   1"
+.PP
+Definition at line 12 of file cdlP.h.
+.PP
+Referenced by cdl_clearOverlay(), cdl_deleteMark(), cdl_displayFITS(), cdl_displayIRAF(), cdl_getIRAFPixels(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markCoordsFile(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_printPix(), cdl_printPixToFile(), cdl_readFITS(), cdl_readFITSHdr(), cdl_readImageHdr(), cdl_readIRAF(), cdl_redrawOverlay(), cdl_setBitpix(), com_eraseFrame(), com_read(), com_readCursor(), com_readData(), com_readWCS(), com_setCursor(), com_setFrame(), com_write(), com_writeData(), com_writeWCS(), imd_displayImage(), imd_getWCS(), imd_loadImtoolrc(), imd_open(), imd_parseImtdev(), imd_readSubRaster(), imd_writeImage(), and imd_writeSubRaster().
+.SS "#define False   0"
+.PP
+Definition at line 36 of file cdlP.h.
+.PP
+Referenced by alloc_grays(), alloc_shades(), cdl_doCircAnnuliMark(), cdl_doEllipAnnuliMark(), cdl_markPolyline(), and main().
+.SS "#define max(\fBa\fP, \fBb\fP)   (\fBa\fP > \fBb\fP ? \fBa\fP : \fBb\fP)"
+.PP
+Definition at line 27 of file cdlP.h.
+.SS "#define min(\fBa\fP, \fBb\fP)   (\fBa\fP < \fBb\fP ? \fBa\fP : \fBb\fP)"
+.PP
+Definition at line 29 of file cdlP.h.
+.SS "#define OK   0"
+.PP
+Definition at line 11 of file cdlP.h.
+.PP
+Referenced by cdl_clearOverlay(), cdl_deleteMark(), cdl_doTextMarker(), cdl_freeDisplayList(), cdl_mapFrame(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markCoordsFile(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_printPix(), cdl_printPixToFile(), cdl_readFITS(), cdl_readFITSHdr(), cdl_readImageHdr(), cdl_readIRAF(), cdl_redrawOverlay(), cdl_setBitpix(), com_eraseFrame(), com_read(), com_readData(), com_readWCS(), com_setCursor(), com_setDebug(), com_setFBConfig(), com_write(), imd_close(), imd_getWCS(), imd_loadImtoolrc(), imd_readSubRaster(), imd_setDebug(), imd_setName(), imd_setTitle(), imd_writeImage(), and imd_writeSubRaster().
+.SS "#define SZ_FNAME   256"
+.PP
+Definition at line 7 of file cdlP.h.
+.PP
+Referenced by cdl_rdCard(), cdl_readHeader(), main(), open_unix(), and vx_iisio().
+.SS "#define SZ_IMTDEV   128"
+.PP
+Definition at line 10 of file cdlP.h.
+.PP
+Referenced by imd_open().
+.SS "#define SZ_LINE   256"
+.PP
+Definition at line 9 of file cdlP.h.
+.PP
+Referenced by get_fbconfig(), imd_loadImtoolrc(), and imd_parseImtdev().
+.SS "#define SZ_NAME   256"
+.PP
+Definition at line 8 of file cdlP.h.
+.PP
+Referenced by cdl_mapFrame(), cdl_open(), cdl_printPix(), imd_displayImage(), imd_initialize(), imd_open(), and imd_parseImtdev().
+.SS "#define True   1"
+.PP
+Definition at line 34 of file cdlP.h.
+.PP
+Referenced by cdl_displayPix(), cdl_doCircleMark(), cdl_doEllipseMark(), cdl_doPointMark(), cdl_markPolygon(), and main().
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBIMD\fP* \fBIMDPtr\fP"
+.PP
+Definition at line 67 of file cdlP.h.
+.PP
+Referenced by cdl_open(), imd_clearFrame(), imd_close(), imd_displayImage(), imd_getFBConfig(), imd_getWCS(), imd_initialize(), imd_loadImtoolrc(), imd_open(), imd_readCursor(), imd_readFrameBuffer(), imd_readImage(), imd_readLine(), imd_readSubRaster(), imd_setCursor(), imd_setFBConfig(), imd_setFrame(), imd_setName(), imd_setTitle(), imd_setWCS(), imd_writeImage(), imd_writeLine(), and imd_writeSubRaster().
+.SS "typedef unsigned char \fBuchar\fP"
+.PP
+Definition at line 19 of file cdlP.h.
+.PP
+Referenced by cdl_applyZscale(), cdl_computeZscale(), cdl_displayFITS(), cdl_displayIRAF(), cdl_displayPix(), cdl_doBoxMark(), cdl_doCircAnnuliMark(), cdl_doCircleMark(), cdl_doDashedLine(), cdl_doEllipAnnuliMark(), cdl_doEllipseMark(), cdl_doLineInSubRas(), cdl_doLineMark(), cdl_doPointMark(), cdl_doPolygonMark(), cdl_doTextMarker(), cdl_drawDashVec(), cdl_drawThickDashVec(), cdl_drawThickVector(), cdl_drawVector(), cdl_fillArea(), cdl_fixData(), cdl_flip(), cdl_getData(), cdl_getFITSPixels(), cdl_getIRAFPixels(), cdl_getPixRegion(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_printPix(), cdl_printPixToFile(), cdl_readFITS(), cdl_readFrameBuffer(), cdl_readImage(), cdl_readIRAF(), cdl_readSubRaster(), cdl_removeMarker(), cdl_setpixel(), cdl_swapPixels(), cdl_writeSubRaster(), cdl_zscaleImage(), com_readData(), com_writeData(), eps_init(), eps_print(), eps_setCmap(), eps_writeMono(), eps_writeMonoRGB(), eps_writePix(), eps_writeRGB(), imd_displayImage(), imd_minmax(), imd_readFrameBuffer(), imd_readImage(), imd_readLine(), imd_readSubRaster(), imd_writeImage(), imd_writeLine(), and imd_writeSubRaster().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

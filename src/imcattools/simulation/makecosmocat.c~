@@ -1,0 +1,319 @@
+/*
+ * makecosmocat
+ */
+
+
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include "utils/error.h"
+
+#define usagehead "\n\n\
+NAME\n\
+        makecosmocat - generate catalogue of mock galaxies \n\
+\n\
+SYNOPSIS\n\
+        makecosmocat [-Magmin Magmin] [-Magmax Magmax] [-nM nM]\n\
+		[-Mstar Mstar] [-phistar phistar] [-alpha alpha]\n\
+		[-zmin zmin] [-zmax zmax] [-zstar zstar] [-omega omega]\n\
+		[-seed seed]\n\
+\n\
+DESCRIPTION\n\
+	Makecosmicat generates a lc-format catalogue containing mock.\n\
+	galaxies.  It assumes that galaxies are drawn from a Schechter\n\
+	style luminosity function, are non-evolving, and are randomly placed\n\
+	in comoving coordinates.  The cosmology is Einstein - de Sitter.\n\
+\n\
+	Default parameters are:\n\
+\n"
+
+#define usagetail "\n\
+OUTPUT\n\
+	Output variables are:\n\
+\n\
+		r	# comoving distance [Mpc]\n\
+		z	# redshift\n\
+		M	# absolute magnitude\n\
+		m	# apparent magnitude\n\
+		theta	# angular size\n\
+		csb	# central surface brightness   \n\
+\n\
+	The csb is just (1 + z)^-4.\n\
+	The angular size assumes that the luminosity scales\n\
+	as the area and, for an L_star galaxy, is the angle\n\
+	subtended by 3kpc in arc seconds.\n\
+\n\
+AUTHOR\n\
+        Nick Kaiser --- kaiser@ifa.hawaii.edu\n\
+\n\n"
+
+double	drand48();
+double	expvar(void);
+
+#define LSTARSIZEINKPC 3.0
+#define	HINV	3000.0
+#define	NITEMS	6
+
+/* parameter indices */
+#define		NPARAMS		11
+#define		IMagmin 	0
+#define		IMagmax		1
+#define		InM		2
+#define		IMstar 		3
+#define		Iphistar	4
+#define		Ialpha		5
+#define		Izmin		6
+#define		Izmax		7
+#define		Izstar		8
+#define		Iomega		9
+#define		Iseed		10
+
+#define ZEROPOINT	25
+
+
+main(int argc, char *argv[]){
+	/* arg counter, parameter counter */
+	int	arg, ipar;
+	/* luminosity function stuff */
+	double	L, M, Magmin, Magmax, Mstar, dM, phistar, alpha, *dndM, *nMcum, *Mp, p, Llim, Mlim, m;
+	int	nM, iM, np, ip, iMlim, seed;
+	/* survey geometry stuff */
+	double	r, rmin, rmax, rstar, z, zmin, zmax, zstar, omega, dvol, opbuff[NITEMS], theta, csb;
+	FILE	*lcpipe;
+	char	line[1024], *paramname[NPARAMS], *paramdesc[NPARAMS], *usage, usageline[128], lcstring[10240];
+	double	paramval[NPARAMS];
+
+	/* default parameter values */
+	Magmin 	= paramval[IMagmin]  	= -23.0;
+	Magmax 	= paramval[IMagmax] 	= -10.0;
+	nM 	= (int) (paramval[InM] 	=  2048);
+	Mstar 	= paramval[IMstar] 	= -20.0;
+	phistar = paramval[Iphistar] 	=  0.03;
+	alpha 	= paramval[Ialpha] 	=   1.0;
+	zmin	= paramval[Izmin] 	=  0.03;
+	zmax 	= paramval[Izmax] 	=  10.0;
+	zstar	= paramval[Izstar] 	=   3.0;
+	omega	= paramval[Iomega] 	= 5.e-6;
+	seed 	= (int) (paramval[Iseed] =  1);
+	/* parameter names */
+	paramname[IMagmin] 	= 	"Magmin";
+	paramname[IMagmax] 	= 	"Magmax";
+	paramname[InM]	 	= 	"nM";
+	paramname[IMstar] 	= 	"Mstar";
+	paramname[Iphistar] 	= 	"phistar";
+	paramname[Ialpha] 	= 	"alpha";
+	paramname[Izmin] 	= 	"zmin";
+	paramname[Izmax] 	= 	"zmax";
+	paramname[Izstar] 	= 	"zstar";
+	paramname[Iomega] 	= 	"omega";
+	paramname[Iseed] 	= 	"seed";
+	/* parameter descriptions */
+	paramdesc[IMagmin] 	= 	"min abs magnitude";
+	paramdesc[IMagmax] 	= 	"max abs magnitude";
+	paramdesc[InM]	 	= 	"number of bins in magnitude";
+	paramdesc[IMstar] 	= 	"LF knee";
+	paramdesc[Iphistar] 	= 	"LF normalisation";
+	paramdesc[Ialpha] 	= 	"LF faint end slope";
+	paramdesc[Izmin] 	= 	"min redshift";
+	paramdesc[Izmax] 	= 	"max redshift";
+	paramdesc[Izstar] 	= 	"limiting z for L_* gal";
+	paramdesc[Iomega] 	= 	"solid angle";
+	paramdesc[Iseed] 	= 	"random number seed";
+
+
+	/* generate the usage string */
+	usage = (char *) calloc(NPARAMS * 124 + 1024, sizeof(char));
+	strcat(usage, usagehead);
+	for (ipar = 0; ipar < NPARAMS; ipar++) {
+		sprintf(usageline, "\t\t%-10s\t\t# %-30s (%lg)\n", paramname[ipar], paramdesc[ipar], paramval[ipar]);
+		strcat(usage, usageline);
+	}
+	strcat(usage, usagetail);
+
+	
+	/* parse args */
+	for (arg = 1; arg < argc; arg++) {
+		if (!strcmp(argv[arg], "-Magmin")) {
+			if (++arg >= argc) error_exit(usage);
+			sscanf(argv[arg], "%lf", &Magmin);
+			paramval[IMagmin] = Magmin;
+			continue;
+		}
+		if (!strcmp(argv[arg], "-Magmax")) {
+			if (++arg >= argc) error_exit(usage);
+			sscanf(argv[arg], "%lf", &Magmax);
+			paramval[IMagmax] = Magmax;
+			continue;
+		}
+		if (!strcmp(argv[arg], "-nM")) {
+			if (++arg >= argc) error_exit(usage);
+			sscanf(argv[arg], "%d", &nM);
+			paramval[InM] = (double) nM;
+			continue;
+		}
+		if (!strcmp(argv[arg], "-Mstar")) {
+			if (++arg >= argc) error_exit(usage);
+			sscanf(argv[arg], "%lf", &Mstar);
+			paramval[IMstar] = Mstar;
+			continue;
+		}
+		if (!strcmp(argv[arg], "-phistar")) {
+			if (++arg >= argc) error_exit(usage);
+			sscanf(argv[arg], "%lf", &phistar);
+			paramval[Iphistar] = phistar;
+			continue;
+		}
+		if (!strcmp(argv[arg], "-alpha")) {
+			if (++arg >= argc) error_exit(usage);
+			sscanf(argv[arg], "%lf", &alpha);
+			paramval[Ialpha] = alpha;
+			continue;
+		}
+		if (!strcmp(argv[arg], "-zmin")) {
+			if (++arg >= argc) error_exit(usage);
+			sscanf(argv[arg], "%lf", &zmin);
+			paramval[Izmin] = zmin;
+			continue;
+		}
+		if (!strcmp(argv[arg], "-zmax")) {
+			if (++arg >= argc) error_exit(usage);
+			sscanf(argv[arg], "%lf", &zmax);
+			paramval[Izmax] = zmax;
+			continue;
+		}
+		if (!strcmp(argv[arg], "-zstar")) {
+			if (++arg >= argc) error_exit(usage);
+			sscanf(argv[arg], "%lf", &zstar);
+			paramval[Izstar] = zstar;
+			continue;
+		}
+		if (!strcmp(argv[arg], "-omega")) {
+			if (++arg >= argc) error_exit(usage);
+			sscanf(argv[arg], "%lf", &omega);
+			paramval[Iomega] = omega;
+			continue;
+		}
+		if (!strcmp(argv[arg], "-seed")) {
+			if (++arg >= argc) error_exit(usage);
+			sscanf(argv[arg], "%d", &seed);
+			paramval[Iseed] = (double) seed;
+			continue;
+		}
+		error_exit(usage);
+	}
+	
+	/* seed the random number generator */
+	seed++;
+	if (seed <= 0) {
+		error_exit("makecosmocat: seed must be non -ve\n");
+	}
+	srand48((long int) seed);
+	
+	/* generate abs mag distribution function and its cumulant*/
+	dndM = (double *) calloc(nM, sizeof(double));
+	nMcum = (double *) calloc(nM, sizeof(double));
+	if (!dndM || !nMcum) {
+		error_exit("makecosmocat: memory allocation failure\n");
+	}
+	dM = (Magmax - Magmin) / nM;
+	for (iM = 0; iM < nM; iM++) {
+		M = Magmin + iM * dM;
+		L = pow(10.0, -0.4 * (M - Mstar));
+		dndM[iM] = 0.4 * log(10.0) * phistar * pow(L, 1 - alpha) * exp(-L);
+		if (!iM) {
+			nMcum[iM] = dM * dndM[iM];
+		} else {
+			nMcum[iM] = nMcum[iM - 1] + dM * dndM[iM];
+		}
+	}
+
+
+	/* generate Mp[np] array - such that P(M < Mp[i]) = i / np */
+	np = nM;
+	Mp = (double *) calloc(np, sizeof(double));
+	for (iM = 0; iM < nM; iM++) {
+		p = nMcum[iM] / nMcum[nM - 1];
+		ip = (int) floor(p * np);
+		if (ip >= 0 && ip < np) {
+			Mp[ip] = Magmin + iM * dM;
+		}
+	}
+	/* fill in any holes */
+	M = Magmin;
+	for (ip = 0; ip < np; ip++) {
+		if (Mp[ip] == 0.0) {
+			Mp[ip] = M;
+		} else {
+			M = Mp[ip];
+		}
+	}
+
+	/* now generate cone of galaxies */
+	sprintf(lcstring, "lc -C -b -n r -n z -n M -n m -n theta -n csb -x -a 'makecosmocat:' -a 'parameters:' < /dev/null ");
+	for (ipar = 0; ipar < NPARAMS; ipar++) {
+		sprintf(line, "-a '\t%-30s %10s = %lg' ", paramdesc[ipar], paramname[ipar], paramval[ipar]);
+		strcat(lcstring, line);
+	}
+	lcpipe = popen(lcstring, "r");
+	while (fgets(line, 1024, lcpipe)) {
+		fprintf(stdout, line);
+	}
+	rmin  = 2 * HINV * (1 - 1 / sqrt(1 + zmin));
+	rmax  = 2 * HINV * (1 - 1 / sqrt(1 + zmax));
+	rstar = 2 * HINV * (1 - 1 / sqrt(1 + zstar));
+	r = rmin;
+	z = pow(1.0 - r / (2 * HINV), -2) - 1;
+	while (1) {
+		/* compute limiting magnitude */
+		Llim = pow(r / rstar, 2.0) * pow((1 + z) / (1 + zstar), 2.0);
+		Mlim = Mstar - 2.5 * log10(Llim);
+		iMlim = (int) floor((Mlim - Magmin) / dM);
+		if (iMlim < 0) {
+			break;
+		}
+		iMlim = (iMlim >= nM ? nM - 1 : iMlim);
+		p = nMcum[iMlim] / nMcum[nM - 1];
+		/* draw random volume step */
+		dvol = expvar() / nMcum[iMlim];
+		/* compute distance step and quit if we have overrun rmax */
+		r = pow(3 * dvol / omega + r * r * r, 1.0 / 3.0);
+		if (r > rmax) {
+			break;
+		}
+		/* draw random abs magnitude from range Magmin, Mlim */
+		ip = (int) floor(p * np * drand48());
+		M = Mp[ip];
+		if (ip < np - 1) {
+			M += drand48() * (Mp[ip + 1] - Mp[ip]);
+		}
+		/* compute apparent magnitude */
+		m = ZEROPOINT + M + 5.0 * (log10(r * (1 + z)));
+		/* compute redshift */
+		z = pow(1.0 - r / (2 * HINV), -2) - 1;
+		/* compute angular size */
+		theta = 1.e-3 * LSTARSIZEINKPC * pow(10.0, -0.2 * (M - Mstar)) * (1 + z) / r;
+		/* convert to arcseconds */
+		theta *= 3600.0 * 180.0 / M_PI;
+		/* and central surface brightness */
+		csb = pow(1 + z, -4.0);
+		/* copy results to output buffer */
+		opbuff[0] = r;
+		opbuff[1] = z;
+		opbuff[2] = M;
+		opbuff[3] = m;
+		opbuff[4] = theta;
+		opbuff[5] = csb;
+		fwrite(opbuff, sizeof(double), NITEMS, stdout);
+	}
+	exit(0);		
+}
+
+
+
+/*
+ * expvar() -- random variate with P(y) = exp(-y)
+ */
+double	expvar(void) 
+{
+	return (-log(drand48()));
+}

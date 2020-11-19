@@ -1,0 +1,54 @@
+.TH "ipbuff.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ipbuff.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include 'ipbuff.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBBUFFPTRSIZE\fP   10000"
+.br
+.ti -1c
+.RI "#define \fBBUFFSIZE\fP   10000"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double ** \fBreaddoublebuff\fP (int width, FILE *stream, int *\fBnp\fP)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define BUFFPTRSIZE   10000"
+.PP
+Definition at line 6 of file ipbuff.c.
+.PP
+Referenced by readdoublebuff().
+.SS "#define BUFFSIZE   10000"
+.PP
+Definition at line 7 of file ipbuff.c.
+.SH "Function Documentation"
+.PP 
+.SS "double** readdoublebuff (int width, FILE * stream, int * np)"
+.PP
+Definition at line 13 of file ipbuff.c.
+.PP
+References buff, BUFFPTRSIZE, BUFFSIZE, and error_exit.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

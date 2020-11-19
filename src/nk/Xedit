@@ -1,0 +1,6 @@
+ #! /bin/sh
+
+# runs xedit telling it to put filename in icon label
+
+#xedit -fn 7x14 $1 -n $1 &
+xedit $1 -n $1 &

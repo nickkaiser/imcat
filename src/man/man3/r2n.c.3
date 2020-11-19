@@ -1,0 +1,46 @@
+.TH "r2n.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+r2n.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	r2n - get perpendicular components of \fBa\fP vector\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	r2n rname x y \fBz\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	r2n reads an lc catalog containing positions rname[3]\\\fBn\fP\\	from stdin, evolves the positions and outputs \fBa\fP two-vector\\\fBn\fP\\	\fBn\fP[2] which are the components of the unit vector |rname|\\\fBn\fP\\	perpendicular to the direction (x, y, \fBz\fP).\\\fBn\fP\\\\\fBn\fP\\	The reference vector (x, y, \fBz\fP) need not be normalized.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	maketestpparfile.pl makeobs_circ laplace3 tcl_evolve\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	r2n - get perpendicular components of \fBa\fP vector\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	r2n rname x y \fBz\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	r2n reads an lc catalog containing positions rname[3]\\\fBn\fP\\	from stdin, evolves the positions and outputs \fBa\fP two-vector\\\fBn\fP\\	\fBn\fP[2] which are the components of the unit vector |rname|\\\fBn\fP\\	perpendicular to the direction (x, y, \fBz\fP).\\\fBn\fP\\\\\fBn\fP\\	The reference vector (x, y, \fBz\fP) need not be normalized.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	maketestpparfile.pl makeobs_circ laplace3 tcl_evolve\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 6 of file r2n.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 27 of file r2n.c.
+.PP
+References assign(), dot(), exit(), i, ipf, length(), n0, nt, phi, r, scale(), usage, x, y, and z.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,110 @@
+.TH "massmap_mp.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+massmap_mp.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/lu.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBobject\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	massmap_mp - maximum probability reconstruction\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		massmap_mp [option...] <input.cat >output.image\\\fBn\fP\\			-g \fBng\fP			# output grid size (64)\\\fBn\fP\\			-\fBn\fP \fBN\fP			# input image size (2048)\\\fBn\fP\\			-\fBk\fP kmax			# maximum \fBk\fP-value (5)\\\fBn\fP\\			-\fBa\fP \fBalpha\fP		# power parameter (0.01)\\\fBn\fP\\			-\fBe\fP ename		# name for 2-vector ellipticity (\fBe\fP)\\\fBn\fP\\			-x \fBxname\fP		# name for 2-vector spatial coordinate (x)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		\\'massmap_mp\\' reads x[2], \fBe\fP[2] from \fBa\fP catalogue and calculates foreground\\\fBn\fP\\		surface mass density field from \fBbackground\fP galaxy ellipticities \fBa\fP la KS.\\\fBn\fP\\		Uses maximum probability technique diagonal stripe controlled by \fBalpha\fP.\\\fBn\fP\\		Use \fBalpha\fP << 1 for weak regularization.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAX_GALS\fP   20000"
+.br
+.ti -1c
+.RI "#define \fBPI\fP   M_PI"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBobject\fP \fBobject\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBmodefunc\fP (int \fBm\fP, double \fBi\fP, double \fBj\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double * \fBk\fP [2]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX_GALS   20000"
+.PP
+Definition at line 38 of file massmap_mp.c.
+.SS "#define PI   M_PI"
+.PP
+Definition at line 44 of file massmap_mp.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	massmap_mp - maximum probability reconstruction\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\		massmap_mp [option...] <input.cat >output.image\\\fBn\fP\\			-g \fBng\fP			# output grid size (64)\\\fBn\fP\\			-\fBn\fP \fBN\fP			# input image size (2048)\\\fBn\fP\\			-\fBk\fP kmax			# maximum \fBk\fP-value (5)\\\fBn\fP\\			-\fBa\fP \fBalpha\fP		# power parameter (0.01)\\\fBn\fP\\			-\fBe\fP ename		# name for 2-vector ellipticity (\fBe\fP)\\\fBn\fP\\			-x \fBxname\fP		# name for 2-vector spatial coordinate (x)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		\\'massmap_mp\\' reads x[2], \fBe\fP[2] from \fBa\fP catalogue and calculates foreground\\\fBn\fP\\		surface mass density field from \fBbackground\fP galaxy ellipticities \fBa\fP la KS.\\\fBn\fP\\		Uses maximum probability technique diagonal stripe controlled by \fBalpha\fP.\\\fBn\fP\\		Use \fBalpha\fP << 1 for weak regularization.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file massmap_mp.c.
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBobject\fP  \fBobject\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 46 of file massmap_mp.c.
+.PP
+References a, A, add_comment(), allocFloatArray(), alpha, B, d, object::e, e, error_exit, exit(), fits, FLOAT_PIXTYPE, object::i, i, indx, object::j, j, k, kk, lcpipe, line, m, modefunc(), mylubksb(), myludcmp(), N, n, new2Dfitsheader(), nmodes, PI, scale, sigma, usage, write2Dfloatimage(), and x.
+.SS "double modefunc (int m, double i, double j)"
+.PP
+Definition at line 239 of file massmap_mp.c.
+.PP
+References i, j, k, and m.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "double* \fBk\fP[2]"
+.PP
+Definition at line 37 of file massmap_mp.c.
+.PP
+Referenced by cartesiantokepler(), cdl_doBoxMark(), cdl_doPointMark(), cdl_fixData(), cosqb1_(), cosqf1_(), cosqi_(), cost_(), costi_(), dotdoit(), dotinit(), imd_writeImage(), jpl_pleph(), kernel_filter(), ludcmp(), main(), MAIN__(), modefunc(), parsecommandline(), passb2_(), passb3_(), passb4_(), passb5_(), passb_(), passf2_(), passf3_(), passf4_(), passf5_(), passf_(), quality_statistics(), radb2_(), radb3_(), radb4_(), radb5_(), radbg_(), radf2_(), radf3_(), radf4_(), radf5_(), radfg_(), rotate_(), scrunch_stream(), sinqb_(), sinqf_(), sint1_(), sinti_(), and slaDeuler().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

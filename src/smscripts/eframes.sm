@@ -1,0 +1,15 @@
+eframes	
+	data frames.out
+	read {i 1 ng 4 e1 5 e2 6}
+	erase   
+	window 1 2 1 2
+	limits i -0.07 0.07
+	box     
+	points i e1
+	xlabel field
+	ylabel e\d1
+	window 1 2 1 1
+	box     
+	points i e2
+	xlabel field
+	ylabel e\d2

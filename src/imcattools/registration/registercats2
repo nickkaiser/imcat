@@ -1,0 +1,134 @@
+#! /usr/bin/perl
+
+# another perl script to do registration.
+
+# force flushing
+$| = 1;
+
+$usage = "\
+NAME\
+	registercats2 - another perl script to do registration on pair of cats\
+\
+SYNOPSYS\
+	registercats2 a.cat b.cat [options....]\
+		-d dmin		# min separation to select isolated stars (100)\
+		-D dX		# linking parameter for pairs in X-space (0.03)\
+		-N N0		# image size for X-space peak finding (256)\
+		-g DX		# smoothing scale for X-space peak finding (0.001)\
+		-v		# verbose mode\
+\
+DESCRIPTION\
+	registercats2 determines the scale a, rotation phi, and translation x0 y0\
+	that maps (x_a,y_a) => (x_b,y_b):
+		x_b = a (x_a cos phi - y_a sin phi) + x0
+		y_b = a (x_a sin phi + y_a cos phi) + y0
+	Like 'acfregister' it looks for a cross-correlation peak\
+	for pairs in log-separation -- orientation angle space
+	but should be more efficient/accurate. However, it requires change\
+	in scale factor and rotation should be small.\
+	We first run 'mergecats' on each of the input cats (which should\
+	contain enough moderately bright stars to ensure good match)\
+	to excise stars with close neighbours (<100 pixels by default).\
+	We then run 'pair' on each of the isolated star cats, and for\
+	each pair calculate the vector 'X[0] = log |dx|, X[1] = phi'\
+	where dx is the pair separation and phi = atan2(dx[1], dx[2])\
+	is the orientation of the pair.\
+	We then run mergecats to link pairs of pairs whose X-values\
+	match to within some tolerance (dX = 0.03 by default, but increase\
+	this if you anticipate e.g. relative rotations > this).\
+	We then generate a fits image of side N0 pixels (N0 = 256 by default)\
+	which is the density of points in the dX plane, and run 'findpeaks'\
+	with a gaussian smoothing scale DX (DX= 0.001 by default) and locate\
+	the highest peak. This provides us with the scale factor and\
+	rotation angle.  We then select pairs which we apply to the spatial coord of the\
+	1st cat => x_a' and then look for a peak in the x_a' - x_b\
+	in a similar manner...\
+	Outputs x0, y0, a, phi to stdout.\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+";
+
+# defaults:
+$dmin = 100.0;
+$N0 = 256;
+$dX = 0.03;
+$DX = 0.001;
+$verbose = 0;
+
+die $usage if ($#ARGV < 1);
+
+$inputcata = shift(@ARGV) || die $usage;
+$inputcatb = shift(@ARGV) || die $usage;
+$temp = $$;
+$cata = $temp."a.cat";
+$catb = $temp."b.cat";
+$isola = $temp."a.isol";
+$isolb = $temp."b.isol";
+$pairsa = $temp."a.prs";
+$pairsb = $temp."b.prs";
+$tempmerge = $temp.".merge";
+$tempfits = $temp.".fits";
+$tempcat = $temp.".cat";
+$tempsel = $temp.".sel";
+
+while ($_ = shift(@ARGV)) {
+	if (/^-d/) {
+		$dmin = shift(@ARGV) || die $usage;
+	} elsif (/^-D/) {
+		$dX = shift(@ARGV) || die $usage;
+	} elsif (/^-N/) {
+		$N0 =  shift(@ARGV) || die $usage;
+	} elsif (/^-g/) {
+		$DX  = shift(@ARGV) || die $usage;
+	} elsif (/^-v/) {
+		$verbose = 1;
+	} else {
+		die $usage;
+	}
+}
+
+print "# registering $cata $catb...\n" if $verbose;
+&sys("lc -b x < $inputcata > $cata");
+&sys("lc -b x < $inputcatb > $catb");
+print "# selecting isolated stars....\n" if $verbose;
+&sys("mergecats -n 1 -e -M 10 $dmin $cata $cata | unmergecat 0 > $isola");
+&sys("mergecats -n 1 -e -M 10 $dmin $catb $catb | unmergecat 0 > $isolb");
+chop($nisola = `lc -c < $isola`);
+chop($nisolb = `lc -c < $isolb`);
+print "# $isola contains $nisola isolated stars....\n" if $verbose;
+print "# $isolb contains $nisolb isolated stars....\n" if $verbose;
+&sys("pair < $isola | lc '+all' 'X = %x[0] %x[1] vsub enter dot sqrt log %x[0][0] %x[1][0] - %x[0][1] %x[1][1] - atan2 2 vector' 'x = %x[0]' > $pairsa");
+&sys("pair < $isolb | lc '+all' 'X = %x[0] %x[1] vsub enter dot sqrt log %x[0][0] %x[1][0] - %x[0][1] %x[1][1] - atan2 2 vector' 'x = %x[0]' > $pairsb");
+$sysstring = sprintf("mergecats -x X %f %s %s | lc +all 'dX = %%X[0] %%X[1] vsub' > $tempmerge", $dX, $pairsa, $pairsb); 
+&sys($sysstring);
+$sysstring = sprintf("surfdens -x dX -r %f %f %f %f -n $N0 $N0 < $tempmerge > $tempfits", -$dX, $dX, -$dX, $dX);
+&sys($sysstring);
+$rs = $N0 * $DX / $dX;
+$sysstring = sprintf("findpeaks $tempfits -r %f -s 0.00001 0.0 > $tempcat", $rs);
+&sys($sysstring);
+@words = split(" ", `catstats -s < $tempcat | lc -o -S '%fs' | grep max`);
+$fsmax = $words[3];
+$fsmax -= 0.0001;
+($x, $y) = split(" ", `lc -i '%fs $fsmax >' x -o < $tempcat`);
+$dX0 = $dX *(2 * $x / $N0 - 1);
+$dX1 = $dX *(2 * $y / $N0 - 1);
+$a = exp(-$dX0);
+$phi = $dX1;
+$phi00 = $phi11 = $a * cos($phi);
+$phi01 = -$a * sin($phi);
+$phi10 = $a * sin($phi);
+$sysstring = sprintf("lc 'xa = %%x[0] %g %g %g %g lintrans' 'xb = %%x[1]' -i '%%dX[0] %f > %%dX[0] %f < and %%dX[1] %f > and %%dX[1] %f < and' < $tempmerge > $tempsel",
+	$phi00, $phi01, $phi10, $phi11, $dX0 - $DX, $dX0 + $DX, $dX1 - $DX, $dX1 + $DX);
+&sys($sysstring);
+@words = split(" ", `lc 'dx = %xb %xa vsub' < $tempsel | catstats | grep mode`);
+$x0 = $words[1];
+$y0 = $words[2];
+&sys("rm $$*");
+printf "%f %f %f %g\n", $x0, $y0, $a, $phi;
+
+sub sys {
+        print ($_[0], "\n") if $verbose;
+        system($_[0]) && die "registercats2: system call ($_[0]) failed\n";
+}
+

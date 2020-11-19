@@ -1,0 +1,4 @@
+#define	MAGIC SHRT_MIN
+#define	NORMAL_LEVEL	1000
+
+

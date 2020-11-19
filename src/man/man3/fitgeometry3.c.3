@@ -1,0 +1,96 @@
+.TH "fitgeometry3.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitgeometry3.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'utils/modefunc.h'\fP
+.br
+\fC#include 'utils/lu.h'\fP
+.br
+\fC#include 'utils/ipbuff.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitgeometry3 --- \fBfit\fP layout of \fBa\fP set of images\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitgeometry3 [\fBoptions\fP...]\\\fBn\fP\\		-\fBl\fP \fBlmax\fP		# maximum \fBorder\fP for polynomial distortion model (1)\\\fBn\fP\\		-o outputdir	# directory for the output files (must exist)\\\fBn\fP\\		-\fBv\fP		# '\fBverbose\fP' \fBmode\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	fitgeometry3 is very similar to fitgeometry2.\\\fBn\fP\\	The difference is that fitgemetry3 reads \fBa\fP catalogue\\\fBn\fP\\	(usually \fBa\fP concatenation of catalogues from \fBa\fP \fBnumber\fP of images)\\\fBn\fP\\	containing, in addition to the \fBpixel\fP position 'x', image \fBnumber\fP '\fBi\fP'\\\fBn\fP\\	and position measurement variance 's', \fBa\fP \fBparticle\fP identifier 'p'\\\fBn\fP\\	which is an \fBinteger\fP.\\\fBn\fP\\\\\fBn\fP\\	Output files are put in 'geofit3files/' by default, but you can change\\\fBn\fP\\	this with the -o option.\\\fBn\fP\\\\\fBn\fP\\	With -\fBv\fP option, fitgeometry3 will report how many objects read, size of\\\fBn\fP\\	system of equations etc to stderr.\\\fBn\fP\\\\\fBn\fP\\	See <\fBa\fP href=\\'fitgeom.html\\'>notes on various fitgeometry tools</\fBa\fP>\\\fBn\fP\\\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBIPRECUNIT\fP   5"
+.br
+.ti -1c
+.RI "#define \fBIPxPOS\fP   0"
+.br
+.ti -1c
+.RI "#define \fBIPiPOS\fP   2"
+.br
+.ti -1c
+.RI "#define \fBIPpPOS\fP   3"
+.br
+.ti -1c
+.RI "#define \fBIPsPOS\fP   4"
+.br
+.ti -1c
+.RI "#define \fBMAXIMAGES\fP   1000"
+.br
+.ti -1c
+.RI "#define \fBMAXPARTICLES\fP   10000"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define IPiPOS   2"
+.PP
+Definition at line 48 of file fitgeometry3.c.
+.SS "#define IPpPOS   3"
+.PP
+Definition at line 49 of file fitgeometry3.c.
+.PP
+Referenced by main().
+.SS "#define IPRECUNIT   5"
+.PP
+Definition at line 46 of file fitgeometry3.c.
+.SS "#define IPsPOS   4"
+.PP
+Definition at line 50 of file fitgeometry3.c.
+.SS "#define IPxPOS   0"
+.PP
+Definition at line 47 of file fitgeometry3.c.
+.SS "#define MAXIMAGES   1000"
+.PP
+Definition at line 52 of file fitgeometry3.c.
+.SS "#define MAXPARTICLES   10000"
+.PP
+Definition at line 53 of file fitgeometry3.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitgeometry3 --- \fBfit\fP layout of \fBa\fP set of images\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitgeometry3 [\fBoptions\fP...]\\\fBn\fP\\		-\fBl\fP \fBlmax\fP		# maximum \fBorder\fP for polynomial distortion model (1)\\\fBn\fP\\		-o outputdir	# directory for the output files (must exist)\\\fBn\fP\\		-\fBv\fP		# '\fBverbose\fP' \fBmode\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	fitgeometry3 is very similar to fitgeometry2.\\\fBn\fP\\	The difference is that fitgemetry3 reads \fBa\fP catalogue\\\fBn\fP\\	(usually \fBa\fP concatenation of catalogues from \fBa\fP \fBnumber\fP of images)\\\fBn\fP\\	containing, in addition to the \fBpixel\fP position 'x', image \fBnumber\fP '\fBi\fP'\\\fBn\fP\\	and position measurement variance 's', \fBa\fP \fBparticle\fP identifier 'p'\\\fBn\fP\\	which is an \fBinteger\fP.\\\fBn\fP\\\\\fBn\fP\\	Output files are put in 'geofit3files/' by default, but you can change\\\fBn\fP\\	this with the -o option.\\\fBn\fP\\\\\fBn\fP\\	With -\fBv\fP option, fitgeometry3 will report how many objects read, size of\\\fBn\fP\\	system of equations etc to stderr.\\\fBn\fP\\\\\fBn\fP\\	See <\fBa\fP href=\\'fitgeom.html\\'>notes on various fitgeometry tools</\fBa\fP>\\\fBn\fP\\\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 7 of file fitgeometry3.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 57 of file fitgeometry3.c.
+.PP
+References A, a, B, det(), error_exit, exit(), f(), i, I(), indx, IPiPOS, IPpPOS, IPRECUNIT, IPsPOS, IPxPOS, j, l, lcpipe, m, MAXIMAGES, MAXPARTICLES, modefunc_addargcomment(), mylubksb(), myludcmp(), n, nim, nmodes, nobj, r, readdoublebuff(), usage, verbose, write2Dpolymodel(), and x.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

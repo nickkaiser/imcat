@@ -1,0 +1,13 @@
+#!/usr//bin/perl
+
+$stuff = `gfortran -v makestuff/temp.f 2>&1`;
+
+@words = split(" ", $stuff);
+
+foreach $word (@words) {
+	if ($word =~ /^\-L/) {
+		print $word, " ";
+	}
+}
+system("rm a.out");
+exit;

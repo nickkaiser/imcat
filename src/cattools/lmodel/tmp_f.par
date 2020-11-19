@@ -1,0 +1,49 @@
+# text format catalogue file --- do not edit manually, use 'lc'
+# header:
+# text     1 1         model_type                  fourier
+# text     1 1         aname                             e
+# text     1 1         xname                             x
+# number   1 1         xdim                              2
+# number   1 1         nmodes                           29
+# number   1 1         kmin                              0
+# number   1 1         kmax                              3
+# number   1 1         lbox                              1
+# text     1 1         byteorder             LITTLE_ENDIAN
+# comment: history: makegridcat 32 32
+# comment: history: lc 'x = %x 1 32 / vscale'
+# comment: history: lc 'x' 'e = %x 3.14159 3.14159 2 vector dot cos 0 2 vector'
+# comment: history: fitlmodel x e -f 0 3 1.0
+# contents: 3
+# number   1 2         k                   
+# number   1 1         i                   
+# number   1 2         e                   
+#           k[0]           k[1]              i           e[0]           e[1]
+               0              0              0    -0.40365787              0
+               0              1              0      0.2725777              0
+               0              1              1     0.02646325              0
+               0              2              0    0.056603446              0
+               0              2              1    0.010482671              0
+               0              3              0    0.025755825              0
+               0              3              1    0.006628323              0
+               1             -2              0     0.12569401              0
+               1             -2              1    0.015979809              0
+               1             -1              0      0.2699713              0
+               1             -1              1 -5.2808972e-17              0
+               1              0              0      0.2725777              0
+               1              0              1     0.02646325              0
+               1              1              0    -0.44706215              0
+               1              1              1    0.052922686              0
+               1              2              0    -0.15833858              0
+               1              2              1     0.03694364              0
+               2             -2              0    0.054518313              0
+               2             -2              1  4.7196647e-17              0
+               2             -1              0     0.12569401              0
+               2             -1              1   -0.015979809              0
+               2              0              0    0.056603446              0
+               2              0              1    0.010482671              0
+               2              1              0    -0.15833858              0
+               2              1              1     0.03694364              0
+               2              2              0   -0.057993189              0
+               2              2              1    0.020964133              0
+               3              0              0    0.025755825              0
+               3              0              1    0.006628323              0

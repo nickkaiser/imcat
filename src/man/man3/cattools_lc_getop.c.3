@@ -1,0 +1,80 @@
+.TH "getop.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getop.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include 'getop.h'\fP
+.br
+\fC#include 'operators.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBitem\fP * \fBgetop\fP (char **sptr)"
+.br
+.ti -1c
+.RI "char * \fBgetword\fP (char **sptr)"
+.br
+.ti -1c
+.RI "void \fBsetsourcecathead\fP (\fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "void \fBsetdestcathead\fP (\fBcathead\fP *thecathead)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "\fBcathead\fP * \fBsourcecathead\fP"
+.br
+.ti -1c
+.RI "\fBcathead\fP * \fBdestcathead\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "\fBitem\fP* getop (char ** sptr)"
+.PP
+Definition at line 16 of file cattools/lc/getop.c.
+.SS "char* getword (char ** sptr)"
+.PP
+Definition at line 84 of file cattools/lc/getop.c.
+.SS "void setdestcathead (\fBcathead\fP * thecathead)"
+.PP
+Definition at line 150 of file cattools/lc/getop.c.
+.PP
+References destcathead.
+.SS "void setsourcecathead (\fBcathead\fP * thecathead)"
+.PP
+Definition at line 144 of file cattools/lc/getop.c.
+.PP
+References sourcecathead.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "\fBcathead\fP* \fBdestcathead\fP\fC [static]\fP"
+.PP
+Definition at line 13 of file cattools/lc/getop.c.
+.PP
+Referenced by setdestcathead().
+.SS "\fBcathead\fP* \fBsourcecathead\fP\fC [static]\fP"
+.PP
+Definition at line 12 of file cattools/lc/getop.c.
+.PP
+Referenced by getop(), and setsourcecathead().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

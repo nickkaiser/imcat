@@ -1,0 +1,64 @@
+.TH "make_image.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+make_image.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBcheck_args\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "void \fBadd_population\fP (int \fBN1\fP, int \fBN2\fP, int \fBn\fP, float \fBf0\fP, float \fBr\fP, int \fBtype\fP)"
+.br
+.ti -1c
+.RI "void \fBadd_noise\fP (int \fBN1\fP, int \fBN2\fP, float \fBsigma\fP)"
+.br
+.ti -1c
+.RI "void \fBadd_bad_col\fP (int \fBN1\fP, int \fBN2\fP, int col)"
+.br
+.ti -1c
+.RI "float \fBgasdev\fP (void)"
+.br
+.ti -1c
+.RI "float \fBran0\fP (int *idum)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void add_bad_col (int N1, int N2, int col)"
+.PP
+Definition at line 243 of file make_image.c.
+.PP
+References f, j, MAGIC, N1, N2, and ncolours.
+.PP
+Referenced by main().
+.SS "void add_noise (int N1, int N2, float sigma)"
+.PP
+Definition at line 318 of file make_image.c.
+.PP
+References f, gasdev(), i, j, N1, N2, ncolours, and sigma.
+.SS "void add_population (int N1, int N2, int n, float f0, float r, int type)"
+.PP
+Definition at line 258 of file make_image.c.
+.PP
+References drand48(), error_exit, EXP, f, GAU, i, j, n, N1, N2, ncolours, and type.
+.PP
+Referenced by main().
+.SS "int check_args (int argc, char * argv[])"
+.PP
+Definition at line 190 of file make_image.c.
+.PP
+Referenced by main().
+.SS "float gasdev (void)"
+.PP
+Definition at line 607 of file ic.c.
+.SS "float ran0 (int * idum)"
+.PP
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

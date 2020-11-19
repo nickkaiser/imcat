@@ -1,0 +1,11 @@
+#!/bin/sh
+
+imsize=800
+bigimsize=1024
+d=112
+rs=1.0
+echoeval "simulate -g $rs -S 3.e-4 -1.5 -G 0.1 -2 -R 1 0.3 -n $imsize $imsize"
+echoeval "makesubimage -$d -$d $bigimsize $bigimsize < simulate_1.fits > raw.fits"
+echoeval "rm simulate_?.fits"
+echoeval "hfindpeaks raw.fits | apphot -z 30 | getshapes > raw.cat"
+

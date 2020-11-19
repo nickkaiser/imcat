@@ -1,0 +1,103 @@
+.TH "combine_stuff.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+combine_stuff.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/stats_stuff.h'\fP
+.br
+\fC#include 'combine_stuff.h'\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBthefloatcmp\fP ()"
+.br
+.ti -1c
+.RI "float \fBrankedimage\fP (float *f, int nel, int rank)"
+.br
+.ti -1c
+.RI "float \fBmedian\fP (float *f, int nel)"
+.br
+.ti -1c
+.RI "float \fBmean\fP (float *f, int nel)"
+.br
+.ti -1c
+.RI "float \fBavsigclip\fP (float *f, int nel, float clip)"
+.br
+.ti -1c
+.RI "int \fBthefloatcmp\fP (float *s1, float *s2)"
+.br
+.ti -1c
+.RI "float \fBavsigclip2\fP (float *f, float *\fBsigma\fP, int nel, float clip, float frac1, float frac2, float *sigmaout)"
+.br
+.ti -1c
+.RI "float \fBgetsigma\fP (float *sigmavec, int nel)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "float avsigclip (float * f, int nel, float clip)"
+.PP
+Definition at line 71 of file combine_stuff.c.
+.PP
+References clip, error_exit, f, FLOAT_MAGIC, i, median(), sigma, and thefloatcmp().
+.PP
+Referenced by main().
+.SS "float avsigclip2 (float * f, float * sigma, int nel, float clip, float frac1, float frac2, float * sigmaout)"
+.PP
+Definition at line 114 of file combine_stuff.c.
+.PP
+References clip, f, FLOAT_MAGIC, fmedian(), free(), i, median(), and sigma.
+.SS "float getsigma (float * sigmavec, int nel)"
+.PP
+Definition at line 164 of file combine_stuff.c.
+.PP
+References FLOAT_MAGIC, and i.
+.SS "float mean (float * f, int nel)"
+.PP
+Definition at line 55 of file combine_stuff.c.
+.PP
+References error_exit, f, and i.
+.PP
+Referenced by main(), and painttriangle().
+.SS "float median (float * f, int nel)"
+.PP
+Definition at line 40 of file combine_stuff.c.
+.PP
+References error_exit, f, and thefloatcmp().
+.PP
+Referenced by avgpixstack(), avsigclip2(), main(), and painttriangle().
+.SS "float rankedimage (float * f, int nel, int rank)"
+.PP
+Definition at line 21 of file combine_stuff.c.
+.PP
+References error_exit, f, and thefloatcmp().
+.PP
+Referenced by avgpixstack().
+.SS "int thefloatcmp (float * s1, float * s2)"
+.PP
+Definition at line 102 of file combine_stuff.c.
+.SS "int thefloatcmp ()"
+.PP
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

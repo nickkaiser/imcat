@@ -1,0 +1,68 @@
+.TH "profile.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+profile.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <float.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	profile - compute azimuthal average of \fBa\fP \fBFITS\fP file\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	profile [option....] < \fBfitsin\fP\\\fBn\fP\\		-\fBc\fP xc yc	# spatial origin (\fBN1\fP/2 + 0.5, \fBN2\fP/2 + 0.5)\\\fBn\fP\\		-\fBn\fP		# does nothing\\\fBn\fP\\		-\fBr\fP rmax		# maximum \fBradius\fP (\fBN1\fP / 2)\\\fBn\fP\\		-\fBd\fP \fBdr\fP		# linear steps - size \fBdr\fP (1.0)\\\fBn\fP\\		-\fBl\fP r1 r2 nbins	# logarithmic steps \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'profile\\' computes the azimuthally averaged profile\\\fBn\fP\\	of an image. The output is an lc format catalogue containing\\\fBn\fP\\		\fBi\fP \fBr\fP f \fBfsum\fP npix \fBfmin\fP \fBfmax\fP\\\fBn\fP\\	where \fBi\fP = 0,1,2...., \\\fBn\fP\\	\fBr\fP = \fBi\fP * \fBdr\fP,\\\fBn\fP\\	npix is the \fBnumber\fP of pixels for which the distance\\\fBn\fP\\	R from the centre of the \fBpixel\fP to the \fBpoint\fP (xc,yc)\\\fBn\fP\\	lies in the range \fBr\fP <= R < \fBr\fP + 1,\\\fBn\fP\\	\fBfsum\fP is the summed image values over those pixels\\\fBn\fP\\	and f = \fBfsum\fP / npix.\\\fBn\fP\\\\\fBn\fP\\	By default the spatial origin is taken to be the centre of\\\fBn\fP\\	the \fBpixel\fP (\fBN1\fP/2, \fBN2\fP/2) and the maximum \fBradius\fP\\\fBn\fP\\	is half the width of the image: rmax = \fBN1\fP / 2\\\fBn\fP\\\\\fBn\fP\\	Use the -\fBl\fP option to do loarithmically spaced bins.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAX\fP(x, y)   (((x) > (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMIN\fP(x, y)   (((x) < (y)) ? (x) : (y))"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX(x, y)   (((x) > (y)) ? (x) : (y))"
+.PP
+Definition at line 47 of file profile.c.
+.SS "#define MIN(x, y)   (((x) < (y)) ? (x) : (y))"
+.PP
+Definition at line 48 of file profile.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	profile - compute azimuthal average of \fBa\fP \fBFITS\fP file\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	profile [option....] < \fBfitsin\fP\\\fBn\fP\\		-\fBc\fP xc yc	# spatial origin (\fBN1\fP/2 + 0.5, \fBN2\fP/2 + 0.5)\\\fBn\fP\\		-\fBn\fP		# does nothing\\\fBn\fP\\		-\fBr\fP rmax		# maximum \fBradius\fP (\fBN1\fP / 2)\\\fBn\fP\\		-\fBd\fP \fBdr\fP		# linear steps - size \fBdr\fP (1.0)\\\fBn\fP\\		-\fBl\fP r1 r2 nbins	# logarithmic steps \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'profile\\' computes the azimuthally averaged profile\\\fBn\fP\\	of an image. The output is an lc format catalogue containing\\\fBn\fP\\		\fBi\fP \fBr\fP f \fBfsum\fP npix \fBfmin\fP \fBfmax\fP\\\fBn\fP\\	where \fBi\fP = 0,1,2...., \\\fBn\fP\\	\fBr\fP = \fBi\fP * \fBdr\fP,\\\fBn\fP\\	npix is the \fBnumber\fP of pixels for which the distance\\\fBn\fP\\	R from the centre of the \fBpixel\fP to the \fBpoint\fP (xc,yc)\\\fBn\fP\\	lies in the range \fBr\fP <= R < \fBr\fP + 1,\\\fBn\fP\\	\fBfsum\fP is the summed image values over those pixels\\\fBn\fP\\	and f = \fBfsum\fP / npix.\\\fBn\fP\\\\\fBn\fP\\	By default the spatial origin is taken to be the centre of\\\fBn\fP\\	the \fBpixel\fP (\fBN1\fP/2, \fBN2\fP/2) and the maximum \fBradius\fP\\\fBn\fP\\	is half the width of the image: rmax = \fBN1\fP / 2\\\fBn\fP\\\\\fBn\fP\\	Use the -\fBl\fP option to do loarithmically spaced bins.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file profile.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 53 of file profile.c.
+.PP
+References dr, error_exit, exit(), f, fits, FLOAT_MAGIC, fmin, i, j, N1, N2, r, read2Dfloatimage(), usage, x, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

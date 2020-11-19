@@ -1,0 +1,247 @@
+.TH "cdlfits.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cdlfits.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <ctype.h>\fP
+.br
+\fC#include 'cdl.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBFITS\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCDL_LIBRARY_SOURCE\fP"
+.br
+.ti -1c
+.RI "#define \fBNCARDS\fP   36"
+.br
+.ti -1c
+.RI "#define \fBBLOCKSIZE\fP   2880"
+.br
+.ti -1c
+.RI "#define \fBSZ_CARD\fP   80"
+.br
+.ti -1c
+.RI "#define \fBf_max\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) > (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.br
+.ti -1c
+.RI "#define \fBf_min\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) < (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.br
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBdatatype\fP { \fBT_INT\fP, \fBT_LOG\fP, \fBT_REAL\fP, \fBT_STR\fP, \fBT_NOVAL\fP }"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "char * \fBcdl_getFITSPixels\fP ()"
+.br
+.ti -1c
+.RI "char * \fBcdl_openFITS\fP ()"
+.br
+.ti -1c
+.RI "char ** \fBcdl_readHeader\fP ()"
+.br
+.ti -1c
+.RI "char * \fBcdl_rdCard\fP ()"
+.br
+.ti -1c
+.RI "char ** \fBcdl_getData\fP ()"
+.br
+.ti -1c
+.RI "char *** \fBcdl_fixData\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_readFITSHdr\fP ()"
+.br
+.ti -1c
+.RI "int \fBcdl_displayFITS\fP (\fBCDLPtr\fP cdl, char *fname, int \fBframe\fP, int \fBfbconfig\fP, int \fBzscale\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_isFITS\fP (char *fname)"
+.br
+.ti -1c
+.RI "int \fBcdl_readFITS\fP (char *fname, \fBuchar\fP **\fBpix\fP, int *\fBnx\fP, int *\fBny\fP, int *\fBbitpix\fP, char *\fBtitle\fP)"
+.br
+.ti -1c
+.RI "int \fBcdl_readFITSHdr\fP (char *fname, float *bscale, float *bzero, char *\fBobj\fP)"
+.br
+.ti -1c
+.RI "char * \fBcdl_getFITSPixels\fP (char *fname, \fBuchar\fP **\fBpix\fP, int *\fBnx\fP, int *\fBny\fP, int *\fBbitpix\fP)"
+.br
+.ti -1c
+.RI "char * \fBcdl_openFITS\fP (\fBFITS\fP *fs, char *file, int *\fBnx\fP, int *\fBny\fP, int *\fBbitpix\fP)"
+.br
+.ti -1c
+.RI "char * \fBcdl_readHeader\fP (\fBFITS\fP *fs)"
+.br
+.ti -1c
+.RI "char * \fBcdl_rdCard\fP (char *card, char *name, enum \fBdatatype\fP dtype, long *kvalue, float *rvalue, char *svalue)"
+.br
+.ti -1c
+.RI "char * \fBcdl_getData\fP (\fBFITS\fP *fs, \fBuchar\fP *buffer, int nelem)"
+.br
+.ti -1c
+.RI "char * \fBcdl_fixData\fP (\fBFITS\fP *fs, void *buffer, int nelem)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBcdl_debug\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define BLOCKSIZE   2880"
+.PP
+Definition at line 18 of file cdlfits.c.
+.PP
+Referenced by cdl_getData(), and cdl_readHeader().
+.SS "#define CDL_LIBRARY_SOURCE"
+.PP
+Definition at line 4 of file cdlfits.c.
+.SS "#define f_max(\fBa\fP, \fBb\fP)   ((\fBa\fP) > (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.PP
+Definition at line 42 of file cdlfits.c.
+.PP
+Referenced by cdl_getFITSPixels().
+.SS "#define f_min(\fBa\fP, \fBb\fP)   ((\fBa\fP) < (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.PP
+Definition at line 44 of file cdlfits.c.
+.SS "#define NCARDS   36"
+.PP
+Definition at line 17 of file cdlfits.c.
+.PP
+Referenced by cdl_readHeader().
+.SS "#define SZ_CARD   80"
+.PP
+Definition at line 19 of file cdlfits.c.
+.PP
+Referenced by cdl_displayFITS(), cdl_rdCard(), and cdl_readHeader().
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "enum \fBdatatype\fP"
+.PP
+\fBEnumeration values: \fP
+.in +1c
+.TP
+\fB\fIT_INT \fP\fP
+.TP
+\fB\fIT_LOG \fP\fP
+.TP
+\fB\fIT_REAL \fP\fP
+.TP
+\fB\fIT_STR \fP\fP
+.TP
+\fB\fIT_NOVAL \fP\fP
+
+.PP
+Definition at line 22 of file cdlfits.c.
+.PP
+Referenced by cdl_rdCard().
+.SH "Function Documentation"
+.PP 
+.SS "int cdl_displayFITS (\fBCDLPtr\fP cdl, char	* fname, int frame, int fbconfig, int zscale)"
+.PP
+Definition at line 86 of file cdlfits.c.
+.PP
+References bitpix, cdl_debug, cdl_displayPix(), cdl_isFITS(), cdl_readFITS(), cdl_readFITSHdr(), cdl_setName(), cdl_setTitle(), CDLPtr, ERR, fbconfig, frame, free(), nx, ny, pix, SZ_CARD, uchar, z1, z2, and zscale.
+.SS "char* cdl_fixData (\fBFITS\fP 	* fs, void 	* buffer, int nelem)\fC [static]\fP"
+.PP
+Definition at line 718 of file cdlfits.c.
+.PP
+References i, j, k, l, n, and uchar.
+.SS "char* * * cdl_fixData ()"
+.PP
+Referenced by cdl_getData().
+.SS "char* cdl_getData (\fBFITS\fP 	* fs, \fBuchar\fP 	* buffer, int nelem)\fC [static]\fP"
+.PP
+Definition at line 665 of file cdlfits.c.
+.PP
+References BLOCKSIZE, cdl_fixData(), and uchar.
+.SS "char* * cdl_getData ()"
+.PP
+Referenced by cdl_getFITSPixels().
+.SS "char* cdl_getFITSPixels (char 	* fname, \fBuchar\fP   ** pix, int 	* nx, int * ny, int	* bitpix)\fC [static]\fP"
+.PP
+Definition at line 293 of file cdlfits.c.
+.PP
+References FITS::bitpix, bitpix, FITS::bscale, buf, FITS::bzero, cdl_getData(), cdl_openFITS(), f_max, FITS::fp, free(), i, malloc(), nx, ny, pix, FITS::size, and uchar.
+.SS "char* cdl_getFITSPixels ()\fC [static]\fP"
+.PP
+Referenced by cdl_readFITS().
+.SS "int cdl_isFITS (char	* fname)"
+.PP
+Definition at line 142 of file cdlfits.c.
+.PP
+References val.
+.PP
+Referenced by cdl_displayFITS(), cdl_readFITS(), and cdl_readFITSHdr().
+.SS "char* cdl_openFITS (\fBFITS\fP 	* fs, char	* file, int	* nx, int * ny, int * bitpix)\fC [static]\fP"
+.PP
+Definition at line 384 of file cdlfits.c.
+.PP
+References bitpix, cdl_readHeader(), i, nx, and ny.
+.SS "char* cdl_openFITS ()\fC [static]\fP"
+.PP
+Referenced by cdl_getFITSPixels().
+.SS "char* cdl_rdCard (char	* card, char	* name, enum \fBdatatype\fP dtype, long 	* kvalue, float 	* rvalue, char  	* svalue)\fC [static]\fP"
+.PP
+Definition at line 583 of file cdlfits.c.
+.PP
+References datatype, i, SZ_CARD, SZ_FNAME, T_INT, T_LOG, T_REAL, and T_STR.
+.SS "char* cdl_rdCard ()\fC [static]\fP"
+.PP
+Referenced by cdl_readHeader().
+.SS "int cdl_readFITS (char	* fname, \fBuchar\fP	** pix, int	* nx, int * ny, int	* bitpix, char	* title)"
+.PP
+Definition at line 178 of file cdlfits.c.
+.PP
+References bitpix, cdl_debug, cdl_getFITSPixels(), cdl_isFITS(), cdl_readFITSHdr(), ERR, nx, ny, OK, pix, title, and uchar.
+.SS "int cdl_readFITSHdr (char	* fname, float	* bscale, float * bzero, char	* obj)\fC [static]\fP"
+.PP
+Definition at line 231 of file cdlfits.c.
+.PP
+References FITS::bitpix, FITS::bscale, FITS::bzero, cdl_debug, cdl_isFITS(), cdl_readHeader(), FITS::cpos, ERR, FITS::fp, free(), malloc(), FITS::naxis, FITS::object, and OK.
+.SS "int cdl_readFITSHdr ()\fC [static]\fP"
+.PP
+Referenced by cdl_displayFITS(), and cdl_readFITS().
+.SS "char* cdl_readHeader (\fBFITS\fP * fs)\fC [static]\fP"
+.PP
+Definition at line 437 of file cdlfits.c.
+.PP
+References BLOCKSIZE, cdl_rdCard(), free(), i, j, malloc(), NCARDS, SZ_CARD, SZ_FNAME, T_INT, T_LOG, T_REAL, T_STR, and val.
+.SS "char* * cdl_readHeader ()"
+.PP
+Referenced by cdl_openFITS(), and cdl_readFITSHdr().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBcdl_debug\fP"
+.PP
+Definition at line 46 of file cdlfits.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

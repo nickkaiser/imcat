@@ -1,0 +1,518 @@
+.TH "getop.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getop.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBop\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBN_TYPES\fP   5"
+.br
+.ti -1c
+.RI "#define \fBNUM0_FUNC_TYPE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBNUM1_FUNC_TYPE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBNUM2_FUNC_TYPE\fP   2"
+.br
+.ti -1c
+.RI "#define \fBCONSTANT_TYPE\fP   3"
+.br
+.ti -1c
+.RI "#define \fBIM_VALUE_TYPE\fP   4"
+.br
+.ti -1c
+.RI "#define \fBN_NUM0_OPS\fP   9"
+.br
+.ti -1c
+.RI "#define \fBRAND\fP   0"
+.br
+.ti -1c
+.RI "#define \fBX\fP   1"
+.br
+.ti -1c
+.RI "#define \fBY\fP   2"
+.br
+.ti -1c
+.RI "#define \fBXP\fP   3"
+.br
+.ti -1c
+.RI "#define \fBYP\fP   4"
+.br
+.ti -1c
+.RI "#define \fBIF\fP   5"
+.br
+.ti -1c
+.RI "#define \fBIFQ\fP   6"
+.br
+.ti -1c
+.RI "#define \fBENTER\fP   7"
+.br
+.ti -1c
+.RI "#define \fBGRAND\fP   8"
+.br
+.ti -1c
+.RI "#define \fBN_NUM1_OPS\fP   22"
+.br
+.ti -1c
+.RI "#define \fBACOS\fP   0"
+.br
+.ti -1c
+.RI "#define \fBASIN\fP   1"
+.br
+.ti -1c
+.RI "#define \fBATAN\fP   2"
+.br
+.ti -1c
+.RI "#define \fBCEIL\fP   3"
+.br
+.ti -1c
+.RI "#define \fBCOS\fP   4"
+.br
+.ti -1c
+.RI "#define \fBCOSH\fP   5"
+.br
+.ti -1c
+.RI "#define \fBEXP\fP   6"
+.br
+.ti -1c
+.RI "#define \fBFABS\fP   7"
+.br
+.ti -1c
+.RI "#define \fBFLOOR\fP   8"
+.br
+.ti -1c
+.RI "#define \fBLOG\fP   9"
+.br
+.ti -1c
+.RI "#define \fBLOG10\fP   10"
+.br
+.ti -1c
+.RI "#define \fBSIN\fP   11"
+.br
+.ti -1c
+.RI "#define \fBSINH\fP   12"
+.br
+.ti -1c
+.RI "#define \fBSQRT\fP   13"
+.br
+.ti -1c
+.RI "#define \fBTAN\fP   14"
+.br
+.ti -1c
+.RI "#define \fBTANH\fP   15"
+.br
+.ti -1c
+.RI "#define \fBNOT\fP   16"
+.br
+.ti -1c
+.RI "#define \fBBESSJ0\fP   17"
+.br
+.ti -1c
+.RI "#define \fBBESSJ1\fP   18"
+.br
+.ti -1c
+.RI "#define \fBBESSY0\fP   19"
+.br
+.ti -1c
+.RI "#define \fBBESSY1\fP   20"
+.br
+.ti -1c
+.RI "#define \fBSWAP\fP   21"
+.br
+.ti -1c
+.RI "#define \fBN_NUM2_OPS\fP   18"
+.br
+.ti -1c
+.RI "#define \fBTIMES0\fP   0"
+.br
+.ti -1c
+.RI "#define \fBTIMES1\fP   1"
+.br
+.ti -1c
+.RI "#define \fBPLUS\fP   2"
+.br
+.ti -1c
+.RI "#define \fBDIVIDE\fP   3"
+.br
+.ti -1c
+.RI "#define \fBMINUS\fP   4"
+.br
+.ti -1c
+.RI "#define \fBATAN2\fP   5"
+.br
+.ti -1c
+.RI "#define \fBPOW\fP   6"
+.br
+.ti -1c
+.RI "#define \fBFMOD\fP   7"
+.br
+.ti -1c
+.RI "#define \fBGT\fP   8"
+.br
+.ti -1c
+.RI "#define \fBGE\fP   9"
+.br
+.ti -1c
+.RI "#define \fBLT\fP   10"
+.br
+.ti -1c
+.RI "#define \fBLE\fP   11"
+.br
+.ti -1c
+.RI "#define \fBNE\fP   12"
+.br
+.ti -1c
+.RI "#define \fBEQ\fP   13"
+.br
+.ti -1c
+.RI "#define \fBBESSJN\fP   14"
+.br
+.ti -1c
+.RI "#define \fBBESSYN\fP   15"
+.br
+.ti -1c
+.RI "#define \fBMAX\fP   16"
+.br
+.ti -1c
+.RI "#define \fBMIN\fP   17"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBop\fP \fBop\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBset_getop_N1\fP (int \fBn1\fP)"
+.br
+.ti -1c
+.RI "\fBop\fP * \fBgetop\fP (char **sptr)"
+.br
+.ti -1c
+.RI "char * \fBgetword\fP (char **sptr)"
+.br
+.ti -1c
+.RI "\fBop\fP * \fBnewop\fP (char *thename)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define ACOS   0"
+.PP
+Definition at line 25 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define ASIN   1"
+.PP
+Definition at line 26 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define ATAN   2"
+.PP
+Definition at line 27 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define ATAN2   5"
+.PP
+Definition at line 56 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define BESSJ0   17"
+.PP
+Definition at line 42 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define BESSJ1   18"
+.PP
+Definition at line 43 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define BESSJN   14"
+.PP
+Definition at line 65 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define BESSY0   19"
+.PP
+Definition at line 44 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define BESSY1   20"
+.PP
+Definition at line 45 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define BESSYN   15"
+.PP
+Definition at line 66 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define CEIL   3"
+.PP
+Definition at line 28 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define CONSTANT_TYPE   3"
+.PP
+Definition at line 10 of file imtools/ic/getop.h.
+.PP
+Referenced by getop(), and main().
+.SS "#define COS   4"
+.PP
+Definition at line 29 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define COSH   5"
+.PP
+Definition at line 30 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define DIVIDE   3"
+.PP
+Definition at line 54 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define ENTER   7"
+.PP
+Definition at line 21 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define EQ   13"
+.PP
+Definition at line 64 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define EXP   6"
+.PP
+Definition at line 31 of file imtools/ic/getop.h.
+.PP
+Referenced by add_population(), and main().
+.SS "#define FABS   7"
+.PP
+Definition at line 32 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define FLOOR   8"
+.PP
+Definition at line 33 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define FMOD   7"
+.PP
+Definition at line 58 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define GE   9"
+.PP
+Definition at line 60 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define GRAND   8"
+.PP
+Definition at line 22 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define GT   8"
+.PP
+Definition at line 59 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define IF   5"
+.PP
+Definition at line 19 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define IFQ   6"
+.PP
+Definition at line 20 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define IM_VALUE_TYPE   4"
+.PP
+Definition at line 11 of file imtools/ic/getop.h.
+.PP
+Referenced by getop(), and main().
+.SS "#define LE   11"
+.PP
+Definition at line 62 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define LOG   9"
+.PP
+Definition at line 34 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define LOG10   10"
+.PP
+Definition at line 35 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define LT   10"
+.PP
+Definition at line 61 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define MAX   16"
+.PP
+Definition at line 67 of file imtools/ic/getop.h.
+.SS "#define MIN   17"
+.PP
+Definition at line 68 of file imtools/ic/getop.h.
+.SS "#define MINUS   4"
+.PP
+Definition at line 55 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define N_NUM0_OPS   9"
+.PP
+Definition at line 13 of file imtools/ic/getop.h.
+.PP
+Referenced by newop().
+.SS "#define N_NUM1_OPS   22"
+.PP
+Definition at line 24 of file imtools/ic/getop.h.
+.SS "#define N_NUM2_OPS   18"
+.PP
+Definition at line 50 of file imtools/ic/getop.h.
+.SS "#define N_TYPES   5"
+.PP
+Definition at line 6 of file imtools/ic/getop.h.
+.SS "#define NE   12"
+.PP
+Definition at line 63 of file imtools/ic/getop.h.
+.SS "#define NOT   16"
+.PP
+Definition at line 41 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define NUM0_FUNC_TYPE   0"
+.PP
+Definition at line 7 of file imtools/ic/getop.h.
+.PP
+Referenced by main(), and newop().
+.SS "#define NUM1_FUNC_TYPE   1"
+.PP
+Definition at line 8 of file imtools/ic/getop.h.
+.PP
+Referenced by main(), and newop().
+.SS "#define NUM2_FUNC_TYPE   2"
+.PP
+Definition at line 9 of file imtools/ic/getop.h.
+.PP
+Referenced by main(), and newop().
+.SS "#define PLUS   2"
+.PP
+Definition at line 53 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define POW   6"
+.PP
+Definition at line 57 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define RAND   0"
+.PP
+Definition at line 14 of file imtools/ic/getop.h.
+.SS "#define SIN   11"
+.PP
+Definition at line 36 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define SINH   12"
+.PP
+Definition at line 37 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define SQRT   13"
+.PP
+Definition at line 38 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define SWAP   21"
+.PP
+Definition at line 46 of file imtools/ic/getop.h.
+.SS "#define TAN   14"
+.PP
+Definition at line 39 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define TANH   15"
+.PP
+Definition at line 40 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define TIMES0   0"
+.PP
+Definition at line 51 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define TIMES1   1"
+.PP
+Definition at line 52 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define \fBX\fP   1"
+.PP
+Definition at line 15 of file imtools/ic/getop.h.
+.PP
+Referenced by cpgellipses(), deflect(), main(), and write_object().
+.SS "#define XP   3"
+.PP
+Definition at line 17 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SS "#define \fBY\fP   2"
+.PP
+Definition at line 16 of file imtools/ic/getop.h.
+.PP
+Referenced by circkernel(), cpgellipses(), deflect(), and main().
+.SS "#define YP   4"
+.PP
+Definition at line 18 of file imtools/ic/getop.h.
+.PP
+Referenced by main().
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBop\fP  \fBop\fP"
+.PP
+Referenced by bswap2(), bswap4(), bswap8(), evalrpnfunction(), imd_getstr(), inversedoit(), inverseinit(), lintransdoit(), lintransinit(), main(), newrpnfunction(), sampleImage(), vectordoit(), vectorinit(), and vx_iisio().
+.SH "Function Documentation"
+.PP 
+.SS "\fBop\fP* getop (char ** sptr)"
+.PP
+Definition at line 16 of file cattools/lc/getop.c.
+.SS "char* getword (char ** sptr)"
+.PP
+Definition at line 84 of file cattools/lc/getop.c.
+.SS "\fBop\fP* newop (char * thename)"
+.PP
+Definition at line 168 of file imtools/ic/getop.c.
+.SS "void set_getop_N1 (int n1)"
+.PP
+Definition at line 31 of file imtools/ic/getop.c.
+.PP
+References N1.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

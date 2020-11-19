@@ -1,0 +1,94 @@
+#!/usr/bin/perl
+$| = 1;
+
+$pscom = "ps -aux";
+$slavelistfile = "rshloopslaves.lst";
+
+$usage = "\
+NAME\
+        monitorslaves --- monitor activity of slave processors\
+\
+SYNOPSIS\
+        monitorslaves [-l slaveslist] [-p pscom] [-s sleepinterval]\
+\
+DESCRIPTION\
+        'monitorslaves' runs the command '$pscom' on the slave\
+	processors listed in $slavelistfile \
+\
+        Use -l option to specify and alternative name for the\
+	slave list.\
+\
+	Use -p option to specify a different command to run if\
+	e.g. e.g the version of ps lives somewhere else.\
+	On solaris, this may be in /usr/ucb.\
+\
+	Use -s option to have the command wait specified\
+	number of seconds between refreshes.\
+\
+        Use -u option to print this man page.\
+\
+SEE ALSO\
+	rshloop\
+\
+AUTHOR\
+	Nick Kaiser\
+\
+";
+
+while ($arg = shift(@ARGV)) {
+	if ($arg =~ /^-p$/) {
+		$pscom = shift(@ARGV) || die $usage;
+	} elsif ($arg =~ /^-l$/) {
+		$slavelistfile = shift(@ARGV) || die $usage;
+	} elsif ($arg =~ /^-s$/) {
+		$sleepinterval = shift(@ARGV) || die $usage;
+	} else {
+		die $usage;
+	}
+}
+
+open(SLAVEDB, $slavelistfile) || die "$0 : can't access $slavelistfile\n";
+
+# read 1st line
+$_ = <SLAVEDB>;
+# read @nodes
+$ns = 0;
+while (<SLAVEDB>) {
+	($tag, $node[$ns]) = split(" ", $_);
+	$ns++;
+}
+	
+# do the biz
+
+while (1) {
+	for ($i = 0; $i < $ns; $i++) {
+		$ps = `rsh $node[$i] '$pscom'`;
+		@lines = split("\n", $ps);
+		shift(@lines);
+		$cpusum[$i] = 0.0;
+		for ($l = 0; $l <= $#lines; $l++) {
+			($j1, $j2, $cpu) = split(" ", $lines[$l]);
+			$cpusum[$i] += $cpu;
+		}
+	}
+	for ($i = 0; $i < 50; $i++) {
+		print "\n";
+	}
+	for ($i = 0; $i < $ns; $i++) {
+		printf "%s %%CPU:%5.1f ", $node[$i], $cpusum[$i];
+		$nj = int($cpusum[$i]);
+		if (1) {
+			for ($j = 0; $j < $nj; $j++) {
+				print "X";
+			}
+		} else {
+			print "$cpusum[$i]";
+		}
+		print "\n";
+	}
+	if ($sleepinterval) {
+		system("sleep $sleepinterval");
+	}
+}
+
+exit;

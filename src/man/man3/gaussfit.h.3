@@ -1,0 +1,44 @@
+.TH "gaussfit.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+gaussfit.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "float \fBfunc\fP (float *p)"
+.br
+.ti -1c
+.RI "void \fBdfunc\fP (float *p, float *df)"
+.br
+.ti -1c
+.RI "int \fBgaussfit\fP (float **\fBff\fP, int \fBN1\fP, int \fBN2\fP, float *\fBf0\fP, float *\fBd\fP, float *\fBa\fP, float *\fBb\fP, float *\fBphi\fP)"
+.br
+.ti -1c
+.RI "void \fBmakemodel\fP (float **\fBff\fP, int \fBN1\fP, int \fBN2\fP, float \fBf0\fP, float *\fBd\fP, float \fBa\fP, float \fBb\fP, float \fBphi\fP)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void dfunc (float * p, float * df)"
+.PP
+.SS "float func (float * p)"
+.PP
+Definition at line 67 of file betafit.c.
+.SS "int gaussfit (float ** ff, int N1, int N2, float * f0, float * d, float * a, float * b, float * phi)"
+.PP
+Definition at line 23 of file gaussfit.c.
+.PP
+References a, b, d, f, ff, free_matrix(), free_vector(), func(), i, matrix(), N1, n1, N2, n2, phi, powell(), and vector().
+.SS "void makemodel (float ** ff, int N1, int N2, float f0, float * d, float a, float b, float phi)"
+.PP
+Definition at line 95 of file gaussfit.c.
+.PP
+References a, b, c, d, ff, ix, n1, n2, phi, x, xp(), y, and yp().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

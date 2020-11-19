@@ -1,0 +1,341 @@
+.TH "f2c.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+f2c.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBalist\fP"
+.br
+.ti -1c
+.RI "struct \fBcilist\fP"
+.br
+.ti -1c
+.RI "struct \fBcllist\fP"
+.br
+.ti -1c
+.RI "struct \fBcomplex\fP"
+.br
+.ti -1c
+.RI "struct \fBdoublecomplex\fP"
+.br
+.ti -1c
+.RI "struct \fBicilist\fP"
+.br
+.ti -1c
+.RI "struct \fBinlist\fP"
+.br
+.ti -1c
+.RI "union \fBMultitype\fP"
+.br
+.ti -1c
+.RI "struct \fBNamelist\fP"
+.br
+.ti -1c
+.RI "struct \fBolist\fP"
+.br
+.ti -1c
+.RI "struct \fBVardesc\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBTRUE_\fP   (1)"
+.br
+.ti -1c
+.RI "#define \fBFALSE_\fP   (0)"
+.br
+.ti -1c
+.RI "#define \fBExtern\fP   extern"
+.br
+.ti -1c
+.RI "#define \fBVOID\fP   void"
+.br
+.ti -1c
+.RI "#define \fBabs\fP(x)   ((x) >= 0 ? (x) : -(x))"
+.br
+.ti -1c
+.RI "#define \fBdabs\fP(x)   (\fBdoublereal\fP)abs(x)"
+.br
+.ti -1c
+.RI "#define \fBmin\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) <= (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.br
+.ti -1c
+.RI "#define \fBmax\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) >= (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.br
+.ti -1c
+.RI "#define \fBdmin\fP(\fBa\fP, \fBb\fP)   (\fBdoublereal\fP)min(\fBa\fP,\fBb\fP)"
+.br
+.ti -1c
+.RI "#define \fBdmax\fP(\fBa\fP, \fBb\fP)   (\fBdoublereal\fP)max(\fBa\fP,\fBb\fP)"
+.br
+.ti -1c
+.RI "#define \fBbit_test\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) >> (\fBb\fP) & 1)"
+.br
+.ti -1c
+.RI "#define \fBbit_clear\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) & ~((\fBuinteger\fP)1 << (\fBb\fP)))"
+.br
+.ti -1c
+.RI "#define \fBbit_set\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) |  ((\fBuinteger\fP)1 << (\fBb\fP)))"
+.br
+.ti -1c
+.RI "#define \fBF2C_proc_par_types\fP   1"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef long int \fBinteger\fP"
+.br
+.ti -1c
+.RI "typedef unsigned long int \fBuinteger\fP"
+.br
+.ti -1c
+.RI "typedef char * \fBaddress\fP"
+.br
+.ti -1c
+.RI "typedef short int \fBshortint\fP"
+.br
+.ti -1c
+.RI "typedef float \fBreal\fP"
+.br
+.ti -1c
+.RI "typedef double \fBdoublereal\fP"
+.br
+.ti -1c
+.RI "typedef long int \fBlogical\fP"
+.br
+.ti -1c
+.RI "typedef short int \fBshortlogical\fP"
+.br
+.ti -1c
+.RI "typedef char \fBlogical1\fP"
+.br
+.ti -1c
+.RI "typedef char \fBinteger1\fP"
+.br
+.ti -1c
+.RI "typedef long int \fBflag\fP"
+.br
+.ti -1c
+.RI "typedef long int \fBftnlen\fP"
+.br
+.ti -1c
+.RI "typedef long int \fBftnint\fP"
+.br
+.ti -1c
+.RI "typedef \fBMultitype\fP \fBMultitype\fP"
+.br
+.ti -1c
+.RI "typedef \fBVardesc\fP \fBVardesc\fP"
+.br
+.ti -1c
+.RI "typedef \fBNamelist\fP \fBNamelist\fP"
+.br
+.ti -1c
+.RI "typedef int(* \fBU_fp\fP )()"
+.br
+.ti -1c
+.RI "typedef \fBshortint\fP(* \fBJ_fp\fP )()"
+.br
+.ti -1c
+.RI "typedef \fBinteger\fP(* \fBI_fp\fP )()"
+.br
+.ti -1c
+.RI "typedef \fBreal\fP(* \fBR_fp\fP )()"
+.br
+.ti -1c
+.RI "typedef \fBdoublereal\fP(* \fBD_fp\fP )()"
+.br
+.ti -1c
+.RI "typedef \fBdoublereal\fP(*)(*) \fBE_fp\fP ()"
+.br
+.ti -1c
+.RI "typedef VOID(* \fBC_fp\fP )()"
+.br
+.ti -1c
+.RI "typedef VOID(* \fBZ_fp\fP )()"
+.br
+.ti -1c
+.RI "typedef \fBlogical\fP(* \fBL_fp\fP )()"
+.br
+.ti -1c
+.RI "typedef \fBshortlogical\fP(* \fBK_fp\fP )()"
+.br
+.ti -1c
+.RI "typedef VOID(* \fBH_fp\fP )()"
+.br
+.ti -1c
+.RI "typedef int(* \fBS_fp\fP )()"
+.br
+.ti -1c
+.RI "typedef VOID \fBC_f\fP"
+.br
+.ti -1c
+.RI "typedef VOID \fBH_f\fP"
+.br
+.ti -1c
+.RI "typedef VOID \fBZ_f\fP"
+.br
+.ti -1c
+.RI "typedef \fBdoublereal\fP \fBE_f\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define abs(x)   ((x) >= 0 ? (x) : -(x))"
+.PP
+Definition at line 190 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "#define bit_clear(\fBa\fP, \fBb\fP)   ((\fBa\fP) & ~((\fBuinteger\fP)1 << (\fBb\fP)))"
+.PP
+Definition at line 197 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "#define bit_set(\fBa\fP, \fBb\fP)   ((\fBa\fP) |  ((\fBuinteger\fP)1 << (\fBb\fP)))"
+.PP
+Definition at line 198 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "#define bit_test(\fBa\fP, \fBb\fP)   ((\fBa\fP) >> (\fBb\fP) & 1)"
+.PP
+Definition at line 196 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "#define dabs(x)   (\fBdoublereal\fP)abs(x)"
+.PP
+Definition at line 191 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "#define dmax(\fBa\fP, \fBb\fP)   (\fBdoublereal\fP)max(\fBa\fP,\fBb\fP)"
+.PP
+Definition at line 195 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "#define dmin(\fBa\fP, \fBb\fP)   (\fBdoublereal\fP)min(\fBa\fP,\fBb\fP)"
+.PP
+Definition at line 194 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "#define Extern   extern"
+.PP
+Definition at line 55 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "#define F2C_proc_par_types   1"
+.PP
+Definition at line 202 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "#define FALSE_   (0)"
+.PP
+Definition at line 51 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "#define max(\fBa\fP, \fBb\fP)   ((\fBa\fP) >= (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.PP
+Definition at line 193 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "#define min(\fBa\fP, \fBb\fP)   ((\fBa\fP) <= (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.PP
+Definition at line 192 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "#define TRUE_   (1)"
+.PP
+Definition at line 50 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "#define VOID   void"
+.PP
+Definition at line 158 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef char* \fBaddress\fP"
+.PP
+Definition at line 31 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef VOID \fBC_f\fP"
+.PP
+Definition at line 229 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef VOID(* \fBC_fp\fP)()"
+.PP
+Definition at line 221 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef \fBdoublereal\fP(* \fBD_fp\fP)()"
+.PP
+Definition at line 220 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef double \fBdoublereal\fP"
+.PP
+Definition at line 34 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef \fBdoublereal\fP \fBE_f\fP"
+.PP
+Definition at line 232 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef \fBdoublereal\fP(*)(*) \fBE_fp\fP()"
+.PP
+Definition at line 220 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef long int \fBflag\fP"
+.PP
+Definition at line 75 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef long int \fBftnint\fP"
+.PP
+Definition at line 77 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef long int \fBftnlen\fP"
+.PP
+Definition at line 76 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef VOID \fBH_f\fP"
+.PP
+Definition at line 230 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef VOID(* \fBH_fp\fP)()"
+.PP
+Definition at line 225 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef \fBinteger\fP(* \fBI_fp\fP)()"
+.PP
+Definition at line 218 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef long int \fBinteger\fP"
+.PP
+barf [ba:rf] 2. 'He suggested using FORTRAN, and everybody barfed.'
+.PP
+.IP "\(bu" 2
+From The Shogakukan DICTIONARY OF NEW ENGLISH (Second edition) 
+.PP
+Definition at line 29 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef char \fBinteger1\fP"
+.PP
+Definition at line 40 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef \fBshortint\fP(* \fBJ_fp\fP)()"
+.PP
+Definition at line 217 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef \fBshortlogical\fP(* \fBK_fp\fP)()"
+.PP
+Definition at line 224 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef \fBlogical\fP(* \fBL_fp\fP)()"
+.PP
+Definition at line 223 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef long int \fBlogical\fP"
+.PP
+Definition at line 37 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef char \fBlogical1\fP"
+.PP
+Definition at line 39 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef union \fBMultitype\fP \fBMultitype\fP"
+.PP
+Definition at line 171 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef struct \fBNamelist\fP \fBNamelist\fP"
+.PP
+Definition at line 188 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef \fBreal\fP(* \fBR_fp\fP)()"
+.PP
+Definition at line 219 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef float \fBreal\fP"
+.PP
+Definition at line 33 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef int(* \fBS_fp\fP)()"
+.PP
+Definition at line 226 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef short int \fBshortint\fP"
+.PP
+Definition at line 32 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef short int \fBshortlogical\fP"
+.PP
+Definition at line 38 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef int(* \fBU_fp\fP)()"
+.PP
+Definition at line 216 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef unsigned long int \fBuinteger\fP"
+.PP
+Definition at line 30 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef struct \fBVardesc\fP \fBVardesc\fP"
+.PP
+Definition at line 181 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef VOID \fBZ_f\fP"
+.PP
+Definition at line 231 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SS "typedef VOID(* \fBZ_fp\fP)()"
+.PP
+Definition at line 222 of file imcattools/orbits/kepler_heasley/f2c.h.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,46 @@
+.TH "platepos.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+platepos.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include 'wcs.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBplatepos\fP (double xpix, double ypix, struct \fBWorldCoor\fP *\fBwcs\fP, double *xpos, double *ypos)"
+.br
+.ti -1c
+.RI "int \fBplatepix\fP (double xpos, double ypos, struct \fBWorldCoor\fP *\fBwcs\fP, double *xpix, double *ypix)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int platepix (double xpos, double ypos, struct \fBWorldCoor\fP * wcs, double	* xpix, double	* ypix)"
+.PP
+Definition at line 112 of file platepos.c.
+.PP
+References dx, dy, f, g(), gx, i, wcs, x, and y.
+.PP
+Referenced by wcs2pix().
+.SS "int platepos (double xpix, double ypix, struct \fBWorldCoor\fP * wcs, double	* xpos, double	* ypos)"
+.PP
+Definition at line 21 of file platepos.c.
+.PP
+References ra, wcs, x, and y.
+.PP
+Referenced by pix2wcs().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

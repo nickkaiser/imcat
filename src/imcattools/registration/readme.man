@@ -1,0 +1,2 @@
+The tools in this section are to help you register images taken with
+a 'single chip' CCD camera.

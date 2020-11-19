@@ -1,0 +1,16 @@
+The tools in this section implement procedures useful for
+celestial mechanics.  They allow one to convert orbits between
+Kepler elements and Cartesian phase space (convertorbits).
+One can compute approximate orbits from 3 observations (laplace3)
+and make a least squares solution (fitorbit).  There are some
+utilities for generating observations (makeobs_circ, makeobs_inertial).
+
+One can evolve these forward (evolveorbits), compute observable properties
+(orbs2obs).  There is a utility (airmass) for computing the airmass
+of the observations.  One can track the detection status of objects
+(getdet).  Use getmoid to compute the MOID for an orbit.  Use
+orbanim to generate a 3-D FITS image movie of the trajectories.
+Use r2n to find perpendicular components of a vector relative
+to a reference direction.
+
+Orbit conversion routines courtesy of Jim Heasley.

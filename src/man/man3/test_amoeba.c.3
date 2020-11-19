@@ -1,0 +1,66 @@
+.TH "amoeba.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+amoeba.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math.h>\fP
+.br
+\fC#include '../../utils/nrutil.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBNRANSI\fP"
+.br
+.ti -1c
+.RI "#define \fBNMAX\fP   5000"
+.br
+.ti -1c
+.RI "#define \fBGET_PSUM\fP"
+.br
+.ti -1c
+.RI "#define \fBSWAP\fP(\fBa\fP, \fBb\fP)   {swap=(\fBa\fP);(\fBa\fP)=(\fBb\fP);(\fBb\fP)=swap;}"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBamoeba\fP (float **p, float y[], int \fBndim\fP, float ftol, float(*funk)(float[]), int *nfunk)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define GET_PSUM"
+.PP
+\fBValue:\fP.nf
+for (j=1;j<=ndim;j++) {\
+          for (sum=0.0,i=1;i<=mpts;i++) sum += p[i][j];\
+          psum[j]=sum;}
+.fi
+.PP
+Definition at line 5 of file test/amoeba.c.
+.SS "#define NMAX   5000"
+.PP
+Definition at line 4 of file test/amoeba.c.
+.SS "#define NRANSI"
+.PP
+Definition at line 2 of file test/amoeba.c.
+.SS "#define SWAP(\fBa\fP, \fBb\fP)   {swap=(\fBa\fP);(\fBa\fP)=(\fBb\fP);(\fBb\fP)=swap;}"
+.PP
+Definition at line 9 of file test/amoeba.c.
+.SH "Function Documentation"
+.PP 
+.SS "void amoeba (float ** p, float y[], int ndim, float ftol, float(* funk)(float[]), int * nfunk)"
+.PP
+Definition at line 11 of file test/amoeba.c.
+.PP
+References amotry(), free_vector(), GET_PSUM, i, j, NMAX, nrerror(), SWAP, swap, vector(), and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

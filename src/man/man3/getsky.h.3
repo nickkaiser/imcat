@@ -1,0 +1,57 @@
+.TH "getsky.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getsky.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBgetsky\fP (double *fb0, double *dfb, double r1, double r2, double *x, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBpruneextreme\fP (void)"
+.br
+.ti -1c
+.RI "int \fBgetplane\fP (double *fb0, double *dfb)"
+.br
+.ti -1c
+.RI "int \fBfmodecmp\fP (const void *ptr1, const void *ptr2)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int fmodecmp (const void * ptr1, const void * ptr2)"
+.PP
+Definition at line 163 of file getsky.c.
+.PP
+References fmode.
+.PP
+Referenced by pruneextreme().
+.SS "int getplane (double * fb0, double * dfb)"
+.PP
+Definition at line 131 of file getsky.c.
+.PP
+References det(), f, fmode, i, qlist, x, xbar, y, and ybar.
+.PP
+Referenced by getsky().
+.SS "int getsky (double * fb0, double * dfb, double r1, double r2, double * x, float ** f, int N1, int N2)"
+.PP
+Definition at line 26 of file getsky.c.
+.PP
+References dx, dy, error_exit, f, ff, fmode, getplane(), ix, liststats(), MAGIC, MAX_PIX, median(), MIN_PIX, N1, N2, pix, pruneextreme(), qlist, r, sigma, x, xbar, and ybar.
+.PP
+Referenced by main().
+.SS "void pruneextreme (void)"
+.PP
+Definition at line 117 of file getsky.c.
+.PP
+References fmode, fmodecmp(), i, median(), and qlist.
+.PP
+Referenced by getsky().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

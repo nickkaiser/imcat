@@ -1,0 +1,15 @@
+The tools here are to help you register images taken with a
+multi-CCD 'mosaic' camera.  
+
+There are several approaches that I have developed, each of which
+has advantages and disadvantages.
+
+The tools are mostly scripts; tend to be changed quite often, but can be used
+as a starting point to generate a customised procedure.
+
+See <a href="fitgeom.html">notes on various fitgeometry tools</a>
+ 
+
+These are mostly out-dated.
+
+

@@ -1,0 +1,52 @@
+.TH "fitscomment" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitscomment \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <fits.h>\fP
+.PP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "char \fBname\fP [NAME_LENGTH1]"
+.br
+.ti -1c
+.RI "char \fBvalue\fP [VALUE_LENGTH1]"
+.br
+.ti -1c
+.RI "\fBfitscomment\fP * \fBnext\fP"
+.br
+.ti -1c
+.RI "\fBfitscomment\fP * \fBprev\fP"
+.br
+.in -1c
+.SH "Field Documentation"
+.PP 
+.SS "char \fBfitscomment::name\fP[NAME_LENGTH1]"
+.PP
+Definition at line 47 of file fits.h.
+.PP
+Referenced by copycommenttostring(), getcommentbyname(), main(), newnumericcomment(), newtextcomment(), readdataheader(), and readfitsheader().
+.SS "struct \fBfitscomment\fP* \fBfitscomment::next\fP"
+.PP
+Definition at line 49 of file fits.h.
+.PP
+Referenced by appendcomment(), copyfitsheader(), getcommentbyname(), main(), prependcomment(), readdataheader(), readfitsheader(), removecomment(), and writefitsheader().
+.SS "struct \fBfitscomment\fP * \fBfitscomment::prev\fP"
+.PP
+Definition at line 49 of file fits.h.
+.PP
+Referenced by copyfitsheader(), prependcomment(), readfitsheader(), and removecomment().
+.SS "char \fBfitscomment::value\fP[VALUE_LENGTH1]"
+.PP
+Definition at line 48 of file fits.h.
+.PP
+Referenced by copycommenttostring(), getnumericvalue(), gettextvalue(), main(), newnumericcomment(), newtextcomment(), readdataheader(), and readfitsheader().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

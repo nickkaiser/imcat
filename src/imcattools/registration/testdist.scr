@@ -1,0 +1,36 @@
+#! /bin/sh
+
+# generate test data for fitdistortion.c
+
+EVAL=echoeval
+nobj=100
+
+$EVAL "maketestcat $nobj 2 | lc -C -N '1 2 x' | lc -b 'x = %x -0.5 vshift 2048 vscale' 'e = 0' > tmp.cat"
+$EVAL "getisolatedobjects -e 50 tmp.cat < tmp.cat > test0.cat"
+
+$EVAL "lc -b 'x = %x 100   0 2 vector vsub' 'e = 1' < test0.cat > test1.cat"
+$EVAL "lc -b 'x = %x   0 100 2 vector vsub' 'e = 2' < test0.cat > test2.cat"
+$EVAL "lc -b 'x = %x -50  50 2 vector vsub' 'e = 3' < test0.cat > test3.cat"
+
+for e in 0 1 2 3
+do
+	srccat=test$e.cat
+	dstcat=test$e.cat1
+	$EVAL "lc -b 'x = %x enter enter dot 1.e-8 mult 1 + vscale' e < $srccat > $dstcat"
+done
+
+
+$EVAL "lc -b x e 'r = %x' < test0.cat1 > test0.cat2"
+for e in 1 2 3
+do
+	$EVAL "merge2cats test$e.cat1 test0.cat1 | fit2cats > test$e.par"
+	$EVAL "warpcat test$e.par < test$e.cat1 > test$e.cat2"
+done
+
+
+$EVAL "mergecats -x r 2 test0.cat2 test1.cat2 > test.merge"
+for e in 2 3
+do
+	$EVAL "mergecats -x r 2 test0.cat2 test$e.cat2 | lc -b -o >> test.merge"
+done
+	

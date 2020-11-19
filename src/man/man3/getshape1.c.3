@@ -1,0 +1,76 @@
+.TH "getshape1.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getshape1.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'getshape.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.ti -1c
+.RI "#define \fBR_MAX_FACTOR\fP   4"
+.br
+.ti -1c
+.RI "#define \fBTINY_R\fP   1.\fBe\fP-10"
+.br
+.ti -1c
+.RI "#define \fBQ_DIM\fP   3"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBGetshape\fP (double *x, double *fb0, double *dfb, double \fBrc\fP, double *flux, double *q, double **R, double **P, float **f, int \fBN1\fP, int \fBN2\fP)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 14 of file getshape1.c.
+.SS "#define Q_DIM   3"
+.PP
+Definition at line 22 of file getshape1.c.
+.PP
+Referenced by Getshape(), and main().
+.SS "#define R_MAX_FACTOR   4"
+.PP
+Definition at line 20 of file getshape1.c.
+.SS "#define TINY_R   1.\fBe\fP-10"
+.PP
+Definition at line 21 of file getshape1.c.
+.SH "Function Documentation"
+.PP 
+.SS "int Getshape (double * x, double * fb0, double * dfb, double rc, double * flux, double * q, double ** R, double ** P, float ** f, int N1, int N2)"
+.PP
+Definition at line 24 of file getshape1.c.
+.PP
+References a, b, di, dj, dx, f, i, j, l, m, M, MAGIC, N1, Q_DIM, r, R_MAX_FACTOR, W, and x.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

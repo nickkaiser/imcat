@@ -1,0 +1,51 @@
+#!/bin/sh
+
+# thist :  process a table
+case $# in
+0)	echo "\nthist :  calculate histogram of values from a table\n\n\
+usage: thist c xmin xmax dx\n\
+	where c is the column to use\n\
+	and we bin in steps of size dx between xmin and xmax\n\
+\n"	1>&2; exit 2
+esac
+
+Col=$1
+Xmin=$2
+Xmax=$3
+Dx=$4
+
+awk '
+BEGIN {
+	col = '"$Col"'
+	xmin = '"$Xmin"'
+	xmax = '"$Xmax"'
+	dx = '"$Dx"'
+	nbins = (xmax - xmin) / dx
+	printf("# thist output: %3d bins\n", nbins)
+	for (bin = 1; bin <= nbins; bin++)
+		count[bin] = 0
+	OFS = "\t"
+}
+$0 !~ /^#/ {
+		bin = 1 + int(($col - xmin) / dx)
+ 		if (bin > nbins)
+			bin = nbins
+ 		if (bin < 1)
+			bin = 1
+ 		count[bin]++
+}
+END {
+	printf("#     tval    count\n");
+	for (bin = 1; bin <= nbins; bin++)
+		if (count[bin] > maxcount)
+			maxcount = count[bin]
+	for (bin = 1; bin <= nbins; bin++) {
+		nstars = int(25 * count[bin] / maxcount)
+		printf("%10.3g %8d |", xmin + (bin - 0.5) * dx, count[bin])
+		while (nstars-- > 0)
+			printf("*")
+		printf("\n")
+	}
+}
+'
+

@@ -1,0 +1,3 @@
+imcattools_pgplot :
+	cd imcattools/pgplot ; make $(MODE) XLIBS=$(XLIBS) FLIBS=$(FLIBS) F77=$(FCOMP) PGLIBDIR=$(PGLIBDIR) CFLAGS=$(CFLAGS)
+

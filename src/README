@@ -1,0 +1,275 @@
+DISCLAIMER - all software here is provided "as is" and the author will
+not be held responsible for any damage to your scientific reputation
+incurred from its use....  
+
+Installation instructions for imcat software
+
+0) define some environment variables
+
+IMCATDIR is the directory where you plan to install imcat; 
+
+CC should be an ansi compatible compiler (e.g. gcc) (or gcc -taso for OSF1)
+I strongly recommend you use gcc, as my stupid code is riddled with bugs, but
+gcc lets me get away with it most of the time.  You may want to define F77
+(used to link the imcattools_pgplot tools, for example) to g77.
+
+ARCH should identify the architecture (e.g. IRIX, OSF1, SunOS, solaris, Linux, Darwin ....)
+
+MANDIR is location for man pages - you should put this in your MANPATH and it should
+contain at least subdirectories man1/, cat1/, cat3/, html1/
+
+You may need to put the pgplot lib dir in your LD_LIBRARY_PATH environment
+variable. See below.
+
+You will want to put $(IMCATDIR)/bin/$(ARCH) and $(IMCATDIR)/bin/scripts in
+your path.
+
+1a) If you want to be able to use 'pgplot' based routines, first locate
+the pgplot libraries.  Ensure that the c-bindings libcpgplot.a exist
+(in addition to libpgplot.a) and that the library supports the /xserve 
+ device (and postscript, GIF etc if you want them).
+If a suitable pgplot does not already exist get one from
+e.g. ftp.caltech.edu build it and install it. If this proves impossible,
+you can always delete the imcattools_pgplot target line in
+Makefile and do without plotcat, contour....
+
+1b) Many of the scripts require perl v 5 or later - get one.  It, or
+a link to it, must live in /usr/local/bin/perl
+
+1c) unpack the src distribution:
+	cd $IMCATDIR
+	tar xvf <whateveryoucalledthesrctarfile>
+	mkdir lib
+	mkdir bin
+	mkdir doc
+and go into the src directory:
+	cd src
+
+2) Generate the Makefile
+I have written a crude script 'makemake' to get you started here. Here is
+it's 'man page'
+
+        usage: makemake arch fft_type [-pgplot pgplotlibdir] [-geomview geomviewlibdir] [-orbfit orbfitlibdir]
+
+        Run makemake to generate 'Makefile'.
+
+        The first argument should be one of
+                IRIX IRIX64 OSF1 SunOS solaris Linux Linux_RH6 Darwin
+        for other architectures you will need to fiddle
+        with the Makefile. See also instructions in Makefile.
+
+        The second argument should be one of
+                NR FFTPACK_C FFTPACK_F FFTW
+        for numerical recipes (NR), FFTPACK fft routines
+        (in c- or fortran- versions) or FFTW
+        Source code for NR and FFTPACK is included - if you
+        want to use FFTW then you must build and install it
+        in /usr/local/lib and /usr/local/include first.
+
+        The optional arguments are the paths to the
+        pgplot, geomview and orbfit libraries.
+        If these are not defined then the sections
+                imcattools_pgplot
+                imcattools_geomview
+                imcattools_orbits
+        will not be built.  The tools in imcattools_pgplot
+        are particularly useful.
+
+
+With luck, you have one of these architectures, and a library set-up
+much like the environment that the makemake choices evolved in.
+
+FFTW seems to be much faster under solaris and somewhat faster
+under Linux.  You can get it from www.fftw.org.  The makemake
+script assumes that it has been in stalled in $(HOME)/local
+with relevant parts in sub-directories lib, include.  If in fact it
+lives somewhere else, e.g /usr/local, you can make $(HOME)/local 
+a symbolic link:  
+	ln -s /usr/local $(HOME)/local
+Be sure to build the float rather than double version.  If your
+installation has both float and doubles (with makefiles sfftw.h,
+dfftw.h etc, then you will need to create links fftw.h and rfftw.h
+pointing at sfftw.h and srfftw.h respectively.  The FFTW libs
+I donwloaded for Darwin are broken, so use FFTPACK_C if you have the
+same problem.
+
+Otherwise, probably the best choice is FFTPACK_F.  If you don't
+have a 'f77' compiler you should use FFTPACK_C.  On Linux there
+is not much to choose between these.
+
+The makemake script uses $(CC) to compile and link.  Finding the
+fortran libraries can be problematic. These are only needed for
+the section imcattools_pgplot or if you use FFTPACK_F.  If you 
+don't have any fortran compiler, or run into unsurmountable
+problems you can delete the FLIBS definition and the
+occurence of the string 'imcattools_pgplot' from the Makefile and
+you then only need gcc.
+
+Once makemake has generated Makefile you can build everything with
+
+	make libs MODE=install
+	make fftpacklib_ MODE=install 	(unless you chose NR or FFTW)
+	make tools MODE=install
+
+These will build and install libraries in $(IMCATDIR)/lib/$(ARCH),
+compiled tools in $(IMCATDIR)/bin/$(ARCH) and scripts in $(IMCATDIR)/bin/scripts
+If you are upgrading an existing installation you might want to
+make libs in 2 stages
+
+	make libs
+	
+to build new libs in src directories, followed by 
+
+	make libs MODE=install
+
+to actually install them if everything went OK.
+
+If all goes well, you can
+
+	make libs MODE=docs
+	make tools MODE=docs
+	make docs
+
+to generate the "man pages" in various formats.  These get installed
+in $(MANDIR).  At this point you may delete the copies in $(IMCATDIR)/doc
+
+Finally, to clean up do
+	
+	make MODE=clean
+
+to nuke the object files, and copies of libraries, executables in
+the source directories.
+
+To build just one section of imcat you can do e.g.
+	make imcattools_photometry MODE=install
+see 'Makefile' for the possible target choices.  
+
+There is a very good chance that the compilation will fail at some point
+because some libraries cannot be found (or some pesky symbol remains
+unresolved).  You will then have to sniff around and modify the 
+variables defined at the top of the Makefile. 
+
+I have installed the IRAF/NOAO cdl library in cdllib/, but am
+currently not using it, but if you try to include it
+but have problems building it, try entering cdllib directory and
+running ./configure to generate Makefile appropriate for your 
+architechture.
+	
+Some compilation problem hints:
+
+XLIBS: if these are incorrect below try the following:
+	cd makestuff/Imakestuff
+	xmkmf
+	make
+this should generate output which will include the correct path to the
+X libraries on your installation. Note that the
+X-libraries are only used for the sections:
+	imcattools_pgplot
+	imtools_xim
+	imtools_xfv
+so if you really get stuck you can edit these out of the Makefile.
+
+Similarly, if the FLIBS are wrong, try
+	cd makestuff
+	f77 -v temp.f
+which again should generate output which will include the correct path to the
+FORTRAN libraries.
+
+4) If you want to use the searchable html index
+you will need to install $(IMCATDIR)/src/doc/imcat_search.pl in your
+local cgi-bin directory by hand if you want to use it.
+
+5) Setting run-time environment variables:
+If you are running on a little endian machine (e.g. Linux-PC, DEC-alpha) 
+you may want to set the environment variable IMCATSWAPBYTES, and you 
+may also want to think about IMCATCONVERTNANS.  See 
+	http://www-nk.ifa.hawaii.edu/~kaiser/imcat/byteorder.html
+for more information.
+
+You may need to set your LD_LIBRARY_PATH environment variable to let the
+loader find the pgplot or FFTW libraries (which get dynamically linked).
+The FFTPACK libraries get statically linked, so use these if you want your
+applications (other than the imcattools_pgplot tools) to be transportable.
+
+6) Getting help.  Imcat contains a bewildering number of commands.
+Some of these are useful.  They are organised into sections. To
+see the list of section (assuming you made the man-pages and set your
+MANPATH properly) run the shell command
+	man imcat
+running
+	man <sectionname>
+will produce a list of the commands in the specified section, and 
+	man <command>
+will generate 
+
+On-line help is available at
+	http://www-nk.ifa.hawaii.edu/~kaiser/imcat/man/imcat.html
+or you can point your browser at
+	$(MANDIR)/html1/imcat.html
+which will bring up the top level man page, which includes links to the
+various sections.
+
+If you want to get fancy you can run the UNIX command 'makewhatis' on
+your man directory to generate the index that 'whatis' and 'man -k' use.
+
+You can also run 
+	make imcatref
+to generate the Imcat Reference Manual, which is simply a
+a concatenation of all of the man pages, section
+by section in latex format.
+
+7) MAC OSX problems (PGPLOT, XQUARTZ, X11 libs)
+
+PGPLOT: Building PGPLOT requires a FORTRAN compiler which is only
+patchily supported in Mac OSX.  Also the X11 system Xquartz may
+be difficult to find and link to.
+
+I recommend that you use fink to install PGPLOT.  This will
+create a makefile that will facilitate choice of fortran compiler
+and definition of search paths for X11 libraries.
+
+This involves the following steps:
+- downloading and installing XQuartz from xquartz.org
+ - can be launched from /Applications/Utilities
+- install Xcode from the Apple App Store app (requires a recent OSX)
+- install command line developer tools
+ - run 'xcode-select --install' 
+ - to do this required me to install the java oracle develope kit (JDK)
+- instal fink from http://www.finkproject.org/download/srcdist.php?phpLang=en
+ - follow detailed instructions 
+ - you can accept most defaults - but if using Catalina you will want
+   to install fink in /opt/sw rather than the standard /sw
+ - steps involved:
+  - bootstrap
+  - add '. /opt/sw/bin/init.sh' (or '. /opt/sw/bin/init.sh') to your .profile
+  - 'fink scanpackages', 'fink index', 'fink selfupdate', 'fink update-all'
+- install PGPLOT run 'fink install pgplot' (this takes hours)
+- you probably need libpng 'fink install libpng' and f2c 'fink install f2c'
+- to test the PGPLOT installation
+ - launch XQartz
+ - open a xterm terminal with 'Applications->Terminal'
+ - run 'xeyes' to test XQuartz
+ - run '/opt/sw/lib/pgplot/pgdemo1' (or '/sw/lib/pgplot/pgdemo1')
+  - this will prompt for the output device
+   - enter '?' to see the choices - should include /XSERVE, /PNG and postscript options
+   - choose /XSERVE (for a persistent window)
+- now generate the Makefile: './makemake Darwin FFTPACK_F -pgplot /opt/sw/lib/pgplot -fink /opt/sw/lib'
+  - no need for the -fink option if fink is installed in /sw
+- FFTPACK_C is broken unfortunately
+
+Alternative approach:  I have succeeded in
+linking my commands plotcat and contour using the fink gfortran compiler
+and with the scisoft libraries - i.e. giving the makemake flag
+-pgplot /Applications/scisoft/i386//Packages/pgplot-5.2.2/lib
+
+The only tricky bit was generating the symlink
+/Library/Frameworks/AquaTerm.framework/Versions/A/AquaTerm
+sudo ln -s /Applications/scisoft/i386/lib/libaquaterm.1.0.0.dylib /Library/Frameworks/AquaTerm.framework/Versions/A/AquaTerm
+
+
+Good luck.
+Nick Kaiser 6/00
+
+
+
+

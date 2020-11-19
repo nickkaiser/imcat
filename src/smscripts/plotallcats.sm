@@ -1,0 +1,79 @@
+macro read plotcats.sm
+device x11 
+foreach i (field07_1 \
+field07_2 \
+field07_3 \
+field11_1 \
+field11_2 \
+field11_3 \
+field14_1 \
+field14_2 \
+field14_3 \
+field15_1 \
+field15_2 \
+field15_3 \
+field17_1 \
+field17_2 \
+field17_3 \
+field20_1 \
+field20_2 \
+field20_3 \
+field23_1 \
+field23_2 \
+field23_3 \
+field27_1 \
+field27_2 \
+field27_3 \
+field28_1 \
+field28_2 \
+field28_3 \
+field30_1 \
+field30_2 \
+field30_3 \
+field33_1 \
+field33_2 \
+field33_3 \
+field35_1 \
+field35_2 \
+field35_3 \
+field39_1 \
+field39_2 \
+field39_3 \
+field40_1 \
+field40_2 \
+field40_3 \
+field42_1 \
+field42_2 \
+field42_3 \
+field43_1 \
+field43_2 \
+field44_1 \
+field44_2 \
+field44_3 \
+field45_1 \
+field45_2 \
+field45_3 \
+field51_1 \
+field51_2 \
+field51_3 \
+field55_1 \
+field55_2 \
+field55_3 \
+field56_1 \
+field56_2 \
+field56_3 \
+field59_1 \
+field59_2 \
+field59_3 \
+field61_1 \
+field61_2 \
+field61_3 \
+field64_1 \
+field64_2 \
+field64_3) {	
+	readlis $i
+	rlplot
+	hard rlplot
+}
+quit
+

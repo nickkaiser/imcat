@@ -1,0 +1,358 @@
+.TH "back.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+back.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <X11/Xlib.h>\fP
+.br
+\fC#include <X11/Xutil.h>\fP
+.br
+\fC#include <X11/Intrinsic.h>\fP
+.br
+\fC#include <X11/StringDefs.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'front.h'\fP
+.br
+\fC#include 'back.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/colormaps.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX_SHADES\fP   4096"
+.br
+.ti -1c
+.RI "#define \fBMAX\fP(x, y)   (((x) > (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMIN\fP(x, y)   (((x) < (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   SHORT_MAGIC"
+.br
+.ti -1c
+.RI "#define \fBMAX_COLS\fP   65535"
+.br
+.ti -1c
+.RI "#define \fBMAX\fP(x, y)   (((x) > (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMIN\fP(x, y)   (((x) < (y)) ? (x) : (y))"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBreadimheader\fP (int *\fBn1\fP, int *\fBn2\fP)"
+.br
+.ti -1c
+.RI "void \fBset_shades\fP (void)"
+.br
+.ti -1c
+.RI "void \fBalloc_shades\fP (void)"
+.br
+.ti -1c
+.RI "void \fBcreate_pixmap\fP (void)"
+.br
+.ti -1c
+.RI "void \fBfill_pixmap\fP (void)"
+.br
+.ti -1c
+.RI "void \fBmakeXImage\fP (void)"
+.br
+.ti -1c
+.RI "int \fBmyworkproc1\fP (XtPointer client_data)"
+.br
+.ti -1c
+.RI "void \fBshowpixmap\fP (void)"
+.br
+.ti -1c
+.RI "void \fBsetblocksize\fP (int \fBb\fP)"
+.br
+.ti -1c
+.RI "void \fBsetfrange\fP (float ffmin, float ffmax)"
+.br
+.ti -1c
+.RI "void \fBsetcolormapindex\fP (int theindex)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBncolors\fP"
+.br
+.ti -1c
+.RI "int \fBmyscreen\fP"
+.br
+.ti -1c
+.RI "int \fBdepth\fP"
+.br
+.ti -1c
+.RI "GC \fBmygc\fP"
+.br
+.ti -1c
+.RI "Window \fBmywindow\fP"
+.br
+.ti -1c
+.RI "XImage * \fBtheimage\fP"
+.br
+.ti -1c
+.RI "Pixmap \fBpixmap\fP"
+.br
+.ti -1c
+.RI "Colormap \fBcmap\fP"
+.br
+.ti -1c
+.RI "Display * \fBmydisplay\fP"
+.br
+.ti -1c
+.RI "XColor \fBshade\fP [MAX_SHADES]"
+.br
+.ti -1c
+.RI "unsigned long \fBpixel\fP [MAX_SHADES]"
+.br
+.ti -1c
+.RI "unsigned int \fBn_shades\fP"
+.br
+.ti -1c
+.RI "float ** \fBf\fP"
+.br
+.ti -1c
+.RI "float \fBgfmin\fP"
+.br
+.ti -1c
+.RI "float \fBgfmax\fP"
+.br
+.ti -1c
+.RI "int \fBN1\fP"
+.br
+.ti -1c
+.RI "int \fBN2\fP"
+.br
+.ti -1c
+.RI "int \fBblocksize\fP"
+.br
+.ti -1c
+.RI "int \fBcolormapindex\fP"
+.br
+.ti -1c
+.RI "int \fBnframes\fP"
+.br
+.ti -1c
+.RI "\fBfitsheader\fP * \fBfits\fP"
+.br
+.ti -1c
+.RI "float \fBtimestep\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   SHORT_MAGIC"
+.PP
+Definition at line 25 of file back.c.
+.SS "#define MAX(x, y)   (((x) > (y)) ? (x) : (y))"
+.PP
+Definition at line 47 of file back.c.
+.SS "#define MAX(x, y)   (((x) > (y)) ? (x) : (y))"
+.PP
+Definition at line 47 of file back.c.
+.SS "#define MAX_COLS   65535"
+.PP
+Definition at line 46 of file back.c.
+.PP
+Referenced by main(), and set_shades().
+.SS "#define MAX_SHADES   4096"
+.PP
+Definition at line 20 of file back.c.
+.SS "#define MIN(x, y)   (((x) < (y)) ? (x) : (y))"
+.PP
+Definition at line 48 of file back.c.
+.SS "#define MIN(x, y)   (((x) < (y)) ? (x) : (y))"
+.PP
+Definition at line 48 of file back.c.
+.SH "Function Documentation"
+.PP 
+.SS "void alloc_shades (void)"
+.PP
+Definition at line 104 of file back.c.
+.PP
+Referenced by main(), and myworkproc1().
+.SS "void create_pixmap (void)"
+.PP
+Definition at line 165 of file back.c.
+.PP
+Referenced by main(), and myworkproc1().
+.SS "void fill_pixmap (void)"
+.PP
+Definition at line 174 of file back.c.
+.PP
+Referenced by main(), makepreview(), myworkproc1(), and myworkproc3().
+.SS "void makeXImage (void)"
+.PP
+Definition at line 205 of file back.c.
+.PP
+Referenced by main(), and myworkproc1().
+.SS "int myworkproc1 (XtPointer client_data)"
+.PP
+Definition at line 246 of file back.c.
+.PP
+Referenced by main().
+.SS "void readimheader (int * n1, int * n2)"
+.PP
+Definition at line 52 of file back.c.
+.PP
+References allocFloatArray(), error_exit, f, fits, getcommentbyname(), getnumericvalue(), fitsheader::n, N1, N2, fitsheader::ndim, nframes, readfitsheader(), and timestep.
+.PP
+Referenced by main().
+.SS "void set_shades (void)"
+.PP
+Definition at line 76 of file back.c.
+.PP
+Referenced by alloc_shades(), myworkproc1(), and sliderChanged().
+.SS "void setblocksize (int b)"
+.PP
+Definition at line 282 of file back.c.
+.PP
+References b, and blocksize.
+.PP
+Referenced by main().
+.SS "void setcolormapindex (int theindex)"
+.PP
+Definition at line 295 of file back.c.
+.PP
+References colormapindex.
+.PP
+Referenced by main().
+.SS "void setfrange (float ffmin, float ffmax)"
+.PP
+Definition at line 287 of file back.c.
+.PP
+References gfmax, and gfmin.
+.PP
+Referenced by main().
+.SS "void showpixmap (void)"
+.PP
+Definition at line 268 of file back.c.
+.PP
+Referenced by main(), myworkproc1(), myworkproc3(), UnZoom(), and Zoom().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBblocksize\fP\fC [static]\fP"
+.PP
+Definition at line 41 of file back.c.
+.PP
+Referenced by create_pixmap(), fill_pixmap(), makeXImage(), setblocksize(), and showpixmap().
+.SS "Colormap \fBcmap\fP\fC [static]\fP"
+.PP
+Definition at line 35 of file back.c.
+.PP
+Referenced by alloc_shades().
+.SS "int \fBcolormapindex\fP\fC [static]\fP"
+.PP
+Definition at line 41 of file back.c.
+.PP
+Referenced by set_shades(), and setcolormapindex().
+.SS "int \fBdepth\fP\fC [static]\fP"
+.PP
+Definition at line 29 of file back.c.
+.PP
+Referenced by alloc_shades(), create_pixmap(), and makeXImage().
+.SS "float** f\fC [static]\fP"
+.PP
+Definition at line 40 of file back.c.
+.SS "\fBfitsheader\fP* \fBfits\fP\fC [static]\fP"
+.PP
+Definition at line 42 of file back.c.
+.SS "float \fBgfmax\fP\fC [static]\fP"
+.PP
+Definition at line 40 of file back.c.
+.PP
+Referenced by fill_pixmap(), and setfrange().
+.SS "float \fBgfmin\fP\fC [static]\fP"
+.PP
+Definition at line 40 of file back.c.
+.PP
+Referenced by fill_pixmap(), and setfrange().
+.SS "Display* \fBmydisplay\fP\fC [static]\fP"
+.PP
+Definition at line 36 of file back.c.
+.PP
+Referenced by alloc_shades(), create_pixmap(), fill_pixmap(), makeXImage(), and myworkproc1().
+.SS "GC \fBmygc\fP\fC [static]\fP"
+.PP
+Definition at line 30 of file back.c.
+.PP
+Referenced by alloc_shades(), and fill_pixmap().
+.SS "int \fBmyscreen\fP\fC [static]\fP"
+.PP
+Definition at line 29 of file back.c.
+.PP
+Referenced by alloc_shades(), and makeXImage().
+.SS "Window \fBmywindow\fP\fC [static]\fP"
+.PP
+Definition at line 31 of file back.c.
+.PP
+Referenced by alloc_shades(), and create_pixmap().
+.SS "int \fBN1\fP\fC [static]\fP"
+.PP
+Definition at line 41 of file back.c.
+.SS "int \fBN2\fP\fC [static]\fP"
+.PP
+Definition at line 41 of file back.c.
+.SS "unsigned int \fBn_shades\fP\fC [static]\fP"
+.PP
+Definition at line 39 of file back.c.
+.PP
+Referenced by alloc_shades(), fill_pixmap(), and set_shades().
+.SS "int \fBncolors\fP\fC [static]\fP"
+.PP
+Definition at line 28 of file back.c.
+.SS "int \fBnframes\fP\fC [static]\fP"
+.PP
+Definition at line 41 of file back.c.
+.SS "unsigned long \fBpixel\fP[MAX_SHADES]\fC [static]\fP"
+.PP
+Definition at line 38 of file back.c.
+.SS "Pixmap \fBpixmap\fP\fC [static]\fP"
+.PP
+Definition at line 34 of file back.c.
+.PP
+Referenced by create_pixmap(), fill_pixmap(), and showpixmap().
+.SS "XColor \fBshade\fP[MAX_SHADES]\fC [static]\fP"
+.PP
+Definition at line 37 of file back.c.
+.PP
+Referenced by alloc_shades(), fill_pixmap(), and set_shades().
+.SS "XImage* \fBtheimage\fP\fC [static]\fP"
+.PP
+Definition at line 32 of file back.c.
+.PP
+Referenced by fill_pixmap(), and makeXImage().
+.SS "float \fBtimestep\fP\fC [static]\fP"
+.PP
+Definition at line 43 of file back.c.
+.PP
+Referenced by myworkproc1(), and readimheader().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

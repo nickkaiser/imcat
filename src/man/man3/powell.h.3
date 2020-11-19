@@ -1,0 +1,27 @@
+.TH "powell.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+powell.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBpowell\fP (float p[], float **xi, int \fBn\fP, float ftol, int *iter, float *fret, float(*func)(float[]))"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void powell (float p[], float ** xi, int n, float ftol, int * iter, float * fret, float(* func)(float[]))"
+.PP
+Definition at line 6 of file powell.c.
+.PP
+References free_vector(), func(), i, ITMAX, j, linmin(), n, nrerror(), SQR, t, and vector().
+.PP
+Referenced by findmin(), fitall(), gaussfit(), gaussfitn(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

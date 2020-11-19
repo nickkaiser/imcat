@@ -1,0 +1,4 @@
+imcattools_geomview :
+	cd imcattools/geomview ; make $(MODE) XLIBS=$(XLIBS) FLIBS=$(FLIBS) \
+		GEOMVIEWLIBDIR=$(GEOMVIEWLIBDIR) CFLAGS=$(CFLAGS)
+

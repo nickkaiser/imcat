@@ -1,0 +1,68 @@
+.TH "modelpsf.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+modelpsf.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/args.h'\fP
+.br
+\fC#include '../../utils/ipbuff.h'\fP
+.br
+\fC#include '../../utils/modefunc.h'\fP
+.br
+\fC#include '../../utils/lu.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	modelpsf --- generate \fBa\fP 2D polynomial model for psf\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	modelpsf starcat fitsimage [\fBoptions\fP...]\\\fBn\fP\\		-\fBn\fP \fBN\fP		# postage stamp image size (32)\\\fBn\fP\\		-\fBl\fP \fBlmax\fP		# max \fBorder\fP for \fBfit\fP (1)\\\fBn\fP\\		-g		# generate psf model\\\fBn\fP\\		-s		# read stamps image\\\fBn\fP\\		-\fBw\fP f_bg		# use \fBbackground\fP in weighting\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'modelpsf' first reads \fBa\fP catalogue of stars from 'starcat'\\\fBn\fP\\	and \fBfits\fP for the following model for the psf:\\\fBn\fP\\\\\fBn\fP\\		fpsf(x; xobj) = sum_l fpsf_l(x) f_l(xobj)\\\fBn\fP\\\\\fBn\fP\\	where f_l(xobj) are polynomial \fBmode\fP functions and the fpsf_l(x)\\\fBn\fP\\	are the image valued '\fBmode\fP amplitudes'.\\\fBn\fP\\\\\fBn\fP\\	The stars need to be normalised in flux, so it is necessary\\\fBn\fP\\	that the input catalogues contain an entry\\\fBn\fP\\	'flux' in addition to the position vector 'x[2]'.\\\fBn\fP\\\\\fBn\fP\\	By default it generates and reads \fBa\fP postage stamp album image\\\fBn\fP\\	of these stars from 'fitsimage'. We then\\\fBn\fP\\	do \fBa\fP least squares \fBfit\fP to obtain \fBa\fP final image model psf\\\fBn\fP\\	amplitudes fpsf_l(x).\\\fBn\fP\\\\\fBn\fP\\	With -s option 'fitsimage' is supplied as \fBa\fP ready made stamp\\\fBn\fP\\	album.\\\fBn\fP\\\\\fBn\fP\\	By default, objects recieve weight proportional to their\\\fBn\fP\\	flux, which is optimum in the limit of negligible sky \fBbackground\fP.\\\fBn\fP\\	Use -\fBw\fP option to supply \fBa\fP \fBbackground\fP value (input image is assumed to\\\fBn\fP\\	have had \fBbackground\fP subtracted however), and then weight\\\fBn\fP\\	objects in proportion to flux^2 / (f + f_bg).\\\fBn\fP\\\\\fBn\fP\\	With the -g option, the \fBfits\fP image is instead interpreted\\\fBn\fP\\	as the \fBnmodes\fP x \fBN\fP x \fBN\fP model psf image and we generate\\\fBn\fP\\	an \fBnstars\fP x \fBN\fP x \fBN\fP image containing the synthesised\\\fBn\fP\\	models.  In this \fBmode\fP the -\fBn\fP \fBflag\fP is ignored and\\\fBn\fP\\	the input catalogue need contain only \fBa\fP position vector\\\fBn\fP\\	x[2].\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBHEADER_SIZE\fP   1024"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define HEADER_SIZE   1024"
+.PP
+Definition at line 65 of file modelpsf.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	modelpsf --- generate \fBa\fP 2D polynomial model for psf\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	modelpsf starcat fitsimage [\fBoptions\fP...]\\\fBn\fP\\		-\fBn\fP \fBN\fP		# postage stamp image size (32)\\\fBn\fP\\		-\fBl\fP \fBlmax\fP		# max \fBorder\fP for \fBfit\fP (1)\\\fBn\fP\\		-g		# generate psf model\\\fBn\fP\\		-s		# read stamps image\\\fBn\fP\\		-\fBw\fP f_bg		# use \fBbackground\fP in weighting\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'modelpsf' first reads \fBa\fP catalogue of stars from 'starcat'\\\fBn\fP\\	and \fBfits\fP for the following model for the psf:\\\fBn\fP\\\\\fBn\fP\\		fpsf(x; xobj) = sum_l fpsf_l(x) f_l(xobj)\\\fBn\fP\\\\\fBn\fP\\	where f_l(xobj) are polynomial \fBmode\fP functions and the fpsf_l(x)\\\fBn\fP\\	are the image valued '\fBmode\fP amplitudes'.\\\fBn\fP\\\\\fBn\fP\\	The stars need to be normalised in flux, so it is necessary\\\fBn\fP\\	that the input catalogues contain an entry\\\fBn\fP\\	'flux' in addition to the position vector 'x[2]'.\\\fBn\fP\\\\\fBn\fP\\	By default it generates and reads \fBa\fP postage stamp album image\\\fBn\fP\\	of these stars from 'fitsimage'. We then\\\fBn\fP\\	do \fBa\fP least squares \fBfit\fP to obtain \fBa\fP final image model psf\\\fBn\fP\\	amplitudes fpsf_l(x).\\\fBn\fP\\\\\fBn\fP\\	With -s option 'fitsimage' is supplied as \fBa\fP ready made stamp\\\fBn\fP\\	album.\\\fBn\fP\\\\\fBn\fP\\	By default, objects recieve weight proportional to their\\\fBn\fP\\	flux, which is optimum in the limit of negligible sky \fBbackground\fP.\\\fBn\fP\\	Use -\fBw\fP option to supply \fBa\fP \fBbackground\fP value (input image is assumed to\\\fBn\fP\\	have had \fBbackground\fP subtracted however), and then weight\\\fBn\fP\\	objects in proportion to flux^2 / (f + f_bg).\\\fBn\fP\\\\\fBn\fP\\	With the -g option, the \fBfits\fP image is instead interpreted\\\fBn\fP\\	as the \fBnmodes\fP x \fBN\fP x \fBN\fP model psf image and we generate\\\fBn\fP\\	an \fBnstars\fP x \fBN\fP x \fBN\fP image containing the synthesised\\\fBn\fP\\	models.  In this \fBmode\fP the -\fBn\fP \fBflag\fP is ignored and\\\fBn\fP\\	the input catalogue need contain only \fBa\fP position vector\\\fBn\fP\\	x[2].\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file modelpsf.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 67 of file modelpsf.c.
+.PP
+References A, add_comment(), allocFloatArray(), argsinit(), B, det(), error_exit, exit(), f(), fits, flag, FLOAT_MAGIC, getargd(), getargi(), getargs(), getflag(), HEADER_SIZE, indx, l, lcpipe, ll, m, mylubksb(), myludcmp(), fitsheader::n, N, fitsheader::ndim, nmodes, nstars, readdoublebuff(), readfitsheader(), readfitsline(), usage, writefitsheader(), writefitsline(), writefitstail(), X, x, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

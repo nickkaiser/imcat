@@ -1,0 +1,721 @@
+.TH "cdl_f77.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cdl_f77.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCDF_OPEN\fP   cfopen_"
+.br
+.ti -1c
+.RI "#define \fBCDF_DISPLAYPIX\fP   cfdisplaypix_"
+.br
+.ti -1c
+.RI "#define \fBCDF_READCURSOR\fP   cfreadcursor_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETCURSOR\fP   cfsetcursor_"
+.br
+.ti -1c
+.RI "#define \fBCDF_CLEARFRAME\fP   cfclearframe_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SELECTFB\fP   cfselectfb_"
+.br
+.ti -1c
+.RI "#define \fBCDF_CLOSE\fP   cfclose_"
+.br
+.ti -1c
+.RI "#define \fBCDF_DISPLAYIRAF\fP   cfdisplayiraf_"
+.br
+.ti -1c
+.RI "#define \fBCDF_ISIRAF\fP   cfisiraf_"
+.br
+.ti -1c
+.RI "#define \fBCDF_READIRAF\fP   cfreadiraf_"
+.br
+.ti -1c
+.RI "#define \fBCDF_DISPLAYFITS\fP   cfdisplayfits_"
+.br
+.ti -1c
+.RI "#define \fBCDF_ISFITS\fP   cfisfits_"
+.br
+.ti -1c
+.RI "#define \fBCDF_READFITS\fP   cfreadfits_"
+.br
+.ti -1c
+.RI "#define \fBCDF_COMPZSCALE\fP   cfcompzscale_"
+.br
+.ti -1c
+.RI "#define \fBCDF_ZSCALEIMAGE\fP   cfzscaleimage_"
+.br
+.ti -1c
+.RI "#define \fBCDF_PRINTPIX\fP   cfprintpix_"
+.br
+.ti -1c
+.RI "#define \fBCDF_PRINTPIXTOFILE\fP   cfprintpixtofile_"
+.br
+.ti -1c
+.RI "#define \fBCDF_READIMAGE\fP   cfreadimage_"
+.br
+.ti -1c
+.RI "#define \fBCDF_READFRAMEBUFFER\fP   cfreadframebuffer_"
+.br
+.ti -1c
+.RI "#define \fBCDF_READSUBRAS\fP   cfreadsubras_"
+.br
+.ti -1c
+.RI "#define \fBCDF_WRITESUBRAS\fP   cfwritesubras_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETWCS\fP   cfsetwcs_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETFBCONFIG\fP   cfsetfbconfig_"
+.br
+.ti -1c
+.RI "#define \fBCDF_GETFBCONFIG\fP   cfgetfbconfig_"
+.br
+.ti -1c
+.RI "#define \fBCDF_LOOKUPFBSIZE\fP   cflookupfbsize_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETFRAME\fP   cfsetframe_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETZTRANS\fP   cfsetztrans_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETZSCALE\fP   cfsetzscale_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETSAMPLE\fP   cfsetsample_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETSAMPLELINES\fP   cfsetsamplelines_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETCONTRAST\fP   cfsetcontrast_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETNAME\fP   cfsetname_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETTITLE\fP   cfsettitle_"
+.br
+.ti -1c
+.RI "#define \fBCDF_GETWCS\fP   cfgetwcs_"
+.br
+.ti -1c
+.RI "#define \fBCDF_GETFRAME\fP   cfgetframe_"
+.br
+.ti -1c
+.RI "#define \fBCDF_GETZTRANS\fP   cfgetztrans_"
+.br
+.ti -1c
+.RI "#define \fBCDF_GETZSCALE\fP   cfgetzscale_"
+.br
+.ti -1c
+.RI "#define \fBCDF_GETSAMPLE\fP   cfgetsample_"
+.br
+.ti -1c
+.RI "#define \fBCDF_GETSAMPLELINES\fP   cfgetsamplelines_"
+.br
+.ti -1c
+.RI "#define \fBCDF_GETCONTRAST\fP   cfgetcontrast_"
+.br
+.ti -1c
+.RI "#define \fBCDF_GETNAME\fP   cfgetname_"
+.br
+.ti -1c
+.RI "#define \fBCDF_GETTITLE\fP   cfgettitle_"
+.br
+.ti -1c
+.RI "#define \fBCDF_MAPFRAME\fP   cfmapframe_"
+.br
+.ti -1c
+.RI "#define \fBCDF_MARKCOORDSFILE\fP   cfmarkcoordsfile_"
+.br
+.ti -1c
+.RI "#define \fBCDF_MARKPOINT\fP   cfmarkpoint_"
+.br
+.ti -1c
+.RI "#define \fBCDF_MARKPOINTLABEL\fP   cfmarkpointlabel_"
+.br
+.ti -1c
+.RI "#define \fBCDF_MARKLINE\fP   cfmarkline_"
+.br
+.ti -1c
+.RI "#define \fBCDF_MARKBOX\fP   cfmarkbox_"
+.br
+.ti -1c
+.RI "#define \fBCDF_MARKPOLYLINE\fP   cfmarkpolyline_"
+.br
+.ti -1c
+.RI "#define \fBCDF_MARKPOLYGON\fP   cfmarkpolygon_"
+.br
+.ti -1c
+.RI "#define \fBCDF_MARKCIRCLE\fP   cfmarkcircle_"
+.br
+.ti -1c
+.RI "#define \fBCDF_MARKCIRCANNULI\fP   cfmarkcircannuli_"
+.br
+.ti -1c
+.RI "#define \fBCDF_MARKELLIPSE\fP   cfmarkellipse_"
+.br
+.ti -1c
+.RI "#define \fBCDF_MARKELLIPANNULI\fP   cfmarkellipannuli_"
+.br
+.ti -1c
+.RI "#define \fBCDF_MARKTEXT\fP   cfmarktext_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETFONT\fP   cfsetfont_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETLINEWIDTH\fP   cfsetlwidth_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETLINESTYLE\fP   cfsetlstyle_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETTEXTWIDTH\fP   cfsettwidth_"
+.br
+.ti -1c
+.RI "#define \fBCDF_DELETEMARK\fP   cfdeletemark_"
+.br
+.ti -1c
+.RI "#define \fBCDF_CLEAROVERLAY\fP   cfclearoverlay_"
+.br
+.ti -1c
+.RI "#define \fBCDF_REDRAWOVERLAY\fP   cfredrawoverlay_"
+.br
+.ti -1c
+.RI "#define \fBCDF_SETDEBUG\fP   cfsetdebug_"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBCDF_OPEN\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_DISPLAYPIX\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_DISPLAYIRAF\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_DISPLAYFITS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_READIRAF\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_READFITS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_CLEARFRAME\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_READIMAGE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_READFRAMEBUFFER\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_READSUBRAS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_WRITESUBRAS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETCURSOR\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_READCURSOR\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SELECTFB\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_CLOSE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_COMPZSCALE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_ZSCALEIMAGE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETFRAME\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETFBCONFIG\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETZTRANS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETZOOM\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETSAMPLE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETCONTRAST\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETNAME\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETTITLE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_GETFRAME\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_GETFBCONFIG\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_GETZTRANS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_GETZOOM\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_GETSAMPLE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_GETCONTRAST\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_GETNAME\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_GETTITLE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETZSCALE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_GETZSCALE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_LOOKUPFBSIZE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_ISIRAF\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_ISFITS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETDEBUG\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_PRINTPIX\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_PRINTPIXTOFILE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETSAMPLELINES\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_GETSAMPLELINES\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETWCS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_GETWCS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_MARKPOINT\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_MARKLINE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_MARKBOX\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_MARKPOLYLINE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_MARKPOLYGON\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_MARKCIRCLE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_MARKCIRCANNULI\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_MARKELLIPSE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_MARKELLIPANNULI\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_MARKTEXT\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_MARKPOINTLABEL\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETFONT\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_DELETEMARK\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_CLEAROVERLAY\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_REDRAWOVERLAY\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETLINEWIDTH\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETTEXTWIDTH\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_SETLINESTYLE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDF_MARKCOORDSFILE\fP ()"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CDF_CLEARFRAME   cfclearframe_"
+.PP
+Definition at line 81 of file cdl_f77.h.
+.SS "#define CDF_CLEAROVERLAY   cfclearoverlay_"
+.PP
+Definition at line 137 of file cdl_f77.h.
+.SS "#define CDF_CLOSE   cfclose_"
+.PP
+Definition at line 83 of file cdl_f77.h.
+.SS "#define CDF_COMPZSCALE   cfcompzscale_"
+.PP
+Definition at line 90 of file cdl_f77.h.
+.SS "#define CDF_DELETEMARK   cfdeletemark_"
+.PP
+Definition at line 136 of file cdl_f77.h.
+.SS "#define CDF_DISPLAYFITS   cfdisplayfits_"
+.PP
+Definition at line 87 of file cdl_f77.h.
+.SS "#define CDF_DISPLAYIRAF   cfdisplayiraf_"
+.PP
+Definition at line 84 of file cdl_f77.h.
+.SS "#define CDF_DISPLAYPIX   cfdisplaypix_"
+.PP
+Definition at line 78 of file cdl_f77.h.
+.SS "#define CDF_GETCONTRAST   cfgetcontrast_"
+.PP
+Definition at line 116 of file cdl_f77.h.
+.SS "#define CDF_GETFBCONFIG   cfgetfbconfig_"
+.PP
+Definition at line 100 of file cdl_f77.h.
+.SS "#define CDF_GETFRAME   cfgetframe_"
+.PP
+Definition at line 111 of file cdl_f77.h.
+.SS "#define CDF_GETNAME   cfgetname_"
+.PP
+Definition at line 117 of file cdl_f77.h.
+.SS "#define CDF_GETSAMPLE   cfgetsample_"
+.PP
+Definition at line 114 of file cdl_f77.h.
+.SS "#define CDF_GETSAMPLELINES   cfgetsamplelines_"
+.PP
+Definition at line 115 of file cdl_f77.h.
+.SS "#define CDF_GETTITLE   cfgettitle_"
+.PP
+Definition at line 118 of file cdl_f77.h.
+.SS "#define CDF_GETWCS   cfgetwcs_"
+.PP
+Definition at line 110 of file cdl_f77.h.
+.SS "#define CDF_GETZSCALE   cfgetzscale_"
+.PP
+Definition at line 113 of file cdl_f77.h.
+.SS "#define CDF_GETZTRANS   cfgetztrans_"
+.PP
+Definition at line 112 of file cdl_f77.h.
+.SS "#define CDF_ISFITS   cfisfits_"
+.PP
+Definition at line 88 of file cdl_f77.h.
+.SS "#define CDF_ISIRAF   cfisiraf_"
+.PP
+Definition at line 85 of file cdl_f77.h.
+.SS "#define CDF_LOOKUPFBSIZE   cflookupfbsize_"
+.PP
+Definition at line 101 of file cdl_f77.h.
+.SS "#define CDF_MAPFRAME   cfmapframe_"
+.PP
+Definition at line 119 of file cdl_f77.h.
+.SS "#define CDF_MARKBOX   cfmarkbox_"
+.PP
+Definition at line 124 of file cdl_f77.h.
+.SS "#define CDF_MARKCIRCANNULI   cfmarkcircannuli_"
+.PP
+Definition at line 128 of file cdl_f77.h.
+.SS "#define CDF_MARKCIRCLE   cfmarkcircle_"
+.PP
+Definition at line 127 of file cdl_f77.h.
+.SS "#define CDF_MARKCOORDSFILE   cfmarkcoordsfile_"
+.PP
+Definition at line 120 of file cdl_f77.h.
+.SS "#define CDF_MARKELLIPANNULI   cfmarkellipannuli_"
+.PP
+Definition at line 130 of file cdl_f77.h.
+.SS "#define CDF_MARKELLIPSE   cfmarkellipse_"
+.PP
+Definition at line 129 of file cdl_f77.h.
+.SS "#define CDF_MARKLINE   cfmarkline_"
+.PP
+Definition at line 123 of file cdl_f77.h.
+.SS "#define CDF_MARKPOINT   cfmarkpoint_"
+.PP
+Definition at line 121 of file cdl_f77.h.
+.SS "#define CDF_MARKPOINTLABEL   cfmarkpointlabel_"
+.PP
+Definition at line 122 of file cdl_f77.h.
+.SS "#define CDF_MARKPOLYGON   cfmarkpolygon_"
+.PP
+Definition at line 126 of file cdl_f77.h.
+.SS "#define CDF_MARKPOLYLINE   cfmarkpolyline_"
+.PP
+Definition at line 125 of file cdl_f77.h.
+.SS "#define CDF_MARKTEXT   cfmarktext_"
+.PP
+Definition at line 131 of file cdl_f77.h.
+.SS "#define CDF_OPEN   cfopen_"
+.PP
+Definition at line 77 of file cdl_f77.h.
+.SS "#define CDF_PRINTPIX   cfprintpix_"
+.PP
+Definition at line 92 of file cdl_f77.h.
+.SS "#define CDF_PRINTPIXTOFILE   cfprintpixtofile_"
+.PP
+Definition at line 93 of file cdl_f77.h.
+.SS "#define CDF_READCURSOR   cfreadcursor_"
+.PP
+Definition at line 79 of file cdl_f77.h.
+.SS "#define CDF_READFITS   cfreadfits_"
+.PP
+Definition at line 89 of file cdl_f77.h.
+.SS "#define CDF_READFRAMEBUFFER   cfreadframebuffer_"
+.PP
+Definition at line 95 of file cdl_f77.h.
+.SS "#define CDF_READIMAGE   cfreadimage_"
+.PP
+Definition at line 94 of file cdl_f77.h.
+.SS "#define CDF_READIRAF   cfreadiraf_"
+.PP
+Definition at line 86 of file cdl_f77.h.
+.SS "#define CDF_READSUBRAS   cfreadsubras_"
+.PP
+Definition at line 96 of file cdl_f77.h.
+.SS "#define CDF_REDRAWOVERLAY   cfredrawoverlay_"
+.PP
+Definition at line 138 of file cdl_f77.h.
+.SS "#define CDF_SELECTFB   cfselectfb_"
+.PP
+Definition at line 82 of file cdl_f77.h.
+.SS "#define CDF_SETCONTRAST   cfsetcontrast_"
+.PP
+Definition at line 107 of file cdl_f77.h.
+.SS "#define CDF_SETCURSOR   cfsetcursor_"
+.PP
+Definition at line 80 of file cdl_f77.h.
+.SS "#define CDF_SETDEBUG   cfsetdebug_"
+.PP
+Definition at line 139 of file cdl_f77.h.
+.SS "#define CDF_SETFBCONFIG   cfsetfbconfig_"
+.PP
+Definition at line 99 of file cdl_f77.h.
+.SS "#define CDF_SETFONT   cfsetfont_"
+.PP
+Definition at line 132 of file cdl_f77.h.
+.SS "#define CDF_SETFRAME   cfsetframe_"
+.PP
+Definition at line 102 of file cdl_f77.h.
+.SS "#define CDF_SETLINESTYLE   cfsetlstyle_"
+.PP
+Definition at line 134 of file cdl_f77.h.
+.SS "#define CDF_SETLINEWIDTH   cfsetlwidth_"
+.PP
+Definition at line 133 of file cdl_f77.h.
+.SS "#define CDF_SETNAME   cfsetname_"
+.PP
+Definition at line 108 of file cdl_f77.h.
+.SS "#define CDF_SETSAMPLE   cfsetsample_"
+.PP
+Definition at line 105 of file cdl_f77.h.
+.SS "#define CDF_SETSAMPLELINES   cfsetsamplelines_"
+.PP
+Definition at line 106 of file cdl_f77.h.
+.SS "#define CDF_SETTEXTWIDTH   cfsettwidth_"
+.PP
+Definition at line 135 of file cdl_f77.h.
+.SS "#define CDF_SETTITLE   cfsettitle_"
+.PP
+Definition at line 109 of file cdl_f77.h.
+.SS "#define CDF_SETWCS   cfsetwcs_"
+.PP
+Definition at line 98 of file cdl_f77.h.
+.SS "#define CDF_SETZSCALE   cfsetzscale_"
+.PP
+Definition at line 104 of file cdl_f77.h.
+.SS "#define CDF_SETZTRANS   cfsetztrans_"
+.PP
+Definition at line 103 of file cdl_f77.h.
+.SS "#define CDF_WRITESUBRAS   cfwritesubras_"
+.PP
+Definition at line 97 of file cdl_f77.h.
+.SS "#define CDF_ZSCALEIMAGE   cfzscaleimage_"
+.PP
+Definition at line 91 of file cdl_f77.h.
+.SH "Function Documentation"
+.PP 
+.SS "void CDF_CLEARFRAME ()"
+.PP
+.SS "void CDF_CLEAROVERLAY ()"
+.PP
+.SS "void CDF_CLOSE ()"
+.PP
+.SS "void CDF_COMPZSCALE ()"
+.PP
+.SS "void CDF_DELETEMARK ()"
+.PP
+.SS "void CDF_DISPLAYFITS ()"
+.PP
+.SS "void CDF_DISPLAYIRAF ()"
+.PP
+.SS "void CDF_DISPLAYPIX ()"
+.PP
+.SS "void CDF_GETCONTRAST ()"
+.PP
+.SS "void CDF_GETFBCONFIG ()"
+.PP
+.SS "void CDF_GETFRAME ()"
+.PP
+.SS "void CDF_GETNAME ()"
+.PP
+.SS "void CDF_GETSAMPLE ()"
+.PP
+.SS "void CDF_GETSAMPLELINES ()"
+.PP
+.SS "void CDF_GETTITLE ()"
+.PP
+.SS "void CDF_GETWCS ()"
+.PP
+.SS "void CDF_GETZOOM ()"
+.PP
+.SS "void CDF_GETZSCALE ()"
+.PP
+.SS "void CDF_GETZTRANS ()"
+.PP
+.SS "void CDF_ISFITS ()"
+.PP
+.SS "void CDF_ISIRAF ()"
+.PP
+.SS "void CDF_LOOKUPFBSIZE ()"
+.PP
+.SS "void CDF_MARKBOX ()"
+.PP
+.SS "void CDF_MARKCIRCANNULI ()"
+.PP
+.SS "void CDF_MARKCIRCLE ()"
+.PP
+.SS "void CDF_MARKCOORDSFILE ()"
+.PP
+.SS "void CDF_MARKELLIPANNULI ()"
+.PP
+.SS "void CDF_MARKELLIPSE ()"
+.PP
+.SS "void CDF_MARKLINE ()"
+.PP
+.SS "void CDF_MARKPOINT ()"
+.PP
+.SS "void CDF_MARKPOINTLABEL ()"
+.PP
+.SS "void CDF_MARKPOLYGON ()"
+.PP
+.SS "void CDF_MARKPOLYLINE ()"
+.PP
+.SS "void CDF_MARKTEXT ()"
+.PP
+.SS "void CDF_OPEN ()"
+.PP
+.SS "void CDF_PRINTPIX ()"
+.PP
+.SS "void CDF_PRINTPIXTOFILE ()"
+.PP
+.SS "void CDF_READCURSOR ()"
+.PP
+.SS "void CDF_READFITS ()"
+.PP
+.SS "void CDF_READFRAMEBUFFER ()"
+.PP
+.SS "void CDF_READIMAGE ()"
+.PP
+.SS "void CDF_READIRAF ()"
+.PP
+.SS "void CDF_READSUBRAS ()"
+.PP
+.SS "void CDF_REDRAWOVERLAY ()"
+.PP
+.SS "void CDF_SELECTFB ()"
+.PP
+.SS "void CDF_SETCONTRAST ()"
+.PP
+.SS "void CDF_SETCURSOR ()"
+.PP
+.SS "void CDF_SETDEBUG ()"
+.PP
+.SS "void CDF_SETFBCONFIG ()"
+.PP
+.SS "void CDF_SETFONT ()"
+.PP
+.SS "void CDF_SETFRAME ()"
+.PP
+.SS "void CDF_SETLINESTYLE ()"
+.PP
+.SS "void CDF_SETLINEWIDTH ()"
+.PP
+.SS "void CDF_SETNAME ()"
+.PP
+.SS "void CDF_SETSAMPLE ()"
+.PP
+.SS "void CDF_SETSAMPLELINES ()"
+.PP
+.SS "void CDF_SETTEXTWIDTH ()"
+.PP
+.SS "void CDF_SETTITLE ()"
+.PP
+.SS "void CDF_SETWCS ()"
+.PP
+.SS "void CDF_SETZOOM ()"
+.PP
+.SS "void CDF_SETZSCALE ()"
+.PP
+.SS "void CDF_SETZTRANS ()"
+.PP
+.SS "void CDF_WRITESUBRAS ()"
+.PP
+.SS "void CDF_ZSCALEIMAGE ()"
+.PP
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

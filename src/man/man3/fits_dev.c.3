@@ -1,0 +1,288 @@
+.TH "fits_dev.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fits_dev.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include 'fits.h'\fP
+.br
+\fC#include '../utils/arrays.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBset_output_pixtype\fP (int thetype)"
+.br
+.ti -1c
+.RI "void \fBset_input_pixtype\fP (int thetype)"
+.br
+.ti -1c
+.RI "void \fBget_input_pixtype\fP (int *thetype)"
+.br
+.ti -1c
+.RI "void \fBwrite_fits_head\fP (int \fBN1\fP, int \fBN2\fP, int comc, char *comv[])"
+.br
+.ti -1c
+.RI "void \fBwrite_fits_line\fP (short *f, int \fBN1\fP)"
+.br
+.ti -1c
+.RI "void \fBfwrite_fits_line\fP (float *f, int \fBN1\fP)"
+.br
+.ti -1c
+.RI "void \fBwrite_fits_tail\fP (int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBwrite_fits\fP (short **f, int \fBN1\fP, int \fBN2\fP, int comc, char *comv[])"
+.br
+.ti -1c
+.RI "void \fBfwrite_fits\fP (float **f, int \fBN1\fP, int \fBN2\fP, int comc, char *comv[])"
+.br
+.ti -1c
+.RI "void \fBread_fits_head\fP (int *\fBN1\fP, int *\fBN2\fP, int *comc, char *comv[])"
+.br
+.ti -1c
+.RI "void \fBread_fits_line\fP (short *f, int \fBN1\fP)"
+.br
+.ti -1c
+.RI "void \fBfread_fits_line\fP (float *f, int \fBN1\fP)"
+.br
+.ti -1c
+.RI "void \fBread_fits\fP (short ***f, int *\fBN1\fP, int *\fBN2\fP, int *comc, char *comv[])"
+.br
+.ti -1c
+.RI "void \fBfread_fits\fP (float ***f, int *\fBN1\fP, int *\fBN2\fP, int *comc, char *comv[])"
+.br
+.ti -1c
+.RI "void \fBargsToString\fP (int argc, char **argv, char *string)"
+.br
+.ti -1c
+.RI "void \fBadd_comment\fP (int argc, char **argv, int *comc, char **comv)"
+.br
+.ti -1c
+.RI "void \fBadd_1comment\fP (char *\fBcomment\fP, int *comc, char **comv)"
+.br
+.ti -1c
+.RI "void \fBaddheadervalue\fP (char *name, char *value, int *comc, char **comv)"
+.br
+.ti -1c
+.RI "char * \fBgetheadervalue\fP (char *name, int comc, char **comv)"
+.br
+.ti -1c
+.RI "void \fBset_fits_opf\fP (FILE *\fBopf\fP)"
+.br
+.ti -1c
+.RI "void \fBset_fits_ipf\fP (FILE *\fBipf\fP)"
+.br
+.ti -1c
+.RI "void \fBread_fits_head_ND\fP (int *Naxes, int *\fBN\fP, int *comc, char *comv[])"
+.br
+.ti -1c
+.RI "void \fBwrite_fits_head_ND\fP (int Naxes, int *\fBN\fP, int comc, char *comv[])"
+.br
+.ti -1c
+.RI "void \fBwrite_fits_tail_ND\fP (int Naxes, int *\fBN\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "FILE * \fBtheipf\fP = stdin *theopf = stdout"
+.br
+.ti -1c
+.RI "int \fBbitpixout\fP = SHORT_PIXTYPE"
+.br
+.ti -1c
+.RI "int \fBbitpixin\fP = SHORT_PIXTYPE"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void add_1comment (char * comment, int * comc, char ** comv)"
+.PP
+Definition at line 433 of file fits_dev.c.
+.PP
+References COM_LENGTH, and comment.
+.PP
+Referenced by main().
+.SS "void add_comment (int argc, char ** argv, int * comc, char ** comv)"
+.PP
+Definition at line 415 of file fits_dev.c.
+.PP
+References argsToString(), and COM_LENGTH.
+.PP
+Referenced by main().
+.SS "void addheadervalue (char * name, char * value, int * comc, char ** comv)"
+.PP
+Definition at line 447 of file fits_dev.c.
+.PP
+References COM_LENGTH, and error_exit.
+.SS "void argsToString (int argc, char ** argv, char * string)"
+.PP
+Definition at line 394 of file fits_dev.c.
+.PP
+References COM_LENGTH, i, j, len, and pos.
+.PP
+Referenced by add_comment(), and main().
+.SS "void fread_fits (float *** f, int * N1, int * N2, int * comc, char * comv[])"
+.PP
+Definition at line 378 of file fits_dev.c.
+.PP
+References allocFloatArray(), f, fread_fits_line(), i, j, N1, N2, and read_fits_head().
+.PP
+Referenced by main().
+.SS "void fread_fits_line (float * f, int N1)"
+.PP
+Definition at line 318 of file fits_dev.c.
+.PP
+References bitpixin, DBL_PIXTYPE, error_exit, f, FLOAT_PIXTYPE, free(), i, INT_PIXTYPE, N1, read_fits_line(), SHORT_PIXTYPE, and theipf.
+.PP
+Referenced by fread_fits(), and main().
+.SS "void fwrite_fits (float ** f, int N1, int N2, int comc, char * comv[])"
+.PP
+Definition at line 181 of file fits_dev.c.
+.PP
+References bitpixout, error_exit, f, FLOAT_PIXTYPE, free(), i, INT_PIXTYPE, ix, N1, N2, SHORT_PIXTYPE, write_fits_head(), and write_fits_tail().
+.PP
+Referenced by main().
+.SS "void fwrite_fits_line (float * f, int N1)"
+.PP
+Definition at line 112 of file fits_dev.c.
+.PP
+References bitpixout, error_exit, f, FLOAT_PIXTYPE, i, INT_PIXTYPE, N1, and SHORT_PIXTYPE.
+.PP
+Referenced by main().
+.SS "void get_input_pixtype (int * thetype)"
+.PP
+Definition at line 65 of file fits_dev.c.
+.PP
+References bitpixin.
+.PP
+Referenced by main().
+.SS "char* getheadervalue (char * name, int comc, char ** comv)"
+.PP
+Definition at line 463 of file fits_dev.c.
+.SS "void read_fits (short *** f, int * N1, int * N2, int * comc, char * comv[])"
+.PP
+Definition at line 356 of file fits_dev.c.
+.PP
+References error_exit, f, i, N1, N2, read_fits_head(), and read_fits_line().
+.PP
+Referenced by main().
+.SS "void read_fits_head (int * N1, int * N2, int * comc, char * comv[])"
+.PP
+Definition at line 233 of file fits_dev.c.
+.PP
+References bitpix, bitpixin, COM_LENGTH, DBL_PIXTYPE, error_exit, FLOAT_PIXTYPE, i, INT_PIXTYPE, line, N1, N2, SHORT_PIXTYPE, and theipf.
+.PP
+Referenced by fread_fits(), main(), make_pixmap(), and read_fits().
+.SS "void read_fits_head_ND (int * Naxes, int * N, int * comc, char * comv[])"
+.PP
+Definition at line 499 of file fits_dev.c.
+.PP
+References bitpix, bitpixin, COM_LENGTH, DBL_PIXTYPE, error_exit, FLOAT_PIXTYPE, i, INT_PIXTYPE, line, N, SHORT_PIXTYPE, and theipf.
+.SS "void read_fits_line (short * f, int N1)"
+.PP
+Definition at line 311 of file fits_dev.c.
+.PP
+References f, i, N1, and theipf.
+.PP
+Referenced by fread_fits_line(), make_pixmap(), print_im(), and read_fits().
+.SS "void set_fits_ipf (FILE * ipf)"
+.PP
+Definition at line 489 of file fits_dev.c.
+.PP
+References ipf, and theipf.
+.PP
+Referenced by main().
+.SS "void set_fits_opf (FILE * opf)"
+.PP
+Definition at line 482 of file fits_dev.c.
+.PP
+Referenced by main().
+.SS "void set_input_pixtype (int thetype)"
+.PP
+Definition at line 44 of file fits_dev.c.
+.PP
+References bitpixin, DBL_PIXTYPE, error_exit, FLOAT_PIXTYPE, INT_PIXTYPE, and SHORT_PIXTYPE.
+.SS "void set_output_pixtype (int thetype)"
+.PP
+Definition at line 22 of file fits_dev.c.
+.PP
+References bitpixout, DBL_PIXTYPE, error_exit, FLOAT_PIXTYPE, INT_PIXTYPE, and SHORT_PIXTYPE.
+.PP
+Referenced by main().
+.SS "void write_fits (short ** f, int N1, int N2, int comc, char * comv[])"
+.PP
+Definition at line 169 of file fits_dev.c.
+.PP
+References f, i, N1, N2, write_fits_head(), write_fits_line(), and write_fits_tail().
+.PP
+Referenced by main().
+.SS "void write_fits_head (int N1, int N2, int comc, char * comv[])"
+.PP
+Definition at line 72 of file fits_dev.c.
+.PP
+References bitpixout, COM_LENGTH, length(), line, N1, and N2.
+.PP
+Referenced by fwrite_fits(), main(), and write_fits().
+.SS "void write_fits_head_ND (int Naxes, int * N, int comc, char * comv[])"
+.PP
+Definition at line 549 of file fits_dev.c.
+.PP
+References bitpixout, COM_LENGTH, i, length(), line, and N.
+.SS "void write_fits_line (short * f, int N1)"
+.PP
+Definition at line 105 of file fits_dev.c.
+.PP
+References f, i, and N1.
+.PP
+Referenced by main(), and write_fits().
+.SS "void write_fits_tail (int N1, int N2)"
+.PP
+Definition at line 142 of file fits_dev.c.
+.PP
+References bitpixout, error_exit, FLOAT_PIXTYPE, INT_PIXTYPE, length(), N1, N2, and SHORT_PIXTYPE.
+.PP
+Referenced by fwrite_fits(), main(), and write_fits().
+.SS "void write_fits_tail_ND (int Naxes, int * N)"
+.PP
+Definition at line 584 of file fits_dev.c.
+.PP
+References bitpixout, error_exit, FLOAT_PIXTYPE, i, INT_PIXTYPE, length(), N, and SHORT_PIXTYPE.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBbitpixin\fP = SHORT_PIXTYPE\fC [static]\fP"
+.PP
+Definition at line 20 of file fits_dev.c.
+.PP
+Referenced by fread_fits_line(), get_input_pixtype(), read_fits_head(), read_fits_head_ND(), and set_input_pixtype().
+.SS "int \fBbitpixout\fP = SHORT_PIXTYPE\fC [static]\fP"
+.PP
+Definition at line 19 of file fits_dev.c.
+.PP
+Referenced by fwrite_fits(), fwrite_fits_line(), set_output_pixtype(), write_fits_head(), write_fits_head_ND(), write_fits_tail(), and write_fits_tail_ND().
+.SS "FILE* \fBtheipf\fP = stdin *theopf = stdout\fC [static]\fP"
+.PP
+Definition at line 16 of file fits_dev.c.
+.PP
+Referenced by fread_fits_line(), read_fits_head(), read_fits_head_ND(), read_fits_line(), and set_fits_ipf().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

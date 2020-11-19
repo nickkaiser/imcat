@@ -1,0 +1,140 @@
+.TH "edw.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+edw.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'utils/arrays.h'\fP
+.br
+\fC#include 'fftlib/myfft.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	edw - evolve dispersive waves\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	edw dt [-ocean | -debroglie | -scalar \fBkstar\fP] [-\fBverbose\fP][-novideo]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Edw reads \fBa\fP 3D \fBFITS\fP image f[2][\fBNy\fP][\fBNx\fP] from standard input,\\\fBn\fP\\	the two planes of which are the initial field f = f[0] and\\\fBn\fP\\	the initial velocity fdot = f[1].\\\fBn\fP\\\\\fBn\fP\\	It computes the transforms fk of f and fdotk of fdot and forms\\\fBn\fP\\	the positive frequency component:\\\fBn\fP\\		fp(\fBk\fP) 	= (fk + fdotk / \fBi\fP omega)\\\fBn\fP\\	It then computes and sends to stdout \fBa\fP stream of images\\\fBn\fP\\	containing the \fBreal\fP part of the inverse \fBtransform\fP of\\\fBn\fP\\		fp(\fBk\fP) * exp(\fBi\fP omega(\fBk\fP) * \fBt\fP).\\\fBn\fP\\	for \fBt\fP = \fBinteger\fP multiples of dt.\\\fBn\fP\\\\\fBn\fP\\	By default, the dispersion relation is omega = \fBk\fP.\\\fBn\fP\\	With option -ocean we use omega = sqrt(\fBk\fP).\\\fBn\fP\\\\\fBn\fP\\	With the -novideo option we do not output \fBa\fP stream\\\fBn\fP\\	of images, rather we evolve for one step\\\fBn\fP\\	and then output an image f[2][\fBNy\fP][\fBNx\fP] containing the\\\fBn\fP\\	final field and velocity.\\\fBn\fP\\\\\fBn\fP\\	With -\fBverbose\fP option we tell stderr what we are doing.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	generate_dw, evolvescalar, xfv\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBDR_DEFAULT\fP   0"
+.br
+.ti -1c
+.RI "#define \fBDR_OCEAN\fP   1"
+.br
+.ti -1c
+.RI "#define \fBDR_DEBROGLIE\fP   2"
+.br
+.ti -1c
+.RI "#define \fBDR_SCALAR\fP   3"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "float \fBomega\fP (int ikx, int iky)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float \fBt\fP"
+.br
+.ti -1c
+.RI "float \fBdkx\fP"
+.br
+.ti -1c
+.RI "float \fBdky\fP"
+.br
+.ti -1c
+.RI "float \fBkstar\fP"
+.br
+.ti -1c
+.RI "int \fBdr\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define DR_DEBROGLIE   2"
+.PP
+Definition at line 51 of file edw.c.
+.PP
+Referenced by main(), and omega().
+.SS "#define DR_DEFAULT   0"
+.PP
+Definition at line 49 of file edw.c.
+.PP
+Referenced by main().
+.SS "#define DR_OCEAN   1"
+.PP
+Definition at line 50 of file edw.c.
+.PP
+Referenced by main(), and omega().
+.SS "#define DR_SCALAR   3"
+.PP
+Definition at line 52 of file edw.c.
+.PP
+Referenced by main(), and omega().
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	edw - evolve dispersive waves\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	edw dt [-ocean | -debroglie | -scalar \fBkstar\fP] [-\fBverbose\fP][-novideo]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	Edw reads \fBa\fP 3D \fBFITS\fP image f[2][\fBNy\fP][\fBNx\fP] from standard input,\\\fBn\fP\\	the two planes of which are the initial field f = f[0] and\\\fBn\fP\\	the initial velocity fdot = f[1].\\\fBn\fP\\\\\fBn\fP\\	It computes the transforms fk of f and fdotk of fdot and forms\\\fBn\fP\\	the positive frequency component:\\\fBn\fP\\		fp(\fBk\fP) 	= (fk + fdotk / \fBi\fP omega)\\\fBn\fP\\	It then computes and sends to stdout \fBa\fP stream of images\\\fBn\fP\\	containing the \fBreal\fP part of the inverse \fBtransform\fP of\\\fBn\fP\\		fp(\fBk\fP) * exp(\fBi\fP omega(\fBk\fP) * \fBt\fP).\\\fBn\fP\\	for \fBt\fP = \fBinteger\fP multiples of dt.\\\fBn\fP\\\\\fBn\fP\\	By default, the dispersion relation is omega = \fBk\fP.\\\fBn\fP\\	With option -ocean we use omega = sqrt(\fBk\fP).\\\fBn\fP\\\\\fBn\fP\\	With the -novideo option we do not output \fBa\fP stream\\\fBn\fP\\	of images, rather we evolve for one step\\\fBn\fP\\	and then output an image f[2][\fBNy\fP][\fBNx\fP] containing the\\\fBn\fP\\	final field and velocity.\\\fBn\fP\\\\\fBn\fP\\	With -\fBverbose\fP option we tell stderr what we are doing.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	generate_dw, evolvescalar, xfv\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 10 of file edw.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 54 of file edw.c.
+.PP
+References add_comment(), allocFloatArray(), argsinit(), dkx, dky, dr, DR_DEBROGLIE, DR_DEFAULT, DR_OCEAN, DR_SCALAR, error_exit, exit(), f, fits, flag, FLAG_ARG, forward_cfft(), getargd(), getargf(), getflag(), i, inverse_cfft(), kstar, fitsheader::n, fitsheader::ndim, nextargtype(), Nx, Ny, omega(), readfitsheader(), readfitsplane(), t, usage, verbose, writefitsheader(), writefitsplane(), x, and y.
+.SS "float omega (int ikx, int iky)"
+.PP
+Definition at line 212 of file edw.c.
+.PP
+References dkx, dky, dr, DR_DEBROGLIE, DR_OCEAN, DR_SCALAR, and kstar.
+.PP
+Referenced by cartesiantokepler(), keplertocartesian(), keplertocartesian_shapiro(), and main().
+.SH "Variable Documentation"
+.PP 
+.SS "float \fBdkx\fP"
+.PP
+Definition at line 46 of file edw.c.
+.PP
+Referenced by main(), and omega().
+.SS "float \fBdky\fP"
+.PP
+Definition at line 46 of file edw.c.
+.PP
+Referenced by main(), and omega().
+.SS "int \fBdr\fP"
+.PP
+Definition at line 47 of file edw.c.
+.PP
+Referenced by apphot(), deltam(), getobjects(), main(), and omega().
+.SS "float \fBkstar\fP"
+.PP
+Definition at line 46 of file edw.c.
+.PP
+Referenced by main(), and omega().
+.SS "float \fBt\fP"
+.PP
+Definition at line 46 of file edw.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

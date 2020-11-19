@@ -1,0 +1,66 @@
+.TH "colorize.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+colorize.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/args.h'\fP
+.br
+\fC#include '../utils/colormaps.h'\fP
+.br
+\fC#include '../utils/arrays.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	colorize --- convert gray \fBfits\fP file to rgb colormapped version\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	colorize \fBcolormapindex\fP [\fBoptions\fP...] \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	If \\'colorize\\' reads \fBa\fP 2-dimensional \fBfits\fP file f[\fBN2\fP][\fBN1\fP] from standard\\\fBn\fP\\	input and writes \fBa\fP 3-dimensional rgb version f[3][\fBN2\fP][\fBN1\fP] with\\\fBn\fP\\	f[0][][] = \fBr\fP[][], f[1][][] = g[][], f[2][][] = \fBb\fP[][].\\\fBn\fP\\\\\fBn\fP\\	If it reads \fBa\fP 3 dimensional image f[N3][\fBN2\fP][\fBN1\fP] it generates \fBa\fP four\\\fBn\fP\\	dimensional version f[N3][3][\fBN2\fP][\fBN1\fP] -- \fBi\fP.\fBe\fP. \fBa\fP stream of 3-D rgb\\\fBn\fP\\	images.\\\fBn\fP\\\\\fBn\fP\\	The rgb colors are computed by linear interpolation on \fBa\fP\\\fBn\fP\\	\fBcolor\fP ramp.\\\fBn\fP\\\\\fBn\fP\\	Options are:\\\fBn\fP\\		-f \fBfmin\fP \fBfmax\fP	# limits for input image (0, 255)\\\fBn\fP\\		-\fBa\fP		# use autoscaling\\\fBn\fP\\		-p \fBbitpix\fP	# output pixtype (8)   \\\fBn\fP\\\\\fBn\fP\\	There are currently three colormaps available (0,1,2).\\\fBn\fP\\\\\fBn\fP\\BUGS\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBFRAC_MAX\fP   0.9999999999999"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define FRAC_MAX   0.9999999999999"
+.PP
+Definition at line 47 of file colorize.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	colorize --- convert gray \fBfits\fP file to rgb colormapped version\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	colorize \fBcolormapindex\fP [\fBoptions\fP...] \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	If \\'colorize\\' reads \fBa\fP 2-dimensional \fBfits\fP file f[\fBN2\fP][\fBN1\fP] from standard\\\fBn\fP\\	input and writes \fBa\fP 3-dimensional rgb version f[3][\fBN2\fP][\fBN1\fP] with\\\fBn\fP\\	f[0][][] = \fBr\fP[][], f[1][][] = g[][], f[2][][] = \fBb\fP[][].\\\fBn\fP\\\\\fBn\fP\\	If it reads \fBa\fP 3 dimensional image f[N3][\fBN2\fP][\fBN1\fP] it generates \fBa\fP four\\\fBn\fP\\	dimensional version f[N3][3][\fBN2\fP][\fBN1\fP] -- \fBi\fP.\fBe\fP. \fBa\fP stream of 3-D rgb\\\fBn\fP\\	images.\\\fBn\fP\\\\\fBn\fP\\	The rgb colors are computed by linear interpolation on \fBa\fP\\\fBn\fP\\	\fBcolor\fP ramp.\\\fBn\fP\\\\\fBn\fP\\	Options are:\\\fBn\fP\\		-f \fBfmin\fP \fBfmax\fP	# limits for input image (0, 255)\\\fBn\fP\\		-\fBa\fP		# use autoscaling\\\fBn\fP\\		-p \fBbitpix\fP	# output pixtype (8)   \\\fBn\fP\\\\\fBn\fP\\	There are currently three colormaps available (0,1,2).\\\fBn\fP\\\\\fBn\fP\\BUGS\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file colorize.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 49 of file colorize.c.
+.PP
+References add_comment(), allocFloatArray(), argsinit(), c, color, copyfitsheader(), error_exit, exit(), fitsheader::extpixtype, f, flag, FLAG_ARG, fmin, FRAC_MAX, getargf(), getargi(), getcolormap(), getflag(), fitsheader::n, N1, N2, fitsheader::ndim, nextargtype(), readfitsheader(), readfitsplane(), usage, writefitsheader(), writefitsline(), writefitstail(), x, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,342 @@
+.TH "ximcolor.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ximcolor.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <X11/Xlib.h>\fP
+.br
+\fC#include <X11/Xutil.h>\fP
+.br
+\fC#include <X11/Intrinsic.h>\fP
+.br
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'ximback.h'\fP
+.br
+\fC#include 'ximcolor.h'\fP
+.br
+\fC#include 'ximfront.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX\fP(x, y)   (((x) > (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBMIN\fP(x, y)   (((x) < (y)) ? (x) : (y))"
+.br
+.ti -1c
+.RI "#define \fBGREENFACTOR\fP   2"
+.br
+.ti -1c
+.RI "#define \fBCAPTION\fP   psfilename"
+.br
+.ti -1c
+.RI "#define \fBMAX_COLS\fP   65535"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBsetcolorscheme\fP (void)"
+.br
+.ti -1c
+.RI "void \fBset_shades\fP (void)"
+.br
+.ti -1c
+.RI "int \fBcolor_index\fP (int \fBlevel\fP, int \fBi\fP, int \fBj\fP)"
+.br
+.ti -1c
+.RI "float \fBnewslidervalue\fP (int index)"
+.br
+.ti -1c
+.RI "void \fBcolorsetlevel\fP (int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "void \fBprintall\fP (int \fBlevel\fP, char *psfilename)"
+.br
+.ti -1c
+.RI "void \fBprintselection\fP (int \fBlevel\fP, int i1, int j1, int i2, int j2, char *psfilename)"
+.br
+.ti -1c
+.RI "double \fBgray\fP (int \fBi\fP, int \fBj\fP, int \fBcolor\fP)"
+.br
+.ti -1c
+.RI "void \fBsetsliderval\fP (int index, double theval)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBgfmin\fP [MAX_COLORS]"
+.br
+.ti -1c
+.RI "int \fBgfmax\fP [MAX_COLORS]"
+.br
+.ti -1c
+.RI "XColor \fBshade\fP []"
+.br
+.ti -1c
+.RI "unsigned long \fBpixel\fP []"
+.br
+.ti -1c
+.RI "unsigned int \fBn_shades\fP"
+.br
+.ti -1c
+.RI "short ** \fBf\fP [MAX_FITS_DIM][MAX_LEVELS]"
+.br
+.ti -1c
+.RI "Display * \fBmydisplay\fP"
+.br
+.ti -1c
+.RI "Colormap \fBcmap\fP"
+.br
+.ti -1c
+.RI "int \fBN1\fP [MAX_LEVELS]"
+.br
+.ti -1c
+.RI "int \fBN2\fP [MAX_LEVELS]"
+.br
+.ti -1c
+.RI "char \fBcaption\fP []"
+.br
+.ti -1c
+.RI "int \fBncc\fP [MAX_COLORS]"
+.br
+.ti -1c
+.RI "int \fBmul\fP [MAX_COLORS]"
+.br
+.ti -1c
+.RI "int \fBngray\fP"
+.br
+.ti -1c
+.RI "int \fBn_shades_used\fP"
+.br
+.ti -1c
+.RI "float \fBFmin\fP"
+.br
+.ti -1c
+.RI "float \fBFmax\fP"
+.br
+.ti -1c
+.RI "float \fBA\fP"
+.br
+.ti -1c
+.RI "float \fBY\fP = GREENFACTOR Q0 CFmax[3]"
+.br
+.ti -1c
+.RI "double \fBsliderval\fP [MAX_COLORS]"
+.br
+.ti -1c
+.RI "int \fBncolors\fP"
+.br
+.ti -1c
+.RI "int \fBclevel\fP"
+.br
+.ti -1c
+.RI "int \fBio\fP"
+.br
+.ti -1c
+.RI "int \fBjo\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CAPTION   psfilename"
+.PP
+Definition at line 36 of file ximcolor.c.
+.SS "#define GREENFACTOR   2"
+.PP
+Definition at line 31 of file ximcolor.c.
+.PP
+Referenced by gray(), and set_shades().
+.SS "#define MAX(x, y)   (((x) > (y)) ? (x) : (y))"
+.PP
+Definition at line 29 of file ximcolor.c.
+.SS "#define MAX_COLS   65535"
+.PP
+Definition at line 125 of file ximcolor.c.
+.SS "#define MIN(x, y)   (((x) < (y)) ? (x) : (y))"
+.PP
+Definition at line 30 of file ximcolor.c.
+.SH "Function Documentation"
+.PP 
+.SS "int color_index (int level, int i, int j)"
+.PP
+Definition at line 217 of file ximcolor.c.
+.PP
+References color, f, gfmax, gfmin, i, j, l, MAX, MAX_COLORS, MIN, mul, ncc, ncolors, and ngray.
+.PP
+Referenced by fill_pixmap(), and fillzoompixmap().
+.SS "void colorsetlevel (int level)"
+.PP
+Definition at line 307 of file ximcolor.c.
+.PP
+References clevel.
+.PP
+Referenced by printall(), and printselection().
+.SS "double gray (int i, int j, int color)"
+.PP
+Definition at line 358 of file ximcolor.c.
+.PP
+References A, clevel, color, error_exit, f, Fmax, Fmin, GREENFACTOR, i, io, j, jo, l, MAX, N1, N2, ncolors, and shade.
+.PP
+Referenced by print_im().
+.SS "float newslidervalue (int index)"
+.PP
+Definition at line 256 of file ximcolor.c.
+.PP
+References A, A_MAX, error_exit, Fmax, Fmin, gfmax, gfmin, ncolors, Q0_MAX, and sliderval.
+.PP
+Referenced by myworkproc1(), setcolorscheme(), and sliderChanged().
+.SS "void printall (int level, char * psfilename)"
+.PP
+Definition at line 312 of file ximcolor.c.
+.PP
+References CAPTION, colorsetlevel(), error_exit, gray(), io, jo, N1, N2, ncolors, print_im(), and set_print_opf().
+.PP
+Referenced by main(), and Print().
+.SS "void printselection (int level, int i1, int j1, int i2, int j2, char * psfilename)"
+.PP
+Definition at line 331 of file ximcolor.c.
+.PP
+References CAPTION, colorsetlevel(), error_exit, gray(), io, jo, mag, ncolors, print_im(), and set_print_opf().
+.PP
+Referenced by printclick().
+.SS "void set_shades (void)"
+.PP
+Definition at line 132 of file ximcolor.c.
+.PP
+References a, A_MAX, b, cmap, colormapindex, error_exit, g(), getrgbfromcmap(), GREENFACTOR, i, j, l, MAX, MAX_COLORS, MAX_COLS, MIN, mul, mydisplay, n_shades, n_shades_used, ncc, ncolors, pixel, Q0_MAX, r, shade, and sliderval.
+.SS "void setcolorscheme (void)"
+.PP
+Definition at line 59 of file ximcolor.c.
+.PP
+References A_MAX, error_exit, FMAX, FMIN, gfmax, gfmin, i, mul, n_shades, n_shades_used, ncc, ncolors, NCOLORS, newslidervalue(), ngray, setslider(), val, xbgetvalue(), and xfgetvalue().
+.SS "void setsliderval (int index, double theval)"
+.PP
+Definition at line 405 of file ximcolor.c.
+.PP
+References sliderval.
+.PP
+Referenced by myworkproc1(), and sliderChanged().
+.SH "Variable Documentation"
+.PP 
+.SS "float \fBA\fP\fC [static]\fP"
+.PP
+Definition at line 54 of file ximcolor.c.
+.SS "char \fBcaption\fP[]"
+.PP
+Definition at line 50 of file ximcolor.c.
+.SS "int \fBclevel\fP\fC [static]\fP"
+.PP
+Definition at line 305 of file ximcolor.c.
+.PP
+Referenced by colorsetlevel(), and gray().
+.SS "Colormap \fBcmap\fP"
+.PP
+Definition at line 48 of file ximcolor.c.
+.SS "short** f[MAX_FITS_DIM][MAX_LEVELS]"
+.PP
+Definition at line 46 of file ximcolor.c.
+.SS "float \fBFmax\fP\fC [static]\fP"
+.PP
+Definition at line 54 of file ximcolor.c.
+.PP
+Referenced by gray(), and newslidervalue().
+.SS "float \fBFmin\fP\fC [static]\fP"
+.PP
+Definition at line 54 of file ximcolor.c.
+.PP
+Referenced by gray(), and newslidervalue().
+.SS "int \fBgfmax\fP[MAX_COLORS]\fC [static]\fP"
+.PP
+Definition at line 40 of file ximcolor.c.
+.PP
+Referenced by color_index(), newslidervalue(), and setcolorscheme().
+.SS "int \fBgfmin\fP[MAX_COLORS]\fC [static]\fP"
+.PP
+Definition at line 40 of file ximcolor.c.
+.PP
+Referenced by color_index(), newslidervalue(), and setcolorscheme().
+.SS "int \fBio\fP\fC [static]\fP"
+.PP
+Definition at line 305 of file ximcolor.c.
+.PP
+Referenced by gray(), printall(), and printselection().
+.SS "int \fBjo\fP\fC [static]\fP"
+.PP
+Definition at line 305 of file ximcolor.c.
+.PP
+Referenced by gray(), printall(), and printselection().
+.SS "int \fBmul\fP[MAX_COLORS]\fC [static]\fP"
+.PP
+Definition at line 53 of file ximcolor.c.
+.PP
+Referenced by color_index(), set_shades(), and setcolorscheme().
+.SS "Display* \fBmydisplay\fP"
+.PP
+Definition at line 47 of file ximcolor.c.
+.SS "int \fBN1\fP[MAX_LEVELS]"
+.PP
+Definition at line 49 of file ximcolor.c.
+.SS "int \fBN2\fP[MAX_LEVELS]"
+.PP
+Definition at line 49 of file ximcolor.c.
+.SS "unsigned int \fBn_shades\fP"
+.PP
+Definition at line 45 of file ximcolor.c.
+.SS "int \fBn_shades_used\fP\fC [static]\fP"
+.PP
+Definition at line 53 of file ximcolor.c.
+.PP
+Referenced by set_shades(), and setcolorscheme().
+.SS "int \fBncc\fP[MAX_COLORS]\fC [static]\fP"
+.PP
+Definition at line 53 of file ximcolor.c.
+.PP
+Referenced by color_index(), set_shades(), and setcolorscheme().
+.SS "int \fBncolors\fP\fC [static]\fP"
+.PP
+Definition at line 56 of file ximcolor.c.
+.PP
+Referenced by color_index(), gray(), newslidervalue(), printall(), printselection(), set_shades(), and setcolorscheme().
+.SS "int \fBngray\fP\fC [static]\fP"
+.PP
+Definition at line 53 of file ximcolor.c.
+.PP
+Referenced by color_index(), and setcolorscheme().
+.SS "unsigned long \fBpixel\fP[]"
+.PP
+Definition at line 44 of file ximcolor.c.
+.SS "XColor \fBshade\fP[]"
+.PP
+Definition at line 43 of file ximcolor.c.
+.SS "double \fBsliderval\fP[MAX_COLORS]\fC [static]\fP"
+.PP
+Definition at line 55 of file ximcolor.c.
+.PP
+Referenced by newslidervalue(), set_shades(), and setsliderval().
+.SS "float \fBY\fP = GREENFACTOR Q0 CFmax[3]\fC [static]\fP"
+.PP
+Definition at line 54 of file ximcolor.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

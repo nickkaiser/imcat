@@ -1,0 +1,66 @@
+.TH "matchtriplets.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+matchtriplets.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBtriangle\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   'usage: matchtriplets.\fBc\fP \fBa\fP.trp \fBb\fP.trp [mmax smax]\\\fBn\fP\\	reads \fBa\fP \fBpair\fP of lists of \fBtriangles\fP generated\\\fBn\fP\\	by \\'triplets\\' and outputs matching pairs.\\\fBn\fP\\	Pairs match if their \fBm\fP=\fBM\fP/L and s=S/L values agree to\\\fBn\fP\\	within precision mmax, smax (0.01, 0.01).\\\fBn\fP\\	Outputs R, \fBphi\fP, \fBdx\fP, \fBdy\fP where\\\fBn\fP\\	R = L_b/L_a is ratio of long side lengths\\\fBn\fP\\	\fBphi\fP = phi_b - phi_a is rotation \fBangle\fP in range (-PI,PI)\\\fBn\fP\\	and (\fBdx\fP,\fBdy\fP) is the translation in \fBb\fP-coords\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBPI\fP   M_PI"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBtriangle\fP \fBtriangle\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define PI   M_PI"
+.PP
+Definition at line 25 of file matchtriplets.c.
+.SS "#define \fBusage\fP   'usage: matchtriplets.\fBc\fP \fBa\fP.trp \fBb\fP.trp [mmax smax]\\\fBn\fP\\	reads \fBa\fP \fBpair\fP of lists of \fBtriangles\fP generated\\\fBn\fP\\	by \\'triplets\\' and outputs matching pairs.\\\fBn\fP\\	Pairs match if their \fBm\fP=\fBM\fP/L and s=S/L values agree to\\\fBn\fP\\	within precision mmax, smax (0.01, 0.01).\\\fBn\fP\\	Outputs R, \fBphi\fP, \fBdx\fP, \fBdy\fP where\\\fBn\fP\\	R = L_b/L_a is ratio of long side lengths\\\fBn\fP\\	\fBphi\fP = phi_b - phi_a is rotation \fBangle\fP in range (-PI,PI)\\\fBn\fP\\	and (\fBdx\fP,\fBdy\fP) is the translation in \fBb\fP-coords\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 10 of file matchtriplets.c.
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBtriangle\fP  \fBtriangle\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 27 of file matchtriplets.c.
+.PP
+References dx, dy, exit(), triangle::L, L, line, triangle::m, triangle::M, m, M, triangle::next, triangle::phi, phi, PI, triangle::s, triangle::S, S, usage, triangle::x, x, xx, triangle::y, y, and yy.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

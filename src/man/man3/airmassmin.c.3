@@ -1,0 +1,38 @@
+.TH "airmassmin.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+airmassmin.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+\fC#include 'planetdata.h'\fP
+.br
+\fC#include 'obsdata.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "double \fBairmassmin\fP (double lat, double lon, double phaseofyear, double zd_solar_min, double zd_lunar_min, int nstepsperday, double *phaseofday, double *zd_target_min)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "double airmassmin (double lat, double lon, double phaseofyear, double zd_solar_min, double zd_lunar_min, int nstepsperday, double * phaseofday, double * zd_target_min)"
+.PP
+Definition at line 17 of file airmassmin.c.
+.PP
+References assign(), AXISTILTINDEG, copy(), dot(), LATOBSINDEG, length(), phi, roty(), and scale().
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

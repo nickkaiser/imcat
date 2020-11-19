@@ -1,0 +1,396 @@
+.TH "fitstack.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitstack.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'fitstack.h'\fP
+.br
+\fC#include 'utils/modefunc.h'\fP
+.br
+\fC#include 'fitstack_read.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitstack --- \fBfit\fP for transformation coefficients for \fBa\fP set of exposures\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitstack \fBnexp\fP [\fBoptions\fP....]\\\fBn\fP\\		-\fBl\fP \fBlmin\fP \fBlmax\fP		# min and max \fBorder\fP for distortion polynomials\\\fBn\fP\\		-\fBi\fP niter		# \fBnumber\fP of iterations (1)\\\fBn\fP\\		-\fBc\fP outcat		# output catalogue containing magc, \fBr\fP-values\\\fBn\fP\\		-o \fBx0\fP y0		# origin for spatial coordinates (0, 0)\\\fBn\fP\\		-\fBd\fP distparfilename	# file for distortion model parameters\\\fBn\fP\\		-\fBt\fP transparfilename	# file for linear transformation params\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fitstack' reads from stdin \fBa\fP catalogue containing the result of\\\fBn\fP\\	merging all pairs of cats for \fBa\fP \fBstack\fP of '\fBnexp\fP' images (as created\\\fBn\fP\\	by 'mergestack') and which must contain entries for\\\fBn\fP\\	spatial coords 'x[2][2]', magnitude '\fBmag\fP[2]' and exposure \fBnumber\fP 'exp[2]'.\\\fBn\fP\\	It then \fBfits\fP \fBa\fP model in which sky coords (in \fBframe\fP defined by exposure-0) are\\\fBn\fP\\		\fBr\fP = r_e + dphi_e r_e + d_e\\\fBn\fP\\	where the 2\fBx2\fP matrix dphi allows for rotations between\\\fBn\fP\\	exposures and possibly atmospheric refraction, and we set\\\fBn\fP\\	dphi = \fBd\fP = 0 for the 0th exposure.\\\fBn\fP\\	It will also optionally then \fBfit\fP for distortion of telescope\\\fBn\fP\\	using \fBa\fP model in which sky coords \fBr\fP are related to detector coords x by\\\fBn\fP\\		r_e = x_e + sum a_m f_m(x_e)\\\fBn\fP\\	where \fBm\fP labels the modes, and where each \fBmode\fP coefficient a_m\\\fBn\fP\\	is \fBa\fP 2-vector and the modes are polynomials\\\fBn\fP\\	of \fBorder\fP '\fBlmin\fP' through '\fBlmax\fP'.\\\fBn\fP\\	For \fBlmin\fP = 2, \fBlmax\fP = 4 say, the modes are:\\\fBn\fP\\		x^2, xy, y^2, x^3, x^2 y, x y^2, y^3,\\\fBn\fP\\		x^4, x^3 y, x^2 y^2, x y^3, y^4.\\\fBn\fP\\	With -o option, these become polynomials in position relative\\\fBn\fP\\	to specified spatial origin.\\\fBn\fP\\	We also read magnitudes, which we model as:\\\fBn\fP\\		m_e = \fBm\fP + M_e\\\fBn\fP\\	where \fBm\fP is the true magnitude and M_e is the magnitude\\\fBn\fP\\	offset the \fBe\fP'th exposure (relative to exp-0).\\\fBn\fP\\	Use the '-\fBc\fP' option to generate \fBa\fP merged catalogue which contains,\\\fBn\fP\\	in addition to the source catalogue values, the sky coordinates '\fBr\fP'\\\fBn\fP\\	and also corrected magnitudes 'magc', which can then be filtered\\\fBn\fP\\	to remove bad pairs and then fed back to 'fitstack' to improve\\\fBn\fP\\	the solution.\\\fBn\fP\\	See also fitstack.tex.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBSCALE\fP   1.0"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "int \fBmake_r\fP (void)"
+.br
+.ti -1c
+.RI "int \fBmake_re\fP (void)"
+.br
+.ti -1c
+.RI "int \fBmake_z\fP (void)"
+.br
+.ti -1c
+.RI "int \fBfitextinctions\fP (void)"
+.br
+.ti -1c
+.RI "int \fBfittranslations\fP (void)"
+.br
+.ti -1c
+.RI "int \fBfitdistortions\fP (void)"
+.br
+.ti -1c
+.RI "int \fBallocatearrays\fP (void)"
+.br
+.ti -1c
+.RI "double *** \fBallocpositionvector\fP (void)"
+.br
+.ti -1c
+.RI "int \fBprinttranslations\fP (char *parfile)"
+.br
+.ti -1c
+.RI "double \fBchisquared\fP (void)"
+.br
+.ti -1c
+.RI "int \fBoutputrcat\fP (char *outputcatfilename)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double *** \fBx\fP"
+.br
+.ti -1c
+.RI "double ** \fBmag\fP"
+.br
+.ti -1c
+.RI "double *** \fBre\fP = NULL ***\fBr\fP = NULL ***\fBz\fP = NULL"
+.br
+.ti -1c
+.RI "int ** \fBe\fP"
+.br
+.ti -1c
+.RI "int \fBnprs\fP"
+.br
+.ti -1c
+.RI "int \fBnexp\fP"
+.br
+.ti -1c
+.RI "int \fBnmodes\fP"
+.br
+.ti -1c
+.RI "int \fBlmin\fP"
+.br
+.ti -1c
+.RI "int \fBlmax\fP"
+.br
+.ti -1c
+.RI "int * \fBll\fP"
+.br
+.ti -1c
+.RI "int * \fBmm\fP"
+.br
+.ti -1c
+.RI "double * \fBd\fP [2]"
+.br
+.ti -1c
+.RI "double * \fBphi\fP [2][2]"
+.br
+.ti -1c
+.RI "double * \fBa\fP [2]"
+.br
+.ti -1c
+.RI "double * \fBdm\fP"
+.br
+.ti -1c
+.RI "int * \fBindxt\fP"
+.br
+.ti -1c
+.RI "int * \fBindxd\fP"
+.br
+.ti -1c
+.RI "int * \fBindxm\fP"
+.br
+.ti -1c
+.RI "int \fBntcoefft\fP"
+.br
+.ti -1c
+.RI "int \fBndcoefft\fP"
+.br
+.ti -1c
+.RI "int \fBnmcoefft\fP"
+.br
+.ti -1c
+.RI "int \fBdodistfit\fP"
+.br
+.ti -1c
+.RI "double ** \fBAt\fP"
+.br
+.ti -1c
+.RI "double * \fBBt\fP"
+.br
+.ti -1c
+.RI "double ** \fBAd\fP"
+.br
+.ti -1c
+.RI "double * \fBBd\fP"
+.br
+.ti -1c
+.RI "double ** \fBAm\fP"
+.br
+.ti -1c
+.RI "double * \fBBm\fP"
+.br
+.ti -1c
+.RI "double \fBdet\fP"
+.br
+.ti -1c
+.RI "double * \fBCt\fP [2]"
+.br
+.ti -1c
+.RI "double * \fBCd\fP [2]"
+.br
+.ti -1c
+.RI "double * \fBCm\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define SCALE   1.0"
+.PP
+Definition at line 62 of file registration/fitstack.c.
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	fitstack --- \fBfit\fP for transformation coefficients for \fBa\fP set of exposures\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitstack \fBnexp\fP [\fBoptions\fP....]\\\fBn\fP\\		-\fBl\fP \fBlmin\fP \fBlmax\fP		# min and max \fBorder\fP for distortion polynomials\\\fBn\fP\\		-\fBi\fP niter		# \fBnumber\fP of iterations (1)\\\fBn\fP\\		-\fBc\fP outcat		# output catalogue containing magc, \fBr\fP-values\\\fBn\fP\\		-o \fBx0\fP y0		# origin for spatial coordinates (0, 0)\\\fBn\fP\\		-\fBd\fP distparfilename	# file for distortion model parameters\\\fBn\fP\\		-\fBt\fP transparfilename	# file for linear transformation params\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'fitstack' reads from stdin \fBa\fP catalogue containing the result of\\\fBn\fP\\	merging all pairs of cats for \fBa\fP \fBstack\fP of '\fBnexp\fP' images (as created\\\fBn\fP\\	by 'mergestack') and which must contain entries for\\\fBn\fP\\	spatial coords 'x[2][2]', magnitude '\fBmag\fP[2]' and exposure \fBnumber\fP 'exp[2]'.\\\fBn\fP\\	It then \fBfits\fP \fBa\fP model in which sky coords (in \fBframe\fP defined by exposure-0) are\\\fBn\fP\\		\fBr\fP = r_e + dphi_e r_e + d_e\\\fBn\fP\\	where the 2\fBx2\fP matrix dphi allows for rotations between\\\fBn\fP\\	exposures and possibly atmospheric refraction, and we set\\\fBn\fP\\	dphi = \fBd\fP = 0 for the 0th exposure.\\\fBn\fP\\	It will also optionally then \fBfit\fP for distortion of telescope\\\fBn\fP\\	using \fBa\fP model in which sky coords \fBr\fP are related to detector coords x by\\\fBn\fP\\		r_e = x_e + sum a_m f_m(x_e)\\\fBn\fP\\	where \fBm\fP labels the modes, and where each \fBmode\fP coefficient a_m\\\fBn\fP\\	is \fBa\fP 2-vector and the modes are polynomials\\\fBn\fP\\	of \fBorder\fP '\fBlmin\fP' through '\fBlmax\fP'.\\\fBn\fP\\	For \fBlmin\fP = 2, \fBlmax\fP = 4 say, the modes are:\\\fBn\fP\\		x^2, xy, y^2, x^3, x^2 y, x y^2, y^3,\\\fBn\fP\\		x^4, x^3 y, x^2 y^2, x y^3, y^4.\\\fBn\fP\\	With -o option, these become polynomials in position relative\\\fBn\fP\\	to specified spatial origin.\\\fBn\fP\\	We also read magnitudes, which we model as:\\\fBn\fP\\		m_e = \fBm\fP + M_e\\\fBn\fP\\	where \fBm\fP is the true magnitude and M_e is the magnitude\\\fBn\fP\\	offset the \fBe\fP'th exposure (relative to exp-0).\\\fBn\fP\\	Use the '-\fBc\fP' option to generate \fBa\fP merged catalogue which contains,\\\fBn\fP\\	in addition to the source catalogue values, the sky coordinates '\fBr\fP'\\\fBn\fP\\	and also corrected magnitudes 'magc', which can then be filtered\\\fBn\fP\\	to remove bad pairs and then fed back to 'fitstack' to improve\\\fBn\fP\\	the solution.\\\fBn\fP\\	See also fitstack.tex.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP'"
+.PP
+Definition at line 6 of file registration/fitstack.c.
+.SH "Function Documentation"
+.PP 
+.SS "int allocatearrays (void)"
+.PP
+Definition at line 455 of file registration/fitstack.c.
+.PP
+Referenced by main().
+.SS "double*** allocpositionvector (void)"
+.PP
+Definition at line 501 of file registration/fitstack.c.
+.PP
+Referenced by allocpositionvector(), make_r(), make_re(), and make_z().
+.SS "double chisquared (void)"
+.PP
+Definition at line 541 of file registration/fitstack.c.
+.PP
+Referenced by main().
+.SS "int fitdistortions (void)"
+.PP
+Definition at line 405 of file registration/fitstack.c.
+.PP
+References a, Ad, Bd, Cd, det, e, f(), i, indxd, j, ll, m, M, mm, mylubksb(), myludcmp(), n, ndcoefft, nmodes, nprs, phi, x, and z.
+.PP
+Referenced by main().
+.SS "int fitextinctions (void)"
+.PP
+Definition at line 301 of file registration/fitstack.c.
+.PP
+References Am, Bm, Cm, det, dm, e, i, indxm, j, m, mag, mylubksb(), myludcmp(), n, nexp, nmcoefft, and nprs.
+.PP
+Referenced by main().
+.SS "int fittranslations (void)"
+.PP
+Definition at line 344 of file registration/fitstack.c.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 80 of file registration/fitstack.c.
+.PP
+References a, allocatearrays(), chi2(), chisquared(), dodistfit, error_exit, exit(), fitdistortions(), fitextinctions(), fittranslations(), i, j, l, ll, lmax, lmin, M, m, make_r(), make_re(), make_z(), mm, modefunc_addargcomment(), n, ndcoefft, nexp, nmcoefft, nmodes, nprs, ntcoefft, outputrcat(), printtranslations(), readmergedcat(), setorigin(), usage, and write2Dpolymodel().
+.SS "int make_r (void)"
+.PP
+Definition at line 223 of file registration/fitstack.c.
+.PP
+Referenced by main().
+.SS "int make_re (void)"
+.PP
+Definition at line 254 of file registration/fitstack.c.
+.PP
+References a, allocpositionvector(), f(), i, ll, M, mm, n, nmodes, nprs, re, x, and xx.
+.PP
+Referenced by main().
+.SS "int make_z (void)"
+.PP
+Definition at line 279 of file registration/fitstack.c.
+.PP
+References allocpositionvector(), d, e, i, j, n, nprs, phi, x, and z.
+.PP
+Referenced by main().
+.SS "int outputrcat (char * outputcatfilename)"
+.PP
+Definition at line 557 of file registration/fitstack.c.
+.SS "int printtranslations (char * parfile)"
+.PP
+Definition at line 522 of file registration/fitstack.c.
+.SH "Variable Documentation"
+.PP 
+.SS "double* \fBa\fP[2]\fC [static]\fP"
+.PP
+Definition at line 73 of file registration/fitstack.c.
+.SS "double ** \fBAd\fP\fC [static]\fP"
+.PP
+Definition at line 78 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), and fitdistortions().
+.SS "double ** \fBAm\fP\fC [static]\fP"
+.PP
+Definition at line 78 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), and fitextinctions().
+.SS "double** \fBAt\fP\fC [static]\fP"
+.PP
+Definition at line 78 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), and fittranslations().
+.SS "double * \fBBd\fP\fC [static]\fP"
+.PP
+Definition at line 78 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), and fitdistortions().
+.SS "double * \fBBm\fP\fC [static]\fP"
+.PP
+Definition at line 78 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), and fitextinctions().
+.SS "double * \fBBt\fP\fC [static]\fP"
+.PP
+Definition at line 78 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), and fittranslations().
+.SS "double * \fBCd\fP[2]\fC [static]\fP"
+.PP
+Definition at line 78 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), and fitdistortions().
+.SS "double * \fBCm\fP\fC [static]\fP"
+.PP
+Definition at line 78 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), and fitextinctions().
+.SS "double * \fBCt\fP[2]\fC [static]\fP"
+.PP
+Definition at line 78 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), and fittranslations().
+.SS "double* \fBd\fP[2]\fC [static]\fP"
+.PP
+Definition at line 71 of file registration/fitstack.c.
+.SS "double det\fC [static]\fP"
+.PP
+Definition at line 78 of file registration/fitstack.c.
+.PP
+Referenced by fitdistortions(), fitextinctions(), and fittranslations().
+.SS "double* \fBdm\fP\fC [static]\fP"
+.PP
+Definition at line 75 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), fitextinctions(), outputrcat(), and printtranslations().
+.SS "int \fBdodistfit\fP\fC [static]\fP"
+.PP
+Definition at line 77 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), and main().
+.SS "int** \fBe\fP"
+.PP
+Definition at line 66 of file registration/fitstack.c.
+.SS "int * \fBindxd\fP\fC [static]\fP"
+.PP
+Definition at line 77 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), and fitdistortions().
+.SS "int * \fBindxm\fP\fC [static]\fP"
+.PP
+Definition at line 77 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), and fitextinctions().
+.SS "int* \fBindxt\fP\fC [static]\fP"
+.PP
+Definition at line 77 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), and fittranslations().
+.SS "int * \fBll\fP\fC [static]\fP"
+.PP
+Definition at line 69 of file registration/fitstack.c.
+.PP
+Referenced by fitdistortions(), main(), make_r(), and make_re().
+.SS "int \fBlmax\fP\fC [static]\fP"
+.PP
+Definition at line 69 of file registration/fitstack.c.
+.PP
+Referenced by main().
+.SS "int \fBlmin\fP\fC [static]\fP"
+.PP
+Definition at line 69 of file registration/fitstack.c.
+.PP
+Referenced by main().
+.SS "double ** \fBmag\fP"
+.PP
+Definition at line 65 of file registration/fitstack.c.
+.PP
+Referenced by fitextinctions(), main(), outputrcat(), printselection(), and readmergedcat().
+.SS "int * \fBmm\fP\fC [static]\fP"
+.PP
+Definition at line 69 of file registration/fitstack.c.
+.PP
+Referenced by fitdistortions(), main(), make_r(), and make_re().
+.SS "int \fBndcoefft\fP\fC [static]\fP"
+.PP
+Definition at line 77 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), fitdistortions(), and main().
+.SS "int \fBnexp\fP\fC [static]\fP"
+.PP
+Definition at line 69 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), fitextinctions(), fittranslations(), main(), and printtranslations().
+.SS "int \fBnmcoefft\fP\fC [static]\fP"
+.PP
+Definition at line 77 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), fitextinctions(), and main().
+.SS "int \fBnmodes\fP\fC [static]\fP"
+.PP
+Definition at line 69 of file registration/fitstack.c.
+.SS "int \fBnprs\fP\fC [static]\fP"
+.PP
+Definition at line 69 of file registration/fitstack.c.
+.PP
+Referenced by allocpositionvector(), chisquared(), fitdistortions(), fitextinctions(), fittranslations(), main(), make_r(), make_re(), make_z(), and outputrcat().
+.SS "int \fBntcoefft\fP\fC [static]\fP"
+.PP
+Definition at line 77 of file registration/fitstack.c.
+.PP
+Referenced by allocatearrays(), fittranslations(), and main().
+.SS "double * \fBphi\fP[2][2]\fC [static]\fP"
+.PP
+Definition at line 71 of file registration/fitstack.c.
+.SS "double *** \fBre\fP = NULL ***\fBr\fP = NULL ***\fBz\fP = NULL"
+.PP
+Definition at line 65 of file registration/fitstack.c.
+.SS "double*** x"
+.PP
+Definition at line 65 of file registration/fitstack.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

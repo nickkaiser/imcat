@@ -1,0 +1,52 @@
+.TH "etprofile.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+etprofile.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	etprofile --- calculates tangential alignment profile\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	etprofile [option...] < \fBcatfile\fP > asciifile\\\fBn\fP\\		-o \fBio\fP \fBjo\fP	# origin about which we do profile (2048, 2048)\\\fBn\fP\\		-\fBd\fP dlnr		# log bin size 0.25\\\fBn\fP\\		-\fBr\fP rmin rmax	# min and max radii (200, 2000)\\\fBn\fP\\		-\fBl\fP lossfactor	# multiply \fBe\fP by 1/ lossfactor\\\fBn\fP\\		-\fBe\fP ename	# name for 2-vector ellipticity (\fBe\fP)\\\fBn\fP\\		-x \fBxname\fP	# name for 2-vector spatial coordinate (x)\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'etprofile\\' calculates tangential alignment profile\\\fBn\fP\\	from \fBa\fP catalogue.\\\fBn\fP\\	Also calculates kappabar = 2 int \fBd\fP ln \fBr\fP eT\\\fBn\fP\\	with geometrical boost factor 1 / ( 1 - \fBr\fP^2 / rmax^2).\\\fBn\fP\\	Error bars calculated using orthogonal shear component.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	etprofile --- calculates tangential alignment profile\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	etprofile [option...] < \fBcatfile\fP > asciifile\\\fBn\fP\\		-o \fBio\fP \fBjo\fP	# origin about which we do profile (2048, 2048)\\\fBn\fP\\		-\fBd\fP dlnr		# log bin size 0.25\\\fBn\fP\\		-\fBr\fP rmin rmax	# min and max radii (200, 2000)\\\fBn\fP\\		-\fBl\fP lossfactor	# multiply \fBe\fP by 1/ lossfactor\\\fBn\fP\\		-\fBe\fP ename	# name for 2-vector ellipticity (\fBe\fP)\\\fBn\fP\\		-x \fBxname\fP	# name for 2-vector spatial coordinate (x)\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'etprofile\\' calculates tangential alignment profile\\\fBn\fP\\	from \fBa\fP catalogue.\\\fBn\fP\\	Also calculates kappabar = 2 int \fBd\fP ln \fBr\fP eT\\\fBn\fP\\	with geometrical boost factor 1 / ( 1 - \fBr\fP^2 / rmax^2).\\\fBn\fP\\	Error bars calculated using orthogonal shear component.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file etprofile.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 33 of file etprofile.c.
+.PP
+References argsToString(), dx, dy, e, error_exit, exit(), lcpipe, line, nobj, r, usage, x, xo, and yo.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,17 @@
+# text format catalogue file --- do not edit manually, use 'lc'
+# header:
+# text     1 1         title                          foo
+# number   1 1         e                           2.1718
+# comment: # my unformatted data file
+# comment: #	X	Y	temp	index	file
+# comment: history: lc -C -N '1 2 r' -n temp -n index -t file -H 'title = {foo}' -H 'e = 2.1718'
+# contents: 4
+# number   1 2         r                   
+# number   1 1         temp                
+# number   1 1         index               
+# text     1 1         file                
+#          r[0]          r[1]          temp         index          file
+          0.123         0.345         451.2            27          spam
+          0.754         0.923         451.7            15          eggs
+          0.034         0.252           451            12          fish
+          0.967         0.204         452.9            30          spam

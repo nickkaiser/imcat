@@ -1,0 +1,67 @@
+#!/usr/bin/perl
+
+$| = 1;
+
+$usage = "\
+NAME\
+	merge2cats --- perl script to merge a pair of catalogues\
+\
+SYNOPSIS\
+	merge2cats cat0 cat1 [options...]\
+\
+DESCRIPTION\
+	Merge2cats  makes a first attempt at merging a pair of cats\
+	which should each contain position vector 'x'.\
+	For each pair of cats\
+	we run 'registercats' to get approximate linear transformations\
+	which we apply to the 1st of each pair and then run 'mergecats'\
+	with specified linking length d.\
+	Options are:
+		-d d		# linking length (10)\
+		-i N		# size of image used by acfregister (128)\
+		-x xname	# name for spatial coordinate ('x')\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+";
+
+# defaults
+$d = 10.0;
+$N = 128;
+$xname = "x";
+
+$cat0 = shift(@ARGV) || die $usage;
+$cat1 = shift(@ARGV) || die $usage;
+while ($_ = shift(@ARGV)) {
+	if (/^-d/) {
+		$d = shift(@ARGV) || die $usage;
+	} elsif (/^-i/) {
+		$N = shift(@ARGV) || die $usage;
+	} elsif (/^-x/) {
+		$xname = shift(@ARGV) || die $usage;
+	} else {
+		die $usage;
+	}
+}
+
+
+
+$params = `acfregister -i $N -x $xname $cat0 $cat1`;
+chop($params);
+if ($params) {
+	&echosys("scalerottrans $params -x $xname < $cat0 > $$.1.tmp");
+	&echosys("mergecats -x $xname $d $$.1.tmp $cat1 | lc -b 'x = %$xname' > $$.2.tmp");
+	&echosys("lc -b -x +all 'x = %x[0]' 'temp = %x[1]' < $$.2.tmp | scalerottrans $params -i > $$.3.tmp");
+	&echosys("lc -b -x 'x = %x %temp 2 vector' < $$.3.tmp > $$.4.tmp");
+	&echosys("lintransfit -r < $$.4.tmp");
+} else {
+	die "merge2cats: acfregister failed\n";
+}
+&echosys("rm $$.?.tmp");
+
+
+sub echosys {
+#        print @_, "\n";
+        system(@_) && die "System call failed!\n";
+}
+

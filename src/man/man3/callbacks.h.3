@@ -1,0 +1,59 @@
+.TH "callbacks.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+callbacks.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBIDLE_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBRUN_MODE\fP   1"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "char * \fBcounter_filter\fP (FL_OBJECT *\fBobj\fP, double value, int prec)"
+.br
+.ti -1c
+.RI "void \fBstart_command\fP (void)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define IDLE_MODE   0"
+.PP
+Definition at line 5 of file callbacks.h.
+.PP
+Referenced by forwardstep_button_callback(), main(), rewind_button_callback(), and stop_button_callback().
+.SS "#define RUN_MODE   1"
+.PP
+Definition at line 6 of file callbacks.h.
+.PP
+Referenced by go_button_callback(), and main().
+.SH "Function Documentation"
+.PP 
+.SS "char* counter_filter (FL_OBJECT * obj, double value, int prec)"
+.PP
+Definition at line 115 of file callbacks.c.
+.PP
+References buf.
+.PP
+Referenced by main().
+.SS "void start_command (void)"
+.PP
+Definition at line 84 of file callbacks.c.
+.PP
+References allocFloatArray(), f, fits, fitsgencommand, framenumber, freeFloatArray(), ipf, fitsheader::n, fitsheader::ndim, nframes, Nx, Ny, and readfitsheader().
+.PP
+Referenced by command_input_callback(), and rewind_button_callback().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

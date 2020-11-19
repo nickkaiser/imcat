@@ -1,0 +1,69 @@
+.TH "matchobjects.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+matchobjects.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBtriangle\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   'usage: matchobjects.\fBc\fP [\fBoptions\fP...] \fBa\fP.tab \fBb\fP.tab\\\fBn\fP\\	reads \fBa\fP \fBpair\fP of tables and tries to find matching lines.\\\fBn\fP\\	Options are:\\\fBn\fP\\		-\fBa\fP col prec	# absolute comparison on column col\\\fBn\fP\\		-\fBr\fP col prec	# relative comparison on column col\\\fBn\fP\\		-o col format	# output column col\\\fBn\fP\\		-\fBd\fP col format	# output difference in column col\\\fBn\fP\\	Default behaviour is equivalent to \\'matchobjects -\fBa\fP 1 0 -o 2 \\'%10.3\\'\\'\\\fBn\fP\\	which outputs col2 from \fBa\fP.tab followed by col2 from \fBb\fP.tab provided\\\fBn\fP\\	col1 values agree exactly\\\fBn\fP\\	U	Use -\fBr\fP to specify relative comparsion 	and (\fBdx\fP,\fBdy\fP) is the translation in \fBb\fP-coords\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBPI\fP   M_PI"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBtriangle\fP \fBtriangle\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define PI   M_PI"
+.PP
+Definition at line 29 of file matchobjects.c.
+.PP
+Referenced by ccf(), cfilter(), cpgellipses(), do_object_stats(), dosky(), drawcircle(), drawellipse(), filter(), gaussfilter(), halfx(), halfy(), ifunc(), invkx(), invky(), main(), make_pop(), parsecommandline(), poidev(), quality_statistics(), rfunc(), and testtriangle().
+.SS "#define \fBusage\fP   'usage: matchobjects.\fBc\fP [\fBoptions\fP...] \fBa\fP.tab \fBb\fP.tab\\\fBn\fP\\	reads \fBa\fP \fBpair\fP of tables and tries to find matching lines.\\\fBn\fP\\	Options are:\\\fBn\fP\\		-\fBa\fP col prec	# absolute comparison on column col\\\fBn\fP\\		-\fBr\fP col prec	# relative comparison on column col\\\fBn\fP\\		-o col format	# output column col\\\fBn\fP\\		-\fBd\fP col format	# output difference in column col\\\fBn\fP\\	Default behaviour is equivalent to \\'matchobjects -\fBa\fP 1 0 -o 2 \\'%10.3\\'\\'\\\fBn\fP\\	which outputs col2 from \fBa\fP.tab followed by col2 from \fBb\fP.tab provided\\\fBn\fP\\	col1 values agree exactly\\\fBn\fP\\	U	Use -\fBr\fP to specify relative comparsion 	and (\fBdx\fP,\fBdy\fP) is the translation in \fBb\fP-coords\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 10 of file matchobjects.c.
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBtriangle\fP  \fBtriangle\fP"
+.PP
+Referenced by boundingbox(), carveholes(), checkdelaunay(), checkedge4encroach(), checkmesh(), conformingedge(), constrainededge(), delaunayfixup(), deletesite(), dummyinit(), finddirection(), flip(), frontlocate(), highorder(), incrementaldelaunay(), infecthull(), initializepointpool(), initializetrisegpools(), insertsegment(), insertshelle(), insertsite(), locate(), makepointmap(), maketriangle(), markhull(), mergehulls(), plague(), preciselocate(), quality_statistics(), reconstruct(), regionplague(), removebox(), removeghosts(), repairencs(), segmentintersection(), sweeplinedelaunay(), tallyfaces(), triangledealloc(), triangleinit(), triangletraverse(), triangulatepolygon(), writeedges(), writeelements(), writeneighbors(), writeoff(), and writevoronoi().
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 31 of file matchobjects.c.
+.PP
+References dx, dy, n, and r.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

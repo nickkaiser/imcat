@@ -1,0 +1,280 @@
+.TH "Marker" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Marker \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <cdl.h>\fP
+.PP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "short \fBtype\fP"
+.br
+.ti -1c
+.RI "int \fBx\fP"
+.br
+.ti -1c
+.RI "int \fBy\fP"
+.br
+.ti -1c
+.RI "int \fBnumber\fP"
+.br
+.ti -1c
+.RI "int \fBpt_type\fP"
+.br
+.ti -1c
+.RI "int \fBsize\fP"
+.br
+.ti -1c
+.RI "int \fBfill\fP"
+.br
+.ti -1c
+.RI "int \fBcolor\fP"
+.br
+.ti -1c
+.RI "int * \fBxp\fP"
+.br
+.ti -1c
+.RI "int * \fByp\fP"
+.br
+.ti -1c
+.RI "int \fBnpts\fP"
+.br
+.ti -1c
+.RI "int \fBradius\fP"
+.br
+.ti -1c
+.RI "int \fBnannuli\fP"
+.br
+.ti -1c
+.RI "int \fBsep\fP"
+.br
+.ti -1c
+.RI "int \fBxrad\fP"
+.br
+.ti -1c
+.RI "int \fByrad\fP"
+.br
+.ti -1c
+.RI "float \fBang\fP"
+.br
+.ti -1c
+.RI "float \fBtxsize\fP"
+.br
+.ti -1c
+.RI "char * \fBstr\fP"
+.br
+.ti -1c
+.RI "int \fBfont\fP"
+.br
+.ti -1c
+.RI "int \fBtextwidth\fP"
+.br
+.ti -1c
+.RI "int \fBlinewidth\fP"
+.br
+.ti -1c
+.RI "int \fBlinestyle\fP"
+.br
+.ti -1c
+.RI "int \fBnx\fP"
+.br
+.ti -1c
+.RI "int \fBny\fP"
+.br
+.ti -1c
+.RI "int \fBlx\fP"
+.br
+.ti -1c
+.RI "int \fBly\fP"
+.br
+.ti -1c
+.RI "unsigned char * \fBrefpix\fP"
+.br
+.ti -1c
+.RI "unsigned char * \fBmarkpix\fP"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBback\fP"
+.br
+.ti -1c
+.RI "\fBMarkerPtr\fP \fBnext\fP"
+.br
+.ti -1c
+.RI "int \fBmarkerID\fP"
+.br
+.ti -1c
+.RI "void * \fBlcobject\fP"
+.br
+.in -1c
+.SH "Field Documentation"
+.PP 
+.SS "float \fBMarker::ang\fP"
+.PP
+Definition at line 140 of file cdl.h.
+.PP
+Referenced by cdl_initEllAnnMarker(), and cdl_initEllipseMarker().
+.SS "\fBMarkerPtr\fP \fBMarker::back\fP"
+.PP
+Definition at line 154 of file cdl.h.
+.PP
+Referenced by cdl_clearOverlay(), cdl_deleteMark(), cdl_insertMarker(), cdl_printDisplayList(), and cdl_removeMarker().
+.SS "int \fBMarker::color\fP"
+.PP
+Definition at line 133 of file cdl.h.
+.PP
+Referenced by cdl_initBoxMarker(), cdl_initCircAnnMarker(), cdl_initCircleMarker(), cdl_initEllAnnMarker(), cdl_initEllipseMarker(), cdl_initLineMarker(), cdl_initPointLabelMarker(), cdl_initPointMarker(), cdl_initPolygonMarker(), cdl_initPolylineMarker(), and cdl_initTextMarker().
+.SS "int \fBMarker::fill\fP"
+.PP
+Definition at line 132 of file cdl.h.
+.PP
+Referenced by cdl_initBoxMarker(), cdl_initCircleMarker(), cdl_initEllipseMarker(), and cdl_initPolygonMarker().
+.SS "int \fBMarker::font\fP"
+.PP
+Definition at line 143 of file cdl.h.
+.PP
+Referenced by cdl_initPointLabelMarker(), cdl_initTextMarker(), cdl_markPointLabel(), and cdl_markText().
+.SS "void* \fBMarker::lcobject\fP"
+.PP
+Definition at line 157 of file cdl.h.
+.SS "int \fBMarker::linestyle\fP"
+.PP
+Definition at line 146 of file cdl.h.
+.PP
+Referenced by cdl_initBoxMarker(), cdl_initCircAnnMarker(), cdl_initCircleMarker(), cdl_initEllAnnMarker(), cdl_initEllipseMarker(), cdl_initLineMarker(), cdl_initPolygonMarker(), and cdl_initPolylineMarker().
+.SS "int \fBMarker::linewidth\fP"
+.PP
+Definition at line 145 of file cdl.h.
+.PP
+Referenced by cdl_initBoxMarker(), cdl_initCircAnnMarker(), cdl_initCircleMarker(), cdl_initEllAnnMarker(), cdl_initEllipseMarker(), cdl_initLineMarker(), cdl_initPolygonMarker(), and cdl_initPolylineMarker().
+.SS "int \fBMarker::lx\fP"
+.PP
+Definition at line 149 of file cdl.h.
+.PP
+Referenced by cdl_clearOverlay(), cdl_deleteMark(), and cdl_redrawOverlay().
+.SS "int \fBMarker::ly\fP"
+.PP
+Definition at line 149 of file cdl.h.
+.PP
+Referenced by cdl_clearOverlay(), cdl_deleteMark(), and cdl_redrawOverlay().
+.SS "int \fBMarker::markerID\fP"
+.PP
+Definition at line 156 of file cdl.h.
+.SS "unsigned char* \fBMarker::markpix\fP"
+.PP
+Definition at line 152 of file cdl.h.
+.PP
+Referenced by cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), cdl_redrawOverlay(), and cdl_removeMarker().
+.SS "int \fBMarker::nannuli\fP"
+.PP
+Definition at line 137 of file cdl.h.
+.PP
+Referenced by cdl_initCircAnnMarker(), and cdl_initEllAnnMarker().
+.SS "\fBMarkerPtr\fP \fBMarker::next\fP"
+.PP
+Definition at line 155 of file cdl.h.
+.PP
+Referenced by cdl_deleteMark(), cdl_findNearest(), cdl_freeDisplayList(), cdl_insertMarker(), cdl_printDisplayList(), cdl_redrawOverlay(), and cdl_removeMarker().
+.SS "int \fBMarker::npts\fP"
+.PP
+Definition at line 135 of file cdl.h.
+.PP
+Referenced by cdl_findNearest(), cdl_initPolygonMarker(), and cdl_initPolylineMarker().
+.SS "int \fBMarker::number\fP"
+.PP
+Definition at line 129 of file cdl.h.
+.PP
+Referenced by cdl_deleteMark(), and cdl_initPointMarker().
+.SS "int \fBMarker::nx\fP"
+.PP
+Definition at line 148 of file cdl.h.
+.PP
+Referenced by cdl_clearOverlay(), cdl_deleteMark(), and cdl_redrawOverlay().
+.SS "int \fBMarker::ny\fP"
+.PP
+Definition at line 148 of file cdl.h.
+.PP
+Referenced by cdl_clearOverlay(), cdl_deleteMark(), and cdl_redrawOverlay().
+.SS "int \fBMarker::pt_type\fP"
+.PP
+Definition at line 130 of file cdl.h.
+.PP
+Referenced by cdl_initPointLabelMarker(), and cdl_initPointMarker().
+.SS "int \fBMarker::radius\fP"
+.PP
+Definition at line 136 of file cdl.h.
+.PP
+Referenced by cdl_initCircAnnMarker(), and cdl_initCircleMarker().
+.SS "unsigned char* \fBMarker::refpix\fP"
+.PP
+Definition at line 151 of file cdl.h.
+.PP
+Referenced by cdl_clearOverlay(), cdl_deleteMark(), cdl_markBox(), cdl_markCircAnnuli(), cdl_markCircle(), cdl_markEllipAnnuli(), cdl_markEllipse(), cdl_markLine(), cdl_markPoint(), cdl_markPointLabel(), cdl_markPolygon(), cdl_markPolyline(), cdl_markText(), and cdl_removeMarker().
+.SS "int \fBMarker::sep\fP"
+.PP
+Definition at line 138 of file cdl.h.
+.PP
+Referenced by cdl_initCircAnnMarker(), and cdl_initEllAnnMarker().
+.SS "int \fBMarker::size\fP"
+.PP
+Definition at line 131 of file cdl.h.
+.PP
+Referenced by cdl_initPointLabelMarker(), and cdl_initPointMarker().
+.SS "char* \fBMarker::str\fP"
+.PP
+Definition at line 142 of file cdl.h.
+.PP
+Referenced by cdl_initPointLabelMarker(), cdl_initTextMarker(), and cdl_removeMarker().
+.SS "int \fBMarker::textwidth\fP"
+.PP
+Definition at line 144 of file cdl.h.
+.PP
+Referenced by cdl_initTextMarker().
+.SS "float \fBMarker::txsize\fP"
+.PP
+Definition at line 141 of file cdl.h.
+.PP
+Referenced by cdl_initTextMarker(), and cdl_markPointLabel().
+.SS "short \fBMarker::type\fP"
+.PP
+Definition at line 127 of file cdl.h.
+.PP
+Referenced by cdl_deleteMark(), cdl_findNearest(), cdl_initBoxMarker(), cdl_initCircAnnMarker(), cdl_initCircleMarker(), cdl_initEllAnnMarker(), cdl_initEllipseMarker(), cdl_initLineMarker(), cdl_initPointLabelMarker(), cdl_initPointMarker(), cdl_initPolygonMarker(), cdl_initPolylineMarker(), cdl_initTextMarker(), and cdl_printDisplayList().
+.SS "int \fBMarker::x\fP"
+.PP
+Definition at line 128 of file cdl.h.
+.PP
+Referenced by cdl_findNearest(), cdl_initBoxMarker(), cdl_initCircAnnMarker(), cdl_initCircleMarker(), cdl_initEllAnnMarker(), cdl_initEllipseMarker(), cdl_initLineMarker(), cdl_initPointLabelMarker(), cdl_initPointMarker(), cdl_initPolygonMarker(), cdl_initPolylineMarker(), and cdl_initTextMarker().
+.SS "int* \fBMarker::xp\fP"
+.PP
+Definition at line 134 of file cdl.h.
+.PP
+Referenced by cdl_findNearest(), cdl_initBoxMarker(), cdl_initLineMarker(), cdl_initPolygonMarker(), cdl_initPolylineMarker(), and cdl_removeMarker().
+.SS "int \fBMarker::xrad\fP"
+.PP
+Definition at line 139 of file cdl.h.
+.PP
+Referenced by cdl_initEllAnnMarker(), and cdl_initEllipseMarker().
+.SS "int \fBMarker::y\fP"
+.PP
+Definition at line 128 of file cdl.h.
+.PP
+Referenced by cdl_findNearest(), cdl_initBoxMarker(), cdl_initCircAnnMarker(), cdl_initCircleMarker(), cdl_initEllAnnMarker(), cdl_initEllipseMarker(), cdl_initLineMarker(), cdl_initPointLabelMarker(), cdl_initPointMarker(), cdl_initPolygonMarker(), cdl_initPolylineMarker(), and cdl_initTextMarker().
+.SS "int * \fBMarker::yp\fP"
+.PP
+Definition at line 134 of file cdl.h.
+.PP
+Referenced by cdl_findNearest(), cdl_initBoxMarker(), cdl_initLineMarker(), cdl_initPolygonMarker(), cdl_initPolylineMarker(), and cdl_removeMarker().
+.SS "int \fBMarker::yrad\fP"
+.PP
+Definition at line 139 of file cdl.h.
+.PP
+Referenced by cdl_initEllAnnMarker(), and cdl_initEllipseMarker().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

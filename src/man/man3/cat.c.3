@@ -1,0 +1,479 @@
+.TH "cat.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cat.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdarg.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include 'cat.h'\fP
+.br
+\fC#include 'error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBN_TYPES\fP   8"
+.br
+.ti -1c
+.RI "#define \fBWORD_SIZE\fP   128"
+.br
+.ti -1c
+.RI "#define \fBLINE_SIZE\fP   100000"
+.br
+.ti -1c
+.RI "#define \fBLINE1_TEXT\fP   '# text format catalogue file --- do not edit manually, use 'lc'\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBLINE1_BINARY\fP   '# binary catalogue file --- use 'lc' to list contents\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBLINE2\fP   '# header:\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBcathead\fP * \fBreadcathead\fP (void)"
+.br
+.ti -1c
+.RI "void \fBcopyheaderinfo\fP (\fBcathead\fP *thecathead, \fBcathead\fP *\fBsourcecathead\fP)"
+.br
+.ti -1c
+.RI "void \fBcopycontentinfo\fP (\fBcathead\fP *thecathead, \fBcathead\fP *\fBsourcecathead\fP)"
+.br
+.ti -1c
+.RI "void \fBwritecathead\fP (\fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "void \fBfreecathead\fP (\fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "void \fBmakeitemlist\fP (\fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "int \fBgettype\fP (void)"
+.br
+.ti -1c
+.RI "\fBitem\fP * \fBreadnewitem\fP (int itype)"
+.br
+.ti -1c
+.RI "\fBitem\fP * \fBsscannewitem\fP (int itype, char *string)"
+.br
+.ti -1c
+.RI "\fBitem\fP * \fBnewitem\fP (char *name, int itype, int \fBndim\fP,...)"
+.br
+.ti -1c
+.RI "\fBitem\fP * \fBnewitembydimarray\fP (char *name, int itype, int \fBndim\fP, int *\fBdim\fP)"
+.br
+.ti -1c
+.RI "\fBitem\fP * \fBcopyitem\fP (\fBitem\fP *sourceitem)"
+.br
+.ti -1c
+.RI "int \fBallocitemcontents\fP (\fBitem\fP *theitem, void **addr, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "void \fBcopyitemcontents\fP (\fBitem\fP *dstitem, void *dstaddr, \fBitem\fP *srcitem, void *srcaddr, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "void \fBfreeitemcontents\fP (\fBitem\fP *theitem, void *addr, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "void \fBfreeitem\fP (\fBitem\fP *theitem)"
+.br
+.ti -1c
+.RI "int \fBreaditem\fP (\fBitem\fP *theitem, void *addr, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "int \fBsscanitem\fP (\fBitem\fP *theitem, void *addr, int \fBlevel\fP, char **string)"
+.br
+.ti -1c
+.RI "int \fBwriteitem\fP (\fBitem\fP *theitem, void *addr, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "int \fBwritelabel\fP (\fBitem\fP *theitem, int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "int \fBwritename\fP (\fBitem\fP *theitem)"
+.br
+.ti -1c
+.RI "int \fBsize\fP (int itype)"
+.br
+.ti -1c
+.RI "int \fBinstallitem\fP (\fBitem\fP *theitem, \fBitem\fP **base)"
+.br
+.ti -1c
+.RI "void \fBinstallcomment\fP (\fBcomment\fP *thecomment, \fBcomment\fP **base)"
+.br
+.ti -1c
+.RI "void \fBaddcomment\fP (char *thetext, \fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "void \fBaddargscomment\fP (int argc, char *argv[], \fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "\fBcomment\fP * \fBcopycomment\fP (\fBcomment\fP *sourcecomment)"
+.br
+.ti -1c
+.RI "\fBobject\fP * \fBnewobject\fP (\fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "void \fBallocobjectcontents\fP (\fBobject\fP *\fBtheobject\fP)"
+.br
+.ti -1c
+.RI "void \fBconnectcatheadtoobject\fP (\fBobject\fP *\fBtheobject\fP)"
+.br
+.ti -1c
+.RI "void \fBconnectobjecttocathead\fP (\fBobject\fP *\fBtheobject\fP)"
+.br
+.ti -1c
+.RI "int \fBreadobject\fP (\fBobject\fP *\fBtheobject\fP)"
+.br
+.ti -1c
+.RI "void \fBwriteobject\fP (\fBobject\fP *\fBtheobject\fP)"
+.br
+.ti -1c
+.RI "void \fBfreeobject\fP (\fBobject\fP *\fBtheobject\fP)"
+.br
+.ti -1c
+.RI "\fBitem\fP * \fBgetheaderitem\fP (char *name, \fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "void * \fBgetheaderitemaddress\fP (char *name, \fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "void \fBsetheaderitemaddress\fP (char *name, \fBcathead\fP *thecathead, void *theaddr)"
+.br
+.ti -1c
+.RI "void \fBdeleteheaderitem\fP (char *name, \fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "void \fBaddobjectitem\fP (\fBitem\fP *newitem, \fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "void \fBdeleteobjectitem\fP (char *name, \fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "\fBitem\fP * \fBgetobjectitem\fP (char *name, \fBcathead\fP *thecathead)"
+.br
+.ti -1c
+.RI "int \fBgetobjectitemindex\fP (char *name, \fBobject\fP *\fBtheobject\fP)"
+.br
+.ti -1c
+.RI "int \fBinheritcontents\fP (\fBobject\fP *\fBtheobject\fP, \fBobject\fP *sourceobject)"
+.br
+.ti -1c
+.RI "void * \fBgetaddress\fP (\fBobject\fP *\fBtheobject\fP, int theindex)"
+.br
+.ti -1c
+.RI "void \fBsetaddress\fP (\fBobject\fP *\fBtheobject\fP, int theindex, void *theaddr)"
+.br
+.ti -1c
+.RI "void \fBcopystring\fP (char **thestring, char *sourcestring)"
+.br
+.ti -1c
+.RI "void \fBsetcatipf\fP (FILE *stream)"
+.br
+.ti -1c
+.RI "void \fBsetcatopf\fP (FILE *stream)"
+.br
+.ti -1c
+.RI "void \fBgetcatipfiletype\fP (int *filetype)"
+.br
+.ti -1c
+.RI "void \fBsetcatipfiletype\fP (int filetype)"
+.br
+.ti -1c
+.RI "void \fBgetcatopfiletype\fP (int *filetype)"
+.br
+.ti -1c
+.RI "void \fBsetcatopfiletype\fP (int filetype)"
+.br
+.ti -1c
+.RI "void \fBswapbytes\fP (void *addr, int ndoubles)"
+.br
+.ti -1c
+.RI "void \fBswapint\fP (void *addr, int nint)"
+.br
+.ti -1c
+.RI "int \fBinstall1numericheaderitem\fP (char *name, double value, \fBcathead\fP *thecat)"
+.br
+.ti -1c
+.RI "int \fBinstall1textheaderitem\fP (char *name, char *value, \fBcathead\fP *thecat)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "FILE * \fBcatipf\fP"
+.br
+.ti -1c
+.RI "FILE * \fBcatopf\fP"
+.br
+.ti -1c
+.RI "int \fBinputfiletype\fP = TEXT_FILE_TYPE"
+.br
+.ti -1c
+.RI "int \fBoutputfiletype\fP = TEXT_FILE_TYPE"
+.br
+.ti -1c
+.RI "char * \fBtype\fP [N_TYPES]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define LINE1_BINARY   '# binary catalogue file --- use 'lc' to list contents\\\fBn\fP'"
+.PP
+Definition at line 32 of file cat.c.
+.PP
+Referenced by readcathead(), and writecathead().
+.SS "#define LINE1_TEXT   '# text format catalogue file --- do not edit manually, use 'lc'\\\fBn\fP'"
+.PP
+Definition at line 31 of file cat.c.
+.PP
+Referenced by readcathead(), and writecathead().
+.SS "#define LINE2   '# header:\\\fBn\fP'"
+.PP
+Definition at line 33 of file cat.c.
+.PP
+Referenced by readcathead(), and writecathead().
+.SS "#define LINE_SIZE   100000"
+.PP
+Definition at line 29 of file cat.c.
+.PP
+Referenced by readcathead().
+.SS "#define N_TYPES   8"
+.PP
+Definition at line 23 of file cat.c.
+.PP
+Referenced by gettype(), newitem(), and newitembydimarray().
+.SS "#define WORD_SIZE   128"
+.PP
+Definition at line 28 of file cat.c.
+.PP
+Referenced by gettype(), readitem(), readnewitem(), sscanitem(), sscannewitem(), writelabel(), and writename().
+.SH "Function Documentation"
+.PP 
+.SS "void addargscomment (int argc, char * argv[], \fBcathead\fP * thecathead)"
+.PP
+Definition at line 803 of file cat.c.
+.SS "void addcomment (char * thetext, \fBcathead\fP * thecathead)"
+.PP
+Definition at line 789 of file cat.c.
+.SS "void addobjectitem (\fBitem\fP * newitem, \fBcathead\fP * thecathead)"
+.PP
+Definition at line 1020 of file cat.c.
+.SS "int allocitemcontents (\fBitem\fP * theitem, void ** addr, int level)"
+.PP
+Definition at line 413 of file cat.c.
+.SS "void allocobjectcontents (\fBobject\fP * theobject)"
+.PP
+Definition at line 854 of file cat.c.
+.SS "void connectcatheadtoobject (\fBobject\fP * theobject)"
+.PP
+Definition at line 869 of file cat.c.
+.SS "void connectobjecttocathead (\fBobject\fP * theobject)"
+.PP
+Definition at line 881 of file cat.c.
+.SS "\fBcomment\fP* copycomment (\fBcomment\fP * sourcecomment)"
+.PP
+Definition at line 823 of file cat.c.
+.SS "void copycontentinfo (\fBcathead\fP * thecathead, \fBcathead\fP * sourcecathead)"
+.PP
+Definition at line 147 of file cat.c.
+.SS "void copyheaderinfo (\fBcathead\fP * thecathead, \fBcathead\fP * sourcecathead)"
+.PP
+Definition at line 124 of file cat.c.
+.SS "\fBitem\fP* copyitem (\fBitem\fP * sourceitem)"
+.PP
+Definition at line 396 of file cat.c.
+.SS "void copyitemcontents (\fBitem\fP * dstitem, void * dstaddr, \fBitem\fP * srcitem, void * srcaddr, int level)"
+.PP
+Definition at line 429 of file cat.c.
+.SS "void copystring (char ** thestring, char * sourcestring)"
+.PP
+Definition at line 1163 of file cat.c.
+.SS "void deleteheaderitem (char * name, \fBcathead\fP * thecathead)"
+.PP
+Definition at line 991 of file cat.c.
+.SS "void deleteobjectitem (char * name, \fBcathead\fP * thecathead)"
+.PP
+Definition at line 1030 of file cat.c.
+.SS "void freecathead (\fBcathead\fP * thecathead)"
+.PP
+Definition at line 230 of file cat.c.
+.SS "void freeitem (\fBitem\fP * theitem)"
+.PP
+Definition at line 474 of file cat.c.
+.SS "void freeitemcontents (\fBitem\fP * theitem, void * addr, int level)"
+.PP
+Definition at line 460 of file cat.c.
+.SS "void freeobject (\fBobject\fP * theobject)"
+.PP
+Definition at line 927 of file cat.c.
+.SS "void* getaddress (\fBobject\fP * theobject, int theindex)"
+.PP
+Definition at line 1139 of file cat.c.
+.SS "void getcatipfiletype (int * filetype)"
+.PP
+Definition at line 1185 of file cat.c.
+.SS "void getcatopfiletype (int * filetype)"
+.PP
+Definition at line 1198 of file cat.c.
+.SS "\fBitem\fP* getheaderitem (char * name, \fBcathead\fP * thecathead)"
+.PP
+Definition at line 942 of file cat.c.
+.SS "void* getheaderitemaddress (char * name, \fBcathead\fP * thecathead)"
+.PP
+Definition at line 962 of file cat.c.
+.SS "\fBitem\fP* getobjectitem (char * name, \fBcathead\fP * thecathead)"
+.PP
+Definition at line 1059 of file cat.c.
+.SS "int getobjectitemindex (char * name, \fBobject\fP * theobject)"
+.PP
+Definition at line 1080 of file cat.c.
+.SS "int gettype (void)"
+.PP
+Definition at line 269 of file cat.c.
+.PP
+Referenced by readcathead().
+.SS "int inheritcontents (\fBobject\fP * theobject, \fBobject\fP * sourceobject)"
+.PP
+Definition at line 1101 of file cat.c.
+.SS "int install1numericheaderitem (char * name, double value, \fBcathead\fP * thecat)"
+.PP
+Definition at line 1248 of file cat.c.
+.SS "int install1textheaderitem (char * name, char * value, \fBcathead\fP * thecat)"
+.PP
+Definition at line 1259 of file cat.c.
+.SS "void installcomment (\fBcomment\fP * thecomment, \fBcomment\fP ** base)"
+.PP
+Definition at line 773 of file cat.c.
+.SS "int installitem (\fBitem\fP * theitem, \fBitem\fP ** base)"
+.PP
+Definition at line 740 of file cat.c.
+.SS "void makeitemlist (\fBcathead\fP * thecathead)"
+.PP
+Definition at line 252 of file cat.c.
+.SS "\fBitem\fP* newitem (char * name, int itype, int ndim, ...)"
+.PP
+Definition at line 351 of file cat.c.
+.PP
+Referenced by addobjectitem(), poolalloc(), and traverse().
+.SS "\fBitem\fP* newitembydimarray (char * name, int itype, int ndim, int * dim)"
+.PP
+Definition at line 374 of file cat.c.
+.SS "\fBobject\fP* newobject (\fBcathead\fP * thecathead)"
+.PP
+Definition at line 836 of file cat.c.
+.SS "\fBcathead\fP* readcathead (void)"
+.PP
+Definition at line 36 of file cat.c.
+.PP
+Referenced by main(), and readlmodel().
+.SS "int readitem (\fBitem\fP * theitem, void * addr, int level)"
+.PP
+Definition at line 485 of file cat.c.
+.SS "\fBitem\fP* readnewitem (int itype)"
+.PP
+Definition at line 296 of file cat.c.
+.SS "int readobject (\fBobject\fP * theobject)"
+.PP
+Definition at line 894 of file cat.c.
+.SS "void setaddress (\fBobject\fP * theobject, int theindex, void * theaddr)"
+.PP
+Definition at line 1151 of file cat.c.
+.SS "void setcatipf (FILE * stream)"
+.PP
+Definition at line 1172 of file cat.c.
+.SS "void setcatipfiletype (int filetype)"
+.PP
+Definition at line 1191 of file cat.c.
+.SS "void setcatopf (FILE * stream)"
+.PP
+Definition at line 1178 of file cat.c.
+.SS "void setcatopfiletype (int filetype)"
+.PP
+Definition at line 1205 of file cat.c.
+.SS "void setheaderitemaddress (char * name, \fBcathead\fP * thecathead, void * theaddr)"
+.PP
+Definition at line 975 of file cat.c.
+.SS "int size (int itype)"
+.PP
+Definition at line 723 of file cat.c.
+.SS "int sscanitem (\fBitem\fP * theitem, void * addr, int level, char ** string)"
+.PP
+Definition at line 566 of file cat.c.
+.SS "\fBitem\fP* sscannewitem (int itype, char * string)"
+.PP
+Definition at line 323 of file cat.c.
+.SS "void swapbytes (void * addr, int ndoubles)"
+.PP
+Definition at line 1212 of file cat.c.
+.SS "void swapint (void * addr, int nint)"
+.PP
+Definition at line 1230 of file cat.c.
+.PP
+References b, i, and nint.
+.PP
+Referenced by readitem().
+.SS "void writecathead (\fBcathead\fP * thecathead)"
+.PP
+Definition at line 165 of file cat.c.
+.SS "int writeitem (\fBitem\fP * theitem, void * addr, int level)"
+.PP
+Definition at line 606 of file cat.c.
+.SS "int writelabel (\fBitem\fP * theitem, int level)"
+.PP
+Definition at line 671 of file cat.c.
+.SS "int writename (\fBitem\fP * theitem)"
+.PP
+Definition at line 700 of file cat.c.
+.SS "void writeobject (\fBobject\fP * theobject)"
+.PP
+Definition at line 908 of file cat.c.
+.SH "Variable Documentation"
+.PP 
+.SS "FILE* \fBcatipf\fP\fC [static]\fP"
+.PP
+Definition at line 16 of file cat.c.
+.PP
+Referenced by gettype(), readcathead(), readitem(), readnewitem(), and setcatipf().
+.SS "FILE* \fBcatopf\fP\fC [static]\fP"
+.PP
+Definition at line 17 of file cat.c.
+.PP
+Referenced by setcatopf(), writecathead(), writeitem(), writelabel(), writename(), and writeobject().
+.SS "int \fBinputfiletype\fP = TEXT_FILE_TYPE\fC [static]\fP"
+.PP
+Definition at line 19 of file cat.c.
+.PP
+Referenced by getcatipfiletype(), readitem(), and setcatipfiletype().
+.SS "int \fBoutputfiletype\fP = TEXT_FILE_TYPE\fC [static]\fP"
+.PP
+Definition at line 20 of file cat.c.
+.PP
+Referenced by getcatopfiletype(), setcatopfiletype(), writeitem(), and writeobject().
+.SS "char* \fBtype\fP[N_TYPES]\fC [static]\fP"
+.PP
+\fBInitial value:\fP.nf
+ {'number', 'text', 'comment:', 'contents:',
+'op2', 'op1', 'genericop', 'rpn_function'}
+.fi
+.PP
+Definition at line 24 of file cat.c.
+.PP
+Referenced by gettype(), and writename().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

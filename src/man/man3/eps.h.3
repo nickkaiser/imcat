@@ -1,0 +1,388 @@
+.TH "eps.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+eps.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBPSCmap\fP"
+.br
+.ti -1c
+.RI "struct \fBPSImage\fP"
+.br
+.ti -1c
+.RI "struct \fBPSPage\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMONO\fP(rd, \fBgn\fP, bl)   ((int)(rd*11 + \fBgn\fP*16 + bl*5) >> 5)"
+.br
+.ti -1c
+.RI "#define \fBMAX\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) > (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.br
+.ti -1c
+.RI "#define \fBMIN\fP(\fBa\fP, \fBb\fP)   ((\fBa\fP) < (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.br
+.ti -1c
+.RI "#define \fBOrientation\fP(ps)   ( ps->page.orientation )"
+.br
+.ti -1c
+.RI "#define \fBScale\fP(ps)   ( ps->page.scale )"
+.br
+.ti -1c
+.RI "#define \fBMaxScale\fP(ps)   ( ps->page.maxscale )"
+.br
+.ti -1c
+.RI "#define \fBPageType\fP(ps)   ( ps->page.page_type )"
+.br
+.ti -1c
+.RI "#define \fBDoAutoScale\fP(ps)   ( ps->page.flags & EPS_AUTOSCALE )"
+.br
+.ti -1c
+.RI "#define \fBDoAutoRotate\fP(ps)   ( ps->page.flags & EPS_AUTOROTATE )"
+.br
+.ti -1c
+.RI "#define \fBDoMaxAspect\fP(ps)   ( ps->page.flags & EPS_MAXASPECT )"
+.br
+.ti -1c
+.RI "#define \fBPIX_PER_LINE\fP   72"
+.br
+.ti -1c
+.RI "#define \fBNoCompression\fP   0"
+.br
+.ti -1c
+.RI "#define \fBRLECompression\fP   1"
+.br
+.ti -1c
+.RI "#define \fBLZWCompression\fP   2"
+.br
+.ti -1c
+.RI "#define \fBJPEGCompression\fP   3"
+.br
+.ti -1c
+.RI "#define \fBEPS_GRAYSCALE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBEPS_PSEUDOCOLOR\fP   1"
+.br
+.ti -1c
+.RI "#define \fBEPS_TRUECOLOR\fP   2"
+.br
+.ti -1c
+.RI "#define \fBEPS_PORTRAIT\fP   0"
+.br
+.ti -1c
+.RI "#define \fBEPS_LANDSCAPE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBEPS_AUTOSCALE\fP   0x01"
+.br
+.ti -1c
+.RI "#define \fBEPS_AUTOROTATE\fP   0x02"
+.br
+.ti -1c
+.RI "#define \fBEPS_MAXASPECT\fP   0x04"
+.br
+.ti -1c
+.RI "#define \fBEPS_UNITARY\fP   0"
+.br
+.ti -1c
+.RI "#define \fBEPS_LINEAR\fP   1"
+.br
+.ti -1c
+.RI "#define \fBEPS_LOG\fP   2"
+.br
+.ti -1c
+.RI "#define \fBEPS_LETTER\fP   0"
+.br
+.ti -1c
+.RI "#define \fBEPS_LEGAL\fP   1"
+.br
+.ti -1c
+.RI "#define \fBEPS_A4\fP   2"
+.br
+.ti -1c
+.RI "#define \fBEPS_B5\fP   3"
+.br
+.ti -1c
+.RI "#define \fBEPS_BSIZE\fP   4"
+.br
+.ti -1c
+.RI "#define \fBEPS_4BY5\fP   5"
+.br
+.ti -1c
+.RI "#define \fBEPS_35MM\fP   6"
+.br
+.ti -1c
+.RI "#define \fBX_ANNOT_MARGIN\fP   30"
+.br
+.ti -1c
+.RI "#define \fBY_ANNOT_MARGIN\fP   60"
+.br
+.ti -1c
+.RI "#define \fBTITLE_OFFSET\fP   20"
+.br
+.ti -1c
+.RI "#define \fBAXIS_OOFFSET\fP   7"
+.br
+.ti -1c
+.RI "#define \fBAXIS_IOFFSET\fP   2"
+.br
+.ti -1c
+.RI "#define \fBAXIS_OWIDTH\fP   1.5"
+.br
+.ti -1c
+.RI "#define \fBAXIS_IWIDTH\fP   1.0"
+.br
+.ti -1c
+.RI "#define \fBMAJOR_TICK_SIZE\fP   5"
+.br
+.ti -1c
+.RI "#define \fBMAJOR_TICK_WIDTH\fP   1.5"
+.br
+.ti -1c
+.RI "#define \fBMINOR_TICK_SIZE\fP   3"
+.br
+.ti -1c
+.RI "#define \fBMINOR_TICK_WIDTH\fP   0.5"
+.br
+.ti -1c
+.RI "#define \fBNTICMARKS\fP   5"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef * \fBPSPagePtr\fP"
+.br
+.ti -1c
+.RI "typedef * \fBPSCmapPtr\fP"
+.br
+.ti -1c
+.RI "typedef * \fBPSImagePtr\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define AXIS_IOFFSET   2"
+.PP
+Definition at line 101 of file eps.h.
+.PP
+Referenced by eps_annotate().
+.SS "#define AXIS_IWIDTH   1.0"
+.PP
+Definition at line 103 of file eps.h.
+.PP
+Referenced by eps_annotate().
+.SS "#define AXIS_OOFFSET   7"
+.PP
+Definition at line 100 of file eps.h.
+.PP
+Referenced by eps_annotate(), eps_landLabels(), and eps_portLabels().
+.SS "#define AXIS_OWIDTH   1.5"
+.PP
+Definition at line 102 of file eps.h.
+.PP
+Referenced by eps_annotate().
+.SS "#define DoAutoRotate(ps)   ( ps->page.flags & EPS_AUTOROTATE )"
+.PP
+Definition at line 20 of file eps.h.
+.PP
+Referenced by eps_pageParams(), and eps_setPage().
+.SS "#define DoAutoScale(ps)   ( ps->page.flags & EPS_AUTOSCALE )"
+.PP
+Definition at line 19 of file eps.h.
+.PP
+Referenced by eps_pageParams(), and eps_setPage().
+.SS "#define DoMaxAspect(ps)   ( ps->page.flags & EPS_MAXASPECT )"
+.PP
+Definition at line 21 of file eps.h.
+.PP
+Referenced by eps_pageParams(), and eps_setPage().
+.SS "#define EPS_35MM   6"
+.PP
+Definition at line 94 of file eps.h.
+.SS "#define EPS_4BY5   5"
+.PP
+Definition at line 93 of file eps.h.
+.SS "#define EPS_A4   2"
+.PP
+Definition at line 90 of file eps.h.
+.SS "#define EPS_AUTOROTATE   0x02"
+.PP
+Definition at line 40 of file eps.h.
+.SS "#define EPS_AUTOSCALE   0x01"
+.PP
+Definition at line 39 of file eps.h.
+.PP
+Referenced by eps_init().
+.SS "#define EPS_B5   3"
+.PP
+Definition at line 91 of file eps.h.
+.SS "#define EPS_BSIZE   4"
+.PP
+Definition at line 92 of file eps.h.
+.SS "#define EPS_GRAYSCALE   0"
+.PP
+Definition at line 32 of file eps.h.
+.PP
+Referenced by eps_doColorbar(), eps_init(), eps_print(), and eps_setColorType().
+.SS "#define EPS_LANDSCAPE   1"
+.PP
+Definition at line 38 of file eps.h.
+.PP
+Referenced by eps_pageParams(), and eps_setPage().
+.SS "#define EPS_LEGAL   1"
+.PP
+Definition at line 89 of file eps.h.
+.SS "#define EPS_LETTER   0"
+.PP
+Definition at line 88 of file eps.h.
+.PP
+Referenced by eps_init().
+.SS "#define EPS_LINEAR   1"
+.PP
+Definition at line 45 of file eps.h.
+.PP
+Referenced by eps_annotate(), and eps_doColorbar().
+.SS "#define EPS_LOG   2"
+.PP
+Definition at line 46 of file eps.h.
+.SS "#define EPS_MAXASPECT   0x04"
+.PP
+Definition at line 41 of file eps.h.
+.SS "#define EPS_PORTRAIT   0"
+.PP
+Definition at line 37 of file eps.h.
+.PP
+Referenced by eps_init(), and eps_setPage().
+.SS "#define EPS_PSEUDOCOLOR   1"
+.PP
+Definition at line 33 of file eps.h.
+.PP
+Referenced by cdl_printPix(), cdl_printPixToFile(), eps_colorHeader(), eps_print(), and eps_setColorType().
+.SS "#define EPS_TRUECOLOR   2"
+.PP
+Definition at line 34 of file eps.h.
+.PP
+Referenced by eps_print(), eps_setColorType(), and eps_simpleHeader().
+.SS "#define EPS_UNITARY   0"
+.PP
+Definition at line 44 of file eps.h.
+.PP
+Referenced by eps_annotate().
+.SS "#define JPEGCompression   3"
+.PP
+Definition at line 29 of file eps.h.
+.PP
+Referenced by eps_setCompress().
+.SS "#define LZWCompression   2"
+.PP
+Definition at line 28 of file eps.h.
+.PP
+Referenced by eps_setCompress().
+.SS "#define MAJOR_TICK_SIZE   5"
+.PP
+Definition at line 104 of file eps.h.
+.PP
+Referenced by eps_annotate().
+.SS "#define MAJOR_TICK_WIDTH   1.5"
+.PP
+Definition at line 105 of file eps.h.
+.PP
+Referenced by eps_annotate().
+.SS "#define MAX(\fBa\fP, \fBb\fP)   ((\fBa\fP) > (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.PP
+Definition at line 10 of file eps.h.
+.SS "#define MaxScale(ps)   ( ps->page.maxscale )"
+.PP
+Definition at line 17 of file eps.h.
+.SS "#define MIN(\fBa\fP, \fBb\fP)   ((\fBa\fP) < (\fBb\fP) ? (\fBa\fP) : (\fBb\fP))"
+.PP
+Definition at line 12 of file eps.h.
+.SS "#define MINOR_TICK_SIZE   3"
+.PP
+Definition at line 106 of file eps.h.
+.PP
+Referenced by eps_annotate().
+.SS "#define MINOR_TICK_WIDTH   0.5"
+.PP
+Definition at line 107 of file eps.h.
+.PP
+Referenced by eps_annotate().
+.SS "#define MONO(rd, \fBgn\fP, bl)   ((int)(rd*11 + \fBgn\fP*16 + bl*5) >> 5)"
+.PP
+Definition at line 8 of file eps.h.
+.PP
+Referenced by eps_doColorbar(), eps_writeMono(), and eps_writeMonoRGB().
+.SS "#define NoCompression   0"
+.PP
+Definition at line 26 of file eps.h.
+.PP
+Referenced by eps_colorHeader(), eps_init(), and eps_setCompress().
+.SS "#define NTICMARKS   5"
+.PP
+Definition at line 108 of file eps.h.
+.PP
+Referenced by eps_landLabels(), and eps_portLabels().
+.SS "#define Orientation(ps)   ( ps->page.orientation )"
+.PP
+Definition at line 15 of file eps.h.
+.PP
+Referenced by eps_setPage().
+.SS "#define PageType(ps)   ( ps->page.page_type )"
+.PP
+Definition at line 18 of file eps.h.
+.PP
+Referenced by eps_setPage().
+.SS "#define PIX_PER_LINE   72"
+.PP
+Definition at line 23 of file eps.h.
+.PP
+Referenced by eps_writeMono(), eps_writeMonoRGB(), eps_writePix(), and eps_writeRGB().
+.SS "#define RLECompression   1"
+.PP
+Definition at line 27 of file eps.h.
+.PP
+Referenced by eps_setCompress(), and eps_simpleHeader().
+.SS "#define Scale(ps)   ( ps->page.scale )"
+.PP
+Definition at line 16 of file eps.h.
+.PP
+Referenced by eps_pageParams(), and eps_setPage().
+.SS "#define TITLE_OFFSET   20"
+.PP
+Definition at line 99 of file eps.h.
+.PP
+Referenced by eps_annotate().
+.SS "#define X_ANNOT_MARGIN   30"
+.PP
+Definition at line 97 of file eps.h.
+.PP
+Referenced by eps_colorHeader(), and eps_simpleHeader().
+.SS "#define Y_ANNOT_MARGIN   60"
+.PP
+Definition at line 98 of file eps.h.
+.PP
+Referenced by eps_colorHeader(), and eps_simpleHeader().
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef   * \fBPSCmapPtr\fP"
+.PP
+.SS "typedef   * \fBPSImagePtr\fP"
+.PP
+Referenced by cdl_printPix(), cdl_printPixToFile(), eps_annotate(), eps_colorHeader(), eps_doColorbar(), eps_getImagePos(), eps_getImageSize(), eps_landLabels(), eps_pageParams(), eps_portLabels(), and eps_simpleHeader().
+.SS "typedef   * \fBPSPagePtr\fP"
+.PP
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

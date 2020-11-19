@@ -1,0 +1,151 @@
+#!/usr/bin/perl
+
+$| = 1;
+
+$usage = "\
+NAME\
+	getstacktrans --- calculate linear transformations and
+	magnitude\ offsets for a stack of catalogues\
+\
+SYNOPSIS\
+	getstacktrans [options...] cat_a, cat_b ....\
+		-d d            # merging length (1)\
+		-v              # verbose mode\
+		-r ref_cat      # reference catalogue for spatial coords\
+		-R residfile	# output residuals to 'residfile'\
+		-m		# don't calculate magnitude offsets\
+		-o opts		# options for registercats2\
+\
+DESCRIPTION\
+	By default 'getstacktrans' calculates the linear\
+	transformation coefficients between the first catalogue cat_a\
+	and the following catalogues cat_b, cat_c ... by first running\
+	'registercats2'; applying transformation; merging pair of\
+	cats; un-applying the transformation and then feeding the\
+	resulting list of\ pairs of coords to 'lintransfit'.  It also\
+	calculates the magnitude offset dm, and outputs a table\
+	containing the names of the input catlaogues, transformation\
+	coefficients phi_ij, d_i and magnitude shifts dm for each of\
+	the cats listed (so the entries for the first cat are just
+	phi_ij = delta_ij, d_i = 0, dm = 0) but if you supply another\
+	catalogue with the -r option the spatial transformations\ will
+	be calculated with respect to this catalogue (but the\
+	magnitude shifts will still be calculated relative to 'cat_a'.\
+	You might use the r-option if you have already stacked the\
+	images for one passband and you wish to transform a subsequent\
+	set of images in another passband into the same frame, but\
+	with their own magnitude shifts.\
+	Also contained in the catalogue are a column containing the\
+	number of objects whose transformed positions match those in\
+	the reference catalogue and a column containing the names\
+	of the catalogues.\
+\
+AUTHOR\
+	Nick Kaiser --- kaiser\@cita.utoronto.ca\
+";
+
+# defaults
+$d = 1.0;
+$verbose = 0;
+$dorefcat = 0;
+$ncats = 0;
+$doresids = 0;
+$domagshift = 1;
+$reg2opts = "";
+
+
+$argstring = sprintf("history: %s", $0);
+
+while ($_ = shift(@ARGV)) {
+	$argstring = sprintf("%s %s", $argstring, $_);
+	if (!/^-/) {
+		$cat[$ncats++] = $_;
+		next;
+	}
+	if (/^-d/) {
+		$d = shift(@ARGV) || die $usage;
+	} elsif (/^-v/) {
+		$verbose = 1;
+	} elsif (/^-r/) {
+		$dorefcat = 1;
+		$refcat = shift(@ARGV) || die $usage;
+	} elsif (/^-R/) {
+		$doresids = 1;
+		$residfile = shift(@ARGV) || die $usage;
+	} elsif (/^-m/) {
+		$domagshift = 0;
+	} elsif (/^-o/) {
+		$reg2opts = shift(@ARGV) || die $usage;
+	} else {
+		die $usage;
+	}
+}
+
+
+if ($doresids) {
+	$lcopts = "";
+	&echosys("rm -f $residfile");
+}
+
+if (!$dorefcat) {
+	$refcat = $cat[0];
+}
+
+for ($exp = 0; $exp < $ncats; $exp++) {
+	if (!$exp && !$dorefcat) {
+		$phixx[0] = $phiyy[0] = 1.0;
+		$phixy[0] = $phiyx[0] = $dx[0] = $dy[0] = 0.0;
+	} else {
+		print "# registering catalogues: ", $cat[$exp], " ", $refcat, "\n" if $verbose;
+		print "# calculating transformation....\n" if $verbose;
+		$params = `registercats2 $cat[$exp] $refcat $reg2opts`;
+		print "registercats2 params: $params" if $verbose;
+		chop $params;
+		&echosys("lc -b x < $cat[$exp] | scalerottrans $params > $$.1.tmp");
+		&echosys("lc -b x < $refcat > $$.0.tmp");
+		&echosys("mergecats $d $$.1.tmp $$.0.tmp  > $$.2.tmp");
+		chop($nmatch[$exp] = `lc -c < $$.2.tmp`);
+		print "nmatch = $nmatch[$exp]\n" if $verbose;
+		&echosys("lc -b -x +all 'x = %x[0]' 'temp = %x[1]' < $$.2.tmp | scalerottrans $params -i > $$.3.tmp");
+		chop($ltcoeffts = `lc -b 'x = %x %temp 2 vector' < $$.3.tmp | lintransfit`);
+		print "ltcoeffts: $ltcoeffts\n" if $verbose;
+		($dx[$exp], $dy[$exp], $phixx[$exp], $phixy[$exp], $phiyx[$exp], $phiyy[$exp]) = split(" ", $ltcoeffts);
+		if ($doresids) {
+			$sysstring = sprintf("lc -b $lcopts 'dx = %%x %g %g %g %g lintrans %f %f 2 vector vadd %%temp vsub' < $$.3.tmp >> $residfile",
+				$phixx[$exp], $phixy[$exp], $phiyx[$exp], $phiyy[$exp], $dx[$exp], $dy[$exp]);
+			&echosys($sysstring);
+			$lcopts = "-o";
+		}
+	}
+}
+&echosys("rm -f $$.[0-3].tmp");
+
+# now we want to get the magnitude shifts
+if ($domagshift) {
+	$exp = 0;
+	if ($dorefcat) {
+		$sysstring = sprintf("lc -b mag 'x = %%x %g %g %g %g lintrans %g %d 2 vector vadd' < $cat[$exp] > $$.0.tmp",
+			$phixx[$exp], $phixy[$exp], $phiyx[$exp], $phiyy[$exp], $dx[$exp], $dy[$exp]);
+		&echosys($sysstring);
+	} else {
+		&echosys("lc -b mag x < $cat[0] > $$.0.tmp");
+	}
+	for ($exp = 1; $exp < $ncats; $exp++) {
+		$sysstring = sprintf("lc -b mag 'x = %%x %g %g %g %g lintrans %g %d 2 vector vadd' < $cat[$exp] > $$.1.tmp",
+			$phixx[$exp], $phixy[$exp], $phiyx[$exp], $phiyy[$exp], $dx[$exp], $dy[$exp]);
+		&echosys($sysstring);
+		($junk, $dm[$exp]) = split(" ", `mergecats $d $$.0.tmp $$.1.tmp | lc -b 'dm = %mag[1] %mag[0] -' | catstats | grep mode`);
+	}
+}
+
+$lcstring = sprintf("| lc -C -x -a '%s' -N '2 2 2 phi' -N '1 2 d' -n dm -n nmatch -t cat", $argstring);
+open(OUT, $lcstring);
+for ($exp = 0; $exp < $ncats; $exp++) {
+	printf OUT "%g %g %g %g %g %g %g %d %s\n", $phixx[$exp], $phixy[$exp], $phiyx[$exp], $phiyy[$exp],
+		$dx[$exp], $dy[$exp], $dm[$exp], $nmatch[$exp], $cat[$exp];
+}
+
+sub echosys {
+        print @_, "\n" if $verbose;
+        system(@_) && die "System call failed!\n";
+}

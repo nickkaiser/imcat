@@ -1,0 +1,338 @@
+.TH "WorldCoor" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+WorldCoor \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <wcs.h>\fP
+.PP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "double \fBxref\fP"
+.br
+.ti -1c
+.RI "double \fByref\fP"
+.br
+.ti -1c
+.RI "double \fBxrefpix\fP"
+.br
+.ti -1c
+.RI "double \fByrefpix\fP"
+.br
+.ti -1c
+.RI "double \fBxinc\fP"
+.br
+.ti -1c
+.RI "double \fByinc\fP"
+.br
+.ti -1c
+.RI "double \fBrot\fP"
+.br
+.ti -1c
+.RI "double \fBcrot\fP"
+.br
+.ti -1c
+.RI "double \fBsrot\fP"
+.br
+.ti -1c
+.RI "double \fBcd11\fP"
+.br
+.ti -1c
+.RI "double \fBcd12\fP"
+.br
+.ti -1c
+.RI "double \fBcd21\fP"
+.br
+.ti -1c
+.RI "double \fBcd22\fP"
+.br
+.ti -1c
+.RI "double \fBdc11\fP"
+.br
+.ti -1c
+.RI "double \fBdc12\fP"
+.br
+.ti -1c
+.RI "double \fBdc21\fP"
+.br
+.ti -1c
+.RI "double \fBdc22\fP"
+.br
+.ti -1c
+.RI "double \fBequinox\fP"
+.br
+.ti -1c
+.RI "double \fBepoch\fP"
+.br
+.ti -1c
+.RI "double \fBnxpix\fP"
+.br
+.ti -1c
+.RI "double \fBnypix\fP"
+.br
+.ti -1c
+.RI "double \fBplate_ra\fP"
+.br
+.ti -1c
+.RI "double \fBplate_dec\fP"
+.br
+.ti -1c
+.RI "double \fBplate_scale\fP"
+.br
+.ti -1c
+.RI "double \fBx_pixel_offset\fP"
+.br
+.ti -1c
+.RI "double \fBy_pixel_offset\fP"
+.br
+.ti -1c
+.RI "double \fBx_pixel_size\fP"
+.br
+.ti -1c
+.RI "double \fBy_pixel_size\fP"
+.br
+.ti -1c
+.RI "double \fBppo_coeff\fP [6]"
+.br
+.ti -1c
+.RI "double \fBamd_x_coeff\fP [20]"
+.br
+.ti -1c
+.RI "double \fBamd_y_coeff\fP [20]"
+.br
+.ti -1c
+.RI "double \fBxpix\fP"
+.br
+.ti -1c
+.RI "double \fBypix\fP"
+.br
+.ti -1c
+.RI "double \fBxpos\fP"
+.br
+.ti -1c
+.RI "double \fBypos\fP"
+.br
+.ti -1c
+.RI "int \fBpcode\fP"
+.br
+.ti -1c
+.RI "int \fBchangesys\fP"
+.br
+.ti -1c
+.RI "int \fBprintsys\fP"
+.br
+.ti -1c
+.RI "int \fBndec\fP"
+.br
+.ti -1c
+.RI "int \fBdegout\fP"
+.br
+.ti -1c
+.RI "int \fBtabsys\fP"
+.br
+.ti -1c
+.RI "int \fBrotmat\fP"
+.br
+.ti -1c
+.RI "int \fBcoorflip\fP"
+.br
+.ti -1c
+.RI "int \fBoffscl\fP"
+.br
+.ti -1c
+.RI "int \fBplate_fit\fP"
+.br
+.ti -1c
+.RI "int \fBwcson\fP"
+.br
+.ti -1c
+.RI "char \fBc1type\fP [8]"
+.br
+.ti -1c
+.RI "char \fBc2type\fP [8]"
+.br
+.ti -1c
+.RI "char \fBptype\fP [8]"
+.br
+.ti -1c
+.RI "char \fBradecsys\fP [16]"
+.br
+.ti -1c
+.RI "char \fBsysout\fP [16]"
+.br
+.ti -1c
+.RI "char \fBcenter\fP [32]"
+.br
+.ti -1c
+.RI "char \fBsearch_format\fP [120]"
+.br
+.in -1c
+.SH "Field Documentation"
+.PP 
+.SS "double \fBWorldCoor::amd_x_coeff\fP[20]"
+.PP
+Definition at line 30 of file wcs.h.
+.SS "double \fBWorldCoor::amd_y_coeff\fP[20]"
+.PP
+Definition at line 31 of file wcs.h.
+.SS "char \fBWorldCoor::c1type\fP[8]"
+.PP
+Definition at line 48 of file wcs.h.
+.SS "char \fBWorldCoor::c2type\fP[8]"
+.PP
+Definition at line 50 of file wcs.h.
+.SS "double \fBWorldCoor::cd11\fP"
+.PP
+Definition at line 14 of file wcs.h.
+.SS "double \fBWorldCoor::cd12\fP"
+.PP
+Definition at line 14 of file wcs.h.
+.SS "double \fBWorldCoor::cd21\fP"
+.PP
+Definition at line 14 of file wcs.h.
+.SS "double \fBWorldCoor::cd22\fP"
+.PP
+Definition at line 14 of file wcs.h.
+.SS "char \fBWorldCoor::center\fP[32]"
+.PP
+Definition at line 56 of file wcs.h.
+.SS "int \fBWorldCoor::changesys\fP"
+.PP
+Definition at line 37 of file wcs.h.
+.SS "int \fBWorldCoor::coorflip\fP"
+.PP
+Definition at line 44 of file wcs.h.
+.SS "double \fBWorldCoor::crot\fP"
+.PP
+Definition at line 13 of file wcs.h.
+.SS "double \fBWorldCoor::dc11\fP"
+.PP
+Definition at line 16 of file wcs.h.
+.SS "double \fBWorldCoor::dc12\fP"
+.PP
+Definition at line 16 of file wcs.h.
+.SS "double \fBWorldCoor::dc21\fP"
+.PP
+Definition at line 16 of file wcs.h.
+.SS "double \fBWorldCoor::dc22\fP"
+.PP
+Definition at line 16 of file wcs.h.
+.SS "int \fBWorldCoor::degout\fP"
+.PP
+Definition at line 41 of file wcs.h.
+.SS "double \fBWorldCoor::epoch\fP"
+.PP
+Definition at line 19 of file wcs.h.
+.SS "double \fBWorldCoor::equinox\fP"
+.PP
+Definition at line 18 of file wcs.h.
+.SS "int \fBWorldCoor::ndec\fP"
+.PP
+Definition at line 40 of file wcs.h.
+.SS "double \fBWorldCoor::nxpix\fP"
+.PP
+Definition at line 20 of file wcs.h.
+.SS "double \fBWorldCoor::nypix\fP"
+.PP
+Definition at line 21 of file wcs.h.
+.SS "int \fBWorldCoor::offscl\fP"
+.PP
+Definition at line 45 of file wcs.h.
+.SS "int \fBWorldCoor::pcode\fP"
+.PP
+Definition at line 36 of file wcs.h.
+.SS "double \fBWorldCoor::plate_dec\fP"
+.PP
+Definition at line 23 of file wcs.h.
+.SS "int \fBWorldCoor::plate_fit\fP"
+.PP
+Definition at line 46 of file wcs.h.
+.SS "double \fBWorldCoor::plate_ra\fP"
+.PP
+Definition at line 22 of file wcs.h.
+.SS "double \fBWorldCoor::plate_scale\fP"
+.PP
+Definition at line 24 of file wcs.h.
+.SS "double \fBWorldCoor::ppo_coeff\fP[6]"
+.PP
+Definition at line 29 of file wcs.h.
+.SS "int \fBWorldCoor::printsys\fP"
+.PP
+Definition at line 39 of file wcs.h.
+.SS "char \fBWorldCoor::ptype\fP[8]"
+.PP
+Definition at line 52 of file wcs.h.
+.SS "char \fBWorldCoor::radecsys\fP[16]"
+.PP
+Definition at line 54 of file wcs.h.
+.SS "double \fBWorldCoor::rot\fP"
+.PP
+Definition at line 12 of file wcs.h.
+.SS "int \fBWorldCoor::rotmat\fP"
+.PP
+Definition at line 43 of file wcs.h.
+.SS "char \fBWorldCoor::search_format\fP[120]"
+.PP
+Definition at line 57 of file wcs.h.
+.SS "double \fBWorldCoor::srot\fP"
+.PP
+Definition at line 13 of file wcs.h.
+.SS "char \fBWorldCoor::sysout\fP[16]"
+.PP
+Definition at line 55 of file wcs.h.
+.SS "int \fBWorldCoor::tabsys\fP"
+.PP
+Definition at line 42 of file wcs.h.
+.SS "int \fBWorldCoor::wcson\fP"
+.PP
+Definition at line 47 of file wcs.h.
+.SS "double \fBWorldCoor::x_pixel_offset\fP"
+.PP
+Definition at line 25 of file wcs.h.
+.SS "double \fBWorldCoor::x_pixel_size\fP"
+.PP
+Definition at line 27 of file wcs.h.
+.SS "double \fBWorldCoor::xinc\fP"
+.PP
+Definition at line 10 of file wcs.h.
+.SS "double \fBWorldCoor::xpix\fP"
+.PP
+Definition at line 32 of file wcs.h.
+.SS "double \fBWorldCoor::xpos\fP"
+.PP
+Definition at line 34 of file wcs.h.
+.SS "double \fBWorldCoor::xref\fP"
+.PP
+Definition at line 6 of file wcs.h.
+.SS "double \fBWorldCoor::xrefpix\fP"
+.PP
+Definition at line 8 of file wcs.h.
+.SS "double \fBWorldCoor::y_pixel_offset\fP"
+.PP
+Definition at line 26 of file wcs.h.
+.SS "double \fBWorldCoor::y_pixel_size\fP"
+.PP
+Definition at line 28 of file wcs.h.
+.SS "double \fBWorldCoor::yinc\fP"
+.PP
+Definition at line 11 of file wcs.h.
+.SS "double \fBWorldCoor::ypix\fP"
+.PP
+Definition at line 33 of file wcs.h.
+.SS "double \fBWorldCoor::ypos\fP"
+.PP
+Definition at line 35 of file wcs.h.
+.SS "double \fBWorldCoor::yref\fP"
+.PP
+Definition at line 7 of file wcs.h.
+.SS "double \fBWorldCoor::yrefpix\fP"
+.PP
+Definition at line 9 of file wcs.h.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,248 @@
+.TH "callbacks.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+callbacks.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'forms.h'\fP
+.br
+\fC#include 'xforms-compat.h'\fP
+.br
+\fC#include 'imlib/fits.h'\fP
+.br
+\fC#include 'utils/arrays.h'\fP
+.br
+\fC#include 'control_panel.h'\fP
+.br
+\fC#include 'callbacks.h'\fP
+.br
+\fC#include 'mesh.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBzscale_counter_callback\fP (FL_OBJECT *\fBobj\fP, long \fBval\fP)"
+.br
+.ti -1c
+.RI "void \fBrewind_button_callback\fP (FL_OBJECT *\fBobj\fP, long \fBval\fP)"
+.br
+.ti -1c
+.RI "void \fBforwardstep_button_callback\fP (FL_OBJECT *\fBobj\fP, long \fBval\fP)"
+.br
+.ti -1c
+.RI "void \fBstop_button_callback\fP (FL_OBJECT *\fBobj\fP, long \fBval\fP)"
+.br
+.ti -1c
+.RI "void \fBgo_button_callback\fP (FL_OBJECT *\fBobj\fP, long \fBval\fP)"
+.br
+.ti -1c
+.RI "void \fBrec_button_callback\fP (FL_OBJECT *\fBobj\fP, long \fBval\fP)"
+.br
+.ti -1c
+.RI "void \fBquit_button_callback\fP (FL_OBJECT *\fBobj\fP, long \fBval\fP)"
+.br
+.ti -1c
+.RI "void \fBcommand_input_callback\fP (FL_OBJECT *\fBobj\fP, long \fBval\fP)"
+.br
+.ti -1c
+.RI "void \fBstart_command\fP (void)"
+.br
+.ti -1c
+.RI "char * \fBcounter_filter\fP (FL_OBJECT *\fBobj\fP, double value, int prec)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float \fBlog2zscale\fP"
+.br
+.ti -1c
+.RI "float \fBzscale\fP"
+.br
+.ti -1c
+.RI "float ** \fBf\fP"
+.br
+.ti -1c
+.RI "int \fBopmode\fP"
+.br
+.ti -1c
+.RI "int \fBrecording\fP"
+.br
+.ti -1c
+.RI "int \fBframenumber\fP"
+.br
+.ti -1c
+.RI "int \fBnframes\fP"
+.br
+.ti -1c
+.RI "int \fBNx\fP"
+.br
+.ti -1c
+.RI "int \fBNy\fP"
+.br
+.ti -1c
+.RI "int \fBhaveimage\fP"
+.br
+.ti -1c
+.RI "\fBFD_control_panel\fP * \fBthecontrolpanel\fP"
+.br
+.ti -1c
+.RI "\fBfitsheader\fP * \fBfits\fP"
+.br
+.ti -1c
+.RI "char * \fBfitsgencommand\fP"
+.br
+.ti -1c
+.RI "FILE * \fBipf\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void command_input_callback (FL_OBJECT * obj, long val)"
+.PP
+Definition at line 75 of file callbacks.c.
+.PP
+References DrawMesh(), fitsgencommand, ReadNewFrame(), and start_command().
+.PP
+Referenced by create_form_control_panel().
+.SS "char* counter_filter (FL_OBJECT * obj, double value, int prec)"
+.PP
+Definition at line 115 of file callbacks.c.
+.PP
+References buf.
+.PP
+Referenced by main().
+.SS "void forwardstep_button_callback (FL_OBJECT * obj, long val)"
+.PP
+Definition at line 43 of file callbacks.c.
+.PP
+References DrawMesh(), f, IDLE_MODE, opmode, and ReadNewFrame().
+.PP
+Referenced by create_form_control_panel().
+.SS "void go_button_callback (FL_OBJECT * obj, long val)"
+.PP
+Definition at line 57 of file callbacks.c.
+.PP
+References f, opmode, and RUN_MODE.
+.PP
+Referenced by create_form_control_panel().
+.SS "void quit_button_callback (FL_OBJECT * obj, long val)"
+.PP
+Definition at line 69 of file callbacks.c.
+.PP
+References exit().
+.PP
+Referenced by create_form_control_panel().
+.SS "void rec_button_callback (FL_OBJECT * obj, long val)"
+.PP
+Definition at line 64 of file callbacks.c.
+.PP
+References recording.
+.PP
+Referenced by create_form_control_panel().
+.SS "void rewind_button_callback (FL_OBJECT *, long)"
+.PP
+Callbacks, globals and object handlers * Definition at line 32 of file callbacks.c.
+.PP
+References DrawMesh(), f, IDLE_MODE, opmode, ReadNewFrame(), and start_command().
+.PP
+Referenced by create_form_control_panel().
+.SS "void start_command (void)"
+.PP
+Definition at line 84 of file callbacks.c.
+.PP
+References allocFloatArray(), f, fits, fitsgencommand, framenumber, freeFloatArray(), ipf, fitsheader::n, fitsheader::ndim, nframes, Nx, Ny, and readfitsheader().
+.PP
+Referenced by command_input_callback(), and rewind_button_callback().
+.SS "void stop_button_callback (FL_OBJECT * obj, long val)"
+.PP
+Definition at line 52 of file callbacks.c.
+.PP
+References IDLE_MODE, and opmode.
+.PP
+Referenced by create_form_control_panel().
+.SS "void zscale_counter_callback (FL_OBJECT * obj, long val)"
+.PP
+Definition at line 23 of file callbacks.c.
+.PP
+References DrawMesh(), f, log2zscale, thecontrolpanel, zscale, and FD_control_panel::zscale_counter.
+.PP
+Referenced by create_form_control_panel().
+.SH "Variable Documentation"
+.PP 
+.SS "double f"
+.PP
+Definition at line 223 of file fitpolymodelmagshift.c.
+.PP
+Referenced by accumulate(), add_bad_col(), add_noise(), add_population(), addgalaxy(), alloc3Darray(), alloc3DFloatArray(), alloc_f(), allocatedata(), allocfitsarray(), allocFloatArray(), allocShortArray(), aloop(), apphot(), assigncharge(), assigncharge_cic(), avgpixstack(), avsigclip(), avsigclip2(), block_filter(), boxavg3D(), color_index(), contourplot(), cycleimage(), display(), do_object_stats(), doplot(), dosky(), drawcircle(), drawcollar(), drawcursor(), drawellipse(), DrawMesh(), exponentialfilter(), f1dim(), fast_expansion_sum_zeroelim(), fastmap(), fdo_stats(), fill_pixmap(), findmode(), findpeak(), fixedges(), fixholes(), fixpix(), fmedian(), forward_fft(), forwardstep_button_callback(), fread_fits(), fread_fits_line(), free3DFloatArray(), freeFloatArray(), freeShortArray(), func(), fwrite_fits(), fwrite_fits_line(), gaussfilter(), gaussfit(), gaussfitn(), gaussian_kernel_filter(), getargd(), getargf(), getcentroid(), getpeaks(), getpixcoords(), GetPixelValue(), getplane(), getrange(), getrgbfromcmap(), Getshape(), getshape(), getshape2(), getshape3(), getsky(), getstamp(), go_button_callback(), grad3D(), gradx(), gray(), If(), iis_display(), iisdisplay(), ilmnts_(), imvalfunc(), inverse_fft(), irrdot_(), kernel_filter(), kolmogorovfilter(), linmin(), linmodelincrement(), magicinit(), main(), make_pixmap(), make_pop(), makecarray(), makepreview(), makescrunchedviews(), mean(), median(), mexicanfilter(), mult(), nextargtype(), openfits(), platepix(), powerlawfilter(), print_im(), rankedimage(), read2Dfloatimage(), read_fits(), read_fits_line(), readdata(), readfitscube(), readfitsline(), readfitsplane(), readimheader(), ReadNewFrame(), rewind_button_callback(), rpetrosian(), schecterfilter(), scrunch_stream(), set_grays(), setf(), setv(), smcontour(), smprofile(), start_command(), substitute(), surfaceplot(), tukey(), write2Dfloatimage(), write_fits(), write_fits_line(), writefitsarray(), writefitscube(), writefitsline(), writefitsplane(), writehotpixel(), zap(), zapcircle(), zapellipse(), zero(), and zscale_counter_callback().
+.SS "\fBfitsheader\fP* \fBfits\fP"
+.PP
+Definition at line 14 of file callbacks.c.
+.PP
+Referenced by accumulate(), addtofitsarray(), allocfitsarray(), contourplot(), display(), doplot(), fill_pixmap(), getpix(), main(), makecarray(), myworkproc1(), newfitsheader(), openfits(), outputframe(), read2Dfloatimage(), readdataheader(), readimheader(), ReadNewFrame(), set2Dimagesize(), setextpixtype(), skiplines(), smcontour(), start_command(), surfaceplot(), write2Dfloatimage(), writefitsarray(), and writeimage().
+.SS "char* \fBfitsgencommand\fP"
+.PP
+Definition at line 15 of file callbacks.c.
+.PP
+Referenced by command_input_callback(), and start_command().
+.SS "int \fBframenumber\fP"
+.PP
+Definition at line 12 of file callbacks.c.
+.PP
+Referenced by DrawMesh(), main(), ReadNewFrame(), and start_command().
+.SS "int \fBhaveimage\fP"
+.PP
+Definition at line 12 of file callbacks.c.
+.SS "FILE* \fBipf\fP"
+.PP
+Definition at line 16 of file callbacks.c.
+.PP
+Referenced by main(), set_fits_ipf(), and start_command().
+.SS "float \fBlog2zscale\fP"
+.PP
+Definition at line 11 of file callbacks.c.
+.PP
+Referenced by main(), and zscale_counter_callback().
+.SS "int \fBnframes\fP"
+.PP
+Definition at line 12 of file callbacks.c.
+.SS "int \fBNx\fP"
+.PP
+Definition at line 12 of file callbacks.c.
+.PP
+Referenced by alloc_fft(), ccf(), cfilter(), copy_fft(), cycleimage(), DrawMesh(), fft_size(), filter(), fixedges(), fixholes(), forward_fft(), free_fft(), get_fft(), getpixcoords(), inverse_fft(), main(), outputframe(), painttriangle(), power(), set_fft(), start_command(), and substitute().
+.SS "int \fBNy\fP"
+.PP
+Definition at line 12 of file callbacks.c.
+.PP
+Referenced by alloc_fft(), ccf(), cfilter(), copy_fft(), cycleimage(), DrawMesh(), fft_size(), filter(), fixedges(), fixholes(), fixpix(), forward_fft(), free_fft(), get_fft(), getpixcoords(), inverse_fft(), main(), outputframe(), painttriangle(), power(), set_fft(), start_command(), and substitute().
+.SS "int \fBopmode\fP"
+.PP
+Definition at line 12 of file callbacks.c.
+.PP
+Referenced by avgpixstack(), forwardstep_button_callback(), go_button_callback(), main(), rewind_button_callback(), and stop_button_callback().
+.SS "int \fBrecording\fP"
+.PP
+Definition at line 12 of file callbacks.c.
+.PP
+Referenced by DrawMesh(), main(), and rec_button_callback().
+.SS "\fBFD_control_panel\fP* \fBthecontrolpanel\fP"
+.PP
+Definition at line 13 of file callbacks.c.
+.PP
+Referenced by main(), ReadNewFrame(), and zscale_counter_callback().
+.SS "float \fBzscale\fP"
+.PP
+Definition at line 11 of file callbacks.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,123 @@
+.TH "front.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+front.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBTOPLEVEL\fP   4"
+.br
+.ti -1c
+.RI "#define \fBPICWIDGET\fP   5"
+.br
+.ti -1c
+.RI "#define \fBFLABEL\fP   6"
+.br
+.ti -1c
+.RI "#define \fBTLABEL\fP   7"
+.br
+.ti -1c
+.RI "#define \fBFMAX\fP   100"
+.br
+.ti -1c
+.RI "#define \fBFMIN\fP   101"
+.br
+.ti -1c
+.RI "#define \fBGOODSIZE\fP   102"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBSyntax\fP (XtAppContext app_con, char *call)"
+.br
+.ti -1c
+.RI "void \fBxfgetargstring\fP (char **argstrptr)"
+.br
+.ti -1c
+.RI "void \fBmakewidgetdatabase\fP (void)"
+.br
+.ti -1c
+.RI "float \fBxfgetvalue\fP (int thename)"
+.br
+.ti -1c
+.RI "int \fBxfgetwidgetnumber\fP (Widget button)"
+.br
+.ti -1c
+.RI "Widget \fBxfgetwidget\fP (int thenumber)"
+.br
+.ti -1c
+.RI "void \fBsetlabelstring\fP (Widget \fBw\fP, char *thestring)"
+.br
+.ti -1c
+.RI "void \fBsetlabelnumber\fP (Widget \fBw\fP, float thenumber)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define FLABEL   6"
+.PP
+Definition at line 8 of file front.h.
+.PP
+Referenced by makewidgetdatabase(), and myworkproc1().
+.SS "#define FMAX   100"
+.PP
+Definition at line 12 of file front.h.
+.SS "#define FMIN   101"
+.PP
+Definition at line 13 of file front.h.
+.SS "#define GOODSIZE   102"
+.PP
+Definition at line 14 of file front.h.
+.PP
+Referenced by readdataheader(), and xfgetvalue().
+.SS "#define PICWIDGET   5"
+.PP
+Definition at line 7 of file front.h.
+.PP
+Referenced by makewidgetdatabase(), picclick(), and showpixmap().
+.SS "#define TLABEL   7"
+.PP
+Definition at line 9 of file front.h.
+.PP
+Referenced by makewidgetdatabase(), and myworkproc1().
+.SS "#define TOPLEVEL   4"
+.PP
+Definition at line 6 of file front.h.
+.PP
+Referenced by alloc_shades(), makewidgetdatabase(), and picclick().
+.SH "Function Documentation"
+.PP 
+.SS "void makewidgetdatabase (void)"
+.PP
+Definition at line 236 of file front.c.
+.SS "void setlabelnumber (Widget w, float thenumber)"
+.PP
+Definition at line 297 of file front.c.
+.SS "void setlabelstring (Widget w, char * thestring)"
+.PP
+Definition at line 284 of file front.c.
+.SS "void Syntax (XtAppContext app_con, char * call)"
+.PP
+Definition at line 193 of file front.c.
+.SS "void xfgetargstring (char ** argstrptr)"
+.PP
+Definition at line 210 of file front.c.
+.SS "float xfgetvalue (int thename)"
+.PP
+Definition at line 218 of file front.c.
+.SS "Widget xfgetwidget (int thenumber)"
+.PP
+Definition at line 268 of file front.c.
+.SS "int xfgetwidgetnumber (Widget button)"
+.PP
+Definition at line 252 of file front.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,66 @@
+.TH "gaussfitmain.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+gaussfitmain.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../../imlib/fits.h'\fP
+.br
+\fC#include '../../../utils/error.h'\fP
+.br
+\fC#include 'gaussfitn.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	gaussfit --- \fBfit\fP image to gaussian ellipsoid \fBobject\fP model\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	gaussfit [\fBoptions\fP....]\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\		-f		# output the model as \fBfits\fP image\\\fBn\fP\\		-\fBn\fP	\fBn\fP	# \fBfit\fP \fBn\fP gaussians\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'gaussfit\\' reads \fBa\fP \fBfits\fP image f from stdin and \fBfits\fP\\\fBn\fP\\	to this \fBa\fP simple gaussian ellipsoid model with central\\\fBn\fP\\	value \fBf0\fP; semi-axes \fBa\fP,\fBb\fP; position \fBangle\fP \fBphi\fP; at \fBx0\fP, y0:\\\fBn\fP\\\\\fBn\fP\\		f(x,y) = \fBf0\fP * exp(-((\fBX\fP / \fBa\fP)^2 + (\fBY\fP / \fBb\fP)^2) / 2)\\\fBn\fP\\\\\fBn\fP\\	where\\\fBn\fP\\\\\fBn\fP\\		\fBX\fP = (x - \fBx0\fP) cos(\fBphi\fP) + (y - y0) sin(\fBphi\fP)\\\fBn\fP\\		\fBY\fP = (y - y0) cos(\fBphi\fP) - (x - \fBx0\fP) sin(\fBphi\fP)\\\fBn\fP\\\\\fBn\fP\\	Output is:\\\fBn\fP\\		\fBf0\fP  \fBx0\fP  y0  \fBa\fP  \fBb\fP  \fBphi\fP\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBPI\fP   M_PI"
+.br
+.ti -1c
+.RI "#define \fBNMAX\fP   10"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define NMAX   10"
+.PP
+Definition at line 45 of file gaussfitmain.c.
+.SS "#define PI   M_PI"
+.PP
+Definition at line 42 of file gaussfitmain.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	gaussfit --- \fBfit\fP image to gaussian ellipsoid \fBobject\fP model\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	gaussfit [\fBoptions\fP....]\\\fBn\fP\\		-u		# print this message\\\fBn\fP\\		-f		# output the model as \fBfits\fP image\\\fBn\fP\\		-\fBn\fP	\fBn\fP	# \fBfit\fP \fBn\fP gaussians\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'gaussfit\\' reads \fBa\fP \fBfits\fP image f from stdin and \fBfits\fP\\\fBn\fP\\	to this \fBa\fP simple gaussian ellipsoid model with central\\\fBn\fP\\	value \fBf0\fP; semi-axes \fBa\fP,\fBb\fP; position \fBangle\fP \fBphi\fP; at \fBx0\fP, y0:\\\fBn\fP\\\\\fBn\fP\\		f(x,y) = \fBf0\fP * exp(-((\fBX\fP / \fBa\fP)^2 + (\fBY\fP / \fBb\fP)^2) / 2)\\\fBn\fP\\\\\fBn\fP\\	where\\\fBn\fP\\\\\fBn\fP\\		\fBX\fP = (x - \fBx0\fP) cos(\fBphi\fP) + (y - y0) sin(\fBphi\fP)\\\fBn\fP\\		\fBY\fP = (y - y0) cos(\fBphi\fP) - (x - \fBx0\fP) sin(\fBphi\fP)\\\fBn\fP\\\\\fBn\fP\\	Output is:\\\fBn\fP\\		\fBf0\fP  \fBx0\fP  y0  \fBa\fP  \fBb\fP  \fBphi\fP\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@ifa.hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file gaussfitmain.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 47 of file gaussfitmain.c.
+.PP
+References a, add_comment(), allocFloatArray(), b, drand48(), error_exit, exit(), f, fits, gaussfitn(), i, n, N1, N2, NMAX, phi, read2Dfloatimage(), usage, write2Dfloatimage(), x, and y.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

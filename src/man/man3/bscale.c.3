@@ -1,0 +1,70 @@
+.TH "bscale.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+bscale.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/args.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	bscale - set or check BSCALE, BZERO header values in \fBFITS\fP file\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	bscale [\fBfmin\fP \fBfmax\fP | -g | -u ]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'bscale \fBfmin\fP \fBfmax\fP\\' reads an image (which must be an \fBinteger\fP\\\fBn\fP\\	format BITPIX = 8, 16 or 32) from stdin and modifies\\\fBn\fP\\	or generates BZERO, BSCALE values such that the max and\\\fBn\fP\\	min representable values are \fBfmin\fP, \fBfmax\fP.\\\fBn\fP\\	This has the effect of rescaling the image values.\\\fBn\fP\\\\\fBn\fP\\	Use \\'bscale -g\\' to get the current \fBfmin\fP, \fBfmax\fP values.\\\fBn\fP\\\\\fBn\fP\\	Use -u option to print this message.\\\fBn\fP\\\\\fBn\fP\\	Beware that the minimum representable values for\\\fBn\fP\\	BITPIX 16, 32 and the maximum representable values\\\fBn\fP\\	for BITPIX 8 are 'magic' values used by imcat to \fBflag\fP bad\\\fBn\fP\\	or missing \fBdata\fP.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBSETRANGEMODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBGETRANGEMODE\fP   1"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define GETRANGEMODE   1"
+.PP
+Definition at line 41 of file bscale.c.
+.PP
+Referenced by main().
+.SS "#define SETRANGEMODE   0"
+.PP
+Definition at line 40 of file bscale.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	bscale - set or check BSCALE, BZERO header values in \fBFITS\fP file\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	bscale [\fBfmin\fP \fBfmax\fP | -g | -u ]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'bscale \fBfmin\fP \fBfmax\fP\\' reads an image (which must be an \fBinteger\fP\\\fBn\fP\\	format BITPIX = 8, 16 or 32) from stdin and modifies\\\fBn\fP\\	or generates BZERO, BSCALE values such that the max and\\\fBn\fP\\	min representable values are \fBfmin\fP, \fBfmax\fP.\\\fBn\fP\\	This has the effect of rescaling the image values.\\\fBn\fP\\\\\fBn\fP\\	Use \\'bscale -g\\' to get the current \fBfmin\fP, \fBfmax\fP values.\\\fBn\fP\\\\\fBn\fP\\	Use -u option to print this message.\\\fBn\fP\\\\\fBn\fP\\	Beware that the minimum representable values for\\\fBn\fP\\	BITPIX 16, 32 and the maximum representable values\\\fBn\fP\\	for BITPIX 8 are 'magic' values used by imcat to \fBflag\fP bad\\\fBn\fP\\	or missing \fBdata\fP.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file bscale.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 44 of file bscale.c.
+.PP
+References add_comment(), argsinit(), fitsheader::bscale, fitsheader::bscaling, fitsheader::bzero, DBL_PIXTYPE, error_exit, exit(), fitsheader::extpixtype, f, fits, flag, FLAG_ARG, FLOAT_PIXTYPE, fmin, getargd(), getflag(), GETRANGEMODE, INT_PIXTYPE, fitsheader::n, fitsheader::ndim, nextargtype(), opmode, pixsize(), readfitsheader(), SETRANGEMODE, SHORT_PIXTYPE, UCHAR_PIXTYPE, usage, writefitsheader(), and writefitstail().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

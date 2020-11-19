@@ -1,0 +1,267 @@
+.TH "ximback.h" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+ximback.h \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMAX_LEVELS\fP   10"
+.br
+.ti -1c
+.RI "#define \fBMAX_COLORS\fP   3"
+.br
+.ti -1c
+.RI "#define \fBLEVEL\fP   0"
+.br
+.ti -1c
+.RI "#define \fBNLEVELS\fP   1"
+.br
+.ti -1c
+.RI "#define \fBNCOLORS\fP   2"
+.br
+.ti -1c
+.RI "#define \fBLASTUSERI\fP   3"
+.br
+.ti -1c
+.RI "#define \fBLASTUSERJ\fP   4"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBxbgetvalue\fP (int thename)"
+.br
+.ti -1c
+.RI "void \fBxbsetvalue\fP (int thename, int thevalue)"
+.br
+.ti -1c
+.RI "void \fBalloc_shades\fP (void)"
+.br
+.ti -1c
+.RI "Pixmap \fBcreate_pixmap\fP (int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "void \fBfill_pixmap\fP (void)"
+.br
+.ti -1c
+.RI "void \fBmakepreview\fP (void)"
+.br
+.ti -1c
+.RI "void \fBreaddataheader\fP (void)"
+.br
+.ti -1c
+.RI "void \fBallocatedata\fP (void)"
+.br
+.ti -1c
+.RI "void \fBreaddata\fP (void)"
+.br
+.ti -1c
+.RI "short ** \fBalloc_f\fP (int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBmakescrunchedviews\fP (void)"
+.br
+.ti -1c
+.RI "void \fBmakeXImage\fP (int \fBN1\fP, int \fBN2\fP)"
+.br
+.ti -1c
+.RI "void \fBGetPixelValue\fP (int pixi, int pixj, int height, int width, int *useri, int *userj, short *pixval)"
+.br
+.ti -1c
+.RI "Pixmap \fBcreatezoompixmap\fP (void)"
+.br
+.ti -1c
+.RI "void \fBfillzoompixmap\fP (void)"
+.br
+.ti -1c
+.RI "void \fBdestroyzoompixmap\fP (void)"
+.br
+.ti -1c
+.RI "void \fBshowpixmap\fP (void)"
+.br
+.ti -1c
+.RI "int \fBmyworkproc1\fP (XtPointer client_data)"
+.br
+.ti -1c
+.RI "int \fBmyworkproc2\fP (XtPointer client_data)"
+.br
+.ti -1c
+.RI "int \fBmyworkproc3\fP (XtPointer client_data)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define LASTUSERI   3"
+.PP
+Definition at line 13 of file ximback.h.
+.PP
+Referenced by fillzoompixmap(), picclick(), xbgetvalue(), and xbsetvalue().
+.SS "#define LASTUSERJ   4"
+.PP
+Definition at line 14 of file ximback.h.
+.PP
+Referenced by fillzoompixmap(), picclick(), xbgetvalue(), and xbsetvalue().
+.SS "#define LEVEL   0"
+.PP
+Definition at line 10 of file ximback.h.
+.PP
+Referenced by plotclick(), Print(), printclick(), UnZoom(), xbgetvalue(), xbsetvalue(), and Zoom().
+.SS "#define MAX_COLORS   3"
+.PP
+Definition at line 6 of file ximback.h.
+.PP
+Referenced by color_index(), myworkproc1(), picclick(), and set_shades().
+.SS "#define MAX_LEVELS   10"
+.PP
+Definition at line 5 of file ximback.h.
+.PP
+Referenced by readdataheader().
+.SS "#define NCOLORS   2"
+.PP
+Definition at line 12 of file ximback.h.
+.PP
+Referenced by picclick(), setcolorscheme(), and xbgetvalue().
+.SS "#define NLEVELS   1"
+.PP
+Definition at line 11 of file ximback.h.
+.PP
+Referenced by UnZoom(), and xbgetvalue().
+.SH "Function Documentation"
+.PP 
+.SS "short** alloc_f (int N1, int N2)"
+.PP
+Definition at line 366 of file ximback.c.
+.PP
+References f, i, N1, and N2.
+.PP
+Referenced by allocatedata().
+.SS "void alloc_shades (void)"
+.PP
+Definition at line 104 of file back.c.
+.PP
+References cmap, color, depth, error_exit, exit(), False, i, info(), mydisplay, mygc, myscreen, mywindow, n_shades, pixel, set_shades(), setcolorscheme(), shade, TOPLEVEL, and xfgetwidget().
+.SS "void allocatedata (void)"
+.PP
+Definition at line 198 of file ximback.c.
+.PP
+References alloc_f(), color, f, level, N1, N2, ncolors, and nlevels.
+.PP
+Referenced by myworkproc1().
+.SS "Pixmap create_pixmap (int level)"
+.PP
+Definition at line 254 of file ximback.c.
+.PP
+References blocksize, depth, level, mydisplay, mywindow, N1, and N2.
+.SS "Pixmap createzoompixmap (void)"
+.PP
+Definition at line 438 of file ximback.c.
+.PP
+References depth, imheight, imwidth, mydisplay, mywindow, and thezoompixmap.
+.PP
+Referenced by Zoom().
+.SS "void destroyzoompixmap (void)"
+.PP
+Definition at line 482 of file ximback.c.
+.PP
+References mydisplay, and thezoompixmap.
+.PP
+Referenced by UnZoom().
+.SS "void fill_pixmap (void)"
+.PP
+Definition at line 174 of file back.c.
+.PP
+References blocksize, color_index(), f, fits, gfmax, gfmin, imheight, imwidth, ix, level, m, MAX, MIN, mydisplay, mygc, n, N1, N2, n_shades, pixmap, readfitsplane(), shade, theimage, x, xx, y, and yy.
+.SS "void fillzoompixmap (void)"
+.PP
+Definition at line 445 of file ximback.c.
+.PP
+References blocksize, color_index(), i, imheight, imwidth, j, LASTUSERI, LASTUSERJ, level, mydisplay, mygc, N1, shade, theimage, thezoompixmap, x, xbgetvalue(), xx, y, yy, zoomi, and zoomj.
+.PP
+Referenced by Zoom().
+.SS "void GetPixelValue (int pixi, int pixj, int height, int width, int * useri, int * userj, short * pixval)"
+.PP
+Definition at line 379 of file ximback.c.
+.PP
+References blocksize, color, f, i, imheight, imwidth, j, level, N1, N2, ncolors, zoomi, and zoomj.
+.PP
+Referenced by picclick().
+.SS "void makepreview (void)"
+.PP
+Definition at line 301 of file ximback.c.
+.PP
+References color, f, fill_pixmap(), i, j, level, N1, N2, and ncolors.
+.PP
+Referenced by myworkproc1().
+.SS "void makescrunchedviews (void)"
+.PP
+Definition at line 219 of file ximback.c.
+.PP
+References color, f, i, j, level, MAGIC, N1, N2, ncolors, and nlevels.
+.PP
+Referenced by myworkproc2().
+.SS "void makeXImage (int N1, int N2)"
+.PP
+Definition at line 328 of file ximback.c.
+.PP
+References blocksize, depth, exit(), imheight, imwidth, malloc(), mydisplay, myscreen, N1, N2, and theimage.
+.SS "int myworkproc1 (XtPointer client_data)"
+.PP
+Definition at line 246 of file back.c.
+.PP
+References A_MAX, alloc_shades(), allocatedata(), color, create_pixmap(), error_exit, exit(), fill_pixmap(), fits, FLABEL, frame, level, makepreview(), makeXImage(), MAX_COLORS, mydisplay, fitsheader::n, N1, N2, ncolors, newslidervalue(), nlevels, pixmap, readdata(), readdataheader(), set_shades(), setlabelstring(), setsliderval(), showpixmap(), SLIDER2, timestep, TLABEL, and xfgetwidget().
+.SS "int myworkproc2 (XtPointer client_data)"
+.PP
+Definition at line 566 of file ximback.c.
+.PP
+References makescrunchedviews().
+.PP
+Referenced by main().
+.SS "int myworkproc3 (XtPointer client_data)"
+.PP
+Definition at line 574 of file ximback.c.
+.PP
+References fill_pixmap(), level, nlevels, and showpixmap().
+.PP
+Referenced by main().
+.SS "void readdata (void)"
+.PP
+Definition at line 209 of file ximback.c.
+.PP
+References color, f, gfits, i, N2, ncolors, and readfitsline().
+.PP
+Referenced by myworkproc1().
+.SS "void readdataheader (void)"
+.PP
+Definition at line 140 of file ximback.c.
+.PP
+References fitsheader::basecomment, blocksize, caption, color, error_exit, fits, gfits, GOODSIZE, fitsheader::intpixtype, level, MAX_LEVELS, fitsheader::n, N1, N2, fitscomment::name, NAME_LENGTH, ncolors, fitsheader::ndim, fitscomment::next, nlevels, readfitsheader(), SHORT_PIXTYPE, fitscomment::value, VALUE_LENGTH, and xfgetvalue().
+.PP
+Referenced by myworkproc1().
+.SS "void showpixmap (void)"
+.PP
+Definition at line 268 of file back.c.
+.PP
+References blocksize, imheight, imwidth, level, n, N1, N2, PICWIDGET, pixmap, thezoompixmap, and xfgetwidget().
+.SS "int xbgetvalue (int thename)"
+.PP
+Definition at line 52 of file ximback.c.
+.PP
+References error_exit, lastuseri, LASTUSERI, lastuserj, LASTUSERJ, level, LEVEL, ncolors, NCOLORS, nlevels, and NLEVELS.
+.PP
+Referenced by fillzoompixmap(), picclick(), plotclick(), Print(), printclick(), setcolorscheme(), UnZoom(), and Zoom().
+.SS "void xbsetvalue (int thename, int thevalue)"
+.PP
+Definition at line 79 of file ximback.c.
+.PP
+References error_exit, lastuseri, LASTUSERI, lastuserj, LASTUSERJ, level, and LEVEL.
+.PP
+Referenced by picclick(), UnZoom(), and Zoom().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

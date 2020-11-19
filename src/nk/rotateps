@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# a awk script to rotate a postscript file by inserting the line
+# 90 rotate 0 -8.5 72 mul translate
+# after the last comment line
+
+awk '
+	BEGIN {comments = 1}
+	{if ($1 !~ /^%/ && comments == 1) {
+		print "90 rotate 0 -8.5 72 mul translate"
+		comments = 0
+	}}
+	{print}' 

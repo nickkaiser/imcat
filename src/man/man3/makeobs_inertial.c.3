@@ -1,0 +1,50 @@
+.TH "makeobs_inertial.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makeobs_inertial.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+\fC#include 'Ffunc.h'\fP
+.br
+\fC#include 'orbitutils/gaussdev.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	makeobs_inertial - make \fBa\fP set of observations for an inertial observatory\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makeobs_inertial dt \fBsigma\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	makeobs_inertial reads an lc format catalog from stdin containing at least\\\fBn\fP\\	\fBre\fP[3], ve[3], \fBra\fP[3], \fBva\fP[3], these being the position and velocity of\\\fBn\fP\\	the earth and the asteroid at \fBt\fP=0. It then generates \fBa\fP catalog\\\fBn\fP\\	containing direction of the asteroid at times \fBt\fP = -dt, 0, +dt\\\fBn\fP\\	and those times.  The catalog also contains, the position of the\\\fBn\fP\\	earth \fBre\fP[] and the observatory \fBrho\fP[] wrt the earth at those times.\\\fBn\fP\\\\\fBn\fP\\	Times are given in units of earths dynamical time (approx 58 days).\\\fBn\fP\\	Distances are in AU.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	maketestpscoords.pl laplace3\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	makeobs_inertial - make \fBa\fP set of observations for an inertial observatory\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makeobs_inertial dt \fBsigma\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	makeobs_inertial reads an lc format catalog from stdin containing at least\\\fBn\fP\\	\fBre\fP[3], ve[3], \fBra\fP[3], \fBva\fP[3], these being the position and velocity of\\\fBn\fP\\	the earth and the asteroid at \fBt\fP=0. It then generates \fBa\fP catalog\\\fBn\fP\\	containing direction of the asteroid at times \fBt\fP = -dt, 0, +dt\\\fBn\fP\\	and those times.  The catalog also contains, the position of the\\\fBn\fP\\	earth \fBre\fP[] and the observatory \fBrho\fP[] wrt the earth at those times.\\\fBn\fP\\\\\fBn\fP\\	Times are given in units of earths dynamical time (approx 58 days).\\\fBn\fP\\	Distances are in AU.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	maketestpscoords.pl laplace3\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 8 of file makeobs_inertial.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 32 of file makeobs_inertial.c.
+.PP
+References copy(), diff(), dr, exit(), fprintvec(), gaussdev(), ge(), i, ipf, length(), makedddotr(), n, nt, ra, re, rho, scale(), sigma, t, and usage.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

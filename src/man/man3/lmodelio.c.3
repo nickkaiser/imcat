@@ -1,0 +1,50 @@
+.TH "lmodelio.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+lmodelio.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'catlib/cat.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'lmodel.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBwritelmodel\fP (\fBlmodel\fP *themodel, FILE *opstream)"
+.br
+.ti -1c
+.RI "\fBlmodel\fP * \fBreadlmodel\fP (FILE *ipstream)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "\fBlmodel\fP* readlmodel (FILE * ipstream)"
+.PP
+Definition at line 141 of file lmodelio.c.
+.PP
+References lmodel::a, abs, item::addr, object::addrlist, allocobjectcontents(), lmodel::boxlimits, lmodel::cat, copyheaderinfo(), lmodel::covar, d, item::dim, error_exit, FOURIER_LMODEL, getheaderitem(), getheaderitemaddress(), getobjectitem(), getobjectitemindex(), lmodel::hascovar, lmodel::hasxorigin, lmodel::i, cathead::itemlist, item::itype, lmodel::k, lmodel::kmax, lmodel::kmin, lmodel::l, lmodel::lbox, ll, lmodel::lmax, lmodel::lmin, lmodel::m, m, makezernikeR(), lmodel::modeltype, lmodel::n, item::name, item::ndim, newitem(), newlmodel(), newobject(), object::next, lmodel::nmax, lmodel::nmin, lmodel::nmodes, nmodes, NUM_TYPE, lmodel::p, POLYNOMIAL_LMODEL, readcathead(), readobject(), setcatipf(), lmodel::xorigin, and ZERNIKE_LMODEL.
+.PP
+Referenced by main().
+.SS "int writelmodel (\fBlmodel\fP * themodel, FILE * opstream)"
+.PP
+Definition at line 15 of file lmodelio.c.
+.PP
+References lmodel::a, addobjectitem(), item::addr, lmodel::aitem, allocitemcontents(), lmodel::aname, lmodel::boxlimits, lmodel::cat, lmodel::covar, d, error_exit, FOURIER_LMODEL, lmodel::hascovar, lmodel::hasxorigin, lmodel::i, install1numericheaderitem(), install1textheaderitem(), installitem(), lmodel::k, lmodel::kmax, lmodel::kmin, lmodel::l, lmodel::lbox, lmodel::lmax, lmodel::lmin, lmodel::m, m, lmodel::modeltype, lmodel::n, newitem(), lmodel::nmax, lmodel::nmin, lmodel::nmodes, NUM_TYPE, lmodel::p, POLYNOMIAL_LMODEL, setcatopf(), TEXT_TYPE, writecathead(), writeitem(), lmodel::xdim, lmodel::xname, lmodel::xorigin, and ZERNIKE_LMODEL.
+.PP
+Referenced by main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

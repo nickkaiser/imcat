@@ -1,0 +1,1101 @@
+.TH "cdl_spp.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+cdl_spp.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <ctype.h>\fP
+.br
+\fC#include 'cdl.h'\fP
+.br
+\fC#include 'cdl_f77.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCDL_LIBRARY_SOURCE\fP"
+.br
+.ti -1c
+.RI "#define \fBCDS_OPEN\fP   cdopen_"
+.br
+.ti -1c
+.RI "#define \fBCDS_DISPLAYPIX\fP   cdsppx_"
+.br
+.ti -1c
+.RI "#define \fBCDS_READCURSOR\fP   crdcur_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETCURSOR\fP   cscurs_"
+.br
+.ti -1c
+.RI "#define \fBCDS_CLEARFRAME\fP   cclfrm_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SELECTFB\fP   cselfb_"
+.br
+.ti -1c
+.RI "#define \fBCDS_CLOSE\fP   cclose_"
+.br
+.ti -1c
+.RI "#define \fBCDS_DISPLAYIRAF\fP   cdspir_"
+.br
+.ti -1c
+.RI "#define \fBCDS_ISIRAF\fP   cisirf_"
+.br
+.ti -1c
+.RI "#define \fBCDS_READIRAF\fP   crdirf_"
+.br
+.ti -1c
+.RI "#define \fBCDS_DISPLAYFITS\fP   cdspft_"
+.br
+.ti -1c
+.RI "#define \fBCDS_ISFITS\fP   cisfts_"
+.br
+.ti -1c
+.RI "#define \fBCDS_READFITS\fP   crdfts_"
+.br
+.ti -1c
+.RI "#define \fBCDS_COMPZSCALE\fP   ccmpzs_"
+.br
+.ti -1c
+.RI "#define \fBCDS_ZSCALEIMAGE\fP   czscim_"
+.br
+.ti -1c
+.RI "#define \fBCDS_PRINTPIX\fP   cprpix_"
+.br
+.ti -1c
+.RI "#define \fBCDS_PRINTPIXTOFILE\fP   cprpfl_"
+.br
+.ti -1c
+.RI "#define \fBCDS_READIMAGE\fP   crdimg_"
+.br
+.ti -1c
+.RI "#define \fBCDS_READFRAMEBUFFER\fP   crdfrb_"
+.br
+.ti -1c
+.RI "#define \fBCDS_READSUBRAS\fP   crsubr_"
+.br
+.ti -1c
+.RI "#define \fBCDS_WRITESUBRAS\fP   cwsubr_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETWCS\fP   cstwcs_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETFBCONFIG\fP   csfbcf_"
+.br
+.ti -1c
+.RI "#define \fBCDS_GETFBCONFIG\fP   cgfbcf_"
+.br
+.ti -1c
+.RI "#define \fBCDS_LOOKUPFBSIZE\fP   clkfbs_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETFRAME\fP   csfram_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETZTRANS\fP   csztrn_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETZSCALE\fP   cszscl_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETSAMPLE\fP   cssamp_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETSAMPLELINES\fP   cssaml_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETCONTRAST\fP   cscntr_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETNAME\fP   csname_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETTITLE\fP   cstitl_"
+.br
+.ti -1c
+.RI "#define \fBCDS_GETWCS\fP   cgtwcs_"
+.br
+.ti -1c
+.RI "#define \fBCDS_GETFRAME\fP   cgfram_"
+.br
+.ti -1c
+.RI "#define \fBCDS_GETZTRANS\fP   cgztrn_"
+.br
+.ti -1c
+.RI "#define \fBCDS_GETZSCALE\fP   cgzscl_"
+.br
+.ti -1c
+.RI "#define \fBCDS_GETSAMPLE\fP   cgsamp_"
+.br
+.ti -1c
+.RI "#define \fBCDS_GETSAMPLELINES\fP   cgsmpl_"
+.br
+.ti -1c
+.RI "#define \fBCDS_GETCONTRAST\fP   cgcntr_"
+.br
+.ti -1c
+.RI "#define \fBCDS_GETNAME\fP   cgname_"
+.br
+.ti -1c
+.RI "#define \fBCDS_GETTITLE\fP   cgtitl_"
+.br
+.ti -1c
+.RI "#define \fBCDS_MAPFRAME\fP   cmapfr_"
+.br
+.ti -1c
+.RI "#define \fBCDS_MARKCOORDSFILE\fP   cmkcfl_"
+.br
+.ti -1c
+.RI "#define \fBCDS_MARKPOINT\fP   cmkpnt_"
+.br
+.ti -1c
+.RI "#define \fBCDS_MARKLINE\fP   cmklin_"
+.br
+.ti -1c
+.RI "#define \fBCDS_MARKBOX\fP   cmkbox_"
+.br
+.ti -1c
+.RI "#define \fBCDS_MARKPOLYLINE\fP   cmkpln_"
+.br
+.ti -1c
+.RI "#define \fBCDS_MARKPOLYGON\fP   cmkpgn_"
+.br
+.ti -1c
+.RI "#define \fBCDS_MARKCIRCLE\fP   cmkcrc_"
+.br
+.ti -1c
+.RI "#define \fBCDS_MARKCIRCANNULI\fP   cmkcan_"
+.br
+.ti -1c
+.RI "#define \fBCDS_MARKELLIPSE\fP   cmkell_"
+.br
+.ti -1c
+.RI "#define \fBCDS_MARKELLIPANNULI\fP   cmkela_"
+.br
+.ti -1c
+.RI "#define \fBCDS_MARKTEXT\fP   cmktxt_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETFONT\fP   csfont_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETLINEWIDTH\fP   cslwid_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETLINESTYLE\fP   cslsty_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETTEXTWIDTH\fP   cstwid_"
+.br
+.ti -1c
+.RI "#define \fBCDS_DELETEMARK\fP   cdelmk_"
+.br
+.ti -1c
+.RI "#define \fBCDS_CLEAROVERLAY\fP   cclrov_"
+.br
+.ti -1c
+.RI "#define \fBCDS_REDRAWOVERLAY\fP   crdrov_"
+.br
+.ti -1c
+.RI "#define \fBCDS_SETDEBUG\fP   cstdbg_"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBCDS_OPEN\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_DISPLAYPIX\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_DISPLAYIRAF\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_DISPLAYFITS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_READIRAF\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_READFITS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_CLEARFRAME\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_READIMAGE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_READFRAMEBUFFER\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_READSUBRASTER\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_WRITESUBRASTER\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETCURSOR\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_READCURSOR\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SELECTFB\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_CLOSE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_COMPUTEZSCALE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_ZSCALEIMAGE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETFRAME\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETFBCONFIG\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETZTRANS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETZOOM\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETSAMPLE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETCONTRAST\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETNAME\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETTITLE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_GETFRAME\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_GETFBCONFIG\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_GETZTRANS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_GETZOOM\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_GETSAMPLE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_GETCONTRAST\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_GETNAME\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_GETTITLE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETZSCALE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_GETZSCALE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_LOOKUPFBSIZE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_ISIRAF\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_ISFITS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETDEBUG\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_PRINTPIX\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_PRINTPIXTOFILE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETSAMPLELINES\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_GETSAMPLELINES\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETWCS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_GETWCS\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_MARKPOINT\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_MARKLINE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_MARKBOX\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_MARKPOLYLINE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_MARKPOLYGON\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_MARKCIRCLE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_MARKCIRCANNULI\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_MARKELLIPSE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_MARKELLIPANNULI\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_MARKTEXT\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_DELETEMARK\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_CLEAROVERLAY\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_REDRAWOVERLAY\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETFONT\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETLINEWIDTH\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETTEXTWIDTH\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_SETLINESTYLE\fP ()"
+.br
+.ti -1c
+.RI "void \fBCDS_MARKCOORDSFILE\fP ()"
+.br
+.ti -1c
+.RI "void \fBstrupk\fP ()"
+.br
+.ti -1c
+.RI "void \fBstrpak\fP ()"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "char \fBcstr\fP [512]"
+.br
+.ti -1c
+.RI "char \fBcstr2\fP [512]"
+.br
+.ti -1c
+.RI "void char * \fBimtdev\fP"
+.br
+.ti -1c
+.RI "int * \fBier\fP"
+.br
+.ti -1c
+.RI "int * \fBnx\fP"
+.br
+.ti -1c
+.RI "int * \fBny\fP"
+.br
+.ti -1c
+.RI "int * \fBbitpix\fP"
+.br
+.ti -1c
+.RI "int * \fBframe\fP"
+.br
+.ti -1c
+.RI "int * \fBfbconfig\fP"
+.br
+.ti -1c
+.RI "int * \fBzscale\fP"
+.br
+.ti -1c
+.RI "float * \fBx\fP"
+.br
+.ti -1c
+.RI "float * \fBy\fP"
+.br
+.ti -1c
+.RI "char * \fBkey\fP"
+.br
+.ti -1c
+.RI "int * \fBband\fP"
+.br
+.ti -1c
+.RI "int * \fBisiraf\fP"
+.br
+.ti -1c
+.RI "\fBuchar\fP * \fBpix\fP"
+.br
+.ti -1c
+.RI "char * \fBtitle\fP"
+.br
+.ti -1c
+.RI "int * \fBisfits\fP"
+.br
+.ti -1c
+.RI "int * \fBwcs\fP"
+.br
+.ti -1c
+.RI "float * \fBa\fP"
+.br
+.ti -1c
+.RI "float * \fBb\fP"
+.br
+.ti -1c
+.RI "float * \fBc\fP"
+.br
+.ti -1c
+.RI "float * \fBd\fP"
+.br
+.ti -1c
+.RI "float * \fBtx\fP"
+.br
+.ti -1c
+.RI "float * \fBty\fP"
+.br
+.ti -1c
+.RI "float * \fBz1\fP"
+.br
+.ti -1c
+.RI "float * \fBz2\fP"
+.br
+.ti -1c
+.RI "int * \fBzt\fP"
+.br
+.ti -1c
+.RI "int * \fBfb\fP"
+.br
+.ti -1c
+.RI "int * \fBw\fP"
+.br
+.ti -1c
+.RI "int * \fBh\fP"
+.br
+.ti -1c
+.RI "int * \fBnf\fP"
+.br
+.ti -1c
+.RI "int * \fBreset\fP"
+.br
+.ti -1c
+.RI "int * \fBannotate\fP"
+.br
+.ti -1c
+.RI "* \fBly\fP"
+.br
+.ti -1c
+.RI "int * \fBnframes\fP"
+.br
+.ti -1c
+.RI "int * \fBtype\fP"
+.br
+.ti -1c
+.RI "int * \fBsize\fP"
+.br
+.ti -1c
+.RI "int * \fBcolor\fP"
+.br
+.ti -1c
+.RI "int * \fBlabel\fP"
+.br
+.ti -1c
+.RI "int * \fBnumber\fP"
+.br
+.ti -1c
+.RI "* \fBys\fP"
+.br
+.ti -1c
+.RI "int * \fBxe\fP"
+.br
+.ti -1c
+.RI "int * \fBye\fP"
+.br
+.ti -1c
+.RI "int * \fBux\fP"
+.br
+.ti -1c
+.RI "int * \fBuy\fP"
+.br
+.ti -1c
+.RI "int * \fBfill\fP"
+.br
+.ti -1c
+.RI "* \fByarray\fP"
+.br
+.ti -1c
+.RI "int * \fBnpts\fP"
+.br
+.ti -1c
+.RI "int * \fBradius\fP"
+.br
+.ti -1c
+.RI "int * \fBnannuli\fP"
+.br
+.ti -1c
+.RI "int * \fBsep\fP"
+.br
+.ti -1c
+.RI "int * \fBxrad\fP"
+.br
+.ti -1c
+.RI "int * \fByrad\fP"
+.br
+.ti -1c
+.RI "float * \fBang\fP"
+.br
+.ti -1c
+.RI "char * \fBstr\fP"
+.br
+.ti -1c
+.RI "float * \fBangle\fP"
+.br
+.ti -1c
+.RI "char * \fBoutstr\fP"
+.br
+.ti -1c
+.RI "int \fBmaxch\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define CDL_LIBRARY_SOURCE"
+.PP
+Definition at line 4 of file cdl_spp.c.
+.SS "#define CDS_CLEARFRAME   cclfrm_"
+.PP
+Definition at line 87 of file cdl_spp.c.
+.SS "#define CDS_CLEAROVERLAY   cclrov_"
+.PP
+Definition at line 142 of file cdl_spp.c.
+.SS "#define CDS_CLOSE   cclose_"
+.PP
+Definition at line 89 of file cdl_spp.c.
+.SS "#define CDS_COMPZSCALE   ccmpzs_"
+.PP
+Definition at line 96 of file cdl_spp.c.
+.SS "#define CDS_DELETEMARK   cdelmk_"
+.PP
+Definition at line 141 of file cdl_spp.c.
+.SS "#define CDS_DISPLAYFITS   cdspft_"
+.PP
+Definition at line 93 of file cdl_spp.c.
+.SS "#define CDS_DISPLAYIRAF   cdspir_"
+.PP
+Definition at line 90 of file cdl_spp.c.
+.SS "#define CDS_DISPLAYPIX   cdsppx_"
+.PP
+Definition at line 84 of file cdl_spp.c.
+.SS "#define CDS_GETCONTRAST   cgcntr_"
+.PP
+Definition at line 122 of file cdl_spp.c.
+.SS "#define CDS_GETFBCONFIG   cgfbcf_"
+.PP
+Definition at line 106 of file cdl_spp.c.
+.SS "#define CDS_GETFRAME   cgfram_"
+.PP
+Definition at line 117 of file cdl_spp.c.
+.SS "#define CDS_GETNAME   cgname_"
+.PP
+Definition at line 123 of file cdl_spp.c.
+.SS "#define CDS_GETSAMPLE   cgsamp_"
+.PP
+Definition at line 120 of file cdl_spp.c.
+.SS "#define CDS_GETSAMPLELINES   cgsmpl_"
+.PP
+Definition at line 121 of file cdl_spp.c.
+.SS "#define CDS_GETTITLE   cgtitl_"
+.PP
+Definition at line 124 of file cdl_spp.c.
+.SS "#define CDS_GETWCS   cgtwcs_"
+.PP
+Definition at line 116 of file cdl_spp.c.
+.SS "#define CDS_GETZSCALE   cgzscl_"
+.PP
+Definition at line 119 of file cdl_spp.c.
+.SS "#define CDS_GETZTRANS   cgztrn_"
+.PP
+Definition at line 118 of file cdl_spp.c.
+.SS "#define CDS_ISFITS   cisfts_"
+.PP
+Definition at line 94 of file cdl_spp.c.
+.SS "#define CDS_ISIRAF   cisirf_"
+.PP
+Definition at line 91 of file cdl_spp.c.
+.SS "#define CDS_LOOKUPFBSIZE   clkfbs_"
+.PP
+Definition at line 107 of file cdl_spp.c.
+.SS "#define CDS_MAPFRAME   cmapfr_"
+.PP
+Definition at line 125 of file cdl_spp.c.
+.SS "#define CDS_MARKBOX   cmkbox_"
+.PP
+Definition at line 129 of file cdl_spp.c.
+.SS "#define CDS_MARKCIRCANNULI   cmkcan_"
+.PP
+Definition at line 133 of file cdl_spp.c.
+.SS "#define CDS_MARKCIRCLE   cmkcrc_"
+.PP
+Definition at line 132 of file cdl_spp.c.
+.SS "#define CDS_MARKCOORDSFILE   cmkcfl_"
+.PP
+Definition at line 126 of file cdl_spp.c.
+.SS "#define CDS_MARKELLIPANNULI   cmkela_"
+.PP
+Definition at line 135 of file cdl_spp.c.
+.SS "#define CDS_MARKELLIPSE   cmkell_"
+.PP
+Definition at line 134 of file cdl_spp.c.
+.SS "#define CDS_MARKLINE   cmklin_"
+.PP
+Definition at line 128 of file cdl_spp.c.
+.SS "#define CDS_MARKPOINT   cmkpnt_"
+.PP
+Definition at line 127 of file cdl_spp.c.
+.SS "#define CDS_MARKPOLYGON   cmkpgn_"
+.PP
+Definition at line 131 of file cdl_spp.c.
+.SS "#define CDS_MARKPOLYLINE   cmkpln_"
+.PP
+Definition at line 130 of file cdl_spp.c.
+.SS "#define CDS_MARKTEXT   cmktxt_"
+.PP
+Definition at line 136 of file cdl_spp.c.
+.SS "#define CDS_OPEN   cdopen_"
+.PP
+Definition at line 83 of file cdl_spp.c.
+.SS "#define CDS_PRINTPIX   cprpix_"
+.PP
+Definition at line 98 of file cdl_spp.c.
+.SS "#define CDS_PRINTPIXTOFILE   cprpfl_"
+.PP
+Definition at line 99 of file cdl_spp.c.
+.SS "#define CDS_READCURSOR   crdcur_"
+.PP
+Definition at line 85 of file cdl_spp.c.
+.SS "#define CDS_READFITS   crdfts_"
+.PP
+Definition at line 95 of file cdl_spp.c.
+.SS "#define CDS_READFRAMEBUFFER   crdfrb_"
+.PP
+Definition at line 101 of file cdl_spp.c.
+.SS "#define CDS_READIMAGE   crdimg_"
+.PP
+Definition at line 100 of file cdl_spp.c.
+.SS "#define CDS_READIRAF   crdirf_"
+.PP
+Definition at line 92 of file cdl_spp.c.
+.SS "#define CDS_READSUBRAS   crsubr_"
+.PP
+Definition at line 102 of file cdl_spp.c.
+.SS "#define CDS_REDRAWOVERLAY   crdrov_"
+.PP
+Definition at line 143 of file cdl_spp.c.
+.SS "#define CDS_SELECTFB   cselfb_"
+.PP
+Definition at line 88 of file cdl_spp.c.
+.SS "#define CDS_SETCONTRAST   cscntr_"
+.PP
+Definition at line 113 of file cdl_spp.c.
+.SS "#define CDS_SETCURSOR   cscurs_"
+.PP
+Definition at line 86 of file cdl_spp.c.
+.SS "#define CDS_SETDEBUG   cstdbg_"
+.PP
+Definition at line 144 of file cdl_spp.c.
+.SS "#define CDS_SETFBCONFIG   csfbcf_"
+.PP
+Definition at line 105 of file cdl_spp.c.
+.SS "#define CDS_SETFONT   csfont_"
+.PP
+Definition at line 137 of file cdl_spp.c.
+.SS "#define CDS_SETFRAME   csfram_"
+.PP
+Definition at line 108 of file cdl_spp.c.
+.SS "#define CDS_SETLINESTYLE   cslsty_"
+.PP
+Definition at line 139 of file cdl_spp.c.
+.SS "#define CDS_SETLINEWIDTH   cslwid_"
+.PP
+Definition at line 138 of file cdl_spp.c.
+.SS "#define CDS_SETNAME   csname_"
+.PP
+Definition at line 114 of file cdl_spp.c.
+.SS "#define CDS_SETSAMPLE   cssamp_"
+.PP
+Definition at line 111 of file cdl_spp.c.
+.SS "#define CDS_SETSAMPLELINES   cssaml_"
+.PP
+Definition at line 112 of file cdl_spp.c.
+.SS "#define CDS_SETTEXTWIDTH   cstwid_"
+.PP
+Definition at line 140 of file cdl_spp.c.
+.SS "#define CDS_SETTITLE   cstitl_"
+.PP
+Definition at line 115 of file cdl_spp.c.
+.SS "#define CDS_SETWCS   cstwcs_"
+.PP
+Definition at line 104 of file cdl_spp.c.
+.SS "#define CDS_SETZSCALE   cszscl_"
+.PP
+Definition at line 110 of file cdl_spp.c.
+.SS "#define CDS_SETZTRANS   csztrn_"
+.PP
+Definition at line 109 of file cdl_spp.c.
+.SS "#define CDS_WRITESUBRAS   cwsubr_"
+.PP
+Definition at line 103 of file cdl_spp.c.
+.SS "#define CDS_ZSCALEIMAGE   czscim_"
+.PP
+Definition at line 97 of file cdl_spp.c.
+.SH "Function Documentation"
+.PP 
+.SS "void CDS_CLEARFRAME ()"
+.PP
+.SS "void CDS_CLEAROVERLAY ()"
+.PP
+.SS "void CDS_CLOSE ()"
+.PP
+.SS "void CDS_COMPUTEZSCALE ()"
+.PP
+.SS "void CDS_DELETEMARK ()"
+.PP
+.SS "void CDS_DISPLAYFITS ()"
+.PP
+.SS "void CDS_DISPLAYIRAF ()"
+.PP
+.SS "void CDS_DISPLAYPIX ()"
+.PP
+.SS "void CDS_GETCONTRAST ()"
+.PP
+.SS "void CDS_GETFBCONFIG ()"
+.PP
+.SS "void CDS_GETFRAME ()"
+.PP
+.SS "void CDS_GETNAME ()"
+.PP
+.SS "void CDS_GETSAMPLE ()"
+.PP
+.SS "void CDS_GETSAMPLELINES ()"
+.PP
+.SS "void CDS_GETTITLE ()"
+.PP
+.SS "void CDS_GETWCS ()"
+.PP
+.SS "void CDS_GETZOOM ()"
+.PP
+.SS "void CDS_GETZSCALE ()"
+.PP
+.SS "void CDS_GETZTRANS ()"
+.PP
+.SS "void CDS_ISFITS ()"
+.PP
+.SS "void CDS_ISIRAF ()"
+.PP
+.SS "void CDS_LOOKUPFBSIZE ()"
+.PP
+.SS "void CDS_MARKBOX ()"
+.PP
+.SS "void CDS_MARKCIRCANNULI ()"
+.PP
+.SS "void CDS_MARKCIRCLE ()"
+.PP
+.SS "void CDS_MARKCOORDSFILE ()"
+.PP
+.SS "void CDS_MARKELLIPANNULI ()"
+.PP
+.SS "void CDS_MARKELLIPSE ()"
+.PP
+.SS "void CDS_MARKLINE ()"
+.PP
+.SS "void CDS_MARKPOINT ()"
+.PP
+.SS "void CDS_MARKPOLYGON ()"
+.PP
+.SS "void CDS_MARKPOLYLINE ()"
+.PP
+.SS "void CDS_MARKTEXT ()"
+.PP
+.SS "void CDS_OPEN ()"
+.PP
+.SS "void CDS_PRINTPIX ()"
+.PP
+.SS "void CDS_PRINTPIXTOFILE ()"
+.PP
+.SS "void CDS_READCURSOR ()"
+.PP
+.SS "void CDS_READFITS ()"
+.PP
+.SS "void CDS_READFRAMEBUFFER ()"
+.PP
+.SS "void CDS_READIMAGE ()"
+.PP
+.SS "void CDS_READIRAF ()"
+.PP
+.SS "void CDS_READSUBRASTER ()"
+.PP
+.SS "void CDS_REDRAWOVERLAY ()"
+.PP
+.SS "void CDS_SELECTFB ()"
+.PP
+.SS "void CDS_SETCONTRAST ()"
+.PP
+.SS "void CDS_SETCURSOR ()"
+.PP
+.SS "void CDS_SETDEBUG ()"
+.PP
+.SS "void CDS_SETFBCONFIG ()"
+.PP
+.SS "void CDS_SETFONT ()"
+.PP
+.SS "void CDS_SETFRAME ()"
+.PP
+.SS "void CDS_SETLINESTYLE ()"
+.PP
+.SS "void CDS_SETLINEWIDTH ()"
+.PP
+.SS "void CDS_SETNAME ()"
+.PP
+.SS "void CDS_SETSAMPLE ()"
+.PP
+.SS "void CDS_SETSAMPLELINES ()"
+.PP
+.SS "void CDS_SETTEXTWIDTH ()"
+.PP
+.SS "void CDS_SETTITLE ()"
+.PP
+.SS "void CDS_SETWCS ()"
+.PP
+.SS "void CDS_SETZOOM ()"
+.PP
+.SS "void CDS_SETZSCALE ()"
+.PP
+.SS "void CDS_SETZTRANS ()"
+.PP
+.SS "void CDS_WRITESUBRASTER ()"
+.PP
+.SS "void CDS_ZSCALEIMAGE ()"
+.PP
+.SS "void strpak ()"
+.PP
+.SS "void strupk ()\fC [static]\fP"
+.PP
+.SH "Variable Documentation"
+.PP 
+.SS "float* \fBa\fP"
+.PP
+Definition at line 601 of file cdl_spp.c.
+.SS "float* \fBang\fP"
+.PP
+Definition at line 1602 of file cdl_spp.c.
+.SS "float* \fBangle\fP"
+.PP
+Definition at line 1634 of file cdl_spp.c.
+.SS "int* \fBannotate\fP"
+.PP
+Definition at line 830 of file cdl_spp.c.
+.SS "float * \fBb\fP"
+.PP
+Definition at line 601 of file cdl_spp.c.
+.SS "int* \fBband\fP"
+.PP
+Definition at line 417 of file cdl_spp.c.
+.SS "int* \fBbitpix\fP"
+.PP
+Definition at line 773 of file cdl_spp.c.
+.SS "float * \fBc\fP"
+.PP
+Definition at line 601 of file cdl_spp.c.
+.SS "int* \fBcolor\fP"
+.PP
+Definition at line 1635 of file cdl_spp.c.
+.SS "char * \fBcstr\fP"
+.PP
+Definition at line 1852 of file cdl_spp.c.
+.PP
+Referenced by isnum().
+.SS "char \fBcstr2\fP[512]"
+.PP
+Definition at line 256 of file cdl_spp.c.
+.SS "float * \fBd\fP"
+.PP
+Definition at line 601 of file cdl_spp.c.
+.SS "int* \fBfb\fP"
+.PP
+Definition at line 653 of file cdl_spp.c.
+.SS "int* \fBfbconfig\fP"
+.PP
+Definition at line 449 of file cdl_spp.c.
+.SS "int* \fBfill\fP"
+.PP
+Definition at line 1571 of file cdl_spp.c.
+.SS "int* \fBframe\fP"
+.PP
+Definition at line 448 of file cdl_spp.c.
+.SS "int * \fBh\fP"
+.PP
+Definition at line 952 of file cdl_spp.c.
+.SS "int* \fBier\fP"
+.PP
+Definition at line 1735 of file cdl_spp.c.
+.SS "void char* \fBimtdev\fP"
+.PP
+Definition at line 272 of file cdl_spp.c.
+.SS "int* \fBisfits\fP"
+.PP
+Definition at line 473 of file cdl_spp.c.
+.SS "int* \fBisiraf\fP"
+.PP
+Definition at line 389 of file cdl_spp.c.
+.SS "char* \fBkey\fP"
+.PP
+Definition at line 331 of file cdl_spp.c.
+.SS "char* \fBlabel\fP"
+.PP
+Definition at line 1369 of file cdl_spp.c.
+.SS "* \fBly\fP"
+.PP
+Definition at line 1426 of file cdl_spp.c.
+.SS "int \fBmaxch\fP"
+.PP
+Definition at line 1853 of file cdl_spp.c.
+.PP
+Referenced by imd_getstr().
+.SS "int* \fBnannuli\fP"
+.PP
+Definition at line 1603 of file cdl_spp.c.
+.SS "int* \fBnf\fP"
+.PP
+Definition at line 953 of file cdl_spp.c.
+.SS "int* \fBnframes\fP"
+.PP
+Definition at line 929 of file cdl_spp.c.
+.SS "int* \fBnpts\fP"
+.PP
+Definition at line 1482 of file cdl_spp.c.
+.SS "int* \fBnumber\fP"
+.PP
+Definition at line 1339 of file cdl_spp.c.
+.SS "int* \fBnx\fP"
+.PP
+Definition at line 884 of file cdl_spp.c.
+.SS "int * \fBny\fP"
+.PP
+Definition at line 884 of file cdl_spp.c.
+.SS "char* \fBoutstr\fP"
+.PP
+Definition at line 1813 of file cdl_spp.c.
+.SS "\fBuchar\fP* \fBpix\fP"
+.PP
+Definition at line 885 of file cdl_spp.c.
+.SS "int* \fBradius\fP"
+.PP
+Definition at line 1538 of file cdl_spp.c.
+.SS "int* \fBreset\fP"
+.PP
+Definition at line 656 of file cdl_spp.c.
+.SS "int* \fBsep\fP"
+.PP
+Definition at line 1604 of file cdl_spp.c.
+.SS "float* size"
+.PP
+Definition at line 1633 of file cdl_spp.c.
+.SS "char* \fBstr\fP"
+.PP
+Definition at line 1632 of file cdl_spp.c.
+.SS "char* \fBtitle\fP"
+.PP
+Definition at line 600 of file cdl_spp.c.
+.SS "float* \fBtx\fP"
+.PP
+Definition at line 602 of file cdl_spp.c.
+.SS "float * \fBty\fP"
+.PP
+Definition at line 602 of file cdl_spp.c.
+.SS "int* \fBtype\fP"
+.PP
+Definition at line 1371 of file cdl_spp.c.
+.SS "int* \fBux\fP"
+.PP
+Definition at line 1427 of file cdl_spp.c.
+.SS "int * \fBuy\fP"
+.PP
+Definition at line 1427 of file cdl_spp.c.
+.SS "int* \fBw\fP"
+.PP
+Definition at line 952 of file cdl_spp.c.
+.SS "int* \fBwcs\fP"
+.PP
+Definition at line 529 of file cdl_spp.c.
+.SS "float* x"
+.PP
+Definition at line 330 of file cdl_spp.c.
+.SS "int* \fBxe\fP"
+.PP
+Definition at line 1399 of file cdl_spp.c.
+.SS "int* \fBxrad\fP"
+.PP
+Definition at line 1601 of file cdl_spp.c.
+.SS "* y"
+.PP
+Definition at line 1734 of file cdl_spp.c.
+.SS "* \fByarray\fP"
+.PP
+Definition at line 1481 of file cdl_spp.c.
+.SS "int * \fBye\fP"
+.PP
+Definition at line 1399 of file cdl_spp.c.
+.SS "int * \fByrad\fP"
+.PP
+Definition at line 1601 of file cdl_spp.c.
+.SS "* \fBys\fP"
+.PP
+Definition at line 1398 of file cdl_spp.c.
+.SS "float* \fBz1\fP"
+.PP
+Definition at line 774 of file cdl_spp.c.
+.SS "* \fBz2\fP"
+.PP
+Definition at line 1166 of file cdl_spp.c.
+.SS "int* \fBzscale\fP"
+.PP
+Definition at line 450 of file cdl_spp.c.
+.SS "int* \fBzt\fP"
+.PP
+Definition at line 604 of file cdl_spp.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,48 @@
+.TH "getdet.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getdet.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'vectors.h'\fP
+.br
+\fC#include 'deltam.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	getdet - keeps track of the detections of \fBa\fP set of objects\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getdet \fBnp\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	getdet reads from stdin an lc catalog containing variables\\\fBn\fP\\	'pnum' (\fBparticle\fP \fBnumber\fP) and 'fnum' (\fBframe\fP \fBnumber\fP) and outputs\\\fBn\fP\\	\fBa\fP sequence of fnum's and the count 'ndet' of distinct particles that\\\fBn\fP\\	have appeared in the input stream.\\\fBn\fP\\\\\fBn\fP\\	It also outputs 'risksum' - the sum of the risk values for\\\fBn\fP\\	the detected particles.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	getdet - keeps track of the detections of \fBa\fP set of objects\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getdet \fBnp\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	getdet reads from stdin an lc catalog containing variables\\\fBn\fP\\	'pnum' (\fBparticle\fP \fBnumber\fP) and 'fnum' (\fBframe\fP \fBnumber\fP) and outputs\\\fBn\fP\\	\fBa\fP sequence of fnum's and the count 'ndet' of distinct particles that\\\fBn\fP\\	have appeared in the input stream.\\\fBn\fP\\\\\fBn\fP\\	It also outputs 'risksum' - the sum of the risk values for\\\fBn\fP\\	the detected particles.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 7 of file getdet.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 26 of file getdet.c.
+.PP
+References det(), exit(), i, ipf, and usage.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,56 @@
+.TH "getxsfromradec.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getxsfromradec.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'catlib/cat.h'\fP
+.br
+\fC#include 'utils/error.h'\fP
+.br
+\fC#include 'utils/args.h'\fP
+.br
+\fC#include 'getxfromradecfunc.h'\fP
+.br
+\fC#include 'radecio.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	getxsfromradec --- convert from \fBra\fP, dec to stereographic x-coord\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getxsfromradec [-\fBi\fP | -u] RA0 DEC0 [THETA]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	getxsfromradec reads from stdin \fBa\fP catalogue containing celestial\\\fBn\fP\\	coordinates (and perhaps other stuff) and computes the\\\fBn\fP\\	stereographic projection xs with tangent \fBpoint\fP \\\fBn\fP\\	The orientation is such that xs[0] increases with decreasing\\\fBn\fP\\	RA, and x[1] increases with DEC.\\\fBn\fP\\	The resulting vector is expressed in degrees.\\\fBn\fP\\\\\fBn\fP\\	Tangent \fBpoint\fP args may be decimal (in degrees) or colon separated\\\fBn\fP\\	triplets interpreted as h:m:s for \fBra\fP and d:m:s for dec.\\\fBn\fP\\\\\fBn\fP\\	If the third optional argument THETA is given then the\\\fBn\fP\\	stereographic coords will be rotated anticlockwise through\\\fBn\fP\\	THETA degrees. THETA must be given in decimal notation.\\\fBn\fP\\\\\fBn\fP\\	With the -\fBi\fP \fBflag\fP we perform the inverse operation.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser	kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	getxsfromradec --- convert from \fBra\fP, dec to stereographic x-coord\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getxsfromradec [-\fBi\fP | -u] RA0 DEC0 [THETA]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	getxsfromradec reads from stdin \fBa\fP catalogue containing celestial\\\fBn\fP\\	coordinates (and perhaps other stuff) and computes the\\\fBn\fP\\	stereographic projection xs with tangent \fBpoint\fP \\\fBn\fP\\	The orientation is such that xs[0] increases with decreasing\\\fBn\fP\\	RA, and x[1] increases with DEC.\\\fBn\fP\\	The resulting vector is expressed in degrees.\\\fBn\fP\\\\\fBn\fP\\	Tangent \fBpoint\fP args may be decimal (in degrees) or colon separated\\\fBn\fP\\	triplets interpreted as h:m:s for \fBra\fP and d:m:s for dec.\\\fBn\fP\\\\\fBn\fP\\	If the third optional argument THETA is given then the\\\fBn\fP\\	stereographic coords will be rotated anticlockwise through\\\fBn\fP\\	THETA degrees. THETA must be given in decimal notation.\\\fBn\fP\\\\\fBn\fP\\	With the -\fBi\fP \fBflag\fP we perform the inverse operation.\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser	kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file getxsfromradec.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 46 of file getxsfromradec.c.
+.PP
+References addargscomment(), addobjectitem(), object::addrlist, allocitemcontents(), allocobjectcontents(), argsinit(), c, connectobjecttocathead(), copycontentinfo(), copyheaderinfo(), error_exit, exit(), flag, FLAG_ARG, getargd(), getargs(), getcatipfiletype(), getdec(), getflag(), getobjectitemindex(), getra(), getxcoords(), inheritcontents(), inversegetxcoords(), ix, newitem(), newobject(), nextargtype(), NUM_TYPE, readcathead(), readobject(), rotate(), setcatopfiletype(), usage, writecathead(), writeobject(), x, and xp().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

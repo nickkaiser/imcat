@@ -1,0 +1,13 @@
+# critlines boxsize kappa2stufffile
+
+critlines 2
+	data $2
+	read {i 1 j 2 l11 6 l22 7}
+	image($1,$1)
+	set image(j,i) = l11
+	set lev = 0,0,1
+	levels lev
+	contour
+	set image(j,i) = l22
+	contour
+

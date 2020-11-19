@@ -1,0 +1,104 @@
+.TH "smooth.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+smooth.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../imlib/filters.h'\fP
+.br
+\fC#include '../utils/arrays.h'\fP
+.br
+\fC#include '../fftlib/myfft.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	smooth --- spatially filter \fBa\fP \fBfits\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	smooth [option...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'smooth' reads \fBa\fP \fBfits\fP image from standard input and writes \fBa\fP\\\fBn\fP\\	smoothed version to standard output.\\\fBn\fP\\\\\fBn\fP\\	Various types of smoothing are provided:\\\fBn\fP\\		-\fBk\fP	\fBm\fP rf		# smooth with \fBm\fP x \fBm\fP gaussian kernel\\\fBn\fP\\		-\fBb\fP  	\fBm\fP		# \fBm\fP x \fBm\fP box filter\\\fBn\fP\\		-\fBt\fP 			# tukey-style running median\\\fBn\fP\\		-f 	\fBa\fP s1 s2		# fft filter (1+\fBk\fP^2 s1^2)^-\fBa\fP/2 exp(-0.5 \fBk\fP^2 s2^2)\\\fBn\fP\\		-g	\fBa\fP \fBb\fP \fBphi\fP		# gaussian: major/minor = \fBa\fP/\fBb\fP, \fBpos\fP \fBangle\fP \fBphi\fP [deg]\\\fBn\fP\\		-K	\fBr\fP		# fft kolmogorov turb: exp(-0.5 (\fBk\fP \fBr\fP)^(5/3))\\\fBn\fP\\		-p	\fBalpha\fP		# power law: transfer function = \fBk\fP^(\fBalpha\fP)\\\fBn\fP\\		-\fBe\fP	\fBr\fP gamma		# generalized exponential: exp(-(\fBk\fP \fBr\fP)^gamma)\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBSCHECHTERFILTER\fP   0"
+.br
+.ti -1c
+.RI "#define \fBGAUSSFILTER\fP   1"
+.br
+.ti -1c
+.RI "#define \fBKOLMOGOROVFILTER\fP   2"
+.br
+.ti -1c
+.RI "#define \fBPOWERLAWFILTER\fP   3"
+.br
+.ti -1c
+.RI "#define \fBEXPONENTIALFILTER\fP   4"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define EXPONENTIALFILTER   4"
+.PP
+Definition at line 45 of file smooth.c.
+.PP
+Referenced by main().
+.SS "#define GAUSSFILTER   1"
+.PP
+Definition at line 42 of file smooth.c.
+.PP
+Referenced by main().
+.SS "#define KOLMOGOROVFILTER   2"
+.PP
+Definition at line 43 of file smooth.c.
+.PP
+Referenced by main().
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 47 of file smooth.c.
+.SS "#define POWERLAWFILTER   3"
+.PP
+Definition at line 44 of file smooth.c.
+.PP
+Referenced by main().
+.SS "#define SCHECHTERFILTER   0"
+.PP
+Definition at line 41 of file smooth.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\NAME\\\fBn\fP\\	smooth --- spatially filter \fBa\fP \fBfits\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	smooth [option...]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'smooth' reads \fBa\fP \fBfits\fP image from standard input and writes \fBa\fP\\\fBn\fP\\	smoothed version to standard output.\\\fBn\fP\\\\\fBn\fP\\	Various types of smoothing are provided:\\\fBn\fP\\		-\fBk\fP	\fBm\fP rf		# smooth with \fBm\fP x \fBm\fP gaussian kernel\\\fBn\fP\\		-\fBb\fP  	\fBm\fP		# \fBm\fP x \fBm\fP box filter\\\fBn\fP\\		-\fBt\fP 			# tukey-style running median\\\fBn\fP\\		-f 	\fBa\fP s1 s2		# fft filter (1+\fBk\fP^2 s1^2)^-\fBa\fP/2 exp(-0.5 \fBk\fP^2 s2^2)\\\fBn\fP\\		-g	\fBa\fP \fBb\fP \fBphi\fP		# gaussian: major/minor = \fBa\fP/\fBb\fP, \fBpos\fP \fBangle\fP \fBphi\fP [deg]\\\fBn\fP\\		-K	\fBr\fP		# fft kolmogorov turb: exp(-0.5 (\fBk\fP \fBr\fP)^(5/3))\\\fBn\fP\\		-p	\fBalpha\fP		# power law: transfer function = \fBk\fP^(\fBalpha\fP)\\\fBn\fP\\		-\fBe\fP	\fBr\fP gamma		# generalized exponential: exp(-(\fBk\fP \fBr\fP)^gamma)\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file smooth.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 49 of file smooth.c.
+.PP
+References A, a, add_comment(), allocFloatArray(), B, block_filter(), error_exit, exit(), exponentialfilter(), EXPONENTIALFILTER, f, ff, fits, gaussfilter(), GAUSSFILTER, gaussian_kernel_filter(), i, j, kolmogorovfilter(), KOLMOGOROVFILTER, MAGIC, N1, N2, phi, powerlawfilter(), POWERLAWFILTER, read2Dfloatimage(), read2Dfloatimage_shm(), SCHECHTERFILTER, schecterfilter(), shmfree(), tukey(), usage, and write2Dfloatimage().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

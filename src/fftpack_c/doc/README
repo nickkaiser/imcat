@@ -1,0 +1,2 @@
+These are swarztrauber's fftpack routines from netlib
+I have made "fftpack.h" to declare the routines we will actually use

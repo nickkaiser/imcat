@@ -1,0 +1,94 @@
+.TH "fitstack_read.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitstack_read.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include 'fitstack_read.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBBUFF_SIZE\fP   1000"
+.br
+.ti -1c
+.RI "#define \fBN_FIELDS\fP   8"
+.br
+.ti -1c
+.RI "#define \fBMAX_BUFFS\fP   10000"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBreadmergedcat\fP (int \fBnexp\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "double *** \fBx\fP"
+.br
+.ti -1c
+.RI "double ** \fBmag\fP"
+.br
+.ti -1c
+.RI "double *** \fBr\fP"
+.br
+.ti -1c
+.RI "double *** \fBz\fP"
+.br
+.ti -1c
+.RI "int ** \fBe\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define BUFF_SIZE   1000"
+.PP
+Definition at line 12 of file test/fitstack_read.c.
+.SS "#define MAX_BUFFS   10000"
+.PP
+Definition at line 16 of file test/fitstack_read.c.
+.SS "#define N_FIELDS   8"
+.PP
+Definition at line 14 of file test/fitstack_read.c.
+.SH "Function Documentation"
+.PP 
+.SS "int readmergedcat (int nexp)"
+.PP
+Definition at line 22 of file test/fitstack_read.c.
+.PP
+References buff, BUFF_SIZE, e, error_exit, exit(), free(), i, j, lcpipe, mag, MAX_BUFFS, N_FIELDS, and x.
+.SH "Variable Documentation"
+.PP 
+.SS "int** \fBe\fP"
+.PP
+Definition at line 20 of file test/fitstack_read.c.
+.SS "double ** \fBmag\fP"
+.PP
+Definition at line 19 of file test/fitstack_read.c.
+.SS "double *** \fBr\fP"
+.PP
+Definition at line 19 of file test/fitstack_read.c.
+.SS "double*** x"
+.PP
+Definition at line 19 of file test/fitstack_read.c.
+.SS "double *** \fBz\fP"
+.PP
+Definition at line 19 of file test/fitstack_read.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

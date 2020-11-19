@@ -1,0 +1,68 @@
+.TH "getshapes1main.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getshapes1main.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../utils/stats_stuff.h'\fP
+.br
+\fC#include 'getshape1.h'\fP
+.br
+\fC#include 'zap.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	getshapes1 --- calculate ellipticities etc. for catalogue of objects\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getshapes1	[\fBoptions\fP...]\\\fBn\fP\\		-\fBr\fP rname	# name for window \fBradius\fP ('rg')\\\fBn\fP\\		-\fBm\fP rmult	# multiplier: r_window = rmult * rname (1.0)\\\fBn\fP\\		-f fitsfile	# specify \fBfits\fP file explicitly\\\fBn\fP\\		-\fBi\fP 		# ignore the sky \fBbackground\fP information.\\\fBn\fP\\		-Z \fBr\fP \fBmul\fP	# ignore pixels within \fBmul\fP * \fBr\fP of other objects\\\fBn\fP\\		-R		# always output \fBobject\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'getshapes1\\' calculates second moments of sky brightness\\\fBn\fP\\	(and related quantities) for objects detected by (\fBh\fP)findpeaks,\\\fBn\fP\\	though possibly after having been processed by getsky and/or\\\fBn\fP\\	apphot.  It uses \fBa\fP gaussian window of size determined by\\\fBn\fP\\	flags -\fBr\fP, -\fBm\fP.  Use '-\fBr\fP unity' for r_window = rmult.\\\fBn\fP\\	It adds the following items to the catalogue:\\\fBn\fP\\		qll		# trace of flux normalised quadrupole moment matrix\\\fBn\fP\\		q[2]		# q[\fBa\fP] = \fBM\fP[\fBa\fP][\fBl\fP][\fBm\fP] q[\fBl\fP][\fBm\fP]\\\fBn\fP\\		R[2][2]		# response to psf anisotropy\\\fBn\fP\\		P[2][2]		# response to (post seeing) shear\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBQ_DIM\fP   3"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define Q_DIM   3"
+.PP
+Definition at line 49 of file getshapes1main.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	getshapes1 --- calculate ellipticities etc. for catalogue of objects\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	getshapes1	[\fBoptions\fP...]\\\fBn\fP\\		-\fBr\fP rname	# name for window \fBradius\fP ('rg')\\\fBn\fP\\		-\fBm\fP rmult	# multiplier: r_window = rmult * rname (1.0)\\\fBn\fP\\		-f fitsfile	# specify \fBfits\fP file explicitly\\\fBn\fP\\		-\fBi\fP 		# ignore the sky \fBbackground\fP information.\\\fBn\fP\\		-Z \fBr\fP \fBmul\fP	# ignore pixels within \fBmul\fP * \fBr\fP of other objects\\\fBn\fP\\		-R		# always output \fBobject\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'getshapes1\\' calculates second moments of sky brightness\\\fBn\fP\\	(and related quantities) for objects detected by (\fBh\fP)findpeaks,\\\fBn\fP\\	though possibly after having been processed by getsky and/or\\\fBn\fP\\	apphot.  It uses \fBa\fP gaussian window of size determined by\\\fBn\fP\\	flags -\fBr\fP, -\fBm\fP.  Use '-\fBr\fP unity' for r_window = rmult.\\\fBn\fP\\	It adds the following items to the catalogue:\\\fBn\fP\\		qll		# trace of flux normalised quadrupole moment matrix\\\fBn\fP\\		q[2]		# q[\fBa\fP] = \fBM\fP[\fBa\fP][\fBl\fP][\fBm\fP] q[\fBl\fP][\fBm\fP]\\\fBn\fP\\		R[2][2]		# response to psf anisotropy\\\fBn\fP\\		P[2][2]		# response to (post seeing) shear\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 5 of file getshapes1main.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 51 of file getshapes1main.c.
+.PP
+References addargscomment(), addobjectitem(), object::addrlist, allocFloatArray(), allocitemcontents(), allocobjectcontents(), allocShortArray(), BINARY_FILE_TYPE, connectobjecttocathead(), copycontentinfo(), copyheaderinfo(), error_exit, exit(), f, fits, getheaderitemaddress(), getobjectitemindex(), Getshape(), cathead::headeritembase, inheritcontents(), ix, N1, N2, newitem(), newobject(), NUM_TYPE, Q_DIM, r, read2Dfloatimage(), readcathead(), readobject(), setcatipf(), setcatopf(), setcatopfiletype(), UNZAP_MODE, usage, writecathead(), writeobject(), x, zap(), and ZAP_MODE.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

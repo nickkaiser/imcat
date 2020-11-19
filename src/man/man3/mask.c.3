@@ -1,0 +1,72 @@
+.TH "mask.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+mask.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/arrays.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	mask - set abnormal pixels in sky-flat to MAGIC\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	mask [\fBoptions\fP] < fits_in > fits_out \\\fBn\fP\\		-\fBb\fP inner outer 	# box for local median (3 5)\\\fBn\fP\\		-f dfcrit	# critical (f - fmedian) value (100)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'mask\\' reads fits_in (typically \fBa\fP sky_flat) \\\fBn\fP\\	calculates \fBa\fP local median and sets to MAGIC\\\fBn\fP\\	any pixels with abs(f - f_local_median) > dfcrit \\\fBn\fP\\	Finally any neighbours of MAGIC pixels are also set to MAGIC.\\\fBn\fP\\	The MAGIC property will be inherited when the result is\\\fBn\fP\\	used to sky flatten an image\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAGIC\fP   FLOAT_MAGIC"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBfloatcmp\fP ()"
+.br
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "int \fBfloatcmp\fP (float *s1, float *s2)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAGIC   FLOAT_MAGIC"
+.PP
+Definition at line 34 of file mask.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	mask - set abnormal pixels in sky-flat to MAGIC\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	mask [\fBoptions\fP] < fits_in > fits_out \\\fBn\fP\\		-\fBb\fP inner outer 	# box for local median (3 5)\\\fBn\fP\\		-f dfcrit	# critical (f - fmedian) value (100)\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'mask\\' reads fits_in (typically \fBa\fP sky_flat) \\\fBn\fP\\	calculates \fBa\fP local median and sets to MAGIC\\\fBn\fP\\	any pixels with abs(f - f_local_median) > dfcrit \\\fBn\fP\\	Finally any neighbours of MAGIC pixels are also set to MAGIC.\\\fBn\fP\\	The MAGIC property will be inherited when the result is\\\fBn\fP\\	used to sky flatten an image\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file mask.c.
+.SH "Function Documentation"
+.PP 
+.SS "int floatcmp (float * s1, float * s2)"
+.PP
+Definition at line 131 of file mask.c.
+.SS "int floatcmp ()"
+.PP
+Referenced by liststats(), and main().
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 38 of file mask.c.
+.PP
+References add_comment(), allocFloatArray(), di, dj, error_exit, exit(), f, fits, floatcmp(), fmedian(), i, j, MAGIC, N1, N2, read2Dfloatimage(), usage, and write2Dfloatimage().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

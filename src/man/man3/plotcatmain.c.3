@@ -1,0 +1,252 @@
+.TH "plotcatmain.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+plotcatmain.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include 'cpgplot.h'\fP
+.br
+\fC#include 'cpgellipses.h'\fP
+.br
+\fC#include 'getrange.h'\fP
+.br
+\fC#include 'rectangles.h'\fP
+.br
+\fC#include 'lcfilter.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/colormaps.h'\fP
+.br
+\fC#include 'labels.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMARGIN\fP   0.03"
+.br
+.ti -1c
+.RI "#define \fBRFRACDEFAULT\fP   0.01"
+.br
+.ti -1c
+.RI "#define \fBEMAX\fP   0.9"
+.br
+.ti -1c
+.RI "#define \fBNVERT\fP   8"
+.br
+.ti -1c
+.RI "#define \fBMAX_MODES\fP   20"
+.br
+.ti -1c
+.RI "#define \fBSYMBOL_TYPE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBPOLY_TYPE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBXY_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBXY_SHADE_MODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBXY_SYMBOL_MODE\fP   2"
+.br
+.ti -1c
+.RI "#define \fBXY_SYMBOL_SHADE_MODE\fP   3"
+.br
+.ti -1c
+.RI "#define \fBXY_R_MODE\fP   4"
+.br
+.ti -1c
+.RI "#define \fBXY_E_MODE\fP   5"
+.br
+.ti -1c
+.RI "#define \fBXY_R_SHADE_MODE\fP   6"
+.br
+.ti -1c
+.RI "#define \fBXY_E_SHADE_MODE\fP   7"
+.br
+.ti -1c
+.RI "#define \fBXY_R_E_MODE\fP   8"
+.br
+.ti -1c
+.RI "#define \fBXY_R_E_SHADE_MODE\fP   9"
+.br
+.ti -1c
+.RI "#define \fBXY_HIST_MODE\fP   10"
+.br
+.ti -1c
+.RI "#define \fBXY_ERRY_MODE\fP   11"
+.br
+.ti -1c
+.RI "#define \fBXY_SYMBOL_ERRY_MODE\fP   12"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBgetcifromshade\fP (float \fBshade\fP)"
+.br
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBcilo\fP"
+.br
+.ti -1c
+.RI "int \fBcihi\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define EMAX   0.9"
+.PP
+Definition at line 25 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define MARGIN   0.03"
+.PP
+Definition at line 23 of file plotcatmain.c.
+.SS "#define MAX_MODES   20"
+.PP
+Definition at line 28 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define NVERT   8"
+.PP
+Definition at line 26 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define POLY_TYPE   1"
+.PP
+Definition at line 31 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define RFRACDEFAULT   0.01"
+.PP
+Definition at line 24 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define SYMBOL_TYPE   0"
+.PP
+Definition at line 30 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define XY_E_MODE   5"
+.PP
+Definition at line 38 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define XY_E_SHADE_MODE   7"
+.PP
+Definition at line 40 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define XY_ERRY_MODE   11"
+.PP
+Definition at line 44 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define XY_HIST_MODE   10"
+.PP
+Definition at line 43 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define XY_MODE   0"
+.PP
+Definition at line 33 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define XY_R_E_MODE   8"
+.PP
+Definition at line 41 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define XY_R_E_SHADE_MODE   9"
+.PP
+Definition at line 42 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define XY_R_MODE   4"
+.PP
+Definition at line 37 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define XY_R_SHADE_MODE   6"
+.PP
+Definition at line 39 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define XY_SHADE_MODE   1"
+.PP
+Definition at line 34 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define XY_SYMBOL_ERRY_MODE   12"
+.PP
+Definition at line 45 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define XY_SYMBOL_MODE   2"
+.PP
+Definition at line 35 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SS "#define XY_SYMBOL_SHADE_MODE   3"
+.PP
+Definition at line 36 of file plotcatmain.c.
+.PP
+Referenced by main().
+.SH "Function Documentation"
+.PP 
+.SS "int getcifromshade (float shade)"
+.PP
+Definition at line 960 of file plotcatmain.c.
+.PP
+References cihi, cilo, and shade.
+.PP
+Referenced by main().
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 51 of file plotcatmain.c.
+.PP
+References a, addfiltercondition(), b, cihi, cilo, cpgellipses(), deactivate(), dofilter(), e1, EMAX, error_exit, exit(), fits, FLOAT_MAGIC, fmin, getcifromshade(), getcolormap(), getrange(), getrect(), installrect(), ix, MASK_MODE, MAX_MODES, N1, N2, label::next, NOEDIT_MODE, npts, NVERT, phi, POLY_TYPE, r, read2Dfloatimage(), REJECT_MODE, RFRACDEFAULT, SELECT_MODE, setposfirst(), shade, startfilter(), SYMBOL_TYPE, label::text, type, label::x, x, xmax, xmin, XY_E_MODE, XY_E_SHADE_MODE, XY_ERRY_MODE, XY_HIST_MODE, XY_MODE, XY_R_E_MODE, XY_R_E_SHADE_MODE, XY_R_MODE, XY_R_SHADE_MODE, XY_SHADE_MODE, XY_SYMBOL_ERRY_MODE, XY_SYMBOL_MODE, XY_SYMBOL_SHADE_MODE, label::y, y, ymax, and ymin.
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBcihi\fP\fC [static]\fP"
+.PP
+Definition at line 48 of file plotcatmain.c.
+.PP
+Referenced by getcifromshade(), and main().
+.SS "int \fBcilo\fP\fC [static]\fP"
+.PP
+Definition at line 48 of file plotcatmain.c.
+.PP
+Referenced by getcifromshade(), and main().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

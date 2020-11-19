@@ -1,0 +1,62 @@
+.TH "getop.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+getop.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include 'getop.h'\fP
+.br
+\fC#include 'operators.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../magic.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBop\fP * \fBgetop\fP (char **sptr)"
+.br
+.ti -1c
+.RI "char * \fBgetword\fP (char **sptr)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBnim\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "\fBop\fP* getop (char ** sptr)"
+.PP
+Definition at line 16 of file imtools/ic/ic2/getop.c.
+.PP
+References item::addr, allocitemcontents(), CONSTANT_TYPE, copyitem(), copystring(), op::data, error_exit, exit(), free(), getheaderitem(), getobjectitem(), getword(), IM_VALUE_TYPE, MAGIC, newitem(), newop(), newopitem(), nim, NUM_TYPE, number, op::opno, sourcecathead, TEXT_TYPE, and op::type.
+.PP
+Referenced by main(), and newrpnfunction().
+.SS "char* getword (char ** sptr)"
+.PP
+Definition at line 79 of file imtools/ic/ic2/getop.c.
+.PP
+References c, and len.
+.PP
+Referenced by getop(), parseheaderexpr(), and parsename().
+.SH "Variable Documentation"
+.PP 
+.SS "int \fBnim\fP"
+.PP
+Definition at line 13 of file imtools/ic/ic2/getop.c.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

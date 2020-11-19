@@ -1,0 +1,56 @@
+.TH "stats.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+stats.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../utils/stats_stuff.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../utils/arrays.h'\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	\fBstats\fP -- calculate simple statistics for an image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	\fBstats\fP 	[option...]\\\fBn\fP\\		-\fBm\fP \fBn\fP	# ignore outer \fBn\fP \fBpixel\fP margin (def = 0)\\\fBn\fP\\		-\fBv\fP stat	# just output value for 'stat', which\\\fBn\fP\\			can be one of:\\\fBn\fP\\			\fBN1\fP \fBN2\fP pixtype min max mean \fBmode\fP median\\\fBn\fP\\			lquart uquart \fBsigma\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'stats\\' reads \fBa\fP 2-D \fBfits\fP file from stdin\\\fBn\fP\\	and writes the descriptive statistics listed above to stdout.\\\fBn\fP\\	Mode, \fBsigma\fP are computed as described in the 'catstats' man\\\fBn\fP\\	page.\\\fBn\fP\\\\\fBn\fP\\	If \fBstats\fP is given an image of dimensionality 3 then\\\fBn\fP\\	it will generate \fBa\fP lc-format output giving the \fBstats\fP\\\fBn\fP\\	for the NAXIS3 planes (each of size NAXIS2 x NAXIS1)\\\fBn\fP\\	and with an index '\fBi\fP = 0 ... NAXIS3 - 1' giving the plane \fBnumber\fP.\\\fBn\fP\\	With an image of dimensionality 4 it generates statistics\\\fBn\fP\\	for the NAXIS4 x NAXIS3 planes, and the index \fBi\fP becomes\\\fBn\fP\\	\fBa\fP 2-vector with \fBi\fP[0] = 0...NAXIS3-1, \fBi\fP[1] = 0...NAXIS4-1,\\\fBn\fP\\	and similarly for higher dimensions.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	catstats(1)\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	\fBstats\fP -- calculate simple statistics for an image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	\fBstats\fP 	[option...]\\\fBn\fP\\		-\fBm\fP \fBn\fP	# ignore outer \fBn\fP \fBpixel\fP margin (def = 0)\\\fBn\fP\\		-\fBv\fP stat	# just output value for 'stat', which\\\fBn\fP\\			can be one of:\\\fBn\fP\\			\fBN1\fP \fBN2\fP pixtype min max mean \fBmode\fP median\\\fBn\fP\\			lquart uquart \fBsigma\fP\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'stats\\' reads \fBa\fP 2-D \fBfits\fP file from stdin\\\fBn\fP\\	and writes the descriptive statistics listed above to stdout.\\\fBn\fP\\	Mode, \fBsigma\fP are computed as described in the 'catstats' man\\\fBn\fP\\	page.\\\fBn\fP\\\\\fBn\fP\\	If \fBstats\fP is given an image of dimensionality 3 then\\\fBn\fP\\	it will generate \fBa\fP lc-format output giving the \fBstats\fP\\\fBn\fP\\	for the NAXIS3 planes (each of size NAXIS2 x NAXIS1)\\\fBn\fP\\	and with an index '\fBi\fP = 0 ... NAXIS3 - 1' giving the plane \fBnumber\fP.\\\fBn\fP\\	With an image of dimensionality 4 it generates statistics\\\fBn\fP\\	for the NAXIS4 x NAXIS3 planes, and the index \fBi\fP becomes\\\fBn\fP\\	\fBa\fP 2-vector with \fBi\fP[0] = 0...NAXIS3-1, \fBi\fP[1] = 0...NAXIS4-1,\\\fBn\fP\\	and similarly for higher dimensions.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	catstats(1)\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+calculate simple statistics for an image Definition at line 7 of file stats.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 52 of file stats.c.
+.PP
+References allocFloatArray(), fstatsrec::badpix, error_exit, exit(), fitsheader::extpixtype, f, fdo_stats(), fits, fstatsrec::flowerquartile, fstatsrec::fmax, fstatsrec::fmean, fstatsrec::fmedian, fstatsrec::fmin, fstatsrec::fmode, fstatsrec::fupperquartile, fstatsrec::goodpix, i, j, MAX_FITS_DIM, fitsheader::n, N1, N2, fitsheader::ndim, readfitsheader(), readfitsplane(), fstatsrec::samplesize, fstatsrec::sigma, and usage.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

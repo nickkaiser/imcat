@@ -1,0 +1,208 @@
+.TH "makedensity.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+makedensity.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../catlib/cat.h'\fP
+.br
+\fC#include '../../imlib/fits.h'\fP
+.br
+\fC#include '../../utils/error.h'\fP
+.br
+\fC#include '../../utils/arrays.h'\fP
+.br
+\fC#include '../../utils/args.h'\fP
+.br
+\fC#include '../../utils/stats_stuff.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	makedensity --- bin catalogue into \fBFITS\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makedensity \fBr\fP \fBx1\fP \fBx2\fP \fBnx\fP .....  [-\fBv\fP \fBval\fP] [-\fBc\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'makedensity' reads \fBa\fP catalogue from stdin, which must\\\fBn\fP\\	contain at least some \fBN\fP >=1 dimensional vector and sums the counts\\\fBn\fP\\	of objects (or with the -\fBv\fP option sums some specified \fBobject\fP value) into\\\fBn\fP\\	bins in \fBa\fP floating \fBpoint\fP \fBFITS\fP image which is sent to stdout.\\\fBn\fP\\\\\fBn\fP\\	The first argument is the name of the coordinate vector.  This is then\\\fBn\fP\\	followed by \fBN\fP triplets giving, starting with the fastest coordinate dimension,\\\fBn\fP\\	the range of dimension to be mapped and the corresponding \fBnumber\fP of pixels in\\\fBn\fP\\	the output image.\\\fBn\fP\\\\\fBn\fP\\	Use the -\fBv\fP option to sum some numerical \fBobject\fP value named '\fBval\fP'.  If \fBval\fP is \fBa\fP scalar\\\fBn\fP\\	then the output image will have the same dimensionality as the coordinate\\\fBn\fP\\	vector, but if \fBval\fP is \fBa\fP vector or matrix then the output image will be of higher\\\fBn\fP\\	dimensionality and contain \fBa\fP set of images containing the the sums of the\\\fBn\fP\\	various components of \fBval\fP. For example, if the input catalogue contains\\\fBn\fP\\	\fBa\fP three dimensional coordinate \fBr\fP[3] = {x,y,\fBz\fP}, and \fBa\fP \fBM1\fP x \fBM2\fP matrix valued quantity\\\fBn\fP\\	\fBm\fP[\fBM2\fP][\fBM1\fP], then the result is \fBa\fP 5-dimensional image f[N5][N4][N3][\fBN2\fP][\fBN1\fP]\\\fBn\fP\\	with N5 = \fBM2\fP, N4 = \fBM1\fP (and N3, \fBN2\fP, \fBN1\fP given in the command \fBline\fP arguments).\\\fBn\fP\\\\\fBn\fP\\	With the -\fBc\fP option we assign the `charge' (\fBv\fP or unity) to four neighbouring\\\fBn\fP\\	pixels.  This is done in such \fBa\fP way that if \fBdx\fP = (\fBx2\fP - \fBx1\fP) / \fBnx\fP etc then \fBa\fP \fBpoint\fP\\\fBn\fP\\	with x = \fBix\fP + \fBdx\fP / \fBdx\fP is assigned entirely to the \fBpixel\fP with index \fBix\fP.  The\\\fBn\fP\\	model here is that the zeroth \fBpixel\fP extends from x = 0 to x = \fBdx\fP, etc.\\\fBn\fP\\\\\fBn\fP\\	The coordinate ranges are stored as \fBFITS\fP header records named\\\fBn\fP\\		x0min, x0max, x1min, x1max, ....\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBQSCALE_TINY\fP   1.\fBe\fP-8"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBassigncharge\fP (int \fBlevel\fP)"
+.br
+.ti -1c
+.RI "void \fBassigncharge_cic\fP (int \fBlevel\fP, int xoff, double q)"
+.br
+.ti -1c
+.RI "void \fBsetf\fP (int \fBlevel\fP, int xoff, void *\fBv\fP)"
+.br
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "float * \fBf\fP"
+.br
+.ti -1c
+.RI "int * \fBnx\fP"
+.br
+.ti -1c
+.RI "int \fBfsize\fP [MAX_DIMS+1]"
+.br
+.ti -1c
+.RI "int \fBvndim\fP"
+.br
+.ti -1c
+.RI "int * \fBvdim\fP"
+.br
+.ti -1c
+.RI "int \fBxdim\fP"
+.br
+.ti -1c
+.RI "int \fBgxoff\fP"
+.br
+.ti -1c
+.RI "double * \fBx\fP"
+.br
+.ti -1c
+.RI "double * \fBx1\fP"
+.br
+.ti -1c
+.RI "double * \fBx2\fP"
+.br
+.ti -1c
+.RI "double * \fBdx\fP"
+.br
+.ti -1c
+.RI "double \fBgq\fP"
+.br
+.ti -1c
+.RI "void * \fBgv\fP"
+.br
+.ti -1c
+.RI "char * \fBvname\fP"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define QSCALE_TINY   1.\fBe\fP-8"
+.PP
+Definition at line 65 of file makedensity.c.
+.PP
+Referenced by assigncharge_cic().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	makedensity --- bin catalogue into \fBFITS\fP image\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	makedensity \fBr\fP \fBx1\fP \fBx2\fP \fBnx\fP .....  [-\fBv\fP \fBval\fP] [-\fBc\fP]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	'makedensity' reads \fBa\fP catalogue from stdin, which must\\\fBn\fP\\	contain at least some \fBN\fP >=1 dimensional vector and sums the counts\\\fBn\fP\\	of objects (or with the -\fBv\fP option sums some specified \fBobject\fP value) into\\\fBn\fP\\	bins in \fBa\fP floating \fBpoint\fP \fBFITS\fP image which is sent to stdout.\\\fBn\fP\\\\\fBn\fP\\	The first argument is the name of the coordinate vector.  This is then\\\fBn\fP\\	followed by \fBN\fP triplets giving, starting with the fastest coordinate dimension,\\\fBn\fP\\	the range of dimension to be mapped and the corresponding \fBnumber\fP of pixels in\\\fBn\fP\\	the output image.\\\fBn\fP\\\\\fBn\fP\\	Use the -\fBv\fP option to sum some numerical \fBobject\fP value named '\fBval\fP'.  If \fBval\fP is \fBa\fP scalar\\\fBn\fP\\	then the output image will have the same dimensionality as the coordinate\\\fBn\fP\\	vector, but if \fBval\fP is \fBa\fP vector or matrix then the output image will be of higher\\\fBn\fP\\	dimensionality and contain \fBa\fP set of images containing the the sums of the\\\fBn\fP\\	various components of \fBval\fP. For example, if the input catalogue contains\\\fBn\fP\\	\fBa\fP three dimensional coordinate \fBr\fP[3] = {x,y,\fBz\fP}, and \fBa\fP \fBM1\fP x \fBM2\fP matrix valued quantity\\\fBn\fP\\	\fBm\fP[\fBM2\fP][\fBM1\fP], then the result is \fBa\fP 5-dimensional image f[N5][N4][N3][\fBN2\fP][\fBN1\fP]\\\fBn\fP\\	with N5 = \fBM2\fP, N4 = \fBM1\fP (and N3, \fBN2\fP, \fBN1\fP given in the command \fBline\fP arguments).\\\fBn\fP\\\\\fBn\fP\\	With the -\fBc\fP option we assign the `charge' (\fBv\fP or unity) to four neighbouring\\\fBn\fP\\	pixels.  This is done in such \fBa\fP way that if \fBdx\fP = (\fBx2\fP - \fBx1\fP) / \fBnx\fP etc then \fBa\fP \fBpoint\fP\\\fBn\fP\\	with x = \fBix\fP + \fBdx\fP / \fBdx\fP is assigned entirely to the \fBpixel\fP with index \fBix\fP.  The\\\fBn\fP\\	model here is that the zeroth \fBpixel\fP extends from x = 0 to x = \fBdx\fP, etc.\\\fBn\fP\\\\\fBn\fP\\	The coordinate ranges are stored as \fBFITS\fP header records named\\\fBn\fP\\		x0min, x0max, x1min, x1max, ....\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file makedensity.c.
+.SH "Function Documentation"
+.PP 
+.SS "void assigncharge (int level)"
+.PP
+Definition at line 204 of file makedensity.c.
+.PP
+References dx, f, fsize, gq, gv, gxoff, ix, nx, setf(), vname, vndim, x, and x1.
+.PP
+Referenced by main().
+.SS "void assigncharge_cic (int level, int xoff, double q)"
+.PP
+Definition at line 225 of file makedensity.c.
+.PP
+References dx, f, fsize, gq, gv, ix, nx, QSCALE_TINY, setf(), vname, vndim, x, x1, and xx.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 67 of file makedensity.c.
+.PP
+References add_comment(), object::addrlist, allocobjectcontents(), appendcomment(), argserror(), argsinit(), assigncharge(), assigncharge_cic(), byteswapline(), connectobjecttocathead(), item::dim, dx, error_exit, exit(), fitsheader::extpixtype, f, fits, flag, FLOAT_PIXTYPE, fsize, getargd(), getargi(), getargs(), getflag(), getobjectitem(), getobjectitemindex(), gq, gv, gxoff, i, item::itype, ix, fitsheader::n, NATIVE_BYTE_ORDER, fitsheader::ndim, item::ndim, newfitsheader(), newnumericcomment(), newobject(), nextargtype(), NUM_TYPE, nx, fitsheader::opbyteorder, pixsize(), readcathead(), readobject(), TEXT_ARG, usage, vdim, vname, vndim, writefitsheader(), x, x1, x2, and xdim.
+.SS "void setf (int level, int xoff, void * v)"
+.PP
+Definition at line 257 of file makedensity.c.
+.PP
+References f, fsize, gq, i, v, vdim, vndim, and xdim.
+.PP
+Referenced by assigncharge(), and assigncharge_cic().
+.SH "Variable Documentation"
+.PP 
+.SS "double * \fBdx\fP\fC [static]\fP"
+.PP
+Definition at line 61 of file makedensity.c.
+.SS "float* f\fC [static]\fP"
+.PP
+Definition at line 59 of file makedensity.c.
+.SS "int \fBfsize\fP[MAX_DIMS + 1]\fC [static]\fP"
+.PP
+Definition at line 60 of file makedensity.c.
+.PP
+Referenced by assigncharge(), assigncharge_cic(), main(), and setf().
+.SS "double \fBgq\fP\fC [static]\fP"
+.PP
+Definition at line 61 of file makedensity.c.
+.PP
+Referenced by assigncharge(), assigncharge_cic(), main(), and setf().
+.SS "void* \fBgv\fP\fC [static]\fP"
+.PP
+Definition at line 62 of file makedensity.c.
+.PP
+Referenced by assigncharge(), assigncharge_cic(), and main().
+.SS "int \fBgxoff\fP\fC [static]\fP"
+.PP
+Definition at line 60 of file makedensity.c.
+.PP
+Referenced by assigncharge(), and main().
+.SS "int* \fBnx\fP\fC [static]\fP"
+.PP
+Definition at line 60 of file makedensity.c.
+.SS "int * \fBvdim\fP\fC [static]\fP"
+.PP
+Definition at line 60 of file makedensity.c.
+.PP
+Referenced by main(), and setf().
+.SS "char* \fBvname\fP\fC [static]\fP"
+.PP
+Definition at line 63 of file makedensity.c.
+.PP
+Referenced by assigncharge(), assigncharge_cic(), and main().
+.SS "int \fBvndim\fP\fC [static]\fP"
+.PP
+Definition at line 60 of file makedensity.c.
+.PP
+Referenced by assigncharge(), assigncharge_cic(), main(), and setf().
+.SS "double* x\fC [static]\fP"
+.PP
+Definition at line 61 of file makedensity.c.
+.SS "double * \fBx1\fP\fC [static]\fP"
+.PP
+Definition at line 61 of file makedensity.c.
+.PP
+Referenced by assigncharge(), assigncharge_cic(), and main().
+.SS "double * \fBx2\fP\fC [static]\fP"
+.PP
+Definition at line 61 of file makedensity.c.
+.PP
+Referenced by main().
+.SS "int \fBxdim\fP\fC [static]\fP"
+.PP
+Definition at line 60 of file makedensity.c.
+.PP
+Referenced by main(), and setf().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

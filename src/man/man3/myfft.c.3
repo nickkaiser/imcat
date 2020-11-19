@@ -1,0 +1,62 @@
+.TH "myfft.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+myfft.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'myfft.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBPI\fP   M_PI"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBcycleimage\fP (float **f, int \fBNx\fP, int \fBNy\fP, int \fBx0\fP, int y0)"
+.br
+.ti -1c
+.RI "void \fBsubstitute\fP (float **f, int \fBNx\fP, int \fBNy\fP, float magicsubstitute)"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define PI   M_PI"
+.PP
+Definition at line 12 of file myfft.c.
+.SH "Function Documentation"
+.PP 
+.SS "void cycleimage (float ** f, int Nx, int Ny, int x0, int y0)"
+.PP
+Definition at line 18 of file myfft.c.
+.PP
+References F(), f, free(), Nx, Ny, x, xp(), y, and yp().
+.PP
+Referenced by ccf(), forward_cfft(), inverse_cfft(), main(), myfftwcfft(), and power().
+.SS "void substitute (float ** f, int Nx, int Ny, float magicsubstitute)"
+.PP
+Definition at line 90 of file myfft.c.
+.PP
+References f, FLOAT_MAGIC, Nx, Ny, x, and y.
+.PP
+Referenced by exponentialfilter(), gaussfilter(), kolmogorovfilter(), main(), mexicanfilter(), powerlawfilter(), and schecterfilter().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

@@ -1,0 +1,124 @@
+.TH "memorypool" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+memorypool \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "VOID ** \fBfirstblock\fP"
+.br
+.ti -1c
+.RI "VOID ** \fBnowblock\fP"
+.br
+.ti -1c
+.RI "VOID * \fBnextitem\fP"
+.br
+.ti -1c
+.RI "VOID * \fBdeaditemstack\fP"
+.br
+.ti -1c
+.RI "VOID ** \fBpathblock\fP"
+.br
+.ti -1c
+.RI "VOID * \fBpathitem\fP"
+.br
+.ti -1c
+.RI "enum \fBwordtype\fP \fBitemwordtype\fP"
+.br
+.ti -1c
+.RI "int \fBalignbytes\fP"
+.br
+.ti -1c
+.RI "int \fBitembytes\fP"
+.br
+.ti -1c
+.RI "int \fBitemwords\fP"
+.br
+.ti -1c
+.RI "int \fBitemsperblock\fP"
+.br
+.ti -1c
+.RI "long \fBitems\fP"
+.br
+.ti -1c
+.RI "long \fBmaxitems\fP"
+.br
+.ti -1c
+.RI "int \fBunallocateditems\fP"
+.br
+.ti -1c
+.RI "int \fBpathitemsleft\fP"
+.br
+.in -1c
+.SH "Field Documentation"
+.PP 
+.SS "int \fBmemorypool::alignbytes\fP"
+.PP
+Definition at line 601 of file triangle.c.
+.PP
+Referenced by dummyinit(), getpoint(), and locate().
+.SS "VOID* \fBmemorypool::deaditemstack\fP"
+.PP
+Definition at line 597 of file triangle.c.
+.PP
+Referenced by highorder().
+.SS "VOID** \fBmemorypool::firstblock\fP"
+.PP
+Definition at line 595 of file triangle.c.
+.PP
+Referenced by getpoint(), and locate().
+.SS "int \fBmemorypool::itembytes\fP"
+.PP
+Definition at line 602 of file triangle.c.
+.PP
+Referenced by boundingbox(), statistics(), and triangleinit().
+.SS "long \fBmemorypool::items\fP"
+.PP
+Definition at line 604 of file triangle.c.
+.PP
+Referenced by carveholes(), enforcequality(), locate(), main(), reconstruct(), repairencs(), statistics(), writeelements(), writeneighbors(), writenodes(), writeoff(), writepoly(), and writevoronoi().
+.SS "int \fBmemorypool::itemsperblock\fP"
+.PP
+Definition at line 603 of file triangle.c.
+.PP
+Referenced by getpoint().
+.SS "int \fBmemorypool::itemwords\fP"
+.PP
+Definition at line 602 of file triangle.c.
+.PP
+Referenced by getpoint(), initializetrisegpools(), and locate().
+.SS "enum \fBwordtype\fP \fBmemorypool::itemwordtype\fP"
+.PP
+Definition at line 600 of file triangle.c.
+.SS "long \fBmemorypool::maxitems\fP"
+.PP
+Definition at line 604 of file triangle.c.
+.PP
+Referenced by locate(), statistics(), and triangleinit().
+.SS "VOID* \fBmemorypool::nextitem\fP"
+.PP
+Definition at line 596 of file triangle.c.
+.SS "VOID ** \fBmemorypool::nowblock\fP"
+.PP
+Definition at line 595 of file triangle.c.
+.SS "VOID** \fBmemorypool::pathblock\fP"
+.PP
+Definition at line 598 of file triangle.c.
+.SS "VOID* \fBmemorypool::pathitem\fP"
+.PP
+Definition at line 599 of file triangle.c.
+.SS "int \fBmemorypool::pathitemsleft\fP"
+.PP
+Definition at line 606 of file triangle.c.
+.SS "int \fBmemorypool::unallocateditems\fP"
+.PP
+Definition at line 605 of file triangle.c.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

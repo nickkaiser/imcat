@@ -1,0 +1,76 @@
+.TH "planetephem.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+planetephem.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include 'jpleph.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	planetephem - compute position of \fBa\fP planet at \fBa\fP given time\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	planetephem timetype time target center\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	planetephem is \fBa\fP wrapper for the JPL subroutine PLEPH.\\\fBn\fP\\\\\fBn\fP\\	timetype should be either 'JD' (Julian date) or 'MJD' (mean\\\fBn\fP\\	Julian date) or 'Y2K' (time in days relative to start of Y2K).\\\fBn\fP\\\\\fBn\fP\\	The numbering convention for 'target' and 'center' is:\\\fBn\fP\\		1 = mercury\\\fBn\fP\\		2 = venus\\\fBn\fP\\		3 = earth\\\fBn\fP\\		4 = mars\\\fBn\fP\\		5 = jupiter\\\fBn\fP\\		6 = saturn\\\fBn\fP\\		7 = uranus\\\fBn\fP\\		8 = neptune\\\fBn\fP\\		9 = pluto\\\fBn\fP\\		10 = moon\\\fBn\fP\\		11 = sun\\\fBn\fP\\		12 = solar-system barycenter\\\fBn\fP\\		13 = earth-moon barycenter\\\fBn\fP\\\\\fBn\fP\\	If nutations are wanted, set target = 14, center = 0\\\fBn\fP\\	For librations, set target = 15, center = 0.\\\fBn\fP\\\\\fBn\fP\\	Output are the cartesian position (in AU) and velocities\\\fBn\fP\\	in (AU per (yr / 2 PI)) in the ecliptic coordinate \fBframe\fP.\\\fBn\fP\\\\\fBn\fP\\	Planetephem expects to find the path to the binary\\\fBn\fP\\	ephemeris file in the environment variable JPL_EPHEMERIDES\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBK\fP   0.01720209895"
+.br
+.ti -1c
+.RI "#define \fBMJD_Y2K\fP   51544.0"
+.br
+.ti -1c
+.RI "#define \fBJD0\fP   2400000.5"
+.br
+.ti -1c
+.RI "#define \fBOBLIQUITYINDEG\fP   23.43929111"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define JD0   2400000.5"
+.PP
+Definition at line 57 of file planetephem.c.
+.PP
+Referenced by main().
+.SS "#define K   0.01720209895"
+.PP
+Definition at line 52 of file planetephem.c.
+.SS "#define MJD_Y2K   51544.0"
+.PP
+Definition at line 55 of file planetephem.c.
+.PP
+Referenced by main().
+.SS "#define OBLIQUITYINDEG   23.43929111"
+.PP
+Definition at line 60 of file planetephem.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\	planetephem - compute position of \fBa\fP planet at \fBa\fP given time\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	planetephem timetype time target center\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	planetephem is \fBa\fP wrapper for the JPL subroutine PLEPH.\\\fBn\fP\\\\\fBn\fP\\	timetype should be either 'JD' (Julian date) or 'MJD' (mean\\\fBn\fP\\	Julian date) or 'Y2K' (time in days relative to start of Y2K).\\\fBn\fP\\\\\fBn\fP\\	The numbering convention for 'target' and 'center' is:\\\fBn\fP\\		1 = mercury\\\fBn\fP\\		2 = venus\\\fBn\fP\\		3 = earth\\\fBn\fP\\		4 = mars\\\fBn\fP\\		5 = jupiter\\\fBn\fP\\		6 = saturn\\\fBn\fP\\		7 = uranus\\\fBn\fP\\		8 = neptune\\\fBn\fP\\		9 = pluto\\\fBn\fP\\		10 = moon\\\fBn\fP\\		11 = sun\\\fBn\fP\\		12 = solar-system barycenter\\\fBn\fP\\		13 = earth-moon barycenter\\\fBn\fP\\\\\fBn\fP\\	If nutations are wanted, set target = 14, center = 0\\\fBn\fP\\	For librations, set target = 15, center = 0.\\\fBn\fP\\\\\fBn\fP\\	Output are the cartesian position (in AU) and velocities\\\fBn\fP\\	in (AU per (yr / 2 PI)) in the ecliptic coordinate \fBframe\fP.\\\fBn\fP\\\\\fBn\fP\\	Planetephem expects to find the path to the binary\\\fBn\fP\\	ephemeris file in the environment variable JPL_EPHEMERIDES\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 12 of file planetephem.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 62 of file planetephem.c.
+.PP
+References c, exit(), i, JD0, jpl_init_ephemeris(), jpl_pleph(), K, MJD_Y2K, OBLIQUITYINDEG, r, usage, v, y, and z.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

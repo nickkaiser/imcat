@@ -1,0 +1,122 @@
+.TH "tablesort.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+tablesort.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBthing\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	tablesort --- sort \fBa\fP table of numbers\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	tablesort	col\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		tablesort read lines of \fBa\fP table from stdin\\\fBn\fP\\		lines beginning with \\'#\\' and empty lines are ignored\\\fBn\fP\\		lines sorted in ascending \fBorder\fP of colth column values.\\\fBn\fP\\		negative column \fBnumber\fP for descending \fBorder\fP\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBMAX_LINE_LENGTH\fP   4096"
+.br
+.ti -1c
+.RI "#define \fBMAX_COLS\fP   32"
+.br
+.ti -1c
+.RI "#define \fBMAX_WORD_LENGTH\fP   128"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef \fBthing\fP \fBthing\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.ti -1c
+.RI "int \fBinstall\fP (double x, \fBthing\fP *thething)"
+.br
+.ti -1c
+.RI "int \fBwriteasc\fP (\fBthing\fP *thething)"
+.br
+.ti -1c
+.RI "int \fBwritedesc\fP (\fBthing\fP *thething)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "char \fBtheline\fP [MAX_LINE_LENGTH]"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define MAX_COLS   32"
+.PP
+Definition at line 20 of file tablesort.c.
+.SS "#define MAX_LINE_LENGTH   4096"
+.PP
+Definition at line 19 of file tablesort.c.
+.SS "#define MAX_WORD_LENGTH   128"
+.PP
+Definition at line 21 of file tablesort.c.
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	tablesort --- sort \fBa\fP table of numbers\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	tablesort	col\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\		tablesort read lines of \fBa\fP table from stdin\\\fBn\fP\\		lines beginning with \\'#\\' and empty lines are ignored\\\fBn\fP\\		lines sorted in ascending \fBorder\fP of colth column values.\\\fBn\fP\\		negative column \fBnumber\fP for descending \fBorder\fP\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file tablesort.c.
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBthing\fP  \fBthing\fP"
+.PP
+.SH "Function Documentation"
+.PP 
+.SS "int install (double x, \fBthing\fP * thething)"
+.PP
+Definition at line 80 of file tablesort.c.
+.PP
+References thing::left, thing::line, thing::occupied, thing::right, theline, x, and thing::x.
+.PP
+Referenced by main().
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 33 of file tablesort.c.
+.PP
+References exit(), install(), MAX_COLS, MAX_LINE_LENGTH, MAX_WORD_LENGTH, theline, usage, writeasc(), writedesc(), and x.
+.SS "int writeasc (\fBthing\fP * thething)"
+.PP
+Definition at line 100 of file tablesort.c.
+.PP
+References thing::left, thing::line, and thing::right.
+.PP
+Referenced by main().
+.SS "int writedesc (\fBthing\fP * thething)"
+.PP
+Definition at line 111 of file tablesort.c.
+.PP
+References thing::left, thing::line, and thing::right.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "char \fBtheline\fP[MAX_LINE_LENGTH]"
+.PP
+Definition at line 31 of file tablesort.c.
+.PP
+Referenced by disposeof(), install(), main(), makecell(), and removedead().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

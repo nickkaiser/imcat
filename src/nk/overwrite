@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# From The Unix Programming environment ... section 5.5 ...
+#
+# Modified to test for existence of file ...
+#
+# Modified to use in-directory temporaries rather than /tmp ...
+#
+
+# overwrite: copy standard input to output after EOF
+
+case $# in
+0|1)       echo 'Usage: overwrite file cmd [args]' 1>&2; exit 2
+esac
+
+file=$1 
+if \[ ! -f $1 \]
+then
+   echo "overwrite: $1 does not exist."; exit 1;
+fi
+
+shift
+new=.overwrite1.$$; old=.overwrite2.$$;
+trap 'rm -f $new $old; exit 1' 1 2 15            # clean up files
+
+if "$@" >$new                                    # collect input
+then
+   cp $file $old      # save original file
+   trap '' 1 2 15     # committedl ignore signals
+   cp $new $file
+else
+   echo "overwrite: $1 failed, $file unchanged" 1>&2
+   exit 1
+fi
+rm -f $new $old

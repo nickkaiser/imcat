@@ -1,0 +1,52 @@
+.TH "vert" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+vert \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <map_private.h>\fP
+.PP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "float \fBx\fP"
+.br
+.ti -1c
+.RI "float \fBy\fP"
+.br
+.ti -1c
+.RI "\fBvert\fP * \fBnext\fP"
+.br
+.ti -1c
+.RI "\fBvert\fP * \fBprev\fP"
+.br
+.in -1c
+.SH "Field Documentation"
+.PP 
+.SS "struct \fBvert\fP* \fBvert::next\fP"
+.PP
+Definition at line 7 of file map_private.h.
+.PP
+Referenced by decompose(), dopolygon(), freepolygon(), getsourceij(), link(), printpolygon(), smprintpolygon(), and trianglearea().
+.SS "struct \fBvert\fP * \fBvert::prev\fP"
+.PP
+Definition at line 7 of file map_private.h.
+.PP
+Referenced by decompose(), dopolygon(), getsourceij(), link(), and trianglearea().
+.SS "float \fBvert::x\fP"
+.PP
+Definition at line 6 of file map_private.h.
+.PP
+Referenced by decompose(), getsourceij(), makebreakpoints(), makevertex(), printvertex(), smprintpolygon(), and trianglearea().
+.SS "float \fBvert::y\fP"
+.PP
+Definition at line 6 of file map_private.h.
+.PP
+Referenced by decompose(), getsourceij(), makebreakpoints(), makevertex(), printvertex(), smprintpolygon(), and trianglearea().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

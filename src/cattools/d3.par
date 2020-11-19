@@ -1,0 +1,21 @@
+# text format catalogue file --- do not edit manually, use 'lc'
+# header:
+# text     1 1         model_type                  2Dpoly
+# number   1 1         dim                              2
+# number   1 1         nmodes                          14
+# text     1 1         xname                            x
+# number   1 2         xorigin                          0             0
+# number   1 1         nvar                             1
+# comment: spatial polynomial parameter file
+# comment: history: pastecats dx.par dy.par
+# comment: history: lc -H 'dim = 2' 'l' 'm' 'd = %ddx %ddy 2 vector'
+# comment: history: lc -i '%l 3 =='
+# contents: 3
+# number   1 1         l                   
+# number   1 1         m                   
+# number   1 2         d                   
+#             l             m          d[0]          d[1]
+              3             0  -2.41705e-10   4.48677e-11
+              3             1   1.30285e-11  -1.20184e-10
+              3             2  -1.46617e-10  -9.91448e-12
+              3             3     2.042e-11  -2.22506e-10

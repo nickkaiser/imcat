@@ -1,0 +1,46 @@
+.TH "pipesend.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+pipesend.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <sys/time.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\        piepsend - send dummy \fBdata\fP to \fBa\fP pipe\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\        pipesend nblocks \fBblocksize\fP [-f outputfile]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\        pipesend sends blocks of dummy \fBdata\fP to stdout.\\\fBn\fP\\	It reports to stderr the \fBnumber\fP of bytes sent and the\\\fBn\fP\\	elapsed time.\\\fBn\fP\\\\\fBn\fP\\	With the -f option it writes to \fBa\fP file with fwwrite and\\\fBn\fP\\	then performs the fsync command.\\\fBn\fP\\\\\fBn\fP\\	It may be useful for testing network or disk performance.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	piperecv\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\nNAME\\\fBn\fP\\        piepsend - send dummy \fBdata\fP to \fBa\fP pipe\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\        pipesend nblocks \fBblocksize\fP [-f outputfile]\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\        pipesend sends blocks of dummy \fBdata\fP to stdout.\\\fBn\fP\\	It reports to stderr the \fBnumber\fP of bytes sent and the\\\fBn\fP\\	elapsed time.\\\fBn\fP\\\\\fBn\fP\\	With the -f option it writes to \fBa\fP file with fwwrite and\\\fBn\fP\\	then performs the fsync command.\\\fBn\fP\\\\\fBn\fP\\	It may be useful for testing network or disk performance.\\\fBn\fP\\\\\fBn\fP\\SEE ALSO\\\fBn\fP\\	piperecv\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser --- kaiser@hawaii.edu\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 6 of file pipesend.c.
+.SH "Function Documentation"
+.PP 
+.SS "main (int argc, char * argv[])"
+.PP
+Definition at line 28 of file pipesend.c.
+.PP
+References buff, exit(), free(), i, j, and usage.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

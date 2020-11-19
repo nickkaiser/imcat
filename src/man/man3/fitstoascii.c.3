@@ -1,0 +1,84 @@
+.TH "fitstoascii.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+fitstoascii.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	fitstoascii --- convert \fBa\fP \fBfits\fP image to \fBascii\fP format\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitstoascii [option...]\\\fBn\fP\\		-f fmt	# use this format string (%%13.8g)\\\fBn\fP\\		-\fBl\fP	# 1 col list output format\\\fBn\fP\\		-\fBt\fP 	# x,y,pixval triplets\\\fBn\fP\\		-g	# generate gnuplot format list\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	converts \fBa\fP \fBfits\fP image to \fBascii\fP format\\\fBn\fP\\	format must be valid for float (\fBi\fP.\fBe\fP. f,\fBe\fP or g)\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.ti -1c
+.RI "#define \fBDEFAULT_MODE\fP   0"
+.br
+.ti -1c
+.RI "#define \fBONE_COL_MODE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBTRIPLET_MODE\fP   2"
+.br
+.ti -1c
+.RI "#define \fBGNUPLOT_MODE\fP   3"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define DEFAULT_MODE   0"
+.PP
+Definition at line 30 of file fitstoascii.c.
+.PP
+Referenced by main().
+.SS "#define GNUPLOT_MODE   3"
+.PP
+Definition at line 33 of file fitstoascii.c.
+.PP
+Referenced by main().
+.SS "#define ONE_COL_MODE   1"
+.PP
+Definition at line 31 of file fitstoascii.c.
+.PP
+Referenced by main().
+.SS "#define TRIPLET_MODE   2"
+.PP
+Definition at line 32 of file fitstoascii.c.
+.PP
+Referenced by main().
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	fitstoascii --- convert \fBa\fP \fBfits\fP image to \fBascii\fP format\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	fitstoascii [option...]\\\fBn\fP\\		-f fmt	# use this format string (%%13.8g)\\\fBn\fP\\		-\fBl\fP	# 1 col list output format\\\fBn\fP\\		-\fBt\fP 	# x,y,pixval triplets\\\fBn\fP\\		-g	# generate gnuplot format list\\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	converts \fBa\fP \fBfits\fP image to \fBascii\fP format\\\fBn\fP\\	format must be valid for float (\fBi\fP.\fBe\fP. f,\fBe\fP or g)\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@cita.utoronto.ca\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file fitstoascii.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 35 of file fitstoascii.c.
+.PP
+References DEFAULT_MODE, error_exit, exit(), f, fits, GNUPLOT_MODE, i, j, N1, N2, ONE_COL_MODE, read2Dfloatimage(), TRIPLET_MODE, usage, and w.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

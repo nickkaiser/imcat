@@ -1,0 +1,112 @@
+.TH "betafit.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+betafit.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../../../utils/stats_stuff.h'\fP
+.br
+\fC#include '../../../utils/powell.h'\fP
+.br
+\fC#include '../../../utils/nrutil.h'\fP
+.br
+\fC#include 'betafit.h'\fP
+.br
+\fC#include 'amoeba.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBfitall\fP (float **\fBn\fP, int \fBN1\fP, int \fBN2\fP, float *\fBf0\fP, float *\fBx0\fP, float *y0, float *rc2, float beta, float *loglhood, float \fBN\fP)"
+.br
+.ti -1c
+.RI "float \fBfunc\fP (float *p)"
+.br
+.ti -1c
+.RI "void \fBmakebetamodel\fP (float **nmodel, int \fBN1\fP, int \fBN2\fP, float \fBf0\fP, float \fBx0\fP, float y0, float rc2, float beta, float \fBN\fP)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "int \fBn1\fP"
+.br
+.ti -1c
+.RI "int \fBn2\fP"
+.br
+.ti -1c
+.RI "float ** \fBgn\fP"
+.br
+.ti -1c
+.RI "float \fBgN\fP"
+.br
+.ti -1c
+.RI "float \fBgbeta\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int fitall (float ** n, int N1, int N2, float * f0, float * x0, float * y0, float * rc2, float beta, float * loglhood, float N)"
+.PP
+Definition at line 23 of file betafit.c.
+.PP
+References free_matrix(), free_vector(), func(), gbeta, gn, gN, i, j, matrix(), n, N, n1, N1, n2, N2, powell(), and vector().
+.PP
+Referenced by main().
+.SS "float func (float * p)"
+.PP
+Definition at line 67 of file betafit.c.
+.PP
+Referenced by fitall(), frprmn(), gaussfit(), gaussfitn(), linmin(), mnbrak(), and powell().
+.SS "void makebetamodel (float ** nmodel, int N1, int N2, float f0, float x0, float y0, float rc2, float beta, float N)"
+.PP
+Definition at line 91 of file betafit.c.
+.PP
+References ix, N, N1, and N2.
+.PP
+Referenced by main().
+.SH "Variable Documentation"
+.PP 
+.SS "float \fBgbeta\fP\fC [static]\fP"
+.PP
+Definition at line 20 of file betafit.c.
+.PP
+Referenced by fitall(), and func().
+.SS "float \fBgN\fP\fC [static]\fP"
+.PP
+Definition at line 19 of file betafit.c.
+.PP
+Referenced by fitall(), and func().
+.SS "float** \fBgn\fP\fC [static]\fP"
+.PP
+Definition at line 18 of file betafit.c.
+.PP
+Referenced by fitall(), and func().
+.SS "int \fBn1\fP\fC [static]\fP"
+.PP
+function for fitting a beta model Definition at line 17 of file betafit.c.
+.PP
+Referenced by fitall(), and func().
+.SS "int \fBn2\fP\fC [static]\fP"
+.PP
+function for fitting a beta model Definition at line 17 of file betafit.c.
+.PP
+Referenced by fitall(), and func().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.

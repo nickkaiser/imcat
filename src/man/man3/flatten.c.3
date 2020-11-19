@@ -1,0 +1,52 @@
+.TH "flatten.c" 3 "23 Dec 2003" "imcat" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+flatten.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdio.h>\fP
+.br
+\fC#include <math.h>\fP
+.br
+\fC#include <stdlib.h>\fP
+.br
+\fC#include <string.h>\fP
+.br
+\fC#include <limits.h>\fP
+.br
+\fC#include '../imlib/fits.h'\fP
+.br
+\fC#include '../utils/error.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	flatten --- convert 3-D \fBfits\fP to 2\fB_D\fP\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	flatten [\fBoptions\fP...] \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'flatten\\' reads \fBa\fP 3-dimensional \fBfits\fP file from standard\\\fBn\fP\\	input and writes \fBa\fP 2-dimensional version to stdout.\\\fBn\fP\\	By default the output image is simply the concatenation\\\fBn\fP\\	of the input image planes.\\\fBn\fP\\\\\fBn\fP\\	Options are:\\\fBn\fP\\		-\fBc\fP ncols	# write images in rows ncols wide (1)\\\fBn\fP\\\\\fBn\fP\\BUGS\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBusage\fP   '\\n\\\fBn\fP\\\fBn\fP\\NAME\\\fBn\fP\\	flatten --- convert 3-D \fBfits\fP to 2\fB_D\fP\\\fBn\fP\\\\\fBn\fP\\SYNOPSIS\\\fBn\fP\\	flatten [\fBoptions\fP...] \\\fBn\fP\\\\\fBn\fP\\DESCRIPTION\\\fBn\fP\\	\\'flatten\\' reads \fBa\fP 3-dimensional \fBfits\fP file from standard\\\fBn\fP\\	input and writes \fBa\fP 2-dimensional version to stdout.\\\fBn\fP\\	By default the output image is simply the concatenation\\\fBn\fP\\	of the input image planes.\\\fBn\fP\\\\\fBn\fP\\	Options are:\\\fBn\fP\\		-\fBc\fP ncols	# write images in rows ncols wide (1)\\\fBn\fP\\\\\fBn\fP\\BUGS\\\fBn\fP\\\\\fBn\fP\\AUTHOR\\\fBn\fP\\	Nick Kaiser:  kaiser@hawaii.edu\\\fBn\fP\\\\\fBn\fP\\\fBn\fP\\\fBn\fP'"
+.PP
+Definition at line 1 of file flatten.c.
+.SH "Function Documentation"
+.PP 
+.SS "int main (int argc, char * argv[])"
+.PP
+Definition at line 34 of file flatten.c.
+.PP
+References add_comment(), error_exit, exit(), fitsheader::extpixtype, f, fits, free(), i, fitsheader::n, N1, N2, fitsheader::ndim, pixsize(), readfitsheader(), usage, writefitsheader(), and writefitstail().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for imcat from the source code.
